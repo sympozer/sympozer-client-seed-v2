@@ -1,0 +1,63 @@
+<div id="page-header">
+
+    <div ng-include="GLOBAL_CONFIG.app.urls.partials+'navigation/breadcrumb.html'"></div>
+
+    <h1>{{'papers.links.papers' | translate }}</h1>
+
+    <!--<div class="options">-->
+    <!--<div class="btn-toolbar">-->
+    <!--<div class="btn-group" dropdown>-->
+    <!--<button type="button" class="btn btn-default dropdown-toggle">-->
+    <!--Action <span class="caret"></span>-->
+    <!--</button>-->
+    <!--<ul class="dropdown-menu" role="menu">-->
+    <!--<li>-->
+    <!--<a href="" ng-click="showNewTopicsPopup()">{{ 'authentication.actions.signup' | translate }}</a>-->
+    <!--</li>-->
+    <!--<li><a href="#">Another action</a></li>-->
+    <!--<li><a href="#">Something else here</a></li>-->
+    <!--<li class="divider"></li>-->
+    <!--<li><a href="#">Separated link</a></li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--<a href="#" class="btn btn-default hidden-xs"><i class="fa fa-cog"></i></a>-->
+    <!--</div>-->
+    <!--</div>-->
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <h4>{{'papers.actions.index.subtitle' | translate }}</h4>
+                </div>
+                <div class="panel-body" entity-list-handler="papers">
+                    <div class="search-classic">
+                        <form action="#">
+                            <div class="input-group well w100">
+                                <input type="text" placeholder="{{'global.actions.placeHolderSearch' | translate }}" class="form-control"/>
+                                  <span class="input-group-btn">
+                                   <button ng-click="sendQuery(query)" type="button" class="btn btn-primary">
+                                       <i class="fa fa-search"></i> {{'global.actions.search' | translate }}
+                                   </button>
+                                  </span>
+                            </div>
+                        </form>
+                        <hr>
+                        <div ng-repeat-start="paper in entities  track by $index" infinite-scroll='load()' infinite-scroll-disabled='busy' infinite-scroll-distance='0.5'>
+                            <div class="row search-result"  ng-include="GLOBAL_CONFIG.app.modules.papers.urls.partials+'views/papers-views-row-lg.html'"></div>
+                        </div>
+                        <hr ng-repeat-end="">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- col-md-12 -->
+    </div>
+    <!-- row -->
+</div> <!-- container -->
+</div>

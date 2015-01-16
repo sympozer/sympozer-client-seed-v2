@@ -1,0 +1,38 @@
+
+// * Sympozer
+// Powered by Bootstrap v3.2 and FontAwesome 4.1
+// * File is containing all less imports
+
+
+//Bootstrap core variables
+@import "../../bower/bootstrap/less/variables.less";
+@icon-font-path :  "../../bower/bootstrap/fonts/";   //Override path to font to use bower vendor ones
+
+
+
+// INCLUDE ALL BOOTSTRAP FILES FROM BOWER
+@import "../../bower/bootstrap/less/bootstrap.less";
+
+// Glyphicons
+@import "../../bower/bootstrap/less/glyphicons.less";
+
+// Utility classes
+@import "../../bower/bootstrap/less/utilities.less"; // Has to be last to override when necessary
+@import "../../bower/bootstrap/less/responsive-utilities.less";
+
+
+
+@import "../../bower/font-awesome/less/font-awesome.less";		// FontAwesome
+@fa-font-path: "../../bower/font-awesome/fonts";   //Override path to font to use bower vendor ones
+
+
+// Other Plugin Files
+@import "../plugins/form-colorpicker/less/bootstrap-colorpicker.less";
+@import "../plugins/form-jasnyupload/fileinput.less";
+
+
+//Sympozer variables
+@import "variables.less";
+
+// Sympozer Less files
+@import "sympozer.less";

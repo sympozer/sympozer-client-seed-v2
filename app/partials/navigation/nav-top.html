@@ -1,0 +1,91 @@
+<!-- Navigation top bar -->
+<header class="navbar navbar-default">
+
+  <div class="navbar-header pull-left">
+    <a class="navbar-logo" href="/"></a>
+  </div>
+
+  <!-- USER DROPDOWN MENU : -->
+  <ul class="nav navbar-nav pull-right">
+    <li ng-click="showHeaderBar($event)">
+      <a href="" id="headerbardropdown"><span><i class="fa fa-arrows-v"></i></span></a>
+    </li>
+    <li class="dropdown" ng-show="!isLoggedIn">
+      <a href="" ng-click="showSigninPopup()" ng-controller="signinCtrl" style="font-size: 14px"><i class="fa fa-sign-in"></i> {{ 'authentication.actions.signin' | translate }}</a>
+    </li>
+    <li class="dropdown" disabled="disabled" ng-show="isLoggedIn">
+      <a style="width:120px;float:left" href="#" class="dropdown-toggle username">
+        <span class="hidden-xs">{{currentUser.username}}</span>
+        <div  style="width:50px;float:left">
+          <img style="display:inline" class="img-responsive" no-image ng-src="{{currentUser.person.img}}" alt=""/>
+        </div>
+      </a>
+      <ul class="dropdown-menu">
+            <li><a href="#/home/persons/show/{{currentUser.id}}">{{ 'authentication.labels.profile' | translate }}
+              <i class="pull-right fa fa-fw fa-eye"></i></a></li>
+            <li><a href="#/home/authentication/account">{{ 'authentication.labels.account' | translate }} <i class="pull-right fa fa-fw fa-user"></i></a></li>
+            <li><a href="#/home/authentication/settings">{{ 'authentication.labels.settings' | translate }} <i class="pull-right fa fa-fw fa-cog"></i></a></li>
+            <li><a href="#">{{ 'persons.links.my_events' | translate }} <i class="pull-right fa fa-fw fa-calendar"></i></a></li>
+            <!--<li><a href="#">{{ 'persons.links.my_tickets' | translate }} <i class="pull-right fa fa-fw fa-ticket"></i></a></li>-->
+            <li><a href="#">{{ 'persons.links.my_recommandations' | translate }}<i class="pull-right fa fa-fw fa-thumbs-o-up"></i></a></li>
+            <li class="divider"></li>
+            <li>
+              <a href="" class="text-right" ng-controller="signoutCtrl" ng-click="signoutAction()">{{ 'authentication.actions.signout' | translate }}</a>
+            </li>
+      </ul>
+    </li>
+    <li class="dropdown" ng-controller="messagesPopoverCtrl" ng-show="isLoggedIn">
+      <a href="#" class="dropdown-toggle">
+        <i class="fa fa-envelope"></i><span class="badge badge-danger" ng-if="unseenCount>0" ng-bind="unseenCount"></span>
+      </a>
+      <ul class="dropdown-menu messages arrow">
+        <li ng-repeat="item in messages">
+          <a href="#/messages/chatroom" ng-class="{active: !item.read}">
+
+            <div style="width:30px">
+              <img ng-src="{{item.thumb}}" no-image class="img-responsive" alt="avatar"/>
+            </div>
+
+            <div>
+              <span class="name">{{item.name}}</span>
+              <span class="msg">{{item.message}}</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="dropdown" ng-controller="notificationsPopoverCtrl" ng-show="isLoggedIn">
+      <a href="#" class="dropdown-toggle">
+        <i class="fa fa-bell"></i><span class="badge" ng-if="unseenCount>0" ng-bind="unseenCount"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li ng-repeat="item in notifications">
+          <a href="#/notifications">
+            <span class="time">{{item.time}}</span>
+              <i class="{{item.iconClasses}}"></i>
+            <span class="msg">{{item.text}}</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+
+
+    <!-- TRANSLATION DROPDOWN MENU -->
+    <li class="dropdown" ng-controller="translateCtrl">
+      <a href="#" class="dropdown-toggle"><img ng-src="{{ currentLocal.src }}" style="height: 15px; width: 20px;"/></a>
+
+      <ul class="dropdown-menu local" id="navtop-local-dropdown">
+        <li ng-repeat="local in locals">
+          <a ng-click="changeLocal(local)" href="#">
+            <img ng-src="{{ local.src }}" class="pull-left"/>
+
+            <div class="pull-right">
+              {{ local.label }}
+            </div>
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</header>

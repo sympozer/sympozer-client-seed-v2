@@ -1,0 +1,67 @@
+<div class="form-group">
+    <label class="col-sm-3 control-label" for="inputLabel">{{ 'papers.model.label' | translate}}</label>
+
+    <div class="col-sm-6">
+        <input type="text" class="form-control" id="inputLabel" required placeholder="{{ 'papers.model.label' | translate}}" ng-model="paper.label">
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label" for="inputAbstract">{{ 'papers.model.abstract' | translate}}</label>
+    <div class="col-sm-6">
+        <textarea autosize class="form-control" id="inputAbstract" name="inputAbstract" placeholder="{{ 'papers.model.abstract' | translate}}" ng-model="paper.abstract"></textarea>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label" for="inputUrl">{{ 'papers.model.url' | translate}}</label>
+
+    <div class="col-sm-6">
+        <input type="url" class="form-control" id="inputUrl" name="inputUrl" placeholder="http://" ng-model="paper.url">
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label" for="inputPublisher">{{ 'papers.model.publisher' | translate}}</label>
+
+    <div class="col-sm-6">
+        <input type="text" class="form-control" id="inputPublisher" placeholder="{{ 'papers.model.publisher' | translate}}" ng-model="paper.publisher">
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label" for="inputPublishDate">{{ 'papers.model.publish_date' | translate}}</label>
+
+    <div class="col-sm-6">
+
+        <div class="input-group">
+            <input type="text" date-before-now-validator id="inputPublishDate" class="form-control datepicker" datepicker-popup="{{format}}" ng-model="paper.publishDate" is-open="publishDateOpened"/>
+
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openPublishDateOpened($event)">
+                    <i class="fa fa-calendar"></i>
+                </button>
+            </div>
+        </div>
+        <div class="alert alert-danger" role="alert" ng-show="paperForm.inputPublishDate.$error.dateBeforeNow">This publish date is in the futur</div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">{{ 'topics.links.topics' | translate}}</label>
+
+    <div class="col-sm-6">
+        <div sympozer-autocomplete="topics" on-select="addTopic" on-keyup="searchTopics"></div>
+        <div ng-show="paper.topics.length > 0" locals-edit="true" sympozer-with-locals locals-topics="paper.topics" ng-include="GLOBAL_CONFIG.app.modules.topics.urls.partials+'views/topics-list-thumbnail-xs.html'"></div>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label">{{ 'papers.model.authors' | translate}}</label>
+
+    <div class="col-sm-6">
+
+        <div sympozer-autocomplete="persons" on-select="addPerson" on-keyup="searchPersons">
+        </div>
+        <div ng-repeat="author in paper.authors track by $index"  ng-show="paper.authors" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div sympozer-with-locals locals-edit="true" locals-person="author" ng-include="GLOBAL_CONFIG.app.modules.persons.urls.partials+'views/persons-tile-sm.html'"></div>
+        </div>
+    </div>
+</div>
+</div>

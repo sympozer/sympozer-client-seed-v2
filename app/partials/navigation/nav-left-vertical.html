@@ -1,0 +1,14 @@
+<!-- Navigation left bar in vertical mode -->
+
+  <nav class="nav nav-sidebar"  >
+    <div>
+      <ul ng-controller="navMainCtrl">
+        <li ng-repeat="item in menu"
+            ng-class="{ hasChild: (item.children!==undefined),
+                                    active: item.selected,
+                                      open: (item.children!==undefined) && item.open }"
+            ng-include="GLOBAL_CONFIG.app.urls.partials+'navigation/nav-left-items-vertical.html'"
+            ></li>
+      </ul>
+    </div>
+  </nav>
