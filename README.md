@@ -12,7 +12,7 @@ You need nodejs to be installed on your machine.
 * 2) Install grunt-cli to run grunt cmd : npm install -g grunt-cli
 * 3) Copy a version of local-config.TEMPLATE to local-config.json to the root folder : cp local-config.json.TEMPLATE  local-config.json
 * 4) Edit your local-config.json file to select your favorite browser process
-* 5) Lauch the installer : sudo grunt install
+* 5) Launch the installer : sudo grunt install
 * 6) To launch the app, start the "dev" task : sudo grunt dev
 
 
