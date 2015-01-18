@@ -15,6 +15,8 @@ module.exports = function (grunt)
   require('time-grunt')(grunt);
 
 
+
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -28,12 +30,6 @@ module.exports = function (grunt)
       tmp           : '.tmp',
       app           : 'app',
       local_config  : grunt.file.readJSON('local-config.json'),
-
-      // server  path
-      devserver_url : 'http://localhost:9000',
-      prodserver_url: 'http://localhost:9001',
-      testserver_url: 'http://localhost:9002'
-
     },
 
 
@@ -63,24 +59,19 @@ module.exports = function (grunt)
 
     //Open a navigator page displaying a choosen url
     open   : {
-      //development server access
-//            devserver: {
-//                path: '<%= yeoman.devserver_url %>',
-//                app: '<%= yeoman.local_config.defaultBrowser %>'
-//            },
       devserver  : {
-        path: '<%= yeoman.local_config.clientRootPath %>',
+        path: '0.0.0.0:9000',
         app : '<%= yeoman.local_config.defaultBrowser %>'
       },
       //production server access
       prodserver : {
-        path: '<%= yeoman.prodserver_url %>',
+        path: '0.0.0.0:9001',
         app : '<%= yeoman.local_config.defaultBrowser %>'
       },
       //test server access
       testserver : {
-        path: '<%= yeoman.testserver_url %>',
-        app : '<%= yeoman.local_config.defaultBrowser %>'
+        path: '0.0.0.0:9003',
+        app : '0.0.0.'
       },
       //admin interface access
       adminserver: {
@@ -91,31 +82,31 @@ module.exports = function (grunt)
     // The actual grunt server settings
     connect: {
       options   : {
-        base      : '<%= yeoman.app %>',
-        hostname  : 'localhost',
+        hostname  : '0.0.0.0',
         livereload: 35729
       },
       devserver : {
         options: {
+          base      : '<%= yeoman.app %>',
           port     : 9000,
           keepalive: true
         }
       },
       prodserver: {
         options: {
+          base      : '<%= yeoman.dist %>',
           port     : 9001,
           keepalive: false
         }
       },
       testserver: {
         options: {
+          base      : '<%= yeoman.dist %>',
           port     : 9002,
           keepalive: false
 
         }
       }
-
-
     },
 
 
@@ -128,7 +119,8 @@ module.exports = function (grunt)
     //Launch bower install command
     'bower-install-simple': {
       options: {
-        color: true
+        color: true,
+        directory: "<%= yeoman.app %>/bower"
 
       },
       "prod" : {
@@ -527,7 +519,7 @@ module.exports = function (grunt)
 
 
   /** INSTALL **/
-  grunt.registerTask('install', ['shell:protractor_install', 'update_dependencies']);
+  grunt.registerTask('install', ['update_dependencies']);
 
   /** TEST **/
     //single run tests
@@ -538,9 +530,9 @@ module.exports = function (grunt)
 
 
   /** DEVELOPMENT **/
-
-  grunt.registerTask('update_dependencies', ['bower-install-simple', 'bowerInstall', 'shell:npm_install']);
-  grunt.registerTask('dev', ['update_dependencies', 'open:devserver']);
+  grunt.registerTask('update_dependencies', ['bower-install-simple', 'bowerInstall']);
+  grunt.registerTask('dev', ['update_dependencies', 'open:devserver', 'connect:devserver']);
+  grunt.registerTask('prod', ['update_dependencies', 'build', 'open:prodserver', 'connect:prodserver']);
 
 
   /** PRODUCTION **/

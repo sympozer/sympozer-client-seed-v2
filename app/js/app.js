@@ -50,7 +50,6 @@ var sympozerApp = angular.module('sympozerApp', [
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'ngAnimate',
 /** SYMPOZER APPS **/
     'pascalprecht.translate',
     'ngCachedResource',
