@@ -43,7 +43,11 @@ module.exports = function (grunt)
         }
       },
       protractor_install: {
-        command: 'node ./node_modules/protractor/bin/webdriver-manager update'
+        command: 'node ./node_modules/protractor/bin/webdriver-manager update',
+        options: {
+          stdout: true,
+          async:true
+        }
       },
       npm_install       : {
         command: 'npm install'
@@ -89,15 +93,14 @@ module.exports = function (grunt)
         options: {
           base      : '<%= yeoman.dist %>',
           port     : 9001,
-          keepalive: false
+          keepalive: true
         }
       },
       testserver: {
         options: {
           base      : '<%= yeoman.dist %>',
           port     : 9002,
-          keepalive: false
-
+          keepalive: true
         }
       }
     },
@@ -152,7 +155,7 @@ module.exports = function (grunt)
         // A base URL for your application under test. Calls to protractor.get()
         // with relative paths will be prepended with this.
         args      : {
-          baseUrl          : '<%= yeoman.testserver_url %>',
+          baseUrl          : 'http://0.0.0.0:9002',
           // The location of the selenium standalone server .jar file.
           seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.42.2.jar',
           // attempt to find chromedriver using PATH.
@@ -398,7 +401,8 @@ module.exports = function (grunt)
         'copy:styles'
       ],
       test  : [
-        'copy:styles'
+        'connect:testserver',
+        'protractor:singlerun'
       ],
       dist  : [
         'copy:styles',
@@ -512,13 +516,13 @@ module.exports = function (grunt)
 
 
   /** INSTALL **/
-  grunt.registerTask('install', ['update_dependencies']);
+  grunt.registerTask('install', ['update_dependencies', 'shell:protractor_install']);
 
   /** TEST **/
     //single run tests
   grunt.registerTask('test', ['test:unit', 'test:e2e']);
   grunt.registerTask('test:unit', ['karma:unit']);
-  grunt.registerTask('test:e2e', ['chmod:cache_log', 'connect:testserver', 'protractor:singlerun']);
+  grunt.registerTask('test:e2e', ['protractor:singlerun' ]);
 
 
 
@@ -538,13 +542,10 @@ module.exports = function (grunt)
     'htmlmin:app',
     //Compile module html template files (remove comments etc..) and append to Dist dir
     'htmlmin:modules',
-    //Append all html template into a single js file
-//        'ngtemplates:app',
-    //Append all module html template into a single js file
-//        'ngtemplates:modules',
     //Read the index.html build markup
     'useminPrepare',
     'concurrent:dist',
+    //Compile less files to css
     'less:dist',
     'autoprefixer',
     'concat',
