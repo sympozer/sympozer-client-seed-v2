@@ -8,8 +8,8 @@
 angular.module('messagesApp').controller('messagesPopoverCtrl', ['$scope', 'GLOBAL_CONFIG', '$filter', function ($scope, GLOBAL_CONFIG, $filter)
 {
     $scope.messages = [
-        { name: 'Stephan', message: 'This was a really cool overview, i\'d really like to discuss it with you', time: '3m', class: 'notification-danger', thumb: GLOBAL_CONFIG.app.urls.base+'demo/avatar/paton.png', read: false },
-        { name: 'Jacob', message: 'Let\'s meet after this amazing talk ?', time: '17m', class: 'notification-danger', thumb: GLOBAL_CONFIG.app.urls.base+'demo/avatar/corbett.png', read: false },
+        { name: 'Stephan', message: 'This was a really cool overview, i\'d really like to discuss it with you', time: '3m', class: 'notification-danger', thumb: "", read: false },
+        { name: 'Jacob', message: 'Let\'s meet after this amazing talk ?', time: '17m', class: 'notification-danger', thumb: "", read: false },
     ];
 
     $scope.setRead = function (item, $event)
