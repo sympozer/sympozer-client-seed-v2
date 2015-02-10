@@ -1,3 +1,5 @@
 {
+	"https-proxy":"http://proxy.univ-lyon1.fr:3128",
+	"proxy":"http://proxy.univ-lyon1.fr:3128",
     "directory": "app/bower"
 }

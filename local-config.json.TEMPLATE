@@ -1,5 +1,4 @@
 {
 
-  //Your favorite browser process name
   "defaultBrowser" : "chromium-browser"
 }

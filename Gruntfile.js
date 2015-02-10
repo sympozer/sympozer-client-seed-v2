@@ -57,17 +57,17 @@ module.exports = function (grunt)
     //Open a navigator page displaying a choosen url
     open   : {
       devserver  : {
-        path: '0.0.0.0:9000',
+        path: 'localhost:9000',
         app : '<%= yeoman.local_config.defaultBrowser %>'
       },
       //production server access
       prodserver : {
-        path: '0.0.0.0:9001',
+        path: 'localhost:9001',
         app : '<%= yeoman.local_config.defaultBrowser %>'
       },
       //test server access
       testserver : {
-        path: '0.0.0.0:9003',
+        path: 'localhost:9003',
         app : '0.0.0.'
       },
       //admin interface access
@@ -79,7 +79,7 @@ module.exports = function (grunt)
     // The actual grunt server settings
     connect: {
       options   : {
-        hostname  : '0.0.0.0',
+        hostname  : 'localhost',
         livereload: 35729
       },
       devserver : {
@@ -155,7 +155,7 @@ module.exports = function (grunt)
         // A base URL for your application under test. Calls to protractor.get()
         // with relative paths will be prepended with this.
         args      : {
-          baseUrl          : 'http://0.0.0.0:9002',
+          baseUrl          : 'http://localhost:9002',
           // The location of the selenium standalone server .jar file.
           seleniumServerJar: 'node_modules/protractor/selenium/selenium-server-standalone-2.42.2.jar',
           // attempt to find chromedriver using PATH.

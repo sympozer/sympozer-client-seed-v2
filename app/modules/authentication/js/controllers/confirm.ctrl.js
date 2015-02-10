@@ -8,12 +8,15 @@ angular.module('authenticationApp').controller('confirmCtrl',
     {
         var error = function (response, args)
         {
+            alert("ERROOOOOOOOOOR");
             $scope.busy = false;
+
             $rootScope.$broadcast('AlertCtrl:addAlert', {code: 'Register_confirm_error', type: 'danger'});
         };
 
         var success = function (user)
         {
+            alert("SUCCEEEEEEEEESS");
             $scope.user = user;
 
             //Modify current user

@@ -1,3 +1,4 @@
 {
-  "defaultBrowser" : "chromium-browser"
+
+  "defaultBrowser" : "chrome"
 }
