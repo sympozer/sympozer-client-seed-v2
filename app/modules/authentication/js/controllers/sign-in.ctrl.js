@@ -14,13 +14,11 @@ angular.module('authenticationApp').controller('signinCtrl',
 
         if (id && username)
         {
-            alert("id if : "+id);
-//            todo : fetch this ?
+//          todo : fetch this ?
             success({username: username, id: id}, false);
         }
         else
         {
-            alert("id else : "+id);
             $rootScope.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         }
 

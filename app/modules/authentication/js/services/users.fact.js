@@ -12,7 +12,6 @@
  */
 angular.module('authenticationApp').factory('usersFact', ['$resource', function ($resource)
     {
-        alert("dans module userFacts");
         return $resource(
             globalConfig.api.urls.login,
             {id: '@id'},
