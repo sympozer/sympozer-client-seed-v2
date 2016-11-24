@@ -1,0 +1,34 @@
+.menu{
+	list-style: none;
+	width: 100%;
+	padding: 0;
+	margin: 0 0 20px 0;
+}
+
+.menu li{
+	width: 100%;
+	padding: 10px 0 10px 0;
+	border-top: 1px solid #666;
+}
+
+.menu li:hover{
+	background-color: #2C3E50;
+	-webkit-transition: background-color 0.2s ease; /* Safari and Chrome */
+    -moz-transition: background-color 0.2s ease; /* Firefox */
+    -ms-transition: background-color 0.2s ease; /* IE 9 */
+    -o-transition: background-color 0.2s ease; /* Opera */
+    transition: background-color 0.2s ease;
+}
+
+.menu li a{
+	text-decoration: none;
+}
+
+.menu li a{
+	width: 100%;
+	height: 100%;
+	color: #fafafa;
+	font-family: 'fontawesome', sans-serif;
+	font-size: 16px;
+	display: block;
+}

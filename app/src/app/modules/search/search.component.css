@@ -1,0 +1,24 @@
+.search-list{
+	padding: 0;
+	width: 100%;
+	list-style: none;
+}
+
+.search-list li{
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	background: #eee;
+	margin: 5px 0 5px 0;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+}
+
+.search-list li a{
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+	font-size: 20px;
+	color: #000;
+	padding-left: 10px;
+}

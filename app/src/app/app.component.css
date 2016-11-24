@@ -1,0 +1,34 @@
+md-sidenav-layout{
+	width: 100vw;
+	height: 100vh;
+	padding: 0;
+	margin: 0;
+}
+
+.menu-button-open{
+	position: absolute;
+	right: 20px;
+	top: 20px;
+}
+
+.menu-button-close{
+	color: #111;
+	background: #fafafa;
+}
+
+menu{
+	margin: 0;
+	padding: 0;
+}
+
+md-sidenav{
+	width: 200px;
+	text-align: center;
+	background-color: #111;
+	padding: 0;
+}
+
+.content{
+	/*padding: 10px;*/
+	margin: 10px;
+}

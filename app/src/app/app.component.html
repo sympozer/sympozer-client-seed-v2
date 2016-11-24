@@ -1,0 +1,11 @@
+<md-sidenav-layout>
+    <md-sidenav #end align="end">
+      <menu (click)="end.close()"></menu>
+      <button md-button class="menu-button-close" (click)="end.close()">Close</button>
+    </md-sidenav>
+    <button md-button class="menu-button-open" (click)="end.open()">Open menu</button>
+    <div class='content'>
+    	<router-outlet></router-outlet> 
+    </div>
+</md-sidenav-layout>
+

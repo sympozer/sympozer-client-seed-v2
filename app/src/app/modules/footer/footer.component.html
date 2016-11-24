@@ -1,0 +1,34 @@
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header mdl-layout__header--waterfall portfolio-header">
+        <div class="mdl-layout__header-row portfolio-logo-row">
+            <span class="mdl-layout__title">
+                <div class="portfolio-logo"></div>
+                <span class="mdl-layout__title"></span>
+            </span>
+        </div>
+        <div class="mdl-layout__header-row portfolio-navigation-row mdl-layout--large-screen-only">
+            <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+                <a [routerLink]="['/home']" routerLinkActive="active" class="mdl-navigation__link is-active">Accueil</a>
+                <a [routerLink]="['/schedule']" routerLinkActive="active" class="mdl-navigation__link">Schedule</a>
+                <!-- <a routerLink="/search" routerLinkActive="active" class="mdl-navigation__link">Search</a> -->
+                <a [routerLink]="['/search/person']" routerLinkActive="active" class="mdl-navigation__link">Persons</a>
+                <a [routerLink]="['/search/publication']" routerLinkActive="active" class="mdl-navigation__link">Publications</a>
+                <a [routerLink]="['/search/organization']" routerLinkActive="active" class="mdl-navigation__link">Organizations</a>
+                <a [routerLink]="['/about']" routerLinkActive="active" class="mdl-navigation__link">About</a>
+            </nav>
+        </div>
+    </header>
+    <div class="mdl-layout__drawer mdl-layout--small-screen-only">
+        <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font">
+            <a [routerLink]="['/home']" routerLinkActive="active" class="mdl-navigation__link is-active">Accueil</a>
+            <a [routerLink]="['/schedule']" routerLinkActive="active" class="mdl-navigation__link">Schedule</a>
+            <!-- <a routerLink="/search" routerLinkActive="active" class="mdl-navigation__link">Search</a> -->
+            <a [routerLink]="['/search/person']" routerLinkActive="active" class="mdl-navigation__link">Persons</a>
+            <a [routerLink]="['/search/publication']" routerLinkActive="active" class="mdl-navigation__link">Publications</a>
+            <a [routerLink]="['/search/organization']" routerLinkActive="active" class="mdl-navigation__link">Organizations</a>
+            <a [routerLink]="['/about']" routerLinkActive="active" class="mdl-navigation__link">About</a>
+    	</nav>
+	</div>
+</div>
+<router-outlet></router-outlet>
+

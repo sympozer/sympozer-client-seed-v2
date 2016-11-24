@@ -1,17 +1,14 @@
-# Created by .ignore support plugin (hsz.mobi)
 # IntelliJ files
 .idea
 *.iml
 
-
 #local node install & config
 /node_modules
-local-config.json
-
-#bower files
-app/bower
 
 #build files
 .tmp
 /dist
 
+#Typescript compiled files
+/app/**/*.js
+/app/**/*.map

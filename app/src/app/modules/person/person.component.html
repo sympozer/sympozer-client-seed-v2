@@ -1,0 +1,27 @@
+<h1>
+    {{person.name}} <br />
+</h1>
+
+<h2 *ngIf="(orgas | json) != '{}'">Organization(s)</h2>
+<md-list>
+    <md-list-item *ngFor="let orga of orgas | keys">
+        <b> <a [routerLink]="['/organization/'+orga.value.name+'/'+orga.value.id]">{{orga.value.name}}</a></b>
+    </md-list-item>
+</md-list>
+<h2 *ngIf="(roles | json) != '{}'">Role(s)</h2>
+<md-list>
+    <md-list-item *ngFor="let role of roles | keys">
+        <b> <a [routerLink]="['/person-by-role/'+role.value.label+'/'+role.value.id]">{{role.value.label}}</a></b>
+    </md-list-item>
+</md-list>
+<h2 *ngIf="(publiConf | json) != '{}'">Conference Publication(s)</h2>
+<md-list>
+    <md-list-item *ngFor="let publi of publiConf | keys">
+        <b> <a [routerLink]="['/publication/'+publi.value.title+'/'+publi.value.id]">{{publi.value.title}}</a></b>
+    </md-list-item>
+</md-list>
+<h2>Other Publication(s)</h2>
+<md-list>
+    <div>Not supported yet</div>
+</md-list>
+
