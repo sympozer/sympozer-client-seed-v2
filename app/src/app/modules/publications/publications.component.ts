@@ -1,24 +1,20 @@
 import {Component, OnInit} from '@angular/core';
-import {Conference} from '../../model/conference';
-import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';
+import { LocalDAOService } from  '../../localdao.service';
 @Component({
-    selector: 'app-person',
+    selector: 'app-publications',
     templateUrl: 'publications.component.html',
     styleUrls: ['publications.component.css'],
 })
 export class PublicationsComponent implements OnInit {
-    conference:Conference = new Conference();
-
+    publications;
     constructor(private router:Router,
-                private dataLoaderService:DataLoaderService) {
+                private DaoService : LocalDAOService) {
     }
 
     ngOnInit() {
-        this.dataLoaderService.getData().then((conference) => {
-            this.conference = conference;
-            console.log(this.conference);
-        });
+        this.publications = this.DaoService.query("getAllPublications", null);
+        console.log(this.publications);
     }
 
 }

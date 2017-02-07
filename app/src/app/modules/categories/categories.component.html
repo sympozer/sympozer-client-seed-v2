@@ -1,0 +1,6 @@
+<h2>Tracks</h2>
+<md-list>
+  <md-list-item *ngFor="let categorie of categories | keys">
+    <h3 md-line><a [routerLink]="['/event-by-category/'+categorie.value.name+'/'+categorie.value.id]">{{categorie.value.label}}</a> </h3>
+  </md-list-item>
+</md-list>

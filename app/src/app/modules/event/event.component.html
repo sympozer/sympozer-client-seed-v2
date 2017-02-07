@@ -1,0 +1,40 @@
+<h1>
+    {{event.name}} <br />
+</h1>
+<h2>Description</h2>
+<p>{{event.description}}</p>
+
+<h2>Starts at</h2>
+<p><b>{{startsAt}}</b></p>
+
+<h2>Ends at</h2>
+<p><b>{{endsAt}}</b></p>
+
+<h2>Duration</h2>
+<p><b>{{duration}}</b></p>
+
+<div *ngIf="(locations | json) != '{}'">
+    <h2>Location</h2>
+    <md-list>
+        <md-list-item *ngFor="let location of locations | keys">
+            <b> <a [routerLink]="['/events-by-location/'+location.value.name+'/'+location.value.id]">{{location.value.name}}</a></b>
+        </md-list-item>
+    </md-list>
+</div>
+
+<div *ngIf="(publications | json) != '{}'">
+    <h2>Publications</h2>
+    <md-list>
+        <md-list-item *ngFor="let publication of publications | keys">
+            <b> <a [routerLink]="['/publication/'+publication.value.title+'/'+publication.value.id]">{{publication.value.title}}</a></b>
+        </md-list-item>
+    </md-list>
+</div>
+
+<div *ngIf="partof != null">
+    <h2>Part of</h2>
+    <p><b> <a [routerLink]="['/event/'+partof.name+'/'+partof.id]">{{partof.name}}</a></b></p>
+</div>
+
+<div *ngIf="(contents | json) != '{}'"></div>
+<h2>Contents</h2>

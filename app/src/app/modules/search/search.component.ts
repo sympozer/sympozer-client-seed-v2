@@ -6,25 +6,32 @@ import { Location }              from '@angular/common';
 @Component({
   selector: 'search',
   template: `
-    <h2> Search a {{testId}} </h2>
+    <h1> Search a {{testId}} </h1>
     <div *ngIf="this.testId == 'person'">
-    <ul class="search-list">
+    <ul class="link">
       <li><a [routerLink]="['/persons']">by name </a></li> 
       <li><a [routerLink]="['/roles']">by role </a></li>  
       <li><a [routerLink]="['/organizations']">by organization </a></li> 
     </ul>
     </div>
     <div *ngIf="this.testId == 'publication'">
-    <ul class="search-list">
+    <ul class="link">
       <li><a [routerLink]="['/publications']">by title </a> </li> 
       <li><a [routerLink]="['/authors']">by author </a> </li> 
       <li><a [routerLink]="['/categories-for-publications']">by track </a> </li> 
     </ul>
     </div>
     <div *ngIf="this.testId == 'organization'">
-    <ul class="search-list">
+    <ul class="link">
       <li><a [routerLink]="['/organizations']">by name </a> </li> 
       <li><a [routerLink]="['/persons']">by person </a> </li> 
+    </ul>
+    </div>
+    <div *ngIf="this.testId == 'event'">
+    <ul class="link">
+      <li><a [routerLink]="['/events']">by name </a> </li> 
+      <li><a [routerLink]="['/categories']">by track </a> </li> 
+      <li><a [routerLink]="['/locations']">by location </a> </li> 
     </ul>
     </div>
   `,

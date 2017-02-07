@@ -1,1 +1,17 @@
 <h1>{{publication.title}}</h1>
+
+<!-- Logo -->
+
+<h2>Abstract</h2>
+{{publication.abstract}}
+
+<!-- Homepage -->
+
+<h2 *ngIf="(authors | json) != '{}'">Auteur(s)</h2>
+<md-list>
+    <md-list-item *ngFor="let author of authors | keys">
+        <b> <a [routerLink]="['/person/'+author.value.name+'/'+author.value.id]">{{author.value.name}}</a></b>
+    </md-list-item>
+</md-list>
+
+

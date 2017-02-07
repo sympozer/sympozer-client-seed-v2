@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {LocalDAOService} from  './localdao.service';
 
 
+
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -15,7 +16,6 @@ export class AppComponent implements OnInit {
     ngOnInit():void {
         this.DaoService.initialize();
         let persons = this.DaoService.query("getAllPersons", null);
-        // console.log("liste personne : " + JSON.stringify(persons));
     }
 
 }

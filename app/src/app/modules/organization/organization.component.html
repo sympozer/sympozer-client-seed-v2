@@ -1,1 +1,16 @@
 <h1>{{organization.label}}</h1>
+
+<!-- Logo -->
+
+<!-- Abstract -->
+
+<!-- Homepage -->
+
+<h2 *ngIf="(members | json) != '{}'">Membre(s)</h2>
+<md-list>
+    <md-list-item *ngFor="let member of members | keys">
+        <b> <a [routerLink]="['/person/'+member.value.name+'/'+member.value.id]">{{member.value.name}}</a></b>
+    </md-list-item>
+</md-list>
+
+

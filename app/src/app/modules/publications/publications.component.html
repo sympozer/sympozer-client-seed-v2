@@ -1,10 +1,8 @@
 <p>
-  Publications List
+  Publication List <br />
 </p>
-<div *ngFor="let publication of conference.publications; let i = index">
-  <div class='publications'>
-    <h3>
-      {{publication.title}}
-    </h3>
-  </div>
-</div>
+<md-list>
+  <md-list-item *ngFor="let publication of publications | keys">
+    <h3 md-line><a [routerLink]="['/publication/'+publication.value.title+'/'+publication.value.id]">{{publication.value.title}}</a> </h3>
+  </md-list-item>
+</md-list>

@@ -1,0 +1,6 @@
+<h1>{{eventCategory.label}}</h1>
+<ul class='link'>
+    <li *ngFor="let event of events | keys">
+        <a [routerLink]="['/event/'+event.value.name+'/'+event.value.id]">{{event.value.name}}</a>
+    </li>
+</ul>

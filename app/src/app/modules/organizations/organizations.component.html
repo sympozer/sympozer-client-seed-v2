@@ -4,6 +4,6 @@
 <md-list>
 	<md-list-item *ngFor="let organization of organizations | keys">
 		<img md-list-avatar src="" alt="?">
-		<h3 md-line> {{organization.value.name}} </h3>
+		<h3 md-line><a [routerLink]="['/organization/'+organization.value.name+'/'+organization.value.id]">{{organization.value.sanitizeName}}</a> </h3>
 	</md-list-item>
 </md-list>

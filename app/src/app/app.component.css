@@ -3,6 +3,7 @@ md-sidenav-layout{
 	height: 100vh;
 	padding: 0;
 	margin: 0;
+	background: #fff;
 }
 
 .menu-button-open{
@@ -13,7 +14,10 @@ md-sidenav-layout{
 
 .menu-button-close{
 	color: #111;
-	background: #fafafa;
+	background: #fff;
+	position: absolute;
+	top: 0;
+	right: 0;
 }
 
 menu{

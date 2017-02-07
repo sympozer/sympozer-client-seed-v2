@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalDAOService } from  '../../localdao.service';
+import {Encoder} from "../../lib/encoder";
 
 @Component({
   selector: 'app-organizations',
@@ -10,8 +11,8 @@ import { LocalDAOService } from  '../../localdao.service';
 export class OrganizationsComponent implements OnInit {
   organizations;
   constructor(
-      private router: Router,
-      private DaoService : LocalDAOService
+      private DaoService : LocalDAOService,
+      private encoder: Encoder
   ) { }
 
   ngOnInit() {

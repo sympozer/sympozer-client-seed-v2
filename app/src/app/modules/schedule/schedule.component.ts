@@ -16,9 +16,8 @@ export class ScheduleComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.schedule = this.DaoService.query("getConferenceSchedule", null);
+    // this.schedule = this.DaoService.query("getConferenceSchedule", null);
     console.log(this.schedule);
-
 
     /*this.route.params.forEach((params: Params) => {
   		let id = params['id'];

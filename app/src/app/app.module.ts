@@ -22,6 +22,15 @@ import {MenuComponent} from "./modules/menu/menu.component";
 import {PublicationsByCategoryComponent} from "./modules/publications-by-category/publications-by-category.component";
 import {CategoriesForPublicationsComponent} from "./modules/caterogies-for-publications/categories-for-publications.component";
 import {PersonByRoleComponent} from "./modules/person-by-role/person-by-role.component";
+import {HeaderComponent} from "./modules/header/header.component";
+import {WhatsNextComponent} from "./modules/whatsnext/whatsnext.component";
+import {EventsComponent} from "./modules/events/events.component";
+import {CategoriesComponent} from "./modules/categories/categories.component";
+import {LocationsComponent} from "./modules/locations/locations.component";
+import {EventByCategoryComponent} from "./modules/event-by-category/event-by-category.component";
+import {EventsByLocationComponent} from "./modules/events-by-location/events-by-location.component";
+import {EventComponent} from "./modules/event/event.component";
+import {ExternPublicationComponent} from "./modules/extern-publication/externpublication.component";
 
 import {KeysPipe} from "./keys.pipe";
 import {DataLoaderService} from "./data-loader.service";
@@ -29,6 +38,7 @@ import {DBLPDataLoaderService} from "./dblpdata-loader.service";
 import {LocalDAOService} from "./localdao.service";
 import {eventHelper} from "./eventHelper";
 import { Encoder } from  './lib/encoder';
+import {Ng2Webstorage} from 'ng2-webstorage';
 
 const routes:Routes = [];
 
@@ -51,6 +61,15 @@ const routes:Routes = [];
         CategoriesForPublicationsComponent,
         PublicationsByCategoryComponent,
         PersonByRoleComponent,
+        HeaderComponent,
+        WhatsNextComponent,
+        EventsComponent,
+        CategoriesComponent,
+        LocationsComponent,
+        EventsByLocationComponent,
+        EventComponent,
+        EventByCategoryComponent,
+        ExternPublicationComponent,
         KeysPipe
     ],
     imports: [
@@ -61,6 +80,7 @@ const routes:Routes = [];
         RouterModule.forRoot(routes, {useHash: true}),
         MaterialModule.forRoot(),
         MdGridListModule.forRoot(),
+        Ng2Webstorage,
     ],
     providers: [
         DataLoaderService, DBLPDataLoaderService, LocalDAOService, eventHelper, Encoder

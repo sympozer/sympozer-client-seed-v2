@@ -8,6 +8,7 @@ import { Dataset } from  './dataset';
 import { eventHelper } from  './eventHelper';
 import { Encoder } from  './lib/encoder';
 import {DataLoaderService} from "./data-loader.service";
+import {LocalStorageService} from 'ng2-webstorage';
 
 
 
@@ -52,7 +53,7 @@ export class LocalDAOService {
     //Locations
     private locationLinkMap = {};
 
-    constructor(private http: Http, private ev: eventHelper, private encoder: Encoder, private dataloader: DataLoaderService) { }
+    constructor(private http: Http, private ev: eventHelper, private encoder: Encoder, private dataloader: DataLoaderService , private localStoragexx: LocalStorageService) { }
 
     getData(): Promise<Conference> {
     // Vérifier la différence de version du fichier entre le local et le distant, et enregistrer en local si besoin (nouvelle version)
@@ -99,15 +100,15 @@ export class LocalDAOService {
 
     initialize(){
 
-        // le mettre en localstorage
-
-		//Initialize the data from LocalStorage
-        //let localData = localStorage.getItem("dataset");
-        //let localData = this.conference;
        // this.dataloader.getDataUrl(this.conferenceURL).then(conference => {
        //     this.localData = conference;
+        let storage = this.localStoragexx.retrieve('dataset');
+        if(storage == null){
+            this.localStoragexx.store('dataset', Dataset);
+            storage = Dataset;
+        }
 
-            this.localData = Dataset;
+            this.localData = storage;
             //let localData = DataLoaderService.getData(this.conferenceURL);
             //Persons
             let personData = this.localData.persons.sort(function (a, b) {
@@ -186,7 +187,8 @@ export class LocalDAOService {
                 this.organizationMap[tempOrga.id] = tempOrga;
                 this.organizationLinkMap[tempOrga.id] = {
                     id: this.encoder.encodeForURI(tempOrga.id),
-                    name: tempOrga["name"],
+                    name: this.encoder.encodeForURI(tempOrga["name"]),
+                    sanitizeName: tempOrga["name"],
                     depiction: this.getPictureUri(("depiction" in tempOrga)?tempOrga["depiction"]:null)
                 }
             }
@@ -225,7 +227,7 @@ export class LocalDAOService {
                 this.publicationMap[tempPubli.id] = tempPubli;
                 this.publicationLinkMap[tempPubli.id] = {
                     id: this.encoder.encodeForURI(tempPubli.id),
-                    title: tempPubli.title,
+                    title: this.encoder.encodeForURI(tempPubli.title),
                     //In the ESWC2015 dataset, publication images are identified as "thumbnail"
                     thumbnail: this.getPictureUri(tempPubli.thumbnail)
                 }
@@ -267,7 +269,8 @@ export class LocalDAOService {
                     thumbnail: this.getPictureUri(("thumbnail" in tempEvent)?tempEvent["thumbnail"]:null),
                     startsAt: tempEvent.startsAt,
                     endsAt: tempEvent.endsAt,
-                    location: tempEvent.locations != null?this.locationLinkMap[tempEvent.locations[0]].name:null
+                    duration: tempEvent.duration,
+                    location: tempEvent.locations != null? this.locationLinkMap[tempEvent.locations[0]].name:null
                 };
 
                 //Push into the corresponding maps
@@ -322,8 +325,9 @@ export class LocalDAOService {
                     this.categoryMap[p] = undefined;
                 } else {
                     this.categoryLinkMap[p] = {
-                        id: this.encoder.decodeForURI(p),
+                        id: this.encoder.encodeForURI(p),
                         name: tempCategory.name,
+                        label: tempCategory.label,
                         //Yet, no property named "thumbnail" exists, but why not...
                         thumbnail: tempCategory.thumbnail ? tempCategory.thumbnail : null
                     }

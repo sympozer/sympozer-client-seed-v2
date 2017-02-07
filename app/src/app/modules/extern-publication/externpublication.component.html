@@ -1,0 +1,36 @@
+<!-- <h1>{{publication.title}}</h1>
+
+
+<h2>Abstract</h2>
+{{publication.abstract}}
+
+
+<h2 *ngIf="(authors | json) != '{}'">Auteur(s)</h2>
+<md-list>
+    <md-list-item *ngFor="let author of authors | keys">
+        <b> <a [routerLink]="['/person/'+author.value.name+'/'+author.value.id]">{{author.value.name}}</a></b>
+    </md-list-item>
+</md-list>
+
+
+ -->
+<div *ngIf="(publication.informations ) != null">
+	<h2>Title</h2>
+	{{publication.informations[0].publiTitle.value}}
+	<h2>Reference</h2>
+	{{publication.informations[0].publiResume.value}}
+	<h2>Link</h2>
+	<a href="{{publication.informations[0].publiLink.value}}" target="_blank">{{publication.informations[0].publiLink.value}}</a>
+	<h2>Year</h2>
+	{{publication.informations[0].publiDate.value}}
+	<h2>Publisher</h2>
+	{{publication.informations[0].publiJournal.value}}
+	<div *ngIf="(publication.authors ) != null">
+	<h2>Authors</h2>
+	<md-list>
+    	<md-list-item *ngFor="let author of publication.authors">
+	        <b> <a [routerLink]="['/person/'+author.authorName.value+'/'+author.authorUri.value]">{{author.authorName.value}}</a></b>
+	    </md-list-item>
+	</md-list>	
+	</div>
+</div>

@@ -14,6 +14,7 @@ import {Encoder} from "../../lib/encoder";
 })
 export class OrganizationComponent implements OnInit {
     private organization;
+    private members = {};
 
     constructor(private router:Router,private route: ActivatedRoute,
                 private DaoService: LocalDAOService,  private encoder: Encoder) {
@@ -28,6 +29,10 @@ export class OrganizationComponent implements OnInit {
             let name = params['name'];
             let query = { 'key' : this.encoder.decodeForURI(id) };
             this.organization = this.DaoService.query("getOrganization", query);
+            for(let i in this.organization.members){
+                let query = { 'key' : this.organization.members[i] };
+                this.members[i] = this.DaoService.query("getPersonLink",query);
+            }
 
             console.log(this.organization);
         });

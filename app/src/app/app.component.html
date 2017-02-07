@@ -1,7 +1,8 @@
 <md-sidenav-layout>
+<header-app></header-app>
     <md-sidenav #end align="end">
       <menu (click)="end.close()"></menu>
-      <button md-button class="menu-button-close" (click)="end.close()">Close</button>
+      <!-- <button md-button class="menu-button-close" (click)="end.close()">Close</button> -->
     </md-sidenav>
     <button md-button class="menu-button-open" (click)="end.open()">Open menu</button>
     <div class='content'>

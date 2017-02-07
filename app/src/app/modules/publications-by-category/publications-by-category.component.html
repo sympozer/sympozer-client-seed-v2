@@ -1,1 +1,8 @@
-<h2>Coucou {{testId}}</h2>
+<p>
+    {{category.label}} publications <br />
+</p>
+<md-list>
+    <md-list-item *ngFor="let publi of publications | keys">
+        <b> <a [routerLink]="['/publication/'+publi.value.title+'/'+publi.value.id]">{{publi.value.title}}</a></b>
+    </md-list-item>
+</md-list>

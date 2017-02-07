@@ -1,9 +1,13 @@
 <p>
   Schedule List <br />
 </p>
-<md-list>
+<ul class="link">
+<li><a [routerLink]="['/search/event']">Search an event</a></li>
+<li><a [routerLink]="['/whatsnext']">What's Next ?</a></li>
+</ul>
+<!-- <md-list>
 	<md-list-item *ngFor="let schedule of schedules">
 		<img md-list-avatar src="" alt="?">
 		<h3 md-line> {{schedule}} </h3>
 	</md-list-item>
-</md-list>
+</md-list> -->

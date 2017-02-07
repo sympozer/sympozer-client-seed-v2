@@ -3,13 +3,19 @@
 	width: 100%;
 	padding: 0;
 	margin: 0 0 20px 0;
+	position: absolute;
+	top: 50%;
+	margin-top: -110px;
 }
 
 .menu li{
 	width: 100%;
-	padding: 10px 0 10px 0;
-	border-top: 1px solid #666;
+	border-bottom: 1px solid #666;
 }
+
+.menu li:last-child{
+	border-bottom: 0px transparent;
+}	
 
 .menu li:hover{
 	background-color: #2C3E50;
@@ -27,8 +33,13 @@
 .menu li a{
 	width: 100%;
 	height: 100%;
-	color: #fafafa;
+	color: #fff;
 	font-family: 'fontawesome', sans-serif;
 	font-size: 16px;
 	display: block;
+	padding: 10px 0 10px 0;
+}
+
+.active{
+	/*background: #fff;*/
 }

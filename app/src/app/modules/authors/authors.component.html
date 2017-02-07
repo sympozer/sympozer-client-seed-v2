@@ -4,6 +4,6 @@
 <md-list>
 	<md-list-item *ngFor="let author of authors | keys">
 		<img md-list-avatar src="" alt="?">
-		<h3 md-line> {{author.value.name}} </h3>
+		<h3 md-line> <a [routerLink]="['/person/'+author.value.name+'/'+author.value.id]">{{author.value.name}}</a> </h3>
 	</md-list-item>
 </md-list>

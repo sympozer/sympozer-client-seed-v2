@@ -8,9 +8,19 @@ import { LocalDAOService } from  '../../localdao.service';
     styleUrls: ['./categories-for-publications.component.css']
 })
 export class CategoriesForPublicationsComponent implements OnInit {
-    constructor() { }
+    private categories = {};
+    constructor(
+        private DaoService : LocalDAOService) { }
 
     ngOnInit() {
+        let allCat = this.DaoService.query("getAllCategoriesForPublications", null);
+        for(let i in allCat){
+            if(allCat[i] != null){
+                let query = { 'key' : i };
+                this.categories[i] = this.DaoService.query("getCategoryLink",query);
+            }
+        }
+        console.log(this.categories);
     }
 
 }

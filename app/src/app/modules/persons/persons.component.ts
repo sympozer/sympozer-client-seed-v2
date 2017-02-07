@@ -31,7 +31,7 @@ export class PersonsComponent implements OnInit {
 
     }
 
-    getPublication(person: Person) {
+    /*getPublication(person: Person) {
         // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
             this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
             console.log(response);
@@ -71,6 +71,6 @@ export class PersonsComponent implements OnInit {
             }
 
         }))
-    }
+    }*/
 
 }

@@ -2,10 +2,10 @@ import {forEach} from "@angular/router/src/utils/collection";
 import {Component, OnInit} from "@angular/core";
 import {Conference} from "../../model/conference";
 import {Router, ActivatedRoute, Params} from "@angular/router";
-import {DataLoaderService} from "../../data-loader.service";
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
+import {Person} from "../../model/person";
 
 @Component({
     selector: 'app-person',
@@ -13,22 +13,18 @@ import {Encoder} from "../../lib/encoder";
     styleUrls: ['person.component.css'],
 })
 export class PersonComponent implements OnInit {
-    private conference:Conference;
     private person;
     private roles = {};
     private orgas = {};
     private publiConf = {};
 
     constructor(private router:Router,private route: ActivatedRoute,
-                private DaoService: LocalDAOService,  private encoder: Encoder) {
+                private DaoService: LocalDAOService,  private encoder: Encoder,
+                private  dBPLDataLoaderService: DBLPDataLoaderService) {
 
     }
 
     ngOnInit() {
-        console.log("Init Persons Component");
-        /*this.dataLoaderService.getData().then(conference => {
-            this.conference = conference;
-        });*/
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
             let name = params['name'];
@@ -47,9 +43,24 @@ export class PersonComponent implements OnInit {
                 this.roles[k] = this.DaoService.query("getRole",queryRole);
             }
 
-            console.log(this.person);
-            console.log(this.publiConf);
-            //console.log("id : " + id);
+            this.getPublication(this.person);
+
         });
     }
+
+     getPublication(person: any) {
+        // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
+            this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
+            console.log(response);
+            person.publications = [];
+            if (response.results) {
+                for (let result of response.results.bindings) {
+                    result.publiUri.value = this.encoder.encodeForURI(result.publiUri.value);// encoder l'url
+                    person.publications.push(result); 
+                }
+                console.log(person.publications);
+            }
+
+        });
+    };
 }

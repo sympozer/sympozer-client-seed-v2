@@ -1,0 +1,6 @@
+<h2>Events</h2>
+<md-list>
+  <md-list-item *ngFor="let event of events | keys">
+    <h3 md-line><a [routerLink]="['/event/'+event.value.name+'/'+event.value.id]">{{event.value.name}}</a> </h3>
+  </md-list-item>
+</md-list>

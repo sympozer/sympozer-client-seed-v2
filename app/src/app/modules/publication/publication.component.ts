@@ -14,6 +14,7 @@ import {Encoder} from "../../lib/encoder";
 })
 export class PublicationComponent implements OnInit {
     private publication;
+    private authors = {};
 
     constructor(private router:Router,private route: ActivatedRoute,
                 private DaoService: LocalDAOService,  private encoder: Encoder) {
@@ -28,7 +29,10 @@ export class PublicationComponent implements OnInit {
             let name = params['name'];
             let query = {'key': this.encoder.decodeForURI(id)};
             this.publication = this.DaoService.query("getPublication", query);
-
+            for(let i in this.publication.authors){
+                let query = { 'key' : this.publication.authors[i] };
+                this.authors[i] = this.DaoService.query("getPersonLink",query);
+            }
             console.log(this.publication);
         });
     }
