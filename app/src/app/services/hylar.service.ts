@@ -19,7 +19,7 @@ export class HylarManager {
     private callback_classify: any;
 
     constructor(private http: Http, private managerRequest: ManagerRequest) {
-        this.worker = FrontRunner('./app/services/WebWorkerHylar.js');
+        this.worker = FrontRunner('./assets/webworker/WebWorkerHylar.js');
         this.registerEvents();
         this.tasks = [];
     }

@@ -10,5 +10,5 @@
 /dist
 
 #Typescript compiled files
-/app/**/*.js
+/app/src/app/**/*.js
 /app/**/*.map
