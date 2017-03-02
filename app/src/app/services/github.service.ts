@@ -9,7 +9,7 @@ const github = require('octonode');
 export class GithubService {
     private urlRepoGithub = 'octocat/Hello-World';
     private lastHash = '762941318ee16e59dabbacb1b4049eec22f0d303';
-    private access_token = '69ccb44040074d726878ef944eac5e4f00eb6c8a';
+    private access_token = '715bd1b19d86666618c0e111077057ffd0cd9918';
     private clientGitHub = null;
     private repoGitHub = null;
 
