@@ -1,9 +1,10 @@
-<p>
-  Authors List <br />
-</p>
-<md-list>
-	<md-list-item *ngFor="let author of authors | keys">
-		<img md-list-avatar src="" alt="?">
-		<h3 md-line> <a [routerLink]="['/person/'+author.value.name+'/'+author.value.id]">{{author.value.name}}</a> </h3>
-	</md-list-item>
-</md-list>
+<h1> Authors List </h1>
+
+<app-autocomplete [items]="authors" [namespace]="'persone'"></app-autocomplete>
+
+<div class="action-links list-items" *ngFor="let author of authors | keys">
+  <md-card>
+    <md-icon md-list-avatar>perm_identity</md-icon>
+    <a [routerLink]="['/person/'+author.value.name+'/'+author.value.id]">{{author.value.name}}</a>
+  </md-card>
+</div>

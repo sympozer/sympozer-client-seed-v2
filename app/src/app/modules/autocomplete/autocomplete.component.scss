@@ -1,0 +1,59 @@
+@import "../../globals";
+
+.search-result-wrapper {
+  box-shadow: $md-search-whiteframe;
+  width: 100%;
+  background-color: white;
+  cursor: pointer;
+  margin-top: -5px;
+  position: relative;
+  z-index: 5;
+  max-height: 210px;
+  overflow-y: scroll;
+
+  .search-result {
+    a {
+      outline: none;
+      text-decoration: none;
+      color: $font-color-dark;
+      display: block;
+      font-size: 14px;
+      overflow: hidden;
+      padding-right: 15px;
+      padding-left: 40px;
+      line-height: 48px;
+      height: 48px;
+      width: 100%;
+      -webkit-transition: background .15s linear;
+      transition: background .15s linear;
+      margin: 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &:not(#not-found):hover {
+      background: rgb(238, 238, 238);
+    }
+
+    &#not-found {
+      div {
+        cursor: default;
+        outline: none;
+        text-decoration: none;
+        color: $font-color-dark;
+        display: block;
+        font-size: 14px;
+        overflow: hidden;
+        padding-right: 15px;
+        padding-left: 40px;
+        line-height: 48px;
+        height: 48px;
+        width: 100%;
+        margin: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+    }
+  }
+}

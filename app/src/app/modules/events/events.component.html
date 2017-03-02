@@ -1,6 +1,10 @@
-<h2>Events</h2>
-<md-list>
-  <md-list-item *ngFor="let event of events | keys">
-    <h3 md-line><a [routerLink]="['/event/'+event.value.name+'/'+event.value.id]">{{event.value.name}}</a> </h3>
-  </md-list-item>
-</md-list>
+<h1>Events</h1>
+
+<app-autocomplete [items]="events" [namespace]="'event'"></app-autocomplete>
+
+<div class="action-links list-items" *ngFor="let event of events | keys">
+  <md-card>
+    <md-icon md-list-avatar>event</md-icon>
+    <a [routerLink]="['/event/'+event.value.name+'/'+event.value.id]">{{event.value.name}}</a>
+  </md-card>
+</div>

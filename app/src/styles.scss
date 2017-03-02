@@ -1,0 +1,79 @@
+@import "app/globals";
+
+* {
+  font-family: Roboto;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+}
+
+h1 {
+  text-align: center;
+}
+
+.action-links {
+  md-card {
+    padding: 0;
+    margin: 20px 0;
+    position: relative;
+
+    a, input {
+      position: relative;
+      text-decoration: none;
+      width: 100%;
+      height: 100%;
+      color: $font-color-dark;
+      padding: 24px;
+      display: block;
+      border: none;
+      outline: none;
+      z-index: 2;
+    }
+
+    md-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translate(0, -50%);
+      z-index: 1;
+    }
+  }
+
+  &.list-items {
+    md-card {
+      a {
+        padding-left: 40px;
+      }
+
+      md-icon {
+        color: $font-color-dark;
+        left: 10px;
+      }
+    }
+  }
+
+  &.search-wrapper {
+    md-card {
+      box-shadow: $md-search-whiteframe;
+      border-radius: 2px;
+      margin-bottom: 0;
+
+      md-icon {
+        opacity: 0.5;
+        z-index: 3;
+      }
+
+      input {
+        height: 70px;
+        padding: 5px 40px;
+        font-size: 16px;
+        color: #434343;
+      }
+    }
+  }
+}
+

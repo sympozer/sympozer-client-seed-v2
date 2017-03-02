@@ -355,6 +355,8 @@ export class LocalDAOService {
                 return this.personLinkMap[query.key];
             case "getAllPersons":
                 return this.personLinkMap;
+            case "getAuthor":
+                return this.authorLinkMap[query.key];
             case "getAllAuthors":
                 return this.authorLinkMap;
             case "getPersonsByRole":

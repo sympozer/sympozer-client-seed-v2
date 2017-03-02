@@ -1,0 +1,50 @@
+<h1> Search a {{testId}} </h1>
+<div *ngIf="testId == 'person'">
+  <div class="action-links">
+    <md-card><a [routerLink]="['/persons']">by name </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+    <md-card><a [routerLink]="['/roles']">by role </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+    <md-card><a [routerLink]="['/organizations']">by organization </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+  </div>
+</div>
+<div *ngIf="testId == 'publication'">
+  <div class="action-links">
+    <md-card><a [routerLink]="['/publications']">by title </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+    <md-card><a [routerLink]="['/authors']">by author </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+    <md-card><a [routerLink]="['/categories-for-publications']">by track </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+  </div>
+</div>
+<div *ngIf="testId == 'organization'">
+  <div class="action-links">
+    <md-card><a [routerLink]="['/organizations']">by name </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+    <md-card><a [routerLink]="['/persons']">by person </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+  </div>
+</div>
+<div *ngIf="testId == 'event'">
+  <div class="action-links">
+    <md-card><a [routerLink]="['/events']">by name </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+    <md-card><a [routerLink]="['/categories']">by track </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+    <md-card><a [routerLink]="['/locations']">by location </a>
+      <md-icon>trending_flat</md-icon>
+    </md-card>
+  </div>
+</div>

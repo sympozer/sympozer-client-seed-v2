@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalDAOService } from  '../../localdao.service';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-authors',
@@ -9,6 +10,7 @@ import { LocalDAOService } from  '../../localdao.service';
 })
 export class AuthorsComponent implements OnInit {
   authors;
+  private searchTerms = new Subject<string>();
   constructor(
       private router: Router,
       private DaoService : LocalDAOService
@@ -17,6 +19,11 @@ export class AuthorsComponent implements OnInit {
   ngOnInit() {
     this.authors = this.DaoService.query("getAllAuthors", null);
     console.log(this.authors);
+
+  }
+
+  search(term: string): void {
+    //this.searchTerms.next(term);                                                                                                                                                                                                                                                                                                                                                                                                                     rm);
   }
 
 }

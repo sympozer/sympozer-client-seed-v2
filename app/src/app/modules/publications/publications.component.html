@@ -1,8 +1,10 @@
-<p>
-  Publication List <br />
-</p>
-<md-list>
-  <md-list-item *ngFor="let publication of publications | keys">
-    <h3 md-line><a [routerLink]="['/publication/'+publication.value.title+'/'+publication.value.id]">{{publication.value.title}}</a> </h3>
-  </md-list-item>
-</md-list>
+<h1>Publication List</h1>
+
+<app-autocomplete [items]="publications" [namespace]="'publication'"></app-autocomplete>
+
+<div class="action-links list-items" *ngFor="let publication of publications | keys">
+  <md-card>
+    <md-icon md-list-avatar>description</md-icon>
+    <a [routerLink]="['/publication/'+publication.value.title+'/'+publication.value.id]">{{publication.value.title}}</a>
+  </md-card>
+</div>

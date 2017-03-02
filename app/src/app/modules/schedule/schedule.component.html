@@ -1,13 +1,27 @@
-<p>
-  Schedule List <br />
-</p>
-<ul class="link">
-<li><a [routerLink]="['/search/event']">Search an event</a></li>
-<li><a [routerLink]="['/whatsnext']">What's Next ?</a></li>
-</ul>
-<!-- <md-list test>
-	<md-list-item *ngFor="let schedule of schedules">
-		<img md-list-avatar src="" alt="?">
-		<h3 md-line> {{schedule}} </h3>
-	</md-list-item>
-</md-list> -->
+<h1>
+  Schedule List
+</h1>
+<div class="action-links">
+  <md-card><a [routerLink]="['/search/event']">Search an event</a> <md-icon>trending_flat</md-icon></md-card>
+  <md-card><a [routerLink]="['/whatsnext']">What's Next ?</a> <md-icon>trending_flat</md-icon></md-card>
+</div>
+<h1>
+  Schedule
+</h1>
+<md-list>
+  <md-list *ngFor="let schedule of schedules; trackBy: index ">
+    <div class="element-date-header">{{schedule.date | date}} </div>
+    <div *ngFor="let sched of schedule.array">
+      <div class="element-time-header"> Starts at {{sched.time | date:'jm'}} </div>
+      <md-list *ngFor="let scheduleObject of sched.array">
+        <a [routerLink]="'/event/'+scheduleObject.name+'/'+ scheduleObject.id">
+          <div class="schedule-element">
+            <h3 > {{scheduleObject.name}} </h3>
+            <h3 > Lasts: {{scheduleObject.duration}} </h3>
+            <h3> schedule</h3>
+          </div>
+        </a>
+      </md-list>
+    </div>
+  </md-list>
+</md-list>
