@@ -20,9 +20,9 @@ export class AppComponent implements OnInit {
         this.DaoService.initialize();
         let persons = this.DaoService.query("getAllPersons", null);
 
-        this.hylarManager.importData((data) => {
-            console.log(data);
-        });
+        /*this.hylarManager.importData((data) => {
+         console.log(data);
+         });*/
         this.gitHubService.getDiff();
     }
 
