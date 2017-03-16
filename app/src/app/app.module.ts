@@ -1,5 +1,4 @@
 import {Routes, RouterModule} from "@angular/router";
-import {AutocompleteComponent} from './modules/autocomplete/autocomplete.component';
 import {AppComponent} from "./app.component";
 import {PersonComponent} from "./modules/person/person.component";
 import {BrowserModule} from "@angular/platform-browser";
@@ -7,6 +6,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {routing} from "./app.routing";
 import {MaterialModule, MdGridListModule} from "@angular/material";
+import 'hammerjs';
 import {NgModule} from "@angular/core";
 import {HomeComponent} from "./modules/home/home.component";
 import {AboutComponent} from "./modules/about/about.component";
@@ -32,13 +32,14 @@ import {EventByCategoryComponent} from "./modules/event-by-category/event-by-cat
 import {EventsByLocationComponent} from "./modules/events-by-location/events-by-location.component";
 import {EventComponent} from "./modules/event/event.component";
 import {ExternPublicationComponent} from "./modules/extern-publication/externpublication.component";
+import {AutocompleteComponent} from './modules/autocomplete/autocomplete.component';
 
 import {KeysPipe} from "./keys.pipe";
 import {DataLoaderService} from "./data-loader.service";
 import {DBLPDataLoaderService} from "./dblpdata-loader.service";
 import {LocalDAOService} from "./localdao.service";
 import {eventHelper} from "./eventHelper";
-import { Encoder } from  './lib/encoder';
+import {Encoder} from  './lib/encoder';
 import {Ng2Webstorage} from 'ng2-webstorage';
 import {GithubService} from "./services/github.service";
 import {HylarManager} from './services/hylar.service';

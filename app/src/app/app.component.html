@@ -1,10 +1,11 @@
-
+<md-sidenav-container>
   <header-app></header-app>
   <md-sidenav #end align="end">
-    <menu (click)="end.close()"></menu>
+    <menu class="side" (click)="end.close()"></menu>
   </md-sidenav>
   <button md-icon-button class="menu-button-open" (click)="end.open()"><md-icon>menu</md-icon></button>
   <div class='content'>
     <router-outlet></router-outlet>
   </div>
+</md-sidenav-container>
 

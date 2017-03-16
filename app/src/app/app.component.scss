@@ -1,6 +1,6 @@
 @import "globals";
 
-md-sidenav-layout {
+md-sidenav-container {
   width: 100vw;
   height: 100vh;
   padding: 0;
@@ -13,14 +13,10 @@ md-sidenav-layout {
   right: 20px;
   top: 20px;
   background: none;
-}
 
-.menu-button-close {
-  color: #111;
-  background: #fff;
-  position: absolute;
-  top: 0;
-  right: 0;
+  @media screen and (min-width: 801px) {
+    display: none;
+  }
 }
 
 menu {
@@ -31,8 +27,12 @@ menu {
 md-sidenav {
   width: 200px;
   text-align: center;
-  background-color: $sidenav-background;
+  background-color: $header-background;
   padding: 0;
+
+  @media screen and (min-width: 801px) {
+    display: none;
+  }
 }
 
 .content {

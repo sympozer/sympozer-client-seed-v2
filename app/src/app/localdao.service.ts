@@ -17,7 +17,7 @@ declare var rdfstore: any;
 @Injectable()
 export class LocalDAOService {
     //private conferenceURL = 'https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2016/data_ESWC2016.json';
-    private useJsonld = true;
+    private useJsonld = false;
     private localstorage_jsonld = 'dataset-sympozer-jsonld';
     private localstorage_json = 'dataset-sympozer-json';
     private storeGraphRdf;
@@ -479,6 +479,7 @@ export class LocalDAOService {
                 case "getAllCategoriesForPublications":
                     return this.categoryForPublicationsMap;
                 case "getConferenceSchedule":
+                    console.log(this.confScheduleList);
                     return this.confScheduleList;
                 //Only need the event URIs, as the ICS will be calculated in the model callback
                 case "getConferenceScheduleIcs":

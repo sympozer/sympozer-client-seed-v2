@@ -1,8 +1,40 @@
-<ul class="menu">
-	<li><a md-button [routerLink]="['/home']" routerLinkActive="active">Home</a></li>
-	<li><a md-button [routerLink]="['/schedule']" routerLinkActive="active">Schedule</a></li>
-	<li><a md-button [routerLink]="['/search/person']" routerLinkActive="active">Persons</a></li>
-	<li><a md-button [routerLink]="['/search/publication']" routerLinkActive="active">Publications</a></li>
-	<li><a md-button [routerLink]="['/search/organization']" routerLinkActive="active">Organizations</a></li>
-	<li><a md-button [routerLink]="['/about']" routerLinkActive="active">About</a></li>
-</ul>
+<nav class="menu">
+  <ul>
+    <li>
+      <a class="link" [routerLink]="['/home']" routerLinkActive="active">
+        <md-icon>home</md-icon>
+        Home
+      </a>
+    </li>
+    <li class="menu-item">
+      <a class="link" [routerLink]="['/schedule']" routerLinkActive="active">
+        <md-icon>date_range</md-icon>
+        Schedule
+      </a>
+    </li>
+    <li class="menu-item">
+      <a class="link" [routerLink]="['/search/person']" routerLinkActive="active">
+        <md-icon>person</md-icon>
+        Persons
+      </a>
+    </li>
+    <li class="menu-item">
+      <a class="link" [routerLink]="['/search/publication']" routerLinkActive="active">
+        <md-icon>description</md-icon>
+        Publications
+      </a>
+    </li>
+    <li class="menu-item">
+      <a class="link" [routerLink]="['/search/organization']" routerLinkActive="active">
+        <md-icon>account_balance</md-icon>
+        Organizations
+      </a>
+    </li>
+    <li class="menu-item">
+      <a class="link" [routerLink]="['/about']" routerLinkActive="active">
+        <md-icon>info</md-icon>
+        About
+      </a>
+    </li>
+  </ul>
+</nav>

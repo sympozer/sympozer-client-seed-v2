@@ -1,7 +1,7 @@
 @import "app/globals";
 
 * {
-  font-family: Roboto;
+  font-family: 'Lato', sans-serif;
   box-sizing: border-box;
 }
 
@@ -13,6 +13,27 @@ body {
 
 h1 {
   text-align: center;
+}
+
+menu {
+  padding: 0;
+  width: 100%;
+
+  &.side {
+    .menu {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+
+      ul {
+        justify-content: left !important;
+      }
+
+      @media screen and (max-width: 800px) {
+        display: block;
+      }
+    }
+  }
 }
 
 .action-links {
