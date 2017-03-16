@@ -17,7 +17,7 @@ declare var rdfstore: any;
 @Injectable()
 export class LocalDAOService {
     //private conferenceURL = 'https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2016/data_ESWC2016.json';
-    private useJsonld = false;
+    private useJsonld = true;
     private localstorage_jsonld = 'dataset-sympozer-jsonld';
     private localstorage_json = 'dataset-sympozer-json';
     private storeGraphRdf;
@@ -151,27 +151,26 @@ export class LocalDAOService {
                 //On récup de nouveau le graph dans le local storage
                 storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
                 //On regarde si on a bien le graph
-                if(storage)
-                {
+                if (storage) {
                     //On crée l'objet graph
-                    /*rdfstore.create(function(err, store) {
-                     //On load le graph
-                     store.load("application/json", storage, function(err, results) {
-                     if(err)
-                     {
-                     console.log(err);
-                     }
-                     else {
-                     store.setPrefix('person', 'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Person');
-                     store.setPrefix('foaf', 'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#');
-                     that.storeGraphRdf = store;
-                     console.log('graph loaded');
-                     }
-                     });
-                     });*/
+                    rdfstore.create(function (err, store) {
+                        //On load le graph
+                        store.load("application/json", storage, function (err, results) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                store.setPrefix('person', 'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Person');
+                                store.setPrefix('foaf', 'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#');
+                                that.storeGraphRdf = store;
+                                console.log('graph loaded');
 
-                    //On parse
-                    console.log(storage);
+                                that.storeGraphRdf.execute('SELECT * WHERE {<http://www.scholainrlydata.org/person/peter-hendler> ?i ?p} LIMIT 10', function(err, results){
+                                    console.log(results);
+                                });
+                            }
+                        });
+                    });
                 }
             })
             .catch(() => {
@@ -426,8 +425,7 @@ export class LocalDAOService {
     query(command, query) {
         //Returning an object with the appropriate methods
         const that = this;
-        if(that.useJsonld)
-        {
+        if (that.useJsonld) {
             switch (command) {
                 case "getPerson":
                     return this.personMap[query.key];
