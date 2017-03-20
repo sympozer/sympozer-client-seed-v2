@@ -193,7 +193,7 @@ export class GithubService {
                                     this.getFileDiff()
                                         .then((file) => {
                                             //On affecte le nouveau (dernier) hash
-                                            this.lastHash = last_sha_commit;
+                                            this.lastHash = last_sha_commit as string;
                                         })
                                         .catch((error) => {
                                             console.log(error);
