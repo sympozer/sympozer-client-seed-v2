@@ -5,11 +5,14 @@ import {Router, ActivatedRoute, Params} from "@angular/router";
 import {DataLoaderService} from "../../data-loader.service";
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {Encoder} from "../../lib/encoder";
+import {routerTransition} from '../../app.router.animation';
 
 @Component({
     selector: 'app-extern-publication',
     templateUrl: 'externpublication.component.html',
     styleUrls: ['externpublication.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class ExternPublicationComponent implements OnInit {
     private publication = {};

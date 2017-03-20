@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalDAOService } from  '../../localdao.service';
 import { Subject } from 'rxjs/Subject';
+import {routerTransition} from '../../app.router.animation';
 
 @Component({
   selector: 'app-authors',
   templateUrl: './authors.component.html',
-  styleUrls: ['./authors.component.css']
+  styleUrls: ['./authors.component.css'],
+  animations: [routerTransition()],
+  host: {'[@routerTransition]': ''}
 })
 export class AuthorsComponent implements OnInit {
   authors;

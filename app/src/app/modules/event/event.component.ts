@@ -5,6 +5,7 @@ import {Router, ActivatedRoute, Params} from "@angular/router";
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
+import {routerTransition} from '../../app.router.animation';
 
 import * as moment from 'moment';
 
@@ -13,6 +14,8 @@ import * as moment from 'moment';
     selector: 'app-event',
     templateUrl: 'event.component.html',
     styleUrls: ['event.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class EventComponent implements OnInit {
     private event;

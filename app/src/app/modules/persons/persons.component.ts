@@ -6,12 +6,15 @@ import {Router} from '@angular/router';
 import {LocalDAOService} from  '../../localdao.service';
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {Person} from "../../model/person";
+import {routerTransition} from '../../app.router.animation';
 
 
 @Component({
     selector: 'app-person',
     templateUrl: 'persons.component.html',
-    styleUrls: ['persons.component.css']
+    styleUrls: ['persons.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class PersonsComponent implements OnInit {
     conference: Conference = new Conference();

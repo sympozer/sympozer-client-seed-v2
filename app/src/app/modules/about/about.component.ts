@@ -1,12 +1,15 @@
-import { Component} from '@angular/core';
-import { Router }            from '@angular/router';
+import {Component} from '@angular/core';
+import {Router}            from '@angular/router';
+import {routerTransition} from '../../app.router.animation';
 
 @Component({
-  selector: 'about',
-  templateUrl: 'about.component.html'
+    selector: 'about',
+    templateUrl: 'about.component.html',
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class AboutComponent {
 
-  constructor(private router: Router) {
-  }
+    constructor(private router: Router) {
+    }
 }

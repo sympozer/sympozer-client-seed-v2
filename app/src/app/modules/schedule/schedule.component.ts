@@ -2,6 +2,7 @@ import {Component, OnInit, trigger, transition, style, animate} from '@angular/c
 import {ActivatedRoute, Params}   from '@angular/router';
 import {Location}              from '@angular/common';
 import {LocalDAOService} from  '../../localdao.service';
+import {routerTransition} from '../../app.router.animation';
 
 
 @Component({
@@ -9,6 +10,7 @@ import {LocalDAOService} from  '../../localdao.service';
     templateUrl: 'schedule.component.html',
     styleUrls: ['./schedule.component.scss'],
     animations: [
+        routerTransition(),
         trigger(
             'enterAnimation', [
                 transition(':enter', [
@@ -37,7 +39,8 @@ import {LocalDAOService} from  '../../localdao.service';
                 ])
             ]
         )
-    ]
+    ],
+    host: {'[@routerTransition]': ''}
 })
 export class ScheduleComponent implements OnInit {
     schedule;

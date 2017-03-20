@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import { LocalDAOService } from  '../../localdao.service';
 import {Encoder} from "../../lib/encoder";
+import {routerTransition} from '../../app.router.animation';
 
 import * as moment from 'moment';
 
@@ -9,6 +10,8 @@ import * as moment from 'moment';
     selector: 'app-events-by-location',
     templateUrl: 'events-by-location.component.html',
     styleUrls: ['events-by-location.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class EventsByLocationComponent implements OnInit {
     private eventsLocation;

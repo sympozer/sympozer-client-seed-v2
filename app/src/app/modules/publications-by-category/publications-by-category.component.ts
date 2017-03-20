@@ -3,11 +3,14 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Location }              from '@angular/common';
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
+import {routerTransition} from '../../app.router.animation';
 
 @Component({
     selector: 'publications-by-category',
     templateUrl: './publications-by-category.component.html',
-    styleUrls: ['./publications-by-category.component.css']
+    styleUrls: ['./publications-by-category.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class PublicationsByCategoryComponent implements OnInit {
     private category;

@@ -6,11 +6,14 @@ import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {Person} from "../../model/person";
+import {routerTransition} from '../../app.router.animation';
 
 @Component({
     selector: 'app-person',
     templateUrl: 'person.component.html',
     styleUrls: ['person.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class PersonComponent implements OnInit {
     private person;

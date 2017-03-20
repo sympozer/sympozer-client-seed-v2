@@ -1,12 +1,15 @@
 import {Component, OnInit}      from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Location}              from '@angular/common';
+import {routerTransition} from '../../app.router.animation';
 
 
 @Component({
     selector: 'search',
     templateUrl: 'search.component.html',
-    styleUrls: ['./search.component.css']
+    styleUrls: ['./search.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class SearchComponent implements OnInit {
     testId: String;
