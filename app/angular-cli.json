@@ -16,7 +16,7 @@
       "mobile": false,
       "styles": [
         "styles.scss",
-        "../node_modules/font-awesome/css/font-awesome.css"
+        "theme.scss"
       ],
       "scripts": [
         "../node_modules/zone.js/dist/zone.js",
