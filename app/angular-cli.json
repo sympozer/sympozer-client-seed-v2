@@ -18,6 +18,11 @@
         "styles.scss",
         "theme.scss"
       ],
+      "assets": [
+        "assets",
+        "img",
+        "favicon.ico"
+      ],
       "scripts": [
         "../node_modules/zone.js/dist/zone.js",
         "../node_modules/reflect-metadata/Reflect.js",
