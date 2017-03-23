@@ -7,6 +7,8 @@ header {
   height: auto;
   background: $header-background;
   box-shadow: $md-whiteframe-glow;
+  z-index: 99;
+  position: relative;
 
   .logo {
     width: auto;

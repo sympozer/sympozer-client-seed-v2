@@ -1,4 +1,4 @@
-import {Component, OnInit, trigger, transition, style, animate} from '@angular/core';
+import {Component, OnInit, trigger, transition, style, animate, state} from '@angular/core';
 import {ActivatedRoute, Params}   from '@angular/router';
 import {Location}              from '@angular/common';
 import {LocalDAOService} from  '../../localdao.service';
@@ -13,28 +13,37 @@ import {routerTransition} from '../../app.router.animation';
         routerTransition(),
         trigger(
             'enterAnimation', [
+                state('void', style({
+                    position: 'relative',
+                    willChange: 'transform',
+
+                })),
+                state('*', style({
+                    position: 'relative',
+                    willChange: 'transform',
+                })),
                 transition(':enter', [
                     style({
-                        height: '0',
-                        width: '0',
+                        transform: 'translate3D(-10%, 0, 0) scaleY(0)',
+                        transformOrigin: '0% 0%',
                         opacity: '0'
                     }),
-                    animate('300ms', style({
-                        height: '100%',
-                        width: '100%',
-                        opacity: '1'
+                    animate('0.4s cubic-bezier(.25, .8, .25, 1)', style({
+                        transform: 'translate3D(0, 0, 0) scaleY(1)',
+                        transformOrigin: '0% 0%',
+                        opacity: '1',
                     }))
                 ]),
                 transition(':leave', [
                     style({
-                        height: '100%',
-                        width: '100%',
+                        transform: 'translate3D(0, 0, 0) scaleY(1)',
+                        transformOrigin: '0% 0%',
                         opacity: '1'
                     }),
-                    animate('300ms', style({
-                        width: '0',
-                        height: '0',
-                        opacity: '0'
+                    animate('0.4s cubic-bezier(.25, .8, .25, 1)', style({
+                        opacity: '0',
+                        transformOrigin: '0% 0%',
+                        transform: 'translate3D(-10%, 0, 0) scaleY(0)'
                     }))
                 ])
             ]
@@ -54,8 +63,7 @@ export class ScheduleComponent implements OnInit {
 
     ngOnInit() {
         this.schedule = this.DaoService.query("getConferenceSchedule", null);
-        if(this.schedule.length === 0)
-        {
+        if (this.schedule.length === 0) {
             return false;
         }
         console.log("HERRREEE", this.schedule);
