@@ -13,6 +13,7 @@ md-sidenav-container {
   right: 20px;
   top: 20px;
   background: none;
+  z-index: 100;
 
   @media screen and (min-width: 801px) {
     display: none;
