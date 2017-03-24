@@ -6,18 +6,22 @@ import {DataLoaderService} from "../../data-loader.service";
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
+import {routerTransition} from '../../app.router.animation';
+
 
 @Component({
     selector: 'app-organization',
     templateUrl: 'organization.component.html',
     styleUrls: ['organization.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class OrganizationComponent implements OnInit {
     private organization;
     private members = {};
 
-    constructor(private router:Router,private route: ActivatedRoute,
-                private DaoService: LocalDAOService,  private encoder: Encoder) {
+    constructor(private router: Router, private route: ActivatedRoute,
+                private DaoService: LocalDAOService, private encoder: Encoder) {
 
     }
 
@@ -27,11 +31,11 @@ export class OrganizationComponent implements OnInit {
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
             let name = params['name'];
-            let query = { 'key' : this.encoder.decodeForURI(id) };
+            let query = {'key': this.encoder.decodeForURI(id)};
             this.organization = this.DaoService.query("getOrganization", query);
-            for(let i in this.organization.members){
-                let query = { 'key' : this.organization.members[i] };
-                this.members[i] = this.DaoService.query("getPersonLink",query);
+            for (let i in this.organization.members) {
+                let query = {'key': this.organization.members[i]};
+                this.members[i] = this.DaoService.query("getPersonLink", query);
             }
 
             console.log(this.organization);
