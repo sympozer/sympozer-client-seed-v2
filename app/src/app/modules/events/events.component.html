@@ -1,6 +1,6 @@
 <h1>Events</h1>
 
-<app-autocomplete [items]="events" [namespace]="'event'"></app-autocomplete>
+<app-autocomplete [seachFor]="'name'" [items]="events" [namespace]="'event'"></app-autocomplete>
 
 <div class="action-links list-items" *ngFor="let event of events | keys">
   <md-card>
