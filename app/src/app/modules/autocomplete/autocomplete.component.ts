@@ -20,6 +20,7 @@ export class AutocompleteComponent implements OnInit {
     searchTerms = new Subject<string>();
     hasItem: boolean;
     hasSearchValue: boolean;
+    isBigItems: boolean;
 
     constructor(private router: Router,
                 private dataLoaderService: DataLoaderService,
@@ -30,7 +31,8 @@ export class AutocompleteComponent implements OnInit {
     ngOnInit() {
         this.searchTerms.debounceTime(300)
             .distinctUntilChanged()
-            .switchMap(term => term)
+            .switchMap(term => term);
+        Object.keys(this.items).length > 10 ? this.isBigItems = true : this.isBigItems = false;
     }
 
     search(term: string): void {
