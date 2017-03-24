@@ -14,6 +14,16 @@ body {
 
 h1 {
   text-align: center;
+  font-weight: 800;
+  color: $heading-color;
+}
+
+h2 {
+  color: $heading-color;
+}
+
+p {
+  text-align: justify;
 }
 
 menu {

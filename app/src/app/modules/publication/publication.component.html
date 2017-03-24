@@ -3,22 +3,31 @@
 <!-- Logo -->
 
 <h2>Abstract</h2>
-{{publication.abstract}}
+<md-card>
+  <p>
+    {{publication.abstract}}
+  </p>
+</md-card>
 
 <!-- Homepage -->
 
-<h2 *ngIf="(authors | json) != '{}'">Auteur(s)</h2>
-<md-list>
-    <md-list-item *ngFor="let author of authors | keys">
-        <b> <a [routerLink]="['/person/'+author.value.name+'/'+author.value.id]">{{author.value.name}}</a></b>
-    </md-list-item>
-</md-list>
+<h2 *ngIf="(authors | json) != '{}'">Authors</h2>
+<div class="action-links list-items" *ngFor="let author of authors | keys">
+  <md-card>
+    <md-icon md-list-avatar>perm_identity</md-icon>
+    <a [routerLink]="['/person/'+author.value.name+'/'+author.value.id]">{{author.value.name}}</a>
+  </md-card>
+</div>
 
 <!-- Voting -->
+
 <h2>Vote for best demo</h2>
-<p>Attention! You can vote only once in the demo category. Enter your personal code and press "Vote!" button.</p>
-
-    <input mdInput placeholder="Enter your code">
-
-
-<button md-raised-button>Submit Vote</button>
+<md-card>
+  <p>Attention! You can vote only once in the demo category. Enter your personal code and press "Vote!" button.</p>
+  <div>
+    <md-input-container class="vote-input">
+      <input mdInput placeholder="Enter your code">
+    </md-input-container>
+    <button md-raised-button color="primary">Submit Vote</button>
+  </div>
+</md-card>

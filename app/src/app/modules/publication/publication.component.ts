@@ -11,7 +11,7 @@ import {routerTransition} from '../../app.router.animation';
 @Component({
     selector: 'app-publication',
     templateUrl: 'publication.component.html',
-    styleUrls: ['publication.component.css'],
+    styleUrls: ['publication.component.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
