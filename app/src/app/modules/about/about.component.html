@@ -1,34 +1,56 @@
 <h1> About</h1>
 <h2>About the ESWC2016 app</h2>
 
-<p>This app is available on the Web and on the App & Play stores.</p>
+<md-card>
 
-<p>Its data structure follows the Semantic Web Conference Ontology and presents persons, organizations, publications and events of the conference. The application itself allows browsing these data. It is also a client-side mashup that enriches them using other data sources (Twitter, DBLP) or search engines (Google, DuckDuckgo).</p>
-<p>
-You can use it offline to browse the conference dataset. You will need an Internet connection for viewing data from online sources, as well as to vote for your preferred poster and demo.
-</p>
-<p>
-Periodically (but not too often), you can update the conference dataset in the settings panel.
-</p>
+  <p>This app is available on the Web and on the App & Play stores.</p>
+
+  <p>Its data structure follows the Semantic Web Conference Ontology and presents persons, organizations, publications
+    and events of the conference. The application itself allows browsing these data. It is also a client-side mashup
+    that enriches them using other data sources (Twitter, DBLP) or search engines (Google, DuckDuckgo).</p>
+  <p>
+    You can use it offline to browse the conference dataset. You will need an Internet connection for viewing data from
+    online sources, as well as to vote for your preferred poster and demo.
+  </p>
+  <p>
+    Periodically (but not too often), you can update the conference dataset in the settings panel.
+  </p>
+</md-card>
 
 <h2>Issues</h2>
 
-
-<p>Do not hesitate to report issues on the following GitHub repositories:</p>
-<ul>
-<li>problems with the data (e.g. incorrect/missing information)</li>
-<li>problems with the app (e.g. strange behaviors, typos in the titles, usability issues, suggestions of improvement...)</li>
-</ul>
+<md-card>
+  <p>Do not hesitate to report issues on the following GitHub repositories:</p>
+  <ul>
+    <li>problems with the data (e.g. incorrect/missing information)</li>
+    <li>problems with the app (e.g. strange behaviors, typos in the titles, usability issues, suggestions of
+      improvement...)
+    </li>
+  </ul>
+</md-card>
 
 <h2>Contributors</h2>
-<ul class="link">
+<div class="action-links list-items">
+  <md-card>
+    <md-icon md-list-avatar>sentiment_very_satisfied</md-icon>
+    <a [routerLink]="['/person/Andrea%20Giovanni%20Nuzzolese/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Fandrea-giovanni-nuzzolese']">Andrea
+      Giovanni Nuzzolese</a>
+  </md-card>
+  <md-card>
+    <md-icon md-list-avatar>sentiment_very_satisfied</md-icon>
+    <a [routerLink]="['/person/Anna%20Lisa%20Gentile/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Fanna-lisa-gentile']">Anna
+      Lisa Gentile</a>
+  </md-card>
+  <md-card>
+    <md-icon md-list-avatar>sentiment_very_satisfied</md-icon>
+    <a [routerLink]="['/person/Lionel%20M%C3%A9dini/http%3A%252F%252Fdata.semanticweb.org%252Fperson%252Flionel-medini']">Lionel
+      Médini</a>
+  </md-card>
+</div>
 
-	<li><a [routerLink]="['/person/Andrea%20Giovanni%20Nuzzolese/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Fandrea-giovanni-nuzzolese']">Andrea Giovanni Nuzzolese</a></li>
-	<li><a [routerLink]="['/person/Anna%20Lisa%20Gentile/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Fanna-lisa-gentile']">Anna Lisa Gentile</a></li>
-	<li><a [routerLink]="['/person/Lionel%20Medini/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Flionel-medini']">Lionel Médini</a></li>
-</ul>
-
-<h2>From an original idea by</h2>
-<a href="http://sympozer.liris.cnrs.fr/">
-<img src="../img/Sympozer_logo.png" />
-</a>
+<div class="sympozer-footer">
+  <div>From an original idea by</div>
+  <a href="http://sympozer.liris.cnrs.fr/">
+    <img src="/img/Sympozer_logo.png"/>
+  </a>
+</div>
