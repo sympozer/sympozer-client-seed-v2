@@ -28,12 +28,13 @@
     </md-card>
   </div>
 </div>
-<div *ngIf="person.publications != []">
+<div *ngIf="(externPublications | json) != '{}'">
   <h2>Other Publication(s)</h2>
-  <div class="action-links list-items" *ngFor="let publication of person.publications">
+  <app-autocomplete [seachFor]="'name'" [items]="externPublications" [namespace]="'externPublication'"></app-autocomplete>
+  <div class="action-links list-items" *ngFor="let publication of externPublications | keys">
     <md-card>
       <md-icon md-list-avatar>description</md-icon>
-      <a [routerLink]="['/externPublication/'+publication.publiUri.value]">{{publication.publiTitle.value}}</a>
+      <a [routerLink]="['/externPublication/'+publication.value.name+'/'+publication.value.id]">{{publication.value.name}}</a>
     </md-card>
   </div>
 </div>

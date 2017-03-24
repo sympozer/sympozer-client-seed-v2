@@ -20,9 +20,10 @@ export class PersonComponent implements OnInit {
     private roles = {};
     private orgas = {};
     private publiConf = {};
+    private externPublications = {};
 
-    constructor(private router:Router,private route: ActivatedRoute,
-                private DaoService: LocalDAOService,  private encoder: Encoder,
+    constructor(private router: Router, private route: ActivatedRoute,
+                private DaoService: LocalDAOService, private encoder: Encoder,
                 private  dBPLDataLoaderService: DBLPDataLoaderService) {
 
     }
@@ -31,38 +32,43 @@ export class PersonComponent implements OnInit {
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
             let name = params['name'];
-            let query = { 'key' : this.encoder.decodeForURI(id) };
+            let query = {'key': this.encoder.decodeForURI(id)};
             this.person = this.DaoService.query("getPerson", query);
-            for(let i in this.person.made){
-                let query = { 'key' : this.person.made[i] };
-                this.publiConf[i] = this.DaoService.query("getPublicationLink",query);
+            for (let i in this.person.made) {
+                let query = {'key': this.person.made[i]};
+                this.publiConf[i] = this.DaoService.query("getPublicationLink", query);
             }
-            for(let j in this.person.affiliation){
-                let queryOrga = { 'key' : this.person.affiliation[j] };
-                this.orgas[j] = this.DaoService.query("getOrganizationLink",queryOrga);
+            for (let j in this.person.affiliation) {
+                let queryOrga = {'key': this.person.affiliation[j]};
+                this.orgas[j] = this.DaoService.query("getOrganizationLink", queryOrga);
             }
-            for(let k in this.person.holdsRole){
-                let queryRole = { 'key' : this.person.holdsRole[k] };
-                this.roles[k] = this.DaoService.query("getRole",queryRole);
+            for (let k in this.person.holdsRole) {
+                let queryRole = {'key': this.person.holdsRole[k]};
+                this.roles[k] = this.DaoService.query("getRole", queryRole);
             }
 
             this.getPublication(this.person);
+            console.log("EFFF", this.orgas);
 
         });
     }
 
-     getPublication(person: any) {
+    getPublication(person: any) {
         // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
-            this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
-            console.log(response);
-            person.publications = [];
+        this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
             if (response.results) {
+                let i = 0;
                 for (let result of response.results.bindings) {
                     result.publiUri.value = this.encoder.encodeForURI(result.publiUri.value);// encoder l'url
-                    person.publications.push(result); 
+                    let parsedResult = {
+                        id: result.publiUri.value,
+                        name: result.publiTitle.value
+                    };
+                    this.externPublications[i] = parsedResult;
+                    i++;
                 }
-                console.log(person.publications);
             }
+            console.log(this.externPublications);
 
         });
     };

@@ -121,7 +121,7 @@ const appRoutes: Routes = [
         component: EventComponent
     },
     {
-        path: 'externPublication/:id',
+        path: 'externPublication/:name/:id',
         component: ExternPublicationComponent
     }
 ];
