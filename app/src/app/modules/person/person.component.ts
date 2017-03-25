@@ -48,8 +48,6 @@ export class PersonComponent implements OnInit {
             }
 
             this.getPublication(this.person);
-            console.log("EFFF", this.orgas);
-
         });
     }
 
@@ -59,9 +57,8 @@ export class PersonComponent implements OnInit {
             if (response.results) {
                 let i = 0;
                 for (let result of response.results.bindings) {
-                    result.publiUri.value = this.encoder.encodeForURI(result.publiUri.value);// encoder l'url
                     let parsedResult = {
-                        id: result.publiUri.value,
+                        id: this.encoder.encodeForURI(result.publiUri.value),
                         name: result.publiTitle.value
                     };
                     this.externPublications[i] = parsedResult;

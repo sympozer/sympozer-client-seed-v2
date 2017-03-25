@@ -3,6 +3,7 @@
 * {
   font-family: 'Lato', sans-serif;
   box-sizing: border-box;
+  outline: none !important;
 }
 
 body {
@@ -53,7 +54,7 @@ menu {
     margin: 20px 0;
     position: relative;
 
-    a, input {
+    a, input, p {
       position: relative;
       text-decoration: none;
       width: 100%;
@@ -77,8 +78,8 @@ menu {
 
   &.list-items {
     md-card {
-      a {
-        padding-left: 40px;
+      a, p {
+        padding-left: 40px !important;
       }
 
       md-icon {
