@@ -1,12 +1,16 @@
 <h1>
-    {{eventsLocation.name}} <br />
+  {{eventsLocation.name}}
 </h1>
 
 <h2>Schedule</h2>
-<md-list>
-    <md-list-item *ngFor="let event of eventsLocation.events | keys">
-        <h3 md-line><a [routerLink]="['/event/'+event.value.name+'/'+event.value.id]">{{event.value.name}}</a></h3>
-        <p md-line>Starts at : {{event.value.startsAt}} </p>
-        <p md-line>Lasts : {{event.value.duration}} </p>
-    </md-list-item>
-</md-list>
+
+<div class="action-links list-items" *ngFor="let event of eventsLocation.events | keys">
+  <md-card>
+    <md-icon md-list-avatar>event</md-icon>
+    <a [routerLink]="['/event/'+event.value.name+'/'+event.value.id]">
+      <span class="event" md-line>{{event.value.name}}</span>
+      <span class="event-info" md-line><b> Starts at : </b> {{event.value.startsAt}} </span>
+      <span class="event-info" md-line><b> Lasts : </b>{{event.value.duration}} </span>
+    </a>
+  </md-card>
+</div>

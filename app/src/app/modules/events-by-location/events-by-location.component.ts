@@ -9,7 +9,7 @@ import * as moment from 'moment';
 @Component({
     selector: 'app-events-by-location',
     templateUrl: 'events-by-location.component.html',
-    styleUrls: ['events-by-location.component.css'],
+    styleUrls: ['events-by-location.component.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
