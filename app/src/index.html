@@ -11,15 +11,21 @@
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
-<app-root>
+<app-root></app-root>
+
+<div class="loading-screen">
   <div class="loading-wrapper">
-    <h1 class="loading">Loading... </h1>
-    <md-progress-circle
-         color="primary"
-         mode="indeterminate">
-    </md-progress-circle>
+    <img src="./img/logo_eswc2016.png">
+    <div class="showbox">
+      <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+      </div>
+    </div>
   </div>
-</app-root>
+</div>
+
 <script src="./assets/webworker/manager-web-worker.js"></script>
 <script src="./assets/rdfstore.js"></script>
 </body>
