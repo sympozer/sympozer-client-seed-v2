@@ -10,18 +10,16 @@ import {Encoder} from  './lib/encoder';
 import {DataLoaderService} from "./data-loader.service";
 import {LocalStorageService} from 'ng2-webstorage';
 
-import 'rdfstore/dist/rdfstore.js';
-declare var rdfstore: any;
+const $rdf = require('rdflib');
 
 
 @Injectable()
 export class LocalDAOService {
     //private conferenceURL = 'https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2016/data_ESWC2016.json';
-    private useJsonld = false;
+    private useJsonld = true;
     private localstorage_jsonld = 'dataset-sympozer-jsonld';
-    private localstorage_json = 'dataset-sympozer-json';
-    private storeGraphRdf;
-    private rdfstore;
+    private store;
+    private $rdf;
     private conferenceURL;
     private localData;
 
@@ -62,9 +60,43 @@ export class LocalDAOService {
 
     constructor(private http: Http, private ev: eventHelper, private encoder: Encoder, private dataloader: DataLoaderService, private localStoragexx: LocalStorageService) {
         this.conferenceURL = this.useJsonld
-            ? 'http://serenitecoex.com/dataset-conf.jsonld'
+            ? 'http://serenitecoex.com/conference.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
             : 'http://dev.sympozer.com/conference/www2012/file-handle/writer/json';
-        this.rdfstore = rdfstore;
+
+        this.$rdf = $rdf;
+        const store = this.$rdf.graph();
+        const timeout = 5000; // 5000 ms timeout
+        const fetcher = new $rdf.Fetcher(store, timeout);
+        const that = this;
+
+        fetcher.nowOrWhenFetched(this.conferenceURL, function(ok, body, xhr) {
+            if (!ok) {
+                console.log("Oops, something happened and couldn't fetch data");
+            } else {
+
+                that.store = store;
+
+                that.store.fetcher = null;
+                var querypath =
+                    "PREFIX person: <https://w3id.org/scholarlydata/person/> \n"+
+                    "PREFIX conf: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n"+
+                    "SELECT ?name \n"+
+                    "WHERE {\n"+
+                    " ?paper a conf:InProceedings . \n" +
+                    " ?paper conf:hasAuthorList ?authorList . \n" +
+                    " ?paper conf:title ?title . \n" +
+                    " ?authorList conf:hasFirstItem ?item . \n" +
+                    " ?item conf:hasContent ?person . \n" +
+                    " ?person conf:name ?name . \n" +
+                    "} LIMIT 2";
+
+                const query = $rdf.SPARQLToQuery(querypath, false, store);
+
+                store.query(query, function(result) {
+                    console.log(result);
+                });
+            }
+        });
     }
 
     getData(): Promise<Conference> {
@@ -152,25 +184,6 @@ export class LocalDAOService {
                 storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
                 //On regarde si on a bien le graph
                 if (storage) {
-                    //On crée l'objet graph
-                    rdfstore.create(function (err, store) {
-                        //On load le graph
-                        store.load("application/json", storage, function (err, results) {
-                            if (err) {
-                                console.log(err);
-                            }
-                            else {
-                                store.setPrefix('person', 'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Person');
-                                store.setPrefix('foaf', 'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#');
-                                that.storeGraphRdf = store;
-                                console.log('graph loaded');
-
-                                that.storeGraphRdf.execute('SELECT * WHERE {<http://www.scholainrlydata.org/person/peter-hendler> ?i ?p} LIMIT 10', function(err, results){
-                                    console.log(results);
-                                });
-                            }
-                        });
-                    });
                 }
             })
             .catch(() => {
@@ -422,58 +435,183 @@ export class LocalDAOService {
         //});
     }
 
-    query(command, query) {
+    launchQuerySparql = (query, callback) => {
+        const that = this;
+        const querySparql = that.$rdf.SPARQLToQuery(query, false, that.store);
+
+        that.store.query(querySparql, callback);
+    };
+
+    query(command, data, callback) {
         //Returning an object with the appropriate methods
         const that = this;
-        if (that.useJsonld) {
+        if (that.useJsonld && that.store && callback) {
+            let query;
             switch (command) {
+                case "getMemberPersonByOrganisation":
+                    query = "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "PREFIX m: <http://www.w3.org/ns/org#> \n" +
+                            "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?idPerson ?name  \n" +
+                        "WHERE {\n"+
+                            " <"+data.key+"> a person:Organisation . \n" +
+                        " ?idPerson a person:Person . \n" +
+                        " ?idPerson person:name ?name . \n" +
+                            " ?idPerson m:member ?event . \n" +
+                            " ?event person:withOrganisation <"+data.key+"> . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getPerson":
-                    return this.personMap[query.key];
+                    query = "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT * \n" +
+                        "WHERE {\n"+
+                        " <"+data.key+"> ?a ?b . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                    //return this.personMap[data.key];
                 case "getPersonLink":
-                    return this.personLinkMap[query.key];
+                    return this.personLinkMap[data.key];
                 case "getAllPersons":
-                    return this.personLinkMap;
+                    query = "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?name ?id \n" +
+                            "WHERE {\n"+
+                            " ?id a person:Person . \n" +
+                            " ?id person:name ?name . \n" +
+                            "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                    //return this.personLinkMap;
                 case "getAllAuthors":
-                    return this.authorLinkMap;
+                    query = "PREFIX crea: <http://purl.org/dc/elements/1.1/> \n" +
+                        "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?idPerson ?name \n" +
+                        "WHERE {\n"+
+                        " ?proceeding a person:InProceedings . \n" +
+                        " ?idPerson a person:Person . \n" +
+                        " ?proceeding crea:creator ?idPerson . \n" +
+                        " ?idPerson person:name ?name . \n" +
+                        "} GROUP BY ?idPerson";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getPersonsByRole":
-                    return this.personLinkMapByRole[query.key];
+                    return this.personLinkMapByRole[data.key];
                 case "getOrganization":
-                    return this.organizationMap[query.key];
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?label \n" +
+                        "WHERE {\n"+
+                        " <"+data.key+"> schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
                 case "getOrganizationLink":
-                    return this.organizationLinkMap[query.key];
+                    query = "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
+                        "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?name ?id \n" +
+                        "WHERE {\n"+
+                        " <"+data.key+"> person:hasAffiliation ?affiliation . \n" +
+                        " ?affiliation person:withOrganisation ?id . \n" +
+                        " ?id foaf:name ?name . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getAllOrganizations":
-                    return this.organizationLinkMap;
+                    query =
+                        "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?name ?id \n" +
+                        "WHERE {\n"+
+                        " ?id a person:Organisation . \n" +
+                        " ?id person:name ?name . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getAllRoles":
                     return this.roleMap;
                 case "getRole":
-                    return this.roleMap[query.key];
+                    return this.roleMap[data.key];
                 //For the moment, it's the same thing, since we haven't role complete descriptions.
                 case "getRoleLink":
-                    return this.roleMap[query.key];
+                    return this.roleMap[data.key];
                 case "getPublication":
-                    return this.publicationMap[query.key];
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?abstract \n" +
+                        "WHERE {\n"+
+                        " <"+data.key+"> a person:InProceedings . \n" +
+                        " <"+data.key+"> schema:label ?label . \n" +
+                        " <"+data.key+"> person:abstract ?abstract . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getAuthorLinkPublication":
+                    query = "PREFIX crea: <http://purl.org/dc/elements/1.1/> \n" +
+                        "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?idPerson ?name \n" +
+                        "WHERE {\n"+
+                        " <"+data.key+"> a person:InProceedings . \n" +
+                        " <"+data.key+"> crea:creator ?idPerson . \n" +
+                        " ?idPerson person:name ?name . \n" +
+                        "} GROUP BY ?idPerson";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getPublicationLink":
-                    return this.publicationLinkMap[query.key];
+                    query = "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
+                        "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?title ?id \n" +
+                        "WHERE {\n"+
+                        " <"+data.key+"> foaf:made ?id . \n" +
+                        " ?id person:title ?title . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getAllPublications":
-                    return this.publicationLinkMap;
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n"+
+                        " ?id a person:InProceedings . \n" +
+                            " ?id schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getEvent":
-                    return this.eventMap[query.key];
+                    return this.eventMap[data.key];
                 case "getConferenceEvent":
-                    return this.eventMap[query.key];
+                    return this.eventMap[data.key];
                 case "getEventIcs":
-                    return this.eventMap[query.key];
+                    return this.eventMap[data.key];
                 case "getEventLink":
-                    return this.eventLinkMap[query.key];
+                    return this.eventLinkMap[data.key];
                 case "getAllEvents":
-                    return this.eventLinkMap;
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n"+
+                        " ?id a person:InProceedings . \n" +
+                        " ?id schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getLocation":
-                    return this.eventLinkMapByLocation[query.key];
+                    return this.eventLinkMapByLocation[data.key];
                 case "getCategory":
-                    return this.categoryMap[query.key];
+                    return this.categoryMap[data.key];
                 case "getCategoryForPublications":
-                    return this.categoryForPublicationsMap[query.key];
+                    return this.categoryForPublicationsMap[data.key];
                 case "getCategoryLink":
-                    return this.categoryLinkMap[query.key];
+                    return this.categoryLinkMap[data.key];
                 case "getAllCategories":
                     return this.categoryLinkMap;
                 case "getAllCategoriesForPublications":
@@ -489,7 +627,7 @@ export class LocalDAOService {
                 case "getAllLocations":
                     return this.locationLinkMap;
                 case "getLocationLink":
-                    return this.locationLinkMap[query.key];
+                    return this.locationLinkMap[data.key];
                 default:
                     return null;
             }
@@ -497,52 +635,52 @@ export class LocalDAOService {
         else {
             switch (command) {
                 case "getPerson":
-                    return this.personMap[query.key];
+                    return this.personMap[data.key];
                 case "getPersonLink":
-                    return this.personLinkMap[query.key];
+                    return this.personLinkMap[data.key];
                 case "getAllPersons":
                     return this.personLinkMap;
                 case "getAllAuthors":
                     return this.authorLinkMap;
                 case "getPersonsByRole":
-                    return this.personLinkMapByRole[query.key];
+                    return this.personLinkMapByRole[data.key];
                 case "getOrganization":
-                    return this.organizationMap[query.key];
+                    return this.organizationMap[data.key];
                 case "getOrganizationLink":
-                    return this.organizationLinkMap[query.key];
+                    return this.organizationLinkMap[data.key];
                 case "getAllOrganizations":
                     return this.organizationLinkMap;
                 case "getAllRoles":
                     return this.roleMap;
                 case "getRole":
-                    return this.roleMap[query.key];
+                    return this.roleMap[data.key];
                 //For the moment, it's the same thing, since we haven't role complete descriptions.
                 case "getRoleLink":
-                    return this.roleMap[query.key];
+                    return this.roleMap[data.key];
                 case "getPublication":
-                    return this.publicationMap[query.key];
+                    return this.publicationMap[data.key];
                 case "getPublicationLink":
-                    return this.publicationLinkMap[query.key];
+                    return this.publicationLinkMap[data.key];
                 case "getAllPublications":
                     return this.publicationLinkMap;
                 case "getEvent":
-                    return this.eventMap[query.key];
+                    return this.eventMap[data.key];
                 case "getConferenceEvent":
-                    return this.eventMap[query.key];
+                    return this.eventMap[data.key];
                 case "getEventIcs":
-                    return this.eventMap[query.key];
+                    return this.eventMap[data.key];
                 case "getEventLink":
-                    return this.eventLinkMap[query.key];
+                    return this.eventLinkMap[data.key];
                 case "getAllEvents":
                     return this.eventLinkMap;
                 case "getLocation":
-                    return this.eventLinkMapByLocation[query.key];
+                    return this.eventLinkMapByLocation[data.key];
                 case "getCategory":
-                    return this.categoryMap[query.key];
+                    return this.categoryMap[data.key];
                 case "getCategoryForPublications":
-                    return this.categoryForPublicationsMap[query.key];
+                    return this.categoryForPublicationsMap[data.key];
                 case "getCategoryLink":
-                    return this.categoryLinkMap[query.key];
+                    return this.categoryLinkMap[data.key];
                 case "getAllCategories":
                     return this.categoryLinkMap;
                 case "getAllCategoriesForPublications":
@@ -557,13 +695,11 @@ export class LocalDAOService {
                 case "getAllLocations":
                     return this.locationLinkMap;
                 case "getLocationLink":
-                    return this.locationLinkMap[query.key];
+                    return this.locationLinkMap[data.key];
                 default:
                     return null;
             }
         }
     }
-
-
 }
 

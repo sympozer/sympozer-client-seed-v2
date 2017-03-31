@@ -2,10 +2,10 @@
 
 <app-autocomplete [items]="organizations" [namespace]="'organization'"></app-autocomplete>
 
-<div class="action-links list-items" *ngFor="let organization of organizations | keys">
+<div class="action-links list-items" *ngFor="let organization of organizations">
   <md-card>
     <md-icon md-list-avatar>account_balance</md-icon>
-    <a [routerLink]="['/organization/'+organization.value.name+'/'+organization.value.id]">{{organization.value.name}}</a>
+    <a [routerLink]="['/organization/'+organization.name+'/'+organization.id]">{{organization.name}}</a>
   </md-card>
 </div>
 

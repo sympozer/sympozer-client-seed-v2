@@ -6,6 +6,8 @@ import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {Person} from "../../model/person";
+import {PersonService} from "./person.service";
+import {Mutex, MutexInterface} from 'async-mutex';
 import {routerTransition} from '../../app.router.animation';
 
 @Component({
@@ -16,24 +18,70 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class PersonComponent implements OnInit {
-    private person;
-    private roles = {};
-    private orgas = {};
-    private publiConf = {};
+    public person;
+    public roles = [];
+    public orgas = [];
+    public publiConf = [];
+    private mutex: any;
 
-    constructor(private router:Router,private route: ActivatedRoute,
-                private DaoService: LocalDAOService,  private encoder: Encoder,
+    constructor(private router:Router,
+                private route: ActivatedRoute,
+                private personService: PersonService,
+                private DaoService: LocalDAOService,
+                private encoder: Encoder,
                 private  dBPLDataLoaderService: DBLPDataLoaderService) {
-
+        this.person = this.personService.defaultPerson();
+        this.mutex = new Mutex();
     }
 
     ngOnInit() {
+        const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
             let name = params['name'];
-            let query = { 'key' : this.encoder.decodeForURI(id) };
-            this.person = this.DaoService.query("getPerson", query);
-            for(let i in this.person.made){
+
+            if(!id || !name)
+            {
+                return false;
+            }
+
+            let query = { 'key' : this.encoder.decode(id) };
+            this.DaoService.query("getPerson", query, (results) => {
+                that.mutex
+                    .acquire()
+                    .then(function(release) {
+                        that.person = that.personService.generatePersonFromStream(that.person, results);
+                        release();
+                    });
+            });
+
+            this.DaoService.query("getPublicationLink", query, (results) => {
+                that.mutex
+                    .acquire()
+                    .then(function(release) {
+                        that.publiConf = that.personService.generatePublicationLinkFromStream(that.publiConf, results);
+                        release();
+                    });
+            });
+
+            this.DaoService.query("getOrganizationLink", query, (results) => {
+                that.mutex
+                    .acquire()
+                    .then(function(release) {
+                        that.orgas = that.personService.generateOrgasFromStream(that.orgas, results);
+                        release();
+                    });
+            });
+
+            this.DaoService.query("getRole", query, (results) => {
+                that.mutex
+                    .acquire()
+                    .then(function(release) {
+                        that.orgas = that.personService.generateRolesFromStream(that.roles, results);
+                        release();
+                    });
+            });
+            /*for(let i in this.person.made){
                 let query = { 'key' : this.person.made[i] };
                 this.publiConf[i] = this.DaoService.query("getPublicationLink",query);
             }
@@ -46,7 +94,7 @@ export class PersonComponent implements OnInit {
                 this.roles[k] = this.DaoService.query("getRole",queryRole);
             }
 
-            this.getPublication(this.person);
+            this.getPublication(this.person);*/
 
         });
     }

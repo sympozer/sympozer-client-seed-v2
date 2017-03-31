@@ -6,10 +6,10 @@
 
 <!-- Homepage -->
 
-<h2 *ngIf="(members | json) != '{}'">Membre(s)</h2>
+<h2 *ngIf="members != []">Membre(s)</h2>
 <md-list>
-    <md-list-item *ngFor="let member of members | keys">
-        <b> <a [routerLink]="['/person/'+member.value.name+'/'+member.value.id]">{{member.value.name}}</a></b>
+    <md-list-item *ngFor="let member of members">
+        <b> <a [routerLink]="['/person/'+member.name+'/'+member.id]">{{member.name}}</a></b>
     </md-list-item>
 </md-list>
 

@@ -2,9 +2,9 @@
 
 <app-autocomplete [items]="authors" [namespace]="'person'"></app-autocomplete>
 
-<div class="action-links list-items" *ngFor="let author of authors | keys">
+<div class="action-links list-items" *ngFor="let author of authors">
   <md-card>
     <md-icon md-list-avatar>perm_identity</md-icon>
-    <a [routerLink]="['/person/'+author.value.name+'/'+author.value.id]">{{author.value.name}}</a>
+    <a [routerLink]="['/person/'+author.name+'/'+author.id]">{{author.name}}</a>
   </md-card>
 </div>

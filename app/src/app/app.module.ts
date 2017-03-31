@@ -44,6 +44,7 @@ import {Ng2Webstorage} from 'ng2-webstorage';
 import {GithubService} from "./services/github.service";
 import {HylarManager} from './services/hylar.service';
 import {ManagerRequest} from './services/ManagerRequest';
+import {PersonService} from './modules/person/person.service';
 
 const routes:Routes = [];
 
@@ -89,7 +90,15 @@ const routes:Routes = [];
         Ng2Webstorage,
     ],
     providers: [
-        DataLoaderService, DBLPDataLoaderService, LocalDAOService, eventHelper, Encoder, GithubService, HylarManager, ManagerRequest
+        DataLoaderService,
+        DBLPDataLoaderService,
+        LocalDAOService,
+        eventHelper,
+        Encoder,
+        GithubService,
+        HylarManager,
+        ManagerRequest,
+        PersonService
     ],
     bootstrap: [AppComponent]
 })

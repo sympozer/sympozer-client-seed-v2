@@ -14,10 +14,16 @@ export class EventsComponent implements OnInit {
     events;
     constructor(private router:Router,
                 private DaoService : LocalDAOService) {
+        this.events = [];
     }
 
     ngOnInit() {
-        this.events = this.DaoService.query("getAllEvents", null);
+        const that = this;
+        this.DaoService.query("getAllEvents", null, (results) => {
+            if(results){
+
+            }
+        });
         console.log(this.events);
     }
 

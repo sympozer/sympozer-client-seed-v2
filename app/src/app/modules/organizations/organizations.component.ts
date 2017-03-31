@@ -16,11 +16,35 @@ export class OrganizationsComponent implements OnInit {
   constructor(
       private DaoService : LocalDAOService,
       private encoder: Encoder
-  ) { }
+  ) {
+    this.organizations = [];
+  }
 
   ngOnInit() {
-    this.organizations = this.DaoService.query("getAllOrganizations", null);
-    console.log(this.organizations);
+    //this.organizations = this.DaoService.query("getAllOrganizations", null);
+    const that = this;
+    that.DaoService.query("getAllOrganizations", null, (results) => {
+      console.log(results);
+      if(results)
+      {
+        const nodeId = results['?id'];
+        const nodeName = results['?name'];
+
+        if(nodeId && nodeName)
+        {
+          const id = nodeId.value;
+          const name = nodeName.value;
+
+          if(id && name)
+          {
+            that.organizations.push({
+              id: that.encoder.encode(id),
+              name: name,
+            });
+          }
+        }
+      }
+    });
   }
 
 }

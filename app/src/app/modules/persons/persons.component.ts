@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 
 import {LocalDAOService} from  '../../localdao.service';
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
+import {Encoder} from "../../lib/encoder";
 import {Person} from "../../model/person";
 import {routerTransition} from '../../app.router.animation';
 
@@ -23,57 +24,80 @@ export class PersonsComponent implements OnInit {
     constructor(private router: Router,
                 private dataLoaderService: DataLoaderService,
                 private DaoService: LocalDAOService,
+                private encoder: Encoder,
                 private  dBPLDataLoaderService: DBLPDataLoaderService) {
+        this.persons = [];
     }
 
     ngOnInit() {
         console.log('Init Persons Comp');
+        const that = this;
 
-        this.persons = this.DaoService.query("getAllPersons", null);
-        console.log(this.persons);
+        that.DaoService.query("getAllPersons", null, (person) => {
+            if (person) {
+                const nodeId = person['?id'];
+                const nodeName = person['?name'];
+
+                if (!nodeId || !nodeName) {
+                    return false;
+                }
+
+                const id = nodeId.value;
+                const name = nodeName.value;
+
+                if (!id || !name) {
+                    return false;
+                }
+
+                that.persons.push({
+                    id: that.encoder.encode(id),
+                    name: name,
+                });
+            }
+        });
 
     }
 
     /*getPublication(person: Person) {
-        // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
-            this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
-            console.log(response);
-            person.publications = [];
-            if (response.results) {
-                for (let result of response.results.bindings) {
-                    person.publications.push(result);
-                }
-                console.log(person.publications);
-            }
+     // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
+     this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
+     console.log(response);
+     person.publications = [];
+     if (response.results) {
+     for (let result of response.results.bindings) {
+     person.publications.push(result);
+     }
+     console.log(person.publications);
+     }
 
-        });
-    }
+     });
+     }
 
-    getPublicationExternAuthors = (publication: any)=> {
-        this.dBPLDataLoaderService.getExternPublicationAuthors(publication.publiUri.value).then(response => {
-                console.log(response);
-                publication.authors = [];
-                if (response.results) {
-                    for (let result of response.results.bindings) {
-                        publication.authors.push(result);
-                    }
-                }
-            }
-        );
-    };
+     getPublicationExternAuthors = (publication: any)=> {
+     this.dBPLDataLoaderService.getExternPublicationAuthors(publication.publiUri.value).then(response => {
+     console.log(response);
+     publication.authors = [];
+     if (response.results) {
+     for (let result of response.results.bindings) {
+     publication.authors.push(result);
+     }
+     }
+     }
+     );
+     };
 
-    getPublicationExternInfo = (publication: any) => {
-        this.dBPLDataLoaderService.getExternPublicationInfo(publication.publiUri.value).then((response => {
-            console.log(`Got Publication ${publication.publiUri.value} info: `);
-            console.log(response);
-            publication.informations = [];
-            if (response.results) {
-                for (let result of response.results.bindings) {
-                    publication.informations.push(result);
-                }
-            }
+     getPublicationExternInfo = (publication: any) => {
+     this.dBPLDataLoaderService.getExternPublicationInfo(publication.publiUri.value).then((response => {
+     console.log(`Got Publication ${publication.publiUri.value} info: `);
+     console.log(response);
+     publication.informations = [];
+     if (response.results) {
+     for (let result of response.results.bindings) {
+     publication.informations.push(result);
+     }
+     }
 
-        }))
-    }*/
+     }))
+     }*/
 
 }

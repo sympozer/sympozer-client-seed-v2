@@ -1,27 +1,28 @@
 <h1>
     {{person.name}} <br />
 </h1>
-<div *ngIf="(orgas | json) != '{}'">
+<div *ngIf="orgas != []">
     <h2>Organization(s)</h2>
     <md-list>
-        <md-list-item *ngFor="let orga of orgas | keys">
-            <b> <a [routerLink]="['/organization/'+orga.value.name+'/'+orga.value.id]">{{orga.value.name}}</a></b>
+        <md-list-item *ngFor="let orga of orgas">
+            <b> <a [routerLink]="['/organization/'+orga.name+'/'+orga.id]">{{orga.name}}</a></b>
         </md-list-item>
     </md-list>
 </div>
-<div *ngIf="(roles | json) != '{}'">
+<div *ngIf="roles != []">
     <h2>Role(s)</h2>
     <md-list>
-        <md-list-item *ngFor="let role of roles | keys">
-            <b> <a [routerLink]="['/person-by-role/'+role.value.label+'/'+role.value.id]">{{role.value.label}}</a></b>
+        <md-list-item *ngFor="let role of roles">
+            {{role}}
+            <b> <a [routerLink]="['/person-by-role/'+role.name+'/'+role.id]">{{role.name}}</a></b>
         </md-list-item>
     </md-list>
 </div>
-<div *ngIf="(publiConf | json) != '{}'">
+<div *ngIf="publiConf != []">
     <h2>Conference Publication(s)</h2>
     <md-list>
-        <md-list-item *ngFor="let publi of publiConf | keys">
-            <b> <a [routerLink]="['/publication/'+publi.value.title+'/'+publi.value.id]">{{publi.value.title}}</a></b>
+        <md-list-item *ngFor="let publi of publiConf">
+            <b> <a [routerLink]="['/publication/'+publi.title+'/'+publi.id]">{{publi.title}}</a></b>
         </md-list-item>
     </md-list>
 </div>
