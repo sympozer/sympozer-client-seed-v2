@@ -9,6 +9,7 @@ import {eventHelper} from  './eventHelper';
 import {Encoder} from  './lib/encoder';
 import {DataLoaderService} from "./data-loader.service";
 import {LocalStorageService} from 'ng2-webstorage';
+import {ManagerRequest} from "./services/ManagerRequest";
 
 const $rdf = require('rdflib');
 
@@ -62,31 +63,56 @@ export class LocalDAOService {
                 private ev: eventHelper,
                 private encoder: Encoder,
                 private dataloader: DataLoaderService,
-                private localStoragexx: LocalStorageService) {
+                private localStoragexx: LocalStorageService,
+                private managerRequest: ManagerRequest) {
         this.conferenceURL = this.useJsonld
             ? 'http://serenitecoex.com/conference.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
             : 'http://dev.sympozer.com/conference/www2012/file-handle/writer/json';
 
         this.$rdf = $rdf;
-        this.loadDataset();
     }
 
     loadDataset() {
-        const store = this.$rdf.graph();
-        const timeout = 5000; // 5000 ms timeout
-        const fetcher = new $rdf.Fetcher(store, timeout);
+
         const that = this;
 
-        fetcher.nowOrWhenFetched(this.conferenceURL, function (ok, body, xhr) {
-            if (!ok) {
-                console.log("Oops, something happened and couldn't fetch data");
-            } else {
-                console.log('success');
-                that.store = store;
+        //On récup le dataset jsonld en local storage
+        let storage = that.localStoragexx.retrieve(this.localstorage_jsonld);
 
-                that.store.fetcher = null;
+        //Si on l'a pas, on le télécharge
+        if (!storage) {
+            console.log('loading graph jsonld ...');
+            that.managerRequest.get_safe(this.conferenceURL)
+                .then((response) => {
+                    if (response && response._body) {
+                        that.saveDataset(response._body);
+                        that.localStoragexx.store(that.localstorage_jsonld, response._body);
+                    }
+                });
+        }
+        else {
+            try {
+                console.log('have localstorage');
+                that.saveDataset(storage);
+            } catch (err) {
+                console.log(err)
             }
-        });
+        }
+    }
+
+    saveDataset(dataset: string) {
+        const that = this;
+        const mimeType = 'text/turtle';
+        const store = that.$rdf.graph();
+
+        try{
+            that.$rdf.parse(dataset, store, this.conferenceURL, mimeType);
+            that.store = store;
+            that.store.fetcher = null;
+        }
+        catch(e){
+            console.log(e);
+        }
     }
 
     getData(): Promise<Conference> {
@@ -97,28 +123,9 @@ export class LocalDAOService {
             .catch(this.handleError)
     };
 
-    getDataJsonLd(): Promise<Conference> {
-        const that = this;
-        // Vérifier la différence de version du fichier entre le local et le distant, et enregistrer en local si besoin (nouvelle version)
-        return this.http.get(this.conferenceURL)
-            .toPromise()
-            .then(res => {
-                const body = res.json();
-                if (body) {
-                    that.localStoragexx.store(that.localstorage_jsonld, body || {});
-                    //localStorage.setItem(that.localstorage_jsonld, body || {});
-                    return Promise.resolve(body);
-                }
-
-                return Promise.reject(null);
-            })
-            .catch(this.handleError)
-    };
-
     private static extractData(res: Response) {
         //Server should wrap the data inside `data` property !!!!!!
         let body = res.json();
-        console.log(body);
         // Enregistrer dans le localStorage
         localStorage.setItem("dataset", body || {});
         return body || {};
@@ -148,281 +155,6 @@ export class LocalDAOService {
             return uri;
         }
         return null;
-    }
-
-    initialize() {
-        this.useJsonld
-            ? this.initializeJsonld()
-            : this.initializeJson();
-    }
-
-    private initializeJsonld() {
-        const that = this;
-        //On récup le dataset jsonld en local storage
-        let storage = this.localStoragexx.retrieve(this.localstorage_jsonld);
-
-        //Si on l'a pas, on le télécharge
-        let promise;
-        if (!storage) {
-            console.log('loading graph jsonld ...');
-            promise = this.getDataJsonLd();
-        }
-
-        Promise.all([promise])
-            .then(() => {
-                //On récup de nouveau le graph dans le local storage
-                storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
-                //On regarde si on a bien le graph
-                if (storage) {
-                }
-            })
-            .catch(() => {
-                console.log('error');
-            });
-    }
-
-    private initializeJson() {
-        // this.dataloader.getDataUrl(this.conferenceURL).then(conference => {
-        //     this.localData = conference;
-        let storage = this.localStoragexx.retrieve('dataset');
-        if (storage == null) {
-            this.localStoragexx.store('dataset', Dataset);
-            storage = Dataset;
-        }
-
-        this.localData = storage;
-        //let localData = DataLoaderService.getData(this.conferenceURL);
-        //Persons
-        let personData = this.localData.persons.sort(function (a, b) {
-            if (a.name > b.name)
-                return 1;
-            if (a.name < b.name)
-                return -1;
-            return 0;
-        });
-        console.log("Retrieving all persons in DAO...");
-        for (let i in personData) {
-            let tempPerson = personData[i];
-            tempPerson.depiction = this.getPictureUri(tempPerson.depiction);
-
-            let tempPersonLink = {
-                id: this.encoder.encodeForURI(tempPerson.id),
-                name: tempPerson.name,
-                depiction: tempPerson.depiction
-            };
-
-            //personMap
-            this.personMap[tempPerson.id] = tempPerson;
-            //personLinkMap
-            this.personLinkMap[tempPerson.id] = tempPersonLink;
-            //authorLinkMap
-            if (tempPerson.made) {
-                this.authorLinkMap[tempPerson.id] = this.personLinkMap[tempPerson.id];
-            }
-
-
-            //Extract both role map and personLinkMapByRole from person descriptions
-            for (let j = 0; j < tempPerson.holdsRole.length; j++) {
-                let role = tempPerson.holdsRole[j];
-                if (!this.personLinkMapByRole[role]) {
-                    //Very simple role description
-                    this.roleMap[role] = {
-                        "id": this.encoder.encode(role),
-                        "label": role
-                    };
-                    this.personLinkMapByRole[role] = [];
-                }
-                this.personLinkMapByRole[role].push(tempPersonLink);
-            }
-            /*foreach(tempPerson.holdsRole, function(j) {
-             let role = tempPerson.holdsRole[j];
-             if(!this.personLinkMapByRole[role]) {
-             //Very simple role description
-             this.roleMap[role] = {
-             "id": role,
-             "label": role
-             };
-             this.personLinkMapByRole[role] = [];
-             }
-             this.personLinkMapByRole[role].push(tempPersonLink);
-             });*/
-
-        }
-
-        //Organizations
-        let organizationData = this.localData.organizations.sort(function (a, b) {
-            if (a.label > b.label)
-                return 1;
-            if (a.label < b.label)
-                return -1;
-            return 0;
-        });
-        console.log("Retrieving all organizations in DAO...");
-        for (let j in organizationData) {
-            let tempOrga = organizationData[j];
-            //Little hack: in some datasets, organizations have a label and in others, they have a name.
-            if (tempOrga.label && !("name" in tempOrga)) {
-                tempOrga["name"] = tempOrga.label;
-            }
-            this.organizationMap[tempOrga.id] = tempOrga;
-            this.organizationLinkMap[tempOrga.id] = {
-                id: this.encoder.encodeForURI(tempOrga.id),
-                name: this.encoder.encodeForURI(tempOrga["name"]),
-                sanitizeName: tempOrga["name"],
-                depiction: this.getPictureUri(("depiction" in tempOrga) ? tempOrga["depiction"] : null)
-            }
-        }
-
-        //Categories (1/2)
-        //Must be initialized before events and publications
-        //Construct and sort a map of all categories
-        let categoryData = this.localData.categories.sort(function (a, b) {
-            if (a.name > b.name)
-                return 1;
-            if (a.name < b.name)
-                return -1;
-            return 0;
-        });
-        console.log("Retrieving all categories in DAO...");
-        for (let m in categoryData) {
-            let tempCategory = categoryData[m];
-            this.categoryMap[tempCategory.id] = tempCategory;
-            this.categoryMap[tempCategory.id].events = [];
-            this.categoryForPublicationsMap[tempCategory.id] = tempCategory;
-            this.categoryForPublicationsMap[tempCategory.id].publications = [];
-        }
-
-        //Publications
-        let publicationData = this.localData.publications.sort(function (a, b) {
-            if (a.title > b.title)
-                return 1;
-            if (a.title < b.title)
-                return -1;
-            return 0;
-        });
-        console.log("Retrieving all publications in DAO...");
-        for (let k in publicationData) {
-            let tempPubli = publicationData[k];
-            tempPubli.thumbnail = this.getPictureUri(tempPubli.thumbnail);
-            this.publicationMap[tempPubli.id] = tempPubli;
-            this.publicationLinkMap[tempPubli.id] = {
-                id: this.encoder.encodeForURI(tempPubli.id),
-                title: this.encoder.encodeForURI(tempPubli.title),
-                //In the ESWC2015 dataset, publication images are identified as "thumbnail"
-                thumbnail: this.getPictureUri(tempPubli.thumbnail)
-            }
-        }
-
-        //Locations
-        let locationData = this.localData.locations.sort(function (a, b) {
-            if (a.name > b.name)
-                return 1;
-            if (a.name < b.name)
-                return -1;
-            return 0;
-        });
-        console.log("Retrieving all locations in DAO...");
-        for (let o in locationData) {
-            let tempLocation = locationData[o];
-            this.locationLinkMap[tempLocation.id] = tempLocation;
-            //Initialize eventLinkMapByLocation[o]
-            this.eventLinkMapByLocation[tempLocation.id] = tempLocation;
-            this.eventLinkMapByLocation[tempLocation.id].events = [];
-        }
-
-        //Events
-        let eventData = this.localData.events.sort(function (a, b) {
-            if (a.name > b.name)
-                return 1;
-            if (a.name < b.name)
-                return -1;
-            return 0;
-        });
-        let tempEventList = []; // unordered event list from the DAO
-        console.log("Retrieving all events in DAO...");
-        for (let l in eventData) {
-            let tempEvent = eventData[l];
-            let tempEventLink = {
-                id: this.encoder.encodeForURI(tempEvent.id),
-                name: tempEvent.name,
-                //Yet, no property named "thumbnail" exists, but why not...
-                thumbnail: this.getPictureUri(("thumbnail" in tempEvent) ? tempEvent["thumbnail"] : null),
-                startsAt: tempEvent.startsAt,
-                endsAt: tempEvent.endsAt,
-                duration: tempEvent.duration,
-                location: tempEvent.locations != null ? this.locationLinkMap[tempEvent.locations[0]].name : null
-            };
-
-            //Push into the corresponding maps
-            this.eventMap[tempEvent.id] = tempEvent;
-            this.eventLinkMap[tempEvent.id] = tempEventLink;
-            //Pushing the full eventLink in the map -> don't need nested query
-            for (let r in tempEvent.locations) {
-                this.eventLinkMapByLocation[tempEvent.locations[r]].events.push(tempEventLink);
-            }
-
-            //Add the event to the categories it refers to.
-            for (let n in tempEvent.categories) {
-                let tempCategoryMap = this.categoryMap[tempEvent.categories[n]];
-                tempCategoryMap.events.push(tempEvent.id);
-            }
-
-            //Get main events (direct children of the conference)
-            if (tempEvent.parent === Config.conference.baseUri) {
-                tempEventList.push(tempEventLink);
-            }
-        }
-        //Sort events according to start and end dates
-        this.confScheduleList = this.ev.doubleSortEventsInArray(tempEventList);
-
-        //Construct the event category hierarchies
-        let constructCategoryHierarchy = (eventId) => {
-            for (let i in this.eventMap[eventId].categories) {
-                let tempCat = this.eventMap[eventId].categories[i];
-                if (tempCat !== Config.app.presentationEventCategory && tempCat !== Config.app.sessionEventCategory)
-                    return tempCat;
-            }
-            if (this.eventMap[eventId].parent) {
-                return constructCategoryHierarchy(this.eventMap[eventId].parent);
-            }
-            return null;
-        };
-        for (let q in this.eventLinkMap) {
-            this.eventMap[q].mainCategory = this.eventLinkMap[q].mainCategory = constructCategoryHierarchy(q);
-
-            //Construct categoryForPublication map
-            for (let t in this.eventMap[q].papers) {
-                let tempCategoryForPublicationsMap = this.categoryForPublicationsMap[this.eventMap[q].mainCategory];
-                tempCategoryForPublicationsMap.publications.push(this.eventMap[q].papers[t]);
-            }
-        }
-
-        //Categories (2/2)
-        //Remove unused categories
-        for (let p in this.categoryMap) {
-            let tempCategory = this.categoryMap[p];
-            if (tempCategory.events.length == 0) {
-                this.categoryMap[p] = undefined;
-            } else {
-                this.categoryLinkMap[p] = {
-                    id: this.encoder.encodeForURI(p),
-                    name: tempCategory.name,
-                    label: tempCategory.label,
-                    //Yet, no property named "thumbnail" exists, but why not...
-                    thumbnail: tempCategory.thumbnail ? tempCategory.thumbnail : null
-                }
-            }
-        }
-        for (let u in this.categoryForPublicationsMap) {
-            let tempCategory = this.categoryForPublicationsMap[u];
-            if (tempCategory.publications.length == 0) {
-                this.categoryForPublicationsMap[u] = undefined;
-            }
-        }
-
-        //TODO: remove this.
-        console.log("DAO INITIALIZATION FINISHED");
-        //});
     }
 
     launchQuerySparql = (query, callback) => {
@@ -617,7 +349,6 @@ export class LocalDAOService {
                         " ?id scholary:abstract ?abstract . \n" +
                         " ?id schema:label ?label . \n" +
                         "}";
-                    console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getAllPublications":

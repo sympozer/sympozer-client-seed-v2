@@ -16,8 +16,7 @@ export class AppComponent implements OnInit {
 
 
     ngOnInit():void {
-        this.DaoService.initialize();
-        let persons = this.DaoService.query("getAllPersons", null);
+        this.DaoService.loadDataset();
 
         this.router.events.subscribe((evt) => {
             if (!(evt instanceof NavigationEnd)) {
