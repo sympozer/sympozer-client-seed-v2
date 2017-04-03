@@ -13,7 +13,6 @@
     <h2>Role(s)</h2>
     <md-list>
         <md-list-item *ngFor="let role of roles">
-            {{role}}
             <b> <a [routerLink]="['/person-by-role/'+role.name+'/'+role.id]">{{role.name}}</a></b>
         </md-list-item>
     </md-list>

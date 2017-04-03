@@ -2,8 +2,8 @@
   Roles List <br />
 </p>
 <md-list>
-	<md-list-item *ngFor="let role of roles | keys">
+	<md-list-item *ngFor="let role of roles">
 		<img md-list-avatar src="" alt="?">
-		<h3 md-line> <a [routerLink]="['/person-by-role/'+role.value.label+'/'+role.value.id]">{{role.value.label}}</a> </h3>
+		<h3 md-line> <a [routerLink]="['/person-by-role/'+role.label+'/'+role.id]">{{role.label}}</a> </h3>
 	</md-list-item>
 </md-list>

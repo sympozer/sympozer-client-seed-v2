@@ -49,7 +49,7 @@ const appRoutes: Routes = [
     component: PublicationsByCategoryComponent
   },
   {
-    path: 'person-by-role/:id/:ref',
+    path: 'person-by-role/:name/:id',
     component: PersonByRoleComponent
   },
   {

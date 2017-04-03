@@ -24,9 +24,9 @@ export class PersonService {
   };
 
   generateRolesFromStream = (roles, stream) => {
-    if(stream && stream['?name'] && stream['?id']){
-      const nodeName = stream['?name'];
-      const nodeId = stream['?id'];
+    if(stream && stream['?idRole'] && stream['?label']){
+      const nodeName = stream['?label'];
+      const nodeId = stream['?idRole'];
 
       if(nodeName && nodeId)
       {
@@ -81,8 +81,8 @@ export class PersonService {
   };
 
   generatePublicationLinkFromStream = (publiConf, stream) => {
-    if(stream && stream['?title'] && stream['?id']){
-      const nodeTitle = stream['?title'];
+    if(stream && stream['?label'] && stream['?id']){
+      const nodeTitle = stream['?label'];
       const nodeId = stream['?id'];
 
       if(nodeTitle && nodeId)

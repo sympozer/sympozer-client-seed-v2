@@ -62,17 +62,17 @@ export class PublicationComponent implements OnInit {
                 console.log('getAuthorLinkPublication : ', results);
                 if(results){
                     const nodeIdPerson = results['?idPerson'];
-                    const nodeName = results['?name'];
+                    const nodeLabel = results['?label'];
 
-                    if(!nodeIdPerson || !nodeName)
+                    if(!nodeIdPerson || !nodeLabel)
                     {
                         return false;
                     }
 
                     let idPerson = nodeIdPerson.value;
-                    const name = nodeName.value;
+                    const label = nodeLabel.value;
 
-                    if(!idPerson || !name){
+                    if(!idPerson || !label){
                         return false;
                     }
 
@@ -84,7 +84,7 @@ export class PublicationComponent implements OnInit {
 
                     that.authors.push({
                         id: idPerson,
-                        name: name,
+                        label: label,
                     });
                 }
             });

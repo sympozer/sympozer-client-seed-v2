@@ -5,7 +5,7 @@
 <div class="action-links list-items" *ngFor="let organization of organizations">
   <md-card>
     <md-icon md-list-avatar>account_balance</md-icon>
-    <a [routerLink]="['/organization/'+organization.name+'/'+organization.id]">{{organization.name}}</a>
+    <a [routerLink]="['/organization/'+organization.label+'/'+organization.id]">{{organization.label}}</a>
   </md-card>
 </div>
 

@@ -10,7 +10,7 @@
 <h2 *ngIf="authors != []">Auteur(s)</h2>
 <md-list>
     <md-list-item *ngFor="let author of authors">
-        <b> <a [routerLink]="['/person/'+author.name+'/'+author.id]">{{author.name}}</a></b>
+        <b> <a [routerLink]="['/person/'+author.label+'/'+author.id]">{{author.label}}</a></b>
     </md-list-item>
 </md-list>
 

@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
+import {LocalDAOService} from '../../localdao.service';
 
 @Component({
     selector: 'home',
@@ -11,6 +12,11 @@ import {routerTransition} from '../../app.router.animation';
 })
 export class HomeComponent {
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private localdao: LocalDAOService) {
+    }
+
+    loadDataset() {
+        console.log('load dataset');
+        this.localdao.loadDataset();
     }
 }

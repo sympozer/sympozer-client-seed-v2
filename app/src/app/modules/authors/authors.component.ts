@@ -26,7 +26,6 @@ export class AuthorsComponent implements OnInit {
   ngOnInit() {
     const that = this;
     this.DaoService.query("getAllAuthors", null, (results) => {
-      console.log(results);
       if(results){
         const nodeIdPerson = results['?idPerson'];
         const nodeName = results['?name'];
@@ -53,8 +52,6 @@ export class AuthorsComponent implements OnInit {
         });
       }
     });
-    console.log(this.authors);
-
   }
 
   search(term: string): void {

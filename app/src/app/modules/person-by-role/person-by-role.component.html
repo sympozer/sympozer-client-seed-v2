@@ -1,3 +1,3 @@
-<md-list *ngFor="let person of persons; let i = index">
-<md-list-item><a [routerLink]="['/person/'+person.name+'/'+person.id]">{{person.name}}</a></md-list-item>
+<md-list *ngFor="let person of persons">
+<md-list-item><a [routerLink]="['/person/'+person.label+'/'+person.id]">{{person.label}}</a></md-list-item>
 </md-list>

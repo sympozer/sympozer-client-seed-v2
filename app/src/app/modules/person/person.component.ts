@@ -50,12 +50,15 @@ export class PersonComponent implements OnInit {
                 that.mutex
                     .acquire()
                     .then(function(release) {
-                        that.person = that.personService.generatePersonFromStream(that.person, results);
+                        that.person = {
+                            name: results['?label'].value
+                        };
                         release();
                     });
             });
 
-            this.DaoService.query("getPublicationLink", query, (results) => {
+            console.log('getPublicationLink', query);
+            this.DaoService.query("getPublicationLink", query, (results, err) => {
                 that.mutex
                     .acquire()
                     .then(function(release) {
@@ -74,10 +77,12 @@ export class PersonComponent implements OnInit {
             });
 
             this.DaoService.query("getRole", query, (results) => {
+                console.log(results);
                 that.mutex
                     .acquire()
                     .then(function(release) {
-                        that.orgas = that.personService.generateRolesFromStream(that.roles, results);
+                        console.log(results);
+                        that.roles = that.personService.generateRolesFromStream(that.roles, results);
                         release();
                     });
             });

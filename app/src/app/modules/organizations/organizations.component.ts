@@ -24,22 +24,21 @@ export class OrganizationsComponent implements OnInit {
     //this.organizations = this.DaoService.query("getAllOrganizations", null);
     const that = this;
     that.DaoService.query("getAllOrganizations", null, (results) => {
-      console.log(results);
       if(results)
       {
         const nodeId = results['?id'];
-        const nodeName = results['?name'];
+        const nodeLabel = results['?label'];
 
-        if(nodeId && nodeName)
+        if(nodeId && nodeLabel)
         {
           const id = nodeId.value;
-          const name = nodeName.value;
+          const label = nodeLabel.value;
 
-          if(id && name)
+          if(id && label)
           {
             that.organizations.push({
               id: that.encoder.encode(id),
-              name: name,
+              label: label,
             });
           }
         }

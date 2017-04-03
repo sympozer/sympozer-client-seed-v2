@@ -91,13 +91,6 @@ export class OrganizationComponent implements OnInit {
                     });
                 }
             });
-
-            /*for(let i in this.organization.members){
-                let query = { 'key' : this.organization.members[i] };
-                this.members[i] = this.DaoService.query("getPersonLink",query);
-            }*/
-
-            console.log(this.organization);
         });
     }
 }
