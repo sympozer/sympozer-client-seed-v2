@@ -662,7 +662,17 @@ export class LocalDAOService {
                 case "getAllCategories":
                     return this.categoryLinkMap;
                 case "getAllCategoriesForPublications":
-                    return this.categoryForPublicationsMap;
+                    query =
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:Track . \n" +
+                        " ?id schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getConferenceSchedule":
                     console.log(this.confScheduleList);
                     return this.confScheduleList;

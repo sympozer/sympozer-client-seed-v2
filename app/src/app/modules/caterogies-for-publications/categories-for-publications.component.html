@@ -1,6 +1,6 @@
 <h1>Tracks</h1>
 <ul class='link'>
-    <li *ngFor="let category of categories | keys">
-        <a [routerLink]="['/publications-by-category/'+category.value.name+'/'+category.value.id]">{{category.value.label}}</a>
+    <li *ngFor="let track of tracks">
+        <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
     </li>
 </ul>
