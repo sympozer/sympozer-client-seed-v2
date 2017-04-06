@@ -14,11 +14,13 @@ import {Subject} from "rxjs";
 })
 export class AutocompleteComponent implements OnInit {
     @Input() items: Object;
-    @Input() namespace;
+    @Input() namespace: String;
+    @Input() seachFor: String;
     itemsFound = [];
     searchTerms = new Subject<string>();
     hasItem: boolean;
     hasSearchValue: boolean;
+    isBigItems: boolean;
 
     constructor(private router: Router,
                 private dataLoaderService: DataLoaderService,
@@ -29,7 +31,8 @@ export class AutocompleteComponent implements OnInit {
     ngOnInit() {
         this.searchTerms.debounceTime(300)
             .distinctUntilChanged()
-            .switchMap(term => term)
+            .switchMap(term => term);
+        Object.keys(this.items).length > 10 ? this.isBigItems = true : this.isBigItems = false;
     }
 
     search(term: string): void {
@@ -46,20 +49,14 @@ export class AutocompleteComponent implements OnInit {
         let itemName;
         let itemCloneName;
         for (var key in this.items) {
-            if (typeof this.items[key].name !== 'undefined')
-                itemName = this.items[key].name;
-            else
-                itemName = this.items[key].title;
+            itemName = this.items[key][this.seachFor.toString()];
             match = itemName.toUpperCase().match(term.toUpperCase());
             if (match) {
                 isMatch = true;
                 this.hasItem = true;
                 let itemClone = JSON.parse(JSON.stringify(this.items[key]));
                 let lastIndex = match.index + term.length;
-                if (typeof itemClone.name !== 'undefined')
-                    itemCloneName =  itemClone.name;
-                else
-                    itemCloneName =  itemClone.title;
+                itemCloneName = itemClone[this.seachFor.toString()];
                 itemClone.htmlName = itemCloneName.slice(0, match.index) + '<b>' + itemCloneName.slice(match.index, lastIndex) + '</b>' + itemCloneName.slice(lastIndex);
                 this.itemsFound.push(itemClone);
             }

@@ -3,6 +3,21 @@
 * {
   font-family: 'Lato', sans-serif;
   box-sizing: border-box;
+  outline: none !important;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+  font-weight: 900;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.mat-button-focus.mat-icon-button .mat-button-focus-overlay {
+  opacity: 0 !important;
 }
 
 body {
@@ -14,6 +29,16 @@ body {
 
 h1 {
   text-align: center;
+  font-weight: 800;
+  color: $heading-color;
+}
+
+h2 {
+  color: $heading-color;
+}
+
+p {
+  text-align: justify;
 }
 
 menu {
@@ -28,6 +53,29 @@ menu {
 
       ul {
         justify-content: flex-start !important;
+
+        li {
+          width: 100%;
+
+          a {
+            width: 100%;
+            margin: 0 !important;
+            text-align: left !important;
+
+            .link {
+              color: rgba(0, 0, 0, 0.54) !important;
+              margin: 0 1.5em;
+              display: inline-flex !important;
+            }
+
+            &:hover, &.active {
+              .link {
+                color: $primary-color !important;
+              }
+            }
+
+          }
+        }
       }
 
       @media screen and (max-width: 800px) {
@@ -43,9 +91,10 @@ menu {
     margin: 20px 0;
     position: relative;
 
-    a, input {
+    a, input, p {
       position: relative;
       text-decoration: none;
+      font-weight: normal;
       width: 100%;
       height: 100%;
       color: $font-color-dark;
@@ -54,6 +103,12 @@ menu {
       border: none;
       outline: none;
       z-index: 2;
+    }
+
+    span {
+      width: 100%;
+      display: block;
+      padding: 5px 0;
     }
 
     md-icon {
@@ -67,8 +122,8 @@ menu {
 
   &.list-items {
     md-card {
-      a {
-        padding-left: 40px;
+      a, p {
+        padding-left: 40px !important;
       }
 
       md-icon {
@@ -102,4 +157,110 @@ menu {
 .content {
   max-height: calc(100% - 81px);
   overflow-y: scroll;
+}
+
+.loading-screen {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: -1;
+  position: fixed;
+  transform: translate3D(0, -100%, 0);
+  background: $header-background;
+  transition: all .4s cubic-bezier(.25, .8, .25, 1);
+
+  .loading-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+}
+
+app-root:empty + .loading-screen {
+  opacity: 1;
+  z-index: 100;
+  transform: translate3D(0, 0, 0);
+}
+
+$width: 100px;
+
+body {
+  background-color: $white;
+}
+
+.showbox {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.loader {
+  position: relative;
+  margin: 0 auto;
+  width: $width;
+  &:before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+  }
+}
+
+.circular {
+  animation: rotate 2s linear infinite;
+  height: 100%;
+  transform-origin: center center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  stroke-linecap: round;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+@keyframes color {
+  100%,
+  0% {
+    stroke: $red;
+  }
+  40% {
+    stroke: $blue;
+  }
+  66% {
+    stroke: $green;
+  }
+  80%,
+  90% {
+    stroke: $yellow;
+  }
 }

@@ -6,11 +6,15 @@ import {DataLoaderService} from "../../data-loader.service";
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
+import {routerTransition} from '../../app.router.animation';
+
 
 @Component({
     selector: 'app-organization',
     templateUrl: 'organization.component.html',
     styleUrls: ['organization.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class OrganizationComponent implements OnInit {
     private organization;

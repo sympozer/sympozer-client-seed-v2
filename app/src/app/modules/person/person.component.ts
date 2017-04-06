@@ -18,16 +18,17 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class PersonComponent implements OnInit {
+    private externPublications = {};
     public person;
     public roles = [];
     public orgas = [];
     public publiConf = [];
     private mutex: any;
 
-    constructor(private router:Router,
+    constructor(private router: Router,
                 private route: ActivatedRoute,
-                private personService: PersonService,
                 private DaoService: LocalDAOService,
+                private personService: PersonService,
                 private encoder: Encoder,
                 private  dBPLDataLoaderService: DBLPDataLoaderService) {
         this.person = this.personService.defaultPerson();
@@ -40,16 +41,15 @@ export class PersonComponent implements OnInit {
             let id = params['id'];
             let name = params['name'];
 
-            if(!id || !name)
-            {
+            if (!id || !name) {
                 return false;
             }
 
-            let query = { 'key' : this.encoder.decode(id) };
+            let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPerson", query, (results) => {
                 that.mutex
                     .acquire()
-                    .then(function(release) {
+                    .then(function (release) {
                         that.person = {
                             name: results['?label'].value
                         };
@@ -61,7 +61,7 @@ export class PersonComponent implements OnInit {
             this.DaoService.query("getPublicationLink", query, (results, err) => {
                 that.mutex
                     .acquire()
-                    .then(function(release) {
+                    .then(function (release) {
                         that.publiConf = that.personService.generatePublicationLinkFromStream(that.publiConf, results);
                         release();
                     });
@@ -70,7 +70,7 @@ export class PersonComponent implements OnInit {
             this.DaoService.query("getOrganizationLink", query, (results) => {
                 that.mutex
                     .acquire()
-                    .then(function(release) {
+                    .then(function (release) {
                         that.orgas = that.personService.generateOrgasFromStream(that.orgas, results);
                         release();
                     });
@@ -80,42 +80,30 @@ export class PersonComponent implements OnInit {
                 console.log(results);
                 that.mutex
                     .acquire()
-                    .then(function(release) {
+                    .then(function (release) {
                         console.log(results);
                         that.roles = that.personService.generateRolesFromStream(that.roles, results);
                         release();
                     });
             });
-            /*for(let i in this.person.made){
-                let query = { 'key' : this.person.made[i] };
-                this.publiConf[i] = this.DaoService.query("getPublicationLink",query);
-            }
-            for(let j in this.person.affiliation){
-                let queryOrga = { 'key' : this.person.affiliation[j] };
-                this.orgas[j] = this.DaoService.query("getOrganizationLink",queryOrga);
-            }
-            for(let k in this.person.holdsRole){
-                let queryRole = { 'key' : this.person.holdsRole[k] };
-                this.roles[k] = this.DaoService.query("getRole",queryRole);
-            }
-
-            this.getPublication(this.person);*/
-
         });
     }
 
-     getPublication(person: any) {
+    getPublication(person: any) {
         // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
-            this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
-            console.log(response);
-            person.publications = [];
+        this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
             if (response.results) {
+                let i = 0;
                 for (let result of response.results.bindings) {
-                    result.publiUri.value = this.encoder.encodeForURI(result.publiUri.value);// encoder l'url
-                    person.publications.push(result); 
+                    let parsedResult = {
+                        id: this.encoder.encodeForURI(result.publiUri.value),
+                        name: result.publiTitle.value
+                    };
+                    this.externPublications[i] = parsedResult;
+                    i++;
                 }
-                console.log(person.publications);
             }
+            console.log(this.externPublications);
 
         });
     };

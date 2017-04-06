@@ -1,38 +1,41 @@
 <h1>
-    {{person.name}} <br />
+  {{person.name}}
 </h1>
-<div *ngIf="orgas != []">
-    <h2>Organization(s)</h2>
-    <md-list>
-        <md-list-item *ngFor="let orga of orgas">
-            <b> <a [routerLink]="['/organization/'+orga.name+'/'+orga.id]">{{orga.name}}</a></b>
-        </md-list-item>
-    </md-list>
+<div *ngIf="(orgas | json) != '{}'">
+  <h2>Organization(s)</h2>
+  <div class="action-links list-items" *ngFor="let orga of orgas | keys">
+    <md-card>
+      <md-icon md-list-avatar>account_balance</md-icon>
+      <a [routerLink]="['/organization/'+orga.value.name+'/'+orga.value.id]">{{orga.value.name}}</a>
+    </md-card>
+  </div>
 </div>
-<div *ngIf="roles != []">
-    <h2>Role(s)</h2>
-    <md-list>
-        <md-list-item *ngFor="let role of roles">
-            <b> <a [routerLink]="['/person-by-role/'+role.name+'/'+role.id]">{{role.name}}</a></b>
-        </md-list-item>
-    </md-list>
+<div *ngIf="(roles | json) != '{}'">
+  <h2>Role(s)</h2>
+  <div class="action-links list-items" *ngFor="let role of roles | keys">
+    <md-card>
+      <md-icon md-list-avatar>perm_identity</md-icon>
+      <a [routerLink]="['/person-by-role/'+role.value.label+'/'+role.value.id]">{{role.value.label}}</a>
+    </md-card>
+  </div>
 </div>
-<div *ngIf="publiConf != []">
-    <h2>Conference Publication(s)</h2>
-    <md-list>
-        <md-list-item *ngFor="let publi of publiConf">
-            <b> <a [routerLink]="['/publication/'+publi.title+'/'+publi.id]">{{publi.title}}</a></b>
-        </md-list-item>
-    </md-list>
+<div *ngIf="(publiConf | json) != '{}'">
+  <h2>Conference Publication(s)</h2>
+  <div class="action-links list-items" *ngFor="let publication of publiConf | keys">
+    <md-card>
+      <md-icon md-list-avatar>description</md-icon>
+      <a [routerLink]="['/publication/'+publication.value.title+'/'+publication.value.id]">{{publication.value.title}}</a>
+    </md-card>
+  </div>
 </div>
-<div *ngIf="person.publications != []">
-    <h2>Other Publication(s)</h2>
-    <md-list>
-        <md-list>
-            <md-list-item *ngFor="let publication of person.publications">
-                <b> <a [routerLink]="['/externPublication/'+publication.publiUri.value]"> {{publication.publiTitle.value}}</a></b>
-            </md-list-item>
-        </md-list>
-    </md-list>
+<div *ngIf="(externPublications | json) != '{}'">
+  <h2>Other Publication(s)</h2>
+  <app-autocomplete [seachFor]="'name'" [items]="externPublications" [namespace]="'externPublication'"></app-autocomplete>
+  <div class="action-links list-items" *ngFor="let publication of externPublications | keys">
+    <md-card>
+      <md-icon md-list-avatar>description</md-icon>
+      <a [routerLink]="['/externPublication/'+publication.value.name+'/'+publication.value.id]">{{publication.value.name}}</a>
+    </md-card>
+  </div>
 </div>
 

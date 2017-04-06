@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LocalDAOService } from  '../../localdao.service';
+import {routerTransition} from '../../app.router.animation';
 import {Encoder} from "../../lib/encoder";
 
 @Component({
     selector: 'categories-for-publications',
     templateUrl: './categories-for-publications.component.html',
-    styleUrls: ['./categories-for-publications.component.css']
+    styleUrls: ['./categories-for-publications.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class CategoriesForPublicationsComponent implements OnInit {
     private tracks = [];

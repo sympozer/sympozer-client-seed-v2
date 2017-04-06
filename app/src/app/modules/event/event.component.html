@@ -1,40 +1,67 @@
 <h1>
-    {{event.name}} <br />
+  {{event.name}}
 </h1>
+
 <h2>Description</h2>
-<p>{{event.description}}</p>
+<md-card>
+  <p>{{event.description}}</p>
+</md-card>
 
 <h2>Starts at</h2>
-<p><b>{{startsAt}}</b></p>
+<div class="action-links list-items">
+  <md-card>
+    <md-icon md-list-avatar>access_time</md-icon>
+    <p>{{startsAt}}</p>
+  </md-card>
+</div>
 
 <h2>Ends at</h2>
-<p><b>{{endsAt}}</b></p>
+<div class="action-links list-items">
+  <md-card>
+    <md-icon md-list-avatar>access_time</md-icon>
+    <p>{{endsAt}}</p>
+  </md-card>
+</div>
 
 <h2>Duration</h2>
-<p><b>{{duration}}</b></p>
+<div class="action-links list-items">
+  <md-card>
+    <md-icon md-list-avatar>av_timer</md-icon>
+    <p>{{duration}}</p>
+  </md-card>
+</div>
 
 <div *ngIf="(locations | json) != '{}'">
-    <h2>Location</h2>
-    <md-list>
-        <md-list-item *ngFor="let location of locations | keys">
-            <b> <a [routerLink]="['/events-by-location/'+location.value.name+'/'+location.value.id]">{{location.value.name}}</a></b>
-        </md-list-item>
-    </md-list>
+  <h2>Location</h2>
+  <div class="action-links list-items" *ngFor="let location of locations | keys">
+    <md-card>
+      <md-icon md-list-avatar>place</md-icon>
+      <a [routerLink]="['/events-by-location/'+location.value.name+'/'+location.value.id]">{{location.value.name}}</a>
+    </md-card>
+  </div>
+
 </div>
 
 <div *ngIf="(publications | json) != '{}'">
-    <h2>Publications</h2>
-    <md-list>
-        <md-list-item *ngFor="let publication of publications | keys">
-            <b> <a [routerLink]="['/publication/'+publication.value.title+'/'+publication.value.id]">{{publication.value.title}}</a></b>
-        </md-list-item>
-    </md-list>
+  <h2>Publications</h2>
+  <div class="action-links list-items" *ngFor="let publication of publications | keys">
+    <md-card>
+      <md-icon md-list-avatar>place</md-icon>
+      <a [routerLink]="['/publication/'+publication.value.title+'/'+publication.value.id]">{{publication.value.title}}</a>
+    </md-card>
+  </div>
 </div>
 
 <div *ngIf="partof != null">
-    <h2>Part of</h2>
-    <p><b> <a [routerLink]="['/event/'+partof.name+'/'+partof.id]">{{partof.name}}</a></b></p>
+  <h2>Part of</h2>
+  <div class="action-links list-items">
+    <md-card>
+      <md-icon md-list-avatar>account_balance</md-icon>
+      <a [routerLink]="['/event/'+partof.name+'/'+partof.id]">{{partof.name}}</a>
+    </md-card>
+  </div>
 </div>
 
-<div *ngIf="(contents | json) != '{}'"></div>
-<h2>Contents</h2>
+<!--<div *ngIf="(contents | json) != '{}'">-->
+  <!--<h2>Contents</h2>-->
+<!--</div>-->

@@ -1,6 +1,6 @@
 <h1>Publication List</h1>
 
-<app-autocomplete [items]="publications" [namespace]="'publication'"></app-autocomplete>
+<app-autocomplete [seachFor]="'title'" [items]="publications" [namespace]="'publication'"></app-autocomplete>
 
 <div class="action-links list-items" *ngFor="let publication of publications">
   <md-card>

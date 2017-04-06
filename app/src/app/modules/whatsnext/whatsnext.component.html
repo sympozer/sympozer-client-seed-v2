@@ -1,9 +1,11 @@
-<h2>
-  What's Next
-</h2>
-
-<md-list>
-	<md-list-item *ngFor="let schedule of schedules">
-		<h3 md-line> {{schedule.name}} </h3>
-	</md-list-item>
-</md-list>
+<h1>What's Next</h1>
+<div class="action-links list-items" *ngFor="let schedule of schedules">
+  <md-card>
+    <md-icon md-list-avatar>event</md-icon>
+    <a [routerLink]="'/event/'+schedule.name+'/'+ schedule.id">
+      <span class="event">{{schedule.name}}</span>
+      <span class="event-info"><b> Starts at : </b> {{schedule.startsAt}} </span>
+      <span class="event-info"><b> Lasts : </b>{{schedule.duration}} </span>
+    </a>
+  </md-card>
+</div>

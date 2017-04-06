@@ -1,6 +1,6 @@
 <h1>Persons</h1>
 
-<app-autocomplete [items]="persons" [namespace]="'person'"></app-autocomplete>
+<app-autocomplete [seachFor]="'name'" [items]="persons" [namespace]="'person'"></app-autocomplete>
 
 <div class="action-links list-items" *ngFor="let person of persons">
   <md-card>
@@ -8,41 +8,3 @@
     <a [routerLink]="['/person/'+person.name+'/'+person.id]">{{person.name}}</a>
   </md-card>
 </div>
-
-<!--<md-card-content>-->
-<!--<p *ngIf=" person?.publications">-->
-<!--{{person?.publications.length}} Publications-->
-<!--</p>-->
-<!--<md-list *ngFor="let publication of person?.publications">-->
-<!--<md-card>-->
-<!--<p>{{publication.publiTitle.value}}</p>-->
-<!--<button md-raised-button-->
-<!--(click)="getPublicationExternAuthors(publication);getPublicationExternInfo(publication)">-->
-<!--Views Full Information-->
-<!--</button>-->
-<!--<p *ngIf="publication?.informations">-->
-<!--Found {{publication.informations.length}} Publication Information:-->
-<!--</p>-->
-<!--<md-list *ngFor="let information of publication?.informations">-->
-<!--<md-list-item>-->
-<!--<p><strong>Publication Date:</strong> {{information.publiDate.value}} </p>-->
-<!--<p><strong>Publication Link:</strong> {{information.publiLink.value}}</p>-->
-<!--<p><strong>Publication Journal:</strong> {{information.publiDate.value}}</p>-->
-<!--<p><strong>Publication Title:</strong> {{information.publiTitle.value}}</p>-->
-<!--<p><strong>Publication Resume:</strong> {{information.publiResume.value}}</p>-->
-<!--</md-list-item>-->
-<!--</md-list>-->
-<!--<p *ngIf="publication?.authors">-->
-<!--List {{publication.authors.length}} Authors:-->
-<!--</p>-->
-<!--<md-list *ngFor="let author of publication.authors">-->
-<!--<md-list-item>-->
-<!--{{author.authorName.value}}-->
-<!--</md-list-item>-->
-<!--</md-list>-->
-<!--</md-card>-->
-<!--</md-list>-->
-<!--</md-card-content>-->
-<!--<md-card-actions>-->
-<!--<button md-raised-button (click)="getPublication(person)">View Publications</button>-->
-<!--</md-card-actions>-->

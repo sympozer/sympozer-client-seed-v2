@@ -1,18 +1,20 @@
-<div class="action-links list-items search-wrapper">
-  <md-card>
-    <md-icon>search</md-icon>
-    <input placeholder="Search" #searchBox id="search-box" (keyup)="search(searchBox.value)" spellcheck="false">
-  </md-card>
-</div>
-
-<div class="search-result-wrapper" *ngIf="hasItem == true && hasSearchValue == true">
-  <div *ngFor="let item of itemsFound" class="search-result">
-    <a [routerLink]="['/' + namespace + '/'+item.name+'/'+item.id]" [innerHTML]="item.htmlName"></a>
+<div *ngIf="isBigItems">
+  <div class="action-links list-items search-wrapper">
+    <md-card>
+      <md-icon>search</md-icon>
+      <input placeholder="Search" #searchBox id="search-box" (keyup)="search(searchBox.value)" spellcheck="false">
+    </md-card>
   </div>
 
-</div>
-<div class="search-result-wrapper" *ngIf="hasItem == false && hasSearchValue == true">
-  <div class="search-result" id="not-found">
-    <div> &laquo;<b> {{searchBox.value}} </b>&raquo; not found.</div>
+  <div class="search-result-wrapper" *ngIf="hasItem == true && hasSearchValue == true">
+    <div *ngFor="let item of itemsFound" class="search-result">
+      <a [routerLink]="['/' + namespace + '/'+item[seachFor.toString()]+'/'+item.id]" [innerHTML]="item.htmlName"></a>
+    </div>
+
+  </div>
+  <div class="search-result-wrapper" *ngIf="hasItem == false && hasSearchValue == true">
+    <div class="search-result" id="not-found">
+      <div> &laquo;<b> {{searchBox.value}} </b>&raquo; not found.</div>
+    </div>
   </div>
 </div>

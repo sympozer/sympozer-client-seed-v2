@@ -42,6 +42,7 @@ export class EventComponent implements OnInit {
             this.startsAt = moment(this.event.startsAt).format('LLLL');
             this.endsAt = moment(this.event.endsAt).format('LLLL');
             this.duration = moment.duration(this.event.duration).humanize();
+            this.event.description = this.event.description.split('<')[0];
 
             for(let i in this.event.papers){
                 let query = { 'key' : this.event.papers[i] };

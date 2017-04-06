@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LocalDAOService} from  './localdao.service';
 import { Router, NavigationEnd } from '@angular/router';
+import {routerTransition} from './app.router.animation';
 
 
 

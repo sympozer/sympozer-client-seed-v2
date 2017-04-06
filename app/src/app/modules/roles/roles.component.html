@@ -1,9 +1,10 @@
-<p>
-  Roles List <br />
-</p>
-<md-list>
-	<md-list-item *ngFor="let role of roles">
-		<img md-list-avatar src="" alt="?">
-		<h3 md-line> <a [routerLink]="['/person-by-role/'+role.label+'/'+role.id]">{{role.label}}</a> </h3>
-	</md-list-item>
-</md-list>
+<h1>Roles List</h1>
+
+<app-autocomplete [seachFor]="'label'" [items]="roles" [namespace]="'person-by-role'"></app-autocomplete>
+
+<div class="action-links list-items" *ngFor="let role of roles | keys">
+  <md-card>
+    <md-icon md-list-avatar>perm_identity</md-icon>
+    <a [routerLink]="['/person-by-role/'+role.label+'/'+role.id]">{{role.label}}</a>
+  </md-card>
+</div>

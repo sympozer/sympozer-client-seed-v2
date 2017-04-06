@@ -1,6 +1,6 @@
 <h1>Organizations List</h1>
 
-<app-autocomplete [items]="organizations" [namespace]="'organization'"></app-autocomplete>
+<app-autocomplete [seachFor]="'name'" [items]="organizations" [namespace]="'organization'"></app-autocomplete>
 
 <div class="action-links list-items" *ngFor="let organization of organizations">
   <md-card>

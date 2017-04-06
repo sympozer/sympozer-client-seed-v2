@@ -1,16 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Location }              from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Params} from '@angular/router';
+import {Location}              from '@angular/common';
 import {LocalDAOService} from  '../../localdao.service';
 import {Encoder} from "../../lib/encoder";
+import {routerTransition} from '../../app.router.animation';
 
 @Component({
     selector: 'person-by-role',
     templateUrl: './person-by-role.component.html',
-    styleUrls: ['./person-by-role.component.css']
+    styleUrls: ['./person-by-role.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class PersonByRoleComponent implements OnInit {
     persons;
+    personRole;
 
     constructor(
         private location: Location,
@@ -24,6 +28,10 @@ export class PersonByRoleComponent implements OnInit {
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
+            let name = params['ref'];
+
+            this.personRole = decodeURI(name);
+
             console.log(id);
 
             if(!id)
