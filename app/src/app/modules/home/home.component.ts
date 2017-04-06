@@ -19,4 +19,8 @@ export class HomeComponent {
         console.log('load dataset');
         this.localdao.loadDataset();
     }
+
+    resetDataset(){
+        this.localdao.resetDataset();
+    }
 }

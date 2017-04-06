@@ -66,10 +66,17 @@ export class LocalDAOService {
                 private localStoragexx: LocalStorageService,
                 private managerRequest: ManagerRequest) {
         this.conferenceURL = this.useJsonld
-            ? 'http://serenitecoex.com/conference.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
+            ? 'http://serenitecoex.com/conference2.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
             : 'http://dev.sympozer.com/conference/www2012/file-handle/writer/json';
 
         this.$rdf = $rdf;
+    }
+
+    resetDataset(){
+        const that = this;
+
+        //On récup le dataset jsonld en local storage
+        that.localStoragexx.clear(this.localstorage_jsonld);
     }
 
     loadDataset() {
@@ -348,6 +355,22 @@ console.log(query);
                         " ?id purl:creator <" + data.key + "> . \n" +
                         " ?id scholary:abstract ?abstract . \n" +
                         " ?id schema:label ?label . \n" +
+                        "}";
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getPublicationLinkByTrack":
+                    query =
+                        "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:InProceedings . \n" +
+                        " ?id schema:label ?label . \n" +
+                        " ?id scholary:relatesToEvent ?talk . \n" +
+                        " ?talk a scholary:Talk . \n" +
+                        " ?talk scholary:isSubEventOf <" + data.key + "> . \n" +
+                        " <" + data.key + "> a scholary:Track . \n" +
                         "}";
                     that.launchQuerySparql(query, callback);
                     break;
