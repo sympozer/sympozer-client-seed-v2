@@ -1,13 +1,10 @@
-import {forEach} from "@angular/router/src/utils/collection";
 import {Component, OnInit} from "@angular/core";
-import {Conference} from "../../model/conference";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
-import {Person} from "../../model/person";
 import {PersonService} from "./person.service";
-import {Mutex, MutexInterface} from 'async-mutex';
+import {Mutex} from 'async-mutex';
 import {routerTransition} from '../../app.router.animation';
 
 @Component({
@@ -18,7 +15,7 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class PersonComponent implements OnInit {
-    private externPublications = {};
+    private externPublications = [];
     public person;
     public roles = [];
     public orgas = [];
@@ -47,7 +44,6 @@ export class PersonComponent implements OnInit {
 
             let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPerson", query, (results) => {
-                console.log(results);
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -58,7 +54,6 @@ export class PersonComponent implements OnInit {
                     });
             });
 
-            console.log('getPublicationLink', query);
             this.DaoService.query("getPublicationLink", query, (results, err) => {
                 that.mutex
                     .acquire()
@@ -69,7 +64,6 @@ export class PersonComponent implements OnInit {
             });
 
             this.DaoService.query("getOrganizationLink", query, (results) => {
-                console.log(results);
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -83,7 +77,6 @@ export class PersonComponent implements OnInit {
                 that.mutex
                     .acquire()
                     .then(function (release) {
-                        console.log(results);
                         that.roles = that.personService.generateRolesFromStream(that.roles, results);
                         release();
                     });
@@ -97,16 +90,13 @@ export class PersonComponent implements OnInit {
             if (response.results) {
                 let i = 0;
                 for (let result of response.results.bindings) {
-                    let parsedResult = {
+                    this.externPublications[i] = {
                         id: this.encoder.encodeForURI(result.publiUri.value),
                         name: result.publiTitle.value
                     };
-                    this.externPublications[i] = parsedResult;
                     i++;
                 }
             }
-            console.log(this.externPublications);
-
         });
     };
 }

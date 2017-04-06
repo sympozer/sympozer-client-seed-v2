@@ -1,7 +1,7 @@
 <h1>
   {{person.name}}
 </h1>
-<div *ngIf="(orgas | json) != '{}'">
+<div *ngIf="orgas.length > 0">
   <h2>Organization(s)</h2>
   <div class="action-links list-items" *ngFor="let orga of orgas">
     <md-card>
@@ -10,7 +10,7 @@
     </md-card>
   </div>
 </div>
-<div *ngIf="(roles | json) != '{}'">
+<div *ngIf="roles.length > 0">
   <h2>Role(s)</h2>
   <div class="action-links list-items" *ngFor="let role of roles">
     <md-card>
@@ -19,7 +19,7 @@
     </md-card>
   </div>
 </div>
-<div *ngIf="(publiConf | json) != '{}'">
+<div *ngIf="publiConf.length > 0">
   <h2>Conference Publication(s)</h2>
   <div class="action-links list-items" *ngFor="let publication of publiConf">
     <md-card>
@@ -28,10 +28,10 @@
     </md-card>
   </div>
 </div>
-<div *ngIf="(externPublications | json) != '{}'">
+<div *ngIf="externPublications.length > 0">
   <h2>Other Publication(s)</h2>
   <app-autocomplete [seachFor]="'name'" [items]="externPublications" [namespace]="'externPublication'"></app-autocomplete>
-  <div class="action-links list-items" *ngFor="let publication of externPublications | keys">
+  <div class="action-links list-items" *ngFor="let publication of externPublications">
     <md-card>
       <md-icon md-list-avatar>description</md-icon>
       <a [routerLink]="['/externPublication/'+publication.value.name+'/'+publication.value.id]">{{publication.value.name}}</a>
