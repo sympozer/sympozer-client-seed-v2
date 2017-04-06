@@ -49,7 +49,7 @@ export class PersonsComponent implements OnInit {
                     return false;
                 }
 
-                that.persons.push({
+                that.persons = that.persons.concat({
                     id: that.encoder.encode(id),
                     name: name,
                 });

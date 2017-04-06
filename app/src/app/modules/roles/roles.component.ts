@@ -40,7 +40,7 @@ export class RolesComponent implements OnInit {
           return false;
         }
 
-        that.roles.push({
+        that.roles = that.roles.concat({
           id: that.encoder.encode(id),
           label: label,
         });

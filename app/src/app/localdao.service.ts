@@ -303,7 +303,7 @@ export class LocalDAOService {
                         " ?idHoldRole scholary:withRole ?idRole . \n" +
                         " ?idRole schema:label ?label . \n" +
                         "}";
-
+console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 //For the moment, it's the same thing, since we haven't role complete descriptions.
@@ -342,7 +342,7 @@ export class LocalDAOService {
                         "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
                         "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?label ?abstract \n" +
+                        "SELECT DISTINCT ?id ?label ?abstract \n" +
                         "WHERE {\n" +
                         " ?id a scholary:InProceedings . \n" +
                         " ?id purl:creator <" + data.key + "> . \n" +

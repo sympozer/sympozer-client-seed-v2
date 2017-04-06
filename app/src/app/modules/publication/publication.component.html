@@ -12,7 +12,7 @@
 <!-- Homepage -->
 
 <h2 *ngIf="(authors | json) != '{}'">Authors</h2>
-<div class="action-links list-items" *ngFor="let author of authors | keys">
+<div class="action-links list-items" *ngFor="let author of authors">
   <md-card>
     <md-icon md-list-avatar>perm_identity</md-icon>
     <a [routerLink]="['/person/'+author.label+'/'+author.id]">{{author.label}}</a>

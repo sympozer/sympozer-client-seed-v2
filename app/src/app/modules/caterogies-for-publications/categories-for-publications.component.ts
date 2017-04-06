@@ -46,7 +46,7 @@ export class CategoriesForPublicationsComponent implements OnInit {
                     return false;
                 }
 
-                that.tracks.push({
+                that.tracks = that.tracks.concat({
                     id: id,
                     label: label,
                 });

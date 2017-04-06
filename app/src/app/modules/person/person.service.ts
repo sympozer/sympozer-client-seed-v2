@@ -25,15 +25,15 @@ export class PersonService {
 
   generateRolesFromStream = (roles, stream) => {
     if(stream && stream['?idRole'] && stream['?label']){
-      const nodeName = stream['?label'];
+      const nodeLabel = stream['?label'];
       const nodeId = stream['?idRole'];
 
-      if(nodeName && nodeId)
+      if(nodeLabel && nodeId)
       {
-        const name = nodeName.value;
+        const label = nodeLabel.value;
         let id = nodeId.value;
 
-        if(name && id)
+        if(label && id)
         {
           id = this.encoder.encode(id);
           if(!id)
@@ -42,7 +42,7 @@ export class PersonService {
           }
 
           roles.push({
-            name: name,
+            label: label,
             id: id,
           });
         }
@@ -82,15 +82,17 @@ export class PersonService {
 
   generatePublicationLinkFromStream = (publiConf, stream) => {
     if(stream && stream['?label'] && stream['?id']){
-      const nodeTitle = stream['?label'];
+      const nodeLabel = stream['?label'];
       const nodeId = stream['?id'];
+      const nodeAbstract = stream['?abstract'];
 
-      if(nodeTitle && nodeId)
+      if(nodeLabel && nodeId && nodeAbstract)
       {
-        const title = nodeTitle.value;
+        const label = nodeLabel.value;
         let id = nodeId.value;
+        const abstract = nodeAbstract.value;
 
-        if(title && id)
+        if(label && id && abstract)
         {
           id = this.encoder.encode(id);
           if(!id){
@@ -98,8 +100,9 @@ export class PersonService {
           }
 
           publiConf.push({
-            title: title,
-            id: id
+            label: label,
+            id: id,
+            abstract: abstract,
           });
         }
       }

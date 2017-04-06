@@ -46,7 +46,7 @@ export class PublicationsComponent implements OnInit {
                    return false;
                }
 
-               that.publications.push({
+               that.publications = that.publications.concat({
                    id: id,
                    label: label,
                });

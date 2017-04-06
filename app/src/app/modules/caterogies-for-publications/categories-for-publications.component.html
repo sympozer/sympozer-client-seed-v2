@@ -1,4 +1,7 @@
 <h1>Tracks</h1>
+
+<app-autocomplete [seachFor]="'label'" [items]="tracks" [namespace]="'publications-by-category'"></app-autocomplete>
+
 <div class="action-links" *ngFor="let track of tracks">
     <md-card>
         <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>

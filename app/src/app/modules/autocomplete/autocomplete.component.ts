@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, SimpleChange, SimpleChanges} from '@angular/core';
 import {Conference} from '../../model/conference';
 import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';
@@ -13,7 +13,7 @@ import {Subject} from "rxjs";
     styleUrls: ['./autocomplete.component.scss']
 })
 export class AutocompleteComponent implements OnInit {
-    @Input() items: Object;
+    @Input() items: Array<Object>;
     @Input() namespace: String;
     @Input() seachFor: String;
     itemsFound = [];
@@ -32,7 +32,18 @@ export class AutocompleteComponent implements OnInit {
         this.searchTerms.debounceTime(300)
             .distinctUntilChanged()
             .switchMap(term => term);
-        Object.keys(this.items).length > 10 ? this.isBigItems = true : this.isBigItems = false;
+        this.isBigItems = this.items.length > 10;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        const items: SimpleChange = changes.items;
+        if(items){
+            const currentValue = items.currentValue;
+            if(currentValue){
+                this.items = items.currentValue;
+                this.isBigItems = this.items.length > 10;
+            }
+        }
     }
 
     search(term: string): void {

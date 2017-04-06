@@ -47,6 +47,7 @@ export class PersonComponent implements OnInit {
 
             let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPerson", query, (results) => {
+                console.log(results);
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -68,6 +69,7 @@ export class PersonComponent implements OnInit {
             });
 
             this.DaoService.query("getOrganizationLink", query, (results) => {
+                console.log(results);
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -77,7 +79,7 @@ export class PersonComponent implements OnInit {
             });
 
             this.DaoService.query("getRole", query, (results) => {
-                console.log(results);
+                console.log('roles: ', results);
                 that.mutex
                     .acquire()
                     .then(function (release) {

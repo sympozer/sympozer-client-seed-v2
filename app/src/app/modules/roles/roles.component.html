@@ -2,7 +2,7 @@
 
 <app-autocomplete [seachFor]="'label'" [items]="roles" [namespace]="'person-by-role'"></app-autocomplete>
 
-<div class="action-links list-items" *ngFor="let role of roles | keys">
+<div class="action-links list-items" *ngFor="let role of roles">
   <md-card>
     <md-icon md-list-avatar>perm_identity</md-icon>
     <a [routerLink]="['/person-by-role/'+role.label+'/'+role.id]">{{role.label}}</a>

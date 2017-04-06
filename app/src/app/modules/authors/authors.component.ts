@@ -46,7 +46,7 @@ export class AuthorsComponent implements OnInit {
           return false;
         }
 
-        that.authors.push({
+        that.authors = that.authors.concat({
           id: id,
           name: name,
         });

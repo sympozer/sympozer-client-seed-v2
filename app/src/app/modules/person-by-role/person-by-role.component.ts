@@ -30,6 +30,8 @@ export class PersonByRoleComponent implements OnInit {
             let id = params['id'];
             let name = params['ref'];
 
+            console.log(id);
+
             this.personRole = decodeURI(name);
 
             console.log(id);

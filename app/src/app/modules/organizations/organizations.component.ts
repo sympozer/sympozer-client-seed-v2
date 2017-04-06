@@ -36,7 +36,7 @@ export class OrganizationsComponent implements OnInit {
 
           if(id && label)
           {
-            that.organizations.push({
+            that.organizations = that.organizations.concat({
               id: that.encoder.encode(id),
               label: label,
             });
