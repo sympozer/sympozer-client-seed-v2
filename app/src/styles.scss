@@ -138,6 +138,7 @@ menu {
       box-shadow: $md-search-whiteframe;
       border-radius: 2px;
       margin-bottom: 0;
+      z-index: 105;
 
       md-icon {
         opacity: 0.5;
@@ -155,8 +156,12 @@ menu {
 }
 
 .content {
-  max-height: calc(100% - 81px);
-  overflow-y: scroll;
+  //max-height: calc(100% - 81px);
+  height: calc(100% - 81px);
+  padding: 0 10px;
+  border: solid 1px transparent;
+  //overflow: auto;
+  //overflow-y: scroll;
 }
 
 .loading-screen {

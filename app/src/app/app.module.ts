@@ -45,7 +45,7 @@ import {GithubService} from "./services/github.service";
 import {HylarManager} from './services/hylar.service';
 import {ManagerRequest} from './services/ManagerRequest';
 
-const routes:Routes = [];
+const routes: Routes = [];
 
 @NgModule({
     declarations: [
