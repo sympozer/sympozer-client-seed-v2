@@ -1,11 +1,10 @@
-import {forEach} from "@angular/router/src/utils/collection";
 import {Component, OnInit} from "@angular/core";
-import {Conference} from "../../model/conference";
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
-import {Person} from "../../model/person";
+import {PersonService} from "./person.service";
+import {Mutex} from 'async-mutex';
 import {routerTransition} from '../../app.router.animation';
 
 @Component({
@@ -16,38 +15,72 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class PersonComponent implements OnInit {
-    private person;
-    private roles = {};
-    private orgas = {};
-    private publiConf = {};
-    private externPublications = {};
+    private externPublications = [];
+    public person;
+    public roles = [];
+    public orgas = [];
+    public publiConf = [];
+    private mutex: any;
 
-    constructor(private router: Router, private route: ActivatedRoute,
-                private DaoService: LocalDAOService, private encoder: Encoder,
+    constructor(private router: Router,
+                private route: ActivatedRoute,
+                private DaoService: LocalDAOService,
+                private personService: PersonService,
+                private encoder: Encoder,
                 private  dBPLDataLoaderService: DBLPDataLoaderService) {
-
+        this.person = this.personService.defaultPerson();
+        this.mutex = new Mutex();
     }
 
     ngOnInit() {
+        const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
             let name = params['name'];
-            let query = {'key': this.encoder.decodeForURI(id)};
-            this.person = this.DaoService.query("getPerson", query);
-            for (let i in this.person.made) {
-                let query = {'key': this.person.made[i]};
-                this.publiConf[i] = this.DaoService.query("getPublicationLink", query);
-            }
-            for (let j in this.person.affiliation) {
-                let queryOrga = {'key': this.person.affiliation[j]};
-                this.orgas[j] = this.DaoService.query("getOrganizationLink", queryOrga);
-            }
-            for (let k in this.person.holdsRole) {
-                let queryRole = {'key': this.person.holdsRole[k]};
-                this.roles[k] = this.DaoService.query("getRole", queryRole);
+
+            if (!id || !name) {
+                return false;
             }
 
-            this.getPublication(this.person);
+            let query = {'key': this.encoder.decode(id)};
+            this.DaoService.query("getPerson", query, (results) => {
+                that.mutex
+                    .acquire()
+                    .then(function (release) {
+                        that.person = {
+                            name: results['?label'].value
+                        };
+                        release();
+                    });
+            });
+
+            this.DaoService.query("getPublicationLink", query, (results, err) => {
+                that.mutex
+                    .acquire()
+                    .then(function (release) {
+                        that.publiConf = that.personService.generatePublicationLinkFromStream(that.publiConf, results);
+                        release();
+                    });
+            });
+
+            this.DaoService.query("getOrganizationLink", query, (results) => {
+                that.mutex
+                    .acquire()
+                    .then(function (release) {
+                        that.orgas = that.personService.generateOrgasFromStream(that.orgas, results);
+                        release();
+                    });
+            });
+
+            this.DaoService.query("getRole", query, (results) => {
+                console.log('roles: ', results);
+                that.mutex
+                    .acquire()
+                    .then(function (release) {
+                        that.roles = that.personService.generateRolesFromStream(that.roles, results);
+                        release();
+                    });
+            });
         });
     }
 
@@ -57,16 +90,13 @@ export class PersonComponent implements OnInit {
             if (response.results) {
                 let i = 0;
                 for (let result of response.results.bindings) {
-                    let parsedResult = {
+                    this.externPublications[i] = {
                         id: this.encoder.encodeForURI(result.publiUri.value),
                         name: result.publiTitle.value
                     };
-                    this.externPublications[i] = parsedResult;
                     i++;
                 }
             }
-            console.log(this.externPublications);
-
         });
     };
 }

@@ -15,7 +15,8 @@ export class EventsComponent implements OnInit {
     events;
     constructor(private router:Router,
                 private DaoService : LocalDAOService,
-                /*private githubService: GithubService*/) {
+                /*private githubService: GithubService,*/) {
+        this.events = [];
     }
 
     ngOnInit() {
@@ -28,7 +29,13 @@ export class EventsComponent implements OnInit {
 
         this.githubService.parseDiffFileForEswc("diff --git a/app/dataESWC.md b/app/dataESWC.md");*/
 
-        this.events = this.DaoService.query("getAllEvents", null);
+        //this.events = this.DaoService.query("getAllEvents", null);
+        const that = this;
+        this.DaoService.query("getAllEvents", null, (results) => {
+            if(results){
+
+            }
+        });
         console.log(this.events);
     }
 

@@ -3,8 +3,8 @@
 <app-autocomplete [seachFor]="'name'" [items]="persons" [namespace]="'person'"></app-autocomplete>
 
 <div class="action-links list-items" *ngFor="let person of persons">
-  <md-card>
-    <md-icon md-list-avatar>perm_identity</md-icon>
-    <a [routerLink]="['/person/'+person.name+'/'+person.id]">{{person.name}}</a>
-  </md-card>
+    <md-card>
+        <md-icon md-list-avatar>perm_identity</md-icon>
+        <a [routerLink]="['/person/'+person.label+'/'+person.id]">{{person.label}}</a>
+    </md-card>
 </div>
