@@ -1,9 +1,6 @@
 <md-sidenav-container>
   <header-app></header-app>
   <md-sidenav #end align="end" mode="push">
-    <button md-mini-fab color="primary" class="menu-button-close" (click)="end.close()">
-      <md-icon>close</md-icon>
-    </button>
     <menu class="side" (click)="end.close()"></menu>
   </md-sidenav>
   <button md-icon-button class="menu-button-open" (click)="end.open()">

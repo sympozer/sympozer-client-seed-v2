@@ -46,7 +46,7 @@ import {HylarManager} from './services/hylar.service';
 import {ManagerRequest} from './services/ManagerRequest';
 import {PersonService} from './modules/person/person.service';
 
-const routes:Routes = [];
+const routes: Routes = [];
 
 @NgModule({
     declarations: [

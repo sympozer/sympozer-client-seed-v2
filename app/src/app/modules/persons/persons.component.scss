@@ -1,0 +1,12 @@
+.search-results {
+  position: relative;
+  overflow: scroll;
+  padding: 0 10px;
+  width: 100%;
+  height: 100%;
+}
+
+.component-wrapper {
+  height: 100%;
+  overflow: hidden !important;
+}
