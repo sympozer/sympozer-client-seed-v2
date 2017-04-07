@@ -60,7 +60,7 @@
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc/2016/talk/research-25> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#description>
-              "Talk: Efficient Algorithms for Association Finding and Frequent Association Pattern Mining" ;
+              "Talk: Efficients Algorithms for Association Finding and Frequent Association Pattern Mining" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#endDate>
               "2016-10-21T10:50:00" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#isEventRelatedTo>
@@ -82,7 +82,7 @@
 <https://w3id.org/scholarlydata/person/elena-simperl>
       a       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Person> ;
       <http://www.w3.org/2000/01/rdf-schema#label>
-              "Elena Simperl" ;
+              "Elena Simperly" ;
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/person/elena-simperl> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAffiliation>
@@ -215,7 +215,7 @@
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#description>
               "Talk: Proactive Replication of Dynamic Linked Data for Scalable RDF Stream Processing" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#endDate>
-              "2016-10-19T21:00:00" ;
+              "2016-10-19T21:00:30" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#isEventRelatedTo>
               <https://w3id.org/scholarlydata/inproceedings/iswc-2016-posterdemo-poster-49> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#isSubEventOf>
@@ -34003,3 +34003,12 @@ measure the query execution""" ;
               <https://w3id.org/scholarlydata/affiliation-during-event/iswc2016-british-library-corine-deliot> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#name>
               "Corine Deliot" .
+
+<https://w3id.org/scholarlydata/organisation/knowledge-media-institute>
+      a       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Organisation> ;
+      <http://www.w3.org/2000/01/rdf-schema#label>
+              "Knowledge Media Institute" ;
+      <http://www.w3.org/2002/07/owl#sameAs>
+              <http://data.semanticweb.org/organization/knowledge-media-institute> ;
+      <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#name>
+              "Knowledge Media Institute" .
