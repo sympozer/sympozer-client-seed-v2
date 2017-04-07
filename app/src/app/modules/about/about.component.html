@@ -1,18 +1,23 @@
 <h1> About</h1>
-<h2>About the ESWC2016 app</h2>
+<h2>About the ESWC2017 app</h2>
 
 <p>This app is available on the Web and on the App & Play stores.</p>
 
-<p>Its data structure follows the Semantic Web Conference Ontology and presents persons, organizations, publications and events of the conference. The application itself allows browsing these data. It is also a client-side mashup that enriches them using other data sources (Twitter, DBLP) or search engines (Google, DuckDuckgo).</p>
-<p>
-You can use it offline to browse the conference dataset. You will need an Internet connection for viewing data from online sources, as well as to vote for your preferred poster and demo.
-</p>
-<p>
-Periodically (but not too often), you can update the conference dataset in the settings panel.
-</p>
+<p>Its data structure follows the newly published ScholarlyData Ontology, formerly Semantic Web Conference Ontology, that describes persons, organizations, publications and events of the conference. The application allows browsing these data. It is also a client-side mashup that can enrich them using other data sources (Twitter, DBLP) or search engines (Google, DuckDuckgo).</p>
 
-<h2>Issues</h2>
+<p>You can use it offline to browse the conference dataset. You will need an Internet connection for viewing data from online sources, as well as to vote for your preferred poster and demo.</p>
 
+<p>Periodically (but not too often), you can update the conference dataset in the settings panel.</p>
+
+<h3>How it works</h3>
+
+<p>In 2017, the app architecture has been completely refactored:<p>
+<ul>
+<li>Its core engine is based on RDF data (instead of JSON), internally served using the <a href="https://github.com/linkeddata/rdflib.js/">rdflib.js</a> library. Feel free to open the console and watch the app sending SPARQL requests to the store. The conference dataset has been issued using <a href="https://github.com/anuzzolese/cLODg2">cLODg</a> (conference Linked Open Data generator) V2.</li>
+<li>It fully runs on the client side, and relies on the <a href="https://angularjs.org/">Angular 2</a> JavaScript framework, using Web components and other advances. The design layer uses <a href="https://material.angularjs.org/latest/">Angular Material</a>.</li>
+</ul>
+
+<h3>Issues</h3>
 
 <p>Do not hesitate to report issues on the following GitHub repositories:</p>
 <ul>
@@ -22,11 +27,27 @@ Periodically (but not too often), you can update the conference dataset in the s
 
 <h2>Contributors</h2>
 <ul class="link">
-
-	<li><a [routerLink]="['/person/Andrea%20Giovanni%20Nuzzolese/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Fandrea-giovanni-nuzzolese']">Andrea Giovanni Nuzzolese</a></li>
-	<li><a [routerLink]="['/person/Anna%20Lisa%20Gentile/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Fanna-lisa-gentile']">Anna Lisa Gentile</a></li>
-	<li><a [routerLink]="['/person/Lionel%20Medini/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Flionel-medini']">Lionel Médini</a></li>
+	<li>App development coordination: <a [routerLink]="['/person/Lionel%20Medini/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Flionel-medini']">Lionel Médini</a></li>
+	<li>Metadata harvesting and dataset maintenance: <a [routerLink]="['/person/Luigi%20Asprino/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Fluigi-asprino']">Luigi Asprino</a></li>
+	<li>cLODg and voting module development: <a [routerLink]="['/person/Andrea%20Giovanni%20Nuzzolese/http%3A%2F%2Fdata.semanticweb.org%2Fperson%2Fandrea-giovanni-nuzzolese']">Andrea Giovanni Nuzzolese</a></li>
 </ul>
+<ul>
+    <li>Core developers:
+	<ul>
+	    <li><a href="">Fanuel Abebe</a></li>
+	    <li><a href="">Mahmoud Ayssami</a></li>
+	    <li><a href="">Massinissa Bouneffa</a></li>
+	    <li><a href="">Ha Le Tuan</a></li>
+	    <li><a href="">Antoine Martin</a></li>
+	    <li><a href="">Pierre Marsot</a></li>
+	    <li><a href="">Mathieu Palley</a></li>
+	    <li><a href="">Nikolaos Papoutsis</a></li>
+	    <li><a href="">Christophe Pinelli</a></li>
+	    <li><a href="">Nguyen The Hoai Duy</a></li>
+	</ul>
+	</li>
+</ul>
+
 
 <h2>From an original idea by</h2>
 <a href="http://sympozer.liris.cnrs.fr/">
