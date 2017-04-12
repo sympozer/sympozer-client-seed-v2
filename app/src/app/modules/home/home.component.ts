@@ -14,13 +14,4 @@ export class HomeComponent {
 
     constructor(private router: Router, private localdao: LocalDAOService) {
     }
-
-    loadDataset() {
-        console.log('load dataset');
-        this.localdao.loadDataset();
-    }
-
-    resetDataset(){
-        this.localdao.resetDataset();
-    }
 }
