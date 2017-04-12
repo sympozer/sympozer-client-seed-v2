@@ -18,6 +18,7 @@ export class DBLPDataLoaderService {
                         ?publiUri akt:has-title ?publiTitle. 
                       }
                     }`;
+
         return this.query(prefix, query);
     }
 
