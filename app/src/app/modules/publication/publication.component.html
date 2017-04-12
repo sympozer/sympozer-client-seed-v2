@@ -1,4 +1,4 @@
-<h1>{{publication.title}}</h1>
+<h1>{{publication.label}}</h1>
 
 <!-- Logo -->
 
@@ -12,10 +12,10 @@
 <!-- Homepage -->
 
 <h2 *ngIf="(authors | json) != '{}'">Authors</h2>
-<div class="action-links list-items" *ngFor="let author of authors | keys">
+<div class="action-links list-items" *ngFor="let author of authors">
   <md-card>
     <md-icon md-list-avatar>perm_identity</md-icon>
-    <a [routerLink]="['/person/'+author.value.name+'/'+author.value.id]">{{author.value.name}}</a>
+    <a [routerLink]="['/person/'+author.label+'/'+author.id]">{{author.label}}</a>
   </md-card>
 </div>
 

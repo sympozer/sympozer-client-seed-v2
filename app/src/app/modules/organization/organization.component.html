@@ -1,11 +1,20 @@
 <h1>{{organization.label}}</h1>
 
+<!-- Logo -->
+
+<!-- Abstract -->
+
+<!-- Homepage -->
+
+
 <div *ngIf="(members | json) != '{}'">
-  <h2 *ngIf="(members | json) != '{}'">Membre(s)</h2>
-    <div class="action-links list-items" *ngFor="let member of members | keys">
+    <h2 *ngIf="(members | json) != '{}'">Membre(s)</h2>
+    <div class="action-links list-items" *ngFor="let member of members">
         <md-card>
             <md-icon md-list-avatar>perm_identity</md-icon>
-            <a [routerLink]="['/person/'+member.value.name+'/'+member.value.id]">{{member.value.name}}</a>
+            <a [routerLink]="['/person/'+member.name+'/'+member.id]">{{member.name}}</a>
         </md-card>
     </div>
 </div>
+
+

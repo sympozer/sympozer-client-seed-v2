@@ -22,4 +22,15 @@ export class ManagerRequest {
                 return null;
             });
     }
+
+    get_safe(url) {
+        return this.http.get(url)
+            .toPromise()
+            .then((response) => {
+                return response
+            })
+            .catch(() => {
+                return null;
+            });
+    }
 }
