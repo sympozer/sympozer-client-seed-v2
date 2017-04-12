@@ -56,7 +56,7 @@ export class PersonsComponent implements OnInit {
         let elementTop = this.itemListViewWrapper.nativeElement.scrollTop;
         let elementScrollHeight = this.itemListViewWrapper.nativeElement.scrollHeight;
         let elementInitialHeight = this.itemListViewWrapper.nativeElement.clientHeight;
-        return (elementTop + elementInitialHeight) / elementScrollHeight > 0.97;
+        return (elementTop + elementInitialHeight) / elementScrollHeight > 0.90;
     }
 
 }
