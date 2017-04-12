@@ -19,7 +19,7 @@ import {routerTransition} from '../../app.router.animation';
 export class PersonsComponent implements OnInit {
     @ViewChild('itemListViewWrapper') itemListViewWrapper;
     conference: Conference = new Conference();
-    persons: Object;
+    persons: Array<any> = new Array();
     tabPersons: Array<Object> = new Array();
     sum: number = 20;
 
@@ -28,7 +28,6 @@ export class PersonsComponent implements OnInit {
                 private DaoService: LocalDAOService,
                 private encoder: Encoder,
                 private  dBPLDataLoaderService: DBLPDataLoaderService) {
-        this.persons = [];
     }
 
     ngOnInit() {
@@ -51,12 +50,13 @@ export class PersonsComponent implements OnInit {
                     return false;
                 }
 
-                that.persons = that.persons.concat({
+                that.persons = that.persons.concat([{
                     id: that.encoder.encode(id),
                     name: name,
-                });
+                }]);
             }
         });
+        console.log("HERREE", this.persons);
         this.persons.sort();
         this.addItems(0, this.sum);
 

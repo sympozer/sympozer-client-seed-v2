@@ -35,8 +35,8 @@ export class AutocompleteComponent implements OnInit {
         this.isBigItems = this.items.length > 10;
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        const items: SimpleChange = changes.items;
+    ngOnChanges(changes) {
+        const items = changes.items;
         if(items){
             const currentValue = items.currentValue;
             if(currentValue){
