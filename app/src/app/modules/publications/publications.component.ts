@@ -50,6 +50,10 @@ export class PublicationsComponent implements OnInit {
                    id: id,
                    label: label,
                });
+
+               that.publications.sort((a, b) => {
+                   return a.label > b.label ? 1 : -1;
+               });
            }
         });
     }

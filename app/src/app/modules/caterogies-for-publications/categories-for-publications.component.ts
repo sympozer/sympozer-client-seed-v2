@@ -50,6 +50,10 @@ export class CategoriesForPublicationsComponent implements OnInit {
                     id: id,
                     label: label,
                 });
+
+                that.tracks.sort((a, b) => {
+                    return a.label > b.label ? 1 : -1;
+                });
             }
         });
     }

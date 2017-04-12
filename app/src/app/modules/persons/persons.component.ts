@@ -54,6 +54,10 @@ export class PersonsComponent implements OnInit {
                     id: that.encoder.encode(id),
                     name: name,
                 });
+
+                that.persons.sort((a, b) => {
+                    return a.name > b.name ? 1 : -1;
+                });
             }
         });
     }

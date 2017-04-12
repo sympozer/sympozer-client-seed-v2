@@ -44,6 +44,10 @@ export class RolesComponent implements OnInit {
           id: that.encoder.encode(id),
           label: label,
         });
+
+        that.roles.sort((role, nextRole) => {
+          return role.label > nextRole.label ? 1 : -1;
+        });
       }
     });
   }

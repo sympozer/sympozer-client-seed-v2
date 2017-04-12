@@ -216,8 +216,8 @@ export class LocalDAOService {
                         "WHERE {\n" +
                         " ?id a person:Person . \n" +
                         " ?id schema:label ?label . \n" +
-                        "}";
-
+                        "} LIMIT 10";
+console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 //return this.personLinkMap;
