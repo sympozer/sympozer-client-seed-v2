@@ -34,7 +34,7 @@
   <div class="action-links list-items" *ngFor="let publication of externPublications">
     <md-card>
       <md-icon md-list-avatar>description</md-icon>
-      <a [routerLink]="['/externPublication/'+publication.value.name+'/'+publication.value.id]">{{publication.value.name}}</a>
+      <a [routerLink]="['/externPublication/'+publication.name+'/'+publication.id]">{{publication.name}}</a>
     </md-card>
   </div>
 </div>
