@@ -40,6 +40,10 @@ export class OrganizationsComponent implements OnInit {
               id: that.encoder.encode(id),
               label: label,
             });
+
+            that.organizations.sort((a, b) => {
+              return a.label > b.label ? 1 : -1;
+            });
           }
         }
       }

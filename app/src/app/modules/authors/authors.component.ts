@@ -50,6 +50,10 @@ export class AuthorsComponent implements OnInit {
           id: id,
           name: name,
         });
+
+        that.authors.sort((a, b) => {
+          return a.name > b.name ? 1 : -1;
+        });
       }
     });
   }
