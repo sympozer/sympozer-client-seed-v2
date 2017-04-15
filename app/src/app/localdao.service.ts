@@ -72,7 +72,7 @@ export class LocalDAOService {
         this.$rdf = $rdf;
     }
 
-    resetDataset(){
+    resetDataset() {
         const that = this;
 
         //On récup le dataset jsonld en local storage
@@ -81,19 +81,21 @@ export class LocalDAOService {
 
     loadDataset() {
 
+        let isSuccess: boolean = false;
         const that = this;
 
         //On récup le dataset jsonld en local storage
         let storage = that.localStoragexx.retrieve(this.localstorage_jsonld);
 
+
         //Si on l'a pas, on le télécharge
         if (!storage) {
-            console.log('loading graph jsonld ...');
             that.managerRequest.get_safe(this.conferenceURL)
                 .then((response) => {
                     if (response && response._body) {
                         that.saveDataset(response._body);
                         that.localStoragexx.store(that.localstorage_jsonld, response._body);
+                        isSuccess = true;
                     }
                 });
         }
@@ -101,10 +103,13 @@ export class LocalDAOService {
             try {
                 console.log('have localstorage');
                 that.saveDataset(storage);
+                isSuccess = true;
             } catch (err) {
+                isSuccess = false;
                 console.log(err)
             }
         }
+        return isSuccess;
     }
 
     saveDataset(dataset: string) {
@@ -112,12 +117,12 @@ export class LocalDAOService {
         const mimeType = 'text/turtle';
         const store = that.$rdf.graph();
 
-        try{
+        try {
             that.$rdf.parse(dataset, store, this.conferenceURL, mimeType);
             that.store = store;
             that.store.fetcher = null;
         }
-        catch(e){
+        catch (e) {
             console.log(e);
         }
     }
@@ -217,7 +222,7 @@ export class LocalDAOService {
                         " ?id a person:Person . \n" +
                         " ?id schema:label ?label . \n" +
                         "} LIMIT 10";
-console.log(query);
+                    console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 //return this.personLinkMap;
@@ -310,7 +315,7 @@ console.log(query);
                         " ?idHoldRole scholary:withRole ?idRole . \n" +
                         " ?idRole schema:label ?label . \n" +
                         "}";
-console.log(query);
+                    console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 //For the moment, it's the same thing, since we haven't role complete descriptions.

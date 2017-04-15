@@ -19,7 +19,7 @@ import {routerTransition} from '../../app.router.animation';
 export class PersonsComponent implements OnInit {
     @ViewChild('itemListViewWrapper') itemListViewWrapper;
     conference: Conference = new Conference();
-    persons: Array<Object> = new Array();
+    persons: Array<any> = new Array();
     tabPersons: Array<Object> = new Array();
     sum: number = 20;
 
