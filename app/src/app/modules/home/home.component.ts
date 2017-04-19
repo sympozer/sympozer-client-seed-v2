@@ -7,21 +7,12 @@ import {Ng2TweetComponent} from 'ng2-tweet';
 @Component({
     selector: 'home',
     templateUrl: 'home.component.html',
-    styleUrls: ['home.component.css'],
+    styleUrls: ['home.component.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
 export class HomeComponent {
 
     constructor(private router: Router, private localdao: LocalDAOService) {
-    }
-
-    loadDataset() {
-        console.log('load dataset');
-        this.localdao.loadDataset();
-    }
-
-    resetDataset(){
-        this.localdao.resetDataset();
     }
 }

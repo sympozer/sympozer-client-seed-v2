@@ -33,7 +33,7 @@ import {EventsByLocationComponent} from "./modules/events-by-location/events-by-
 import {EventComponent} from "./modules/event/event.component";
 import {ExternPublicationComponent} from "./modules/extern-publication/externpublication.component";
 import {AutocompleteComponent} from './modules/autocomplete/autocomplete.component';
-
+import {ToolsComponent} from './modules/tools/tools.component';
 import {KeysPipe} from "./keys.pipe";
 import {DataLoaderService} from "./data-loader.service";
 import {DBLPDataLoaderService} from "./dblpdata-loader.service";
@@ -46,7 +46,7 @@ import {HylarManager} from './services/hylar.service';
 import {ManagerRequest} from './services/ManagerRequest';
 import {PersonService} from './modules/person/person.service';
 
-const routes:Routes = [];
+const routes: Routes = [];
 
 @NgModule({
     declarations: [
@@ -77,7 +77,9 @@ const routes:Routes = [];
         EventByCategoryComponent,
         ExternPublicationComponent,
         AutocompleteComponent,
-        KeysPipe
+        ToolsComponent,
+        KeysPipe,
+        ToolsComponent
     ],
     imports: [
         BrowserModule,

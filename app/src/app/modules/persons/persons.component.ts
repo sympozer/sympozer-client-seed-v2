@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Conference} from '../../model/conference';
 import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';
@@ -9,11 +9,10 @@ import {Encoder} from "../../lib/encoder";
 import {Person} from "../../model/person";
 import {routerTransition} from '../../app.router.animation';
 
-
 @Component({
     selector: 'app-person',
     templateUrl: 'persons.component.html',
-    styleUrls: ['persons.component.css'],
+    styleUrls: ['persons.component.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
@@ -49,10 +48,10 @@ export class PersonsComponent implements OnInit {
                     return false;
                 }
 
-                that.persons = that.persons.concat({
+                that.persons = that.persons.concat([{
                     id: that.encoder.encode(id),
                     name: name,
-                });
+                }]);
 
                 that.persons.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
