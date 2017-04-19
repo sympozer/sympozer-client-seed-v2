@@ -55,8 +55,4 @@ export class ToolsComponent implements OnInit {
             });
         }
     }
-
-    getStatus() {
-        return this.isLoading;
-    }
 }
