@@ -268,3 +268,7 @@ body {
     stroke: $yellow;
   }
 }
+
+.mat-sidenav-transition .mat-sidenav-content {
+  overflow: hidden;
+}

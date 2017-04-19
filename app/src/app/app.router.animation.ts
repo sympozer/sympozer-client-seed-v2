@@ -9,10 +9,12 @@ function slideToTop() {
         state('void', style({
             position: 'absolute',
             width: 'calc(100% - 20px)',
-            willChange: 'transform, position'
+            willChange: 'transform, position',
+            overflow: 'hidden'
         })),
         state('*', style({
             position: 'relative',
+            overflow: 'hidden'
         })),
         transition(':enter', [
             style({transform: 'translate3D(0, 10%, 0)', opacity: '0'}),
