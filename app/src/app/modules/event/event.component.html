@@ -1,5 +1,5 @@
 <h1>
-  {{event.name}}
+  {{event.label}}
 </h1>
 
 <h2>Description</h2>
@@ -11,7 +11,7 @@
 <div class="action-links list-items">
   <md-card>
     <md-icon md-list-avatar>access_time</md-icon>
-    <p>{{startsAt}}</p>
+    <p>{{event.startsAt}}</p>
   </md-card>
 </div>
 
@@ -19,7 +19,7 @@
 <div class="action-links list-items">
   <md-card>
     <md-icon md-list-avatar>access_time</md-icon>
-    <p>{{endsAt}}</p>
+    <p>{{event.endsAt}}</p>
   </md-card>
 </div>
 

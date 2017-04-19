@@ -396,19 +396,45 @@ console.log(query);
                     return this.eventLinkMap[data.key];
                 case "getAllEvents":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX person: <http://www.scholarlydata.org/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                         "SELECT DISTINCT ?id ?label \n" +
                         "WHERE {\n" +
-                        " ?id a person:InProceedings . \n" +
+                        " ?id a scholary:OrganisedEvent . \n" +
                         " ?id schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getEventById":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?description ?endDate ?startDate \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:OrganisedEvent . \n" +
+                        " <" + data.key + "> schema:label ?label . \n" +
+                        " <" + data.key + "> scholary:description ?description . \n" +
+                        " <" + data.key + "> scholary:endDate ?endDate . \n" +
+                        " <" + data.key + "> scholary:startDate ?startDate . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getLocation":
                     return this.eventLinkMapByLocation[data.key];
-                case "getCategory":
-                    return this.categoryMap[data.key];
+                case "getEventByTrack":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?description ?endDate ?startDate \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:OrganisedEvent . \n" +
+                        " <" + data.key + "> schema:label ?label . \n" +
+                        " <" + data.key + "> scholary:description ?description . \n" +
+                        " <" + data.key + "> scholary:endDate ?endDate . \n" +
+                        " <" + data.key + "> scholary:startDate ?startDate . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getCategoryForPublications":
                     return this.categoryForPublicationsMap[data.key];
                 case "getCategoryLink":

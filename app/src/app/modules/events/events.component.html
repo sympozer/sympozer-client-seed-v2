@@ -1,10 +1,10 @@
 <h1>Events</h1>
 
-<app-autocomplete [seachFor]="'name'" [items]="events" [namespace]="'event'"></app-autocomplete>
+<app-autocomplete [seachFor]="'label'" [items]="events" [namespace]="'event'"></app-autocomplete>
 
-<div class="action-links list-items" *ngFor="let event of events | keys">
+<div class="action-links list-items" *ngFor="let event of events">
   <md-card>
     <md-icon md-list-avatar>event</md-icon>
-    <a [routerLink]="['/event/'+event.value.name+'/'+event.value.id]">{{event.value.name}}</a>
+    <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
   </md-card>
 </div>

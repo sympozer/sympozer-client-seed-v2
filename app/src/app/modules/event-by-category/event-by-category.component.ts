@@ -25,14 +25,14 @@ export class EventByCategoryComponent implements OnInit {
         //this.events = this.DaoService.query("getAllEvents", null);
         //console.log(this.events);
         this.route.params.forEach((params: Params) => {
-            let query = { 'key' : this.encoder.decodeForURI(params['id'])};
-            this.eventCategory = this.DaoService.query("getCategory", query);
+            let query = { 'key' : this.encoder.decode(params['id'])};
+           /* this.eventCategory = this.DaoService.query("getEventByTrack", query);
             for(let i in this.eventCategory.events){
                 let query = { 'key' : this.eventCategory.events[i] };
                 this.events[i] = this.DaoService.query("getEventLink",query);
             }
             console.log(this.eventCategory);
-            console.log(this.events);
+            console.log(this.events);*/
         });
     }
 
