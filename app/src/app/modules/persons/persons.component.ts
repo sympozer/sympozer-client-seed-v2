@@ -61,46 +61,6 @@ export class PersonsComponent implements OnInit {
 
     }
 
-    /*getPublication(person: Person) {
-     // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
-     this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
-     console.log(response);
-     person.publications = [];
-     if (response.results) {
-     for (let result of response.results.bindings) {
-     person.publications.push(result);
-     }
-     console.log(person.publications);
-     }
 
-     });
-     }
-
-     getPublicationExternAuthors = (publication: any)=> {
-     this.dBPLDataLoaderService.getExternPublicationAuthors(publication.publiUri.value).then(response => {
-     console.log(response);
-     publication.authors = [];
-     if (response.results) {
-     for (let result of response.results.bindings) {
-     publication.authors.push(result);
-     }
-     }
-     }
-     );
-     };
-
-     getPublicationExternInfo = (publication: any) => {
-     this.dBPLDataLoaderService.getExternPublicationInfo(publication.publiUri.value).then((response => {
-     console.log(`Got Publication ${publication.publiUri.value} info: `);
-     console.log(response);
-     publication.informations = [];
-     if (response.results) {
-     for (let result of response.results.bindings) {
-     publication.informations.push(result);
-     }
-     }
-
-     }))
-     }*/
 
 }
