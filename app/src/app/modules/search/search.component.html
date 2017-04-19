@@ -1,5 +1,5 @@
-<h1 *ngIf="testId != 'organization'"> Find a {{testId}} </h1>
-<h1 *ngIf="testId == 'organization'"> Find an {{testId}} </h1>
+<h1 *ngIf="testId == 'organization' || testId == 'event'"> Find an {{testId}} </h1>
+<h1 *ngIf="testId != 'organization' && testId != 'event'"> Find a {{testId}} </h1>
 <div *ngIf="testId == 'person'">
   <div class="action-links">
     <md-card><a [routerLink]="['/persons']">by name </a>
