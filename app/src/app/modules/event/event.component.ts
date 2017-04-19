@@ -39,13 +39,16 @@ export class EventComponent implements OnInit {
             console.log(id);
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
-            this.DaoService.query("getEventById", query, (results) => {
+            this.DaoService.query("getEventById", query, (results, err) => {
+                console.log(err);
                 console.log(results);
                 if (results) {
                     const nodeLabel = results['?label'];
                     const nodeDescription = results['?description'];
                     const nodeEndDate = results['?endDate'];
                     const nodeStartDate = results['?startDate'];
+                    const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
+                    const nodeIsSubEventOf = results['?isSubEventOf'];
 
                     if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate) {
                         const label = nodeLabel.value;
@@ -53,19 +56,34 @@ export class EventComponent implements OnInit {
                         let endDate = nodeEndDate.value;
                         let startDate = nodeStartDate.value;
 
+                        if(nodeIsEventRelatedTo && nodeIsSubEventOf) {
+                            let isEventRelatedTo = nodeIsEventRelatedTo.value;
+                            let isSubEventOf = nodeIsSubEventOf.value;
+                        }
+
                         if (label && description && endDate && startDate) {
-                            startDate = moment(startDate).format('LLLL');
-                            endDate = moment(endDate).format('LLLL');
+                            startDate = moment(startDate);
+                            endDate = moment(endDate);
+                            const duration = moment.duration(endDate.diff(startDate));
+
+                            var hours = parseInt(duration.asHours());
+                            var minutes = parseInt(duration.asMinutes()) - hours * 60;
+
+                            let strDuration = "";
+                            if(hours > 0){
+                                strDuration = hours + " hours and ";
+                            }
+                            if(minutes > 0){
+                                strDuration += minutes + " minutes";
+                            }
 
                             that.event = {
                                 label: label,
                                 description: description,
-                                startsAt: startDate,
-                                endsAt: endDate,
-
+                                startsAt: startDate.format('LLLL'),
+                                endsAt: endDate.format('LLLL'),
+                                duration: strDuration,
                             };
-
-                            console.log(that.event);
                         }
                     }
                 }

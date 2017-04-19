@@ -404,27 +404,31 @@ export class LocalDAOService {
                 case "getEventLink":
                     return this.eventLinkMap[data.key];
                 case "getAllEvents":
-                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?id ?label \n" +
-                        "WHERE {\n" +
-                        " ?id a ?type . \n" +
-                        " ?id schema:label ?label . \n" +
-                        " FILTER(?type IN (scholary:Panel, scholary:Session, scholary:Talk, scholary:Tutorial, scholary:Workshop)) \n" +
-                        "}";
+                    const types = ["Panel", "Session", 'Talk', 'Tutorial', 'Workshop'];
+                    for(const type of types){
+                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?id ?label \n" +
+                            "WHERE {\n" +
+                            " ?id a scholary:"+type+" . \n" +
+                            " ?id schema:label ?label . \n" +
+                            "}";
 
-                    that.launchQuerySparql(query, callback);
+                        that.launchQuerySparql(query, callback);
+                    }
                     break;
                 case "getEventById":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?label ?description ?endDate ?startDate \n" +
+                        "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent \n" +
                         "WHERE {\n" +
-                        " <" + data.key + "> a scholary:OrganisedEvent . \n" +
                         " <" + data.key + "> schema:label ?label . \n" +
                         " <" + data.key + "> scholary:description ?description . \n" +
                         " <" + data.key + "> scholary:endDate ?endDate . \n" +
                         " <" + data.key + "> scholary:startDate ?startDate . \n" +
+                        " <" + data.key + "> scholary:isSubEventOf ?isSubEventOf . \n" +
+                        " OPTIONAL { <" + data.key + "> scholary:isEventRelatedTo ?isEventRelatedTo . } \n" +
+                        " OPTIONAL { <" + data.key + "> scholary:hasSubEvent ?hasSubEvent . } \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
