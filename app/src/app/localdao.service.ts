@@ -408,8 +408,9 @@ export class LocalDAOService {
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                         "SELECT DISTINCT ?id ?label \n" +
                         "WHERE {\n" +
-                        " ?id a scholary:OrganisedEvent . \n" +
+                        " ?id a ?type . \n" +
                         " ?id schema:label ?label . \n" +
+                        " FILTER(?type IN (scholary:Panel, scholary:Session, scholary:Talk, scholary:Tutorial, scholary:Workshop)) \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
