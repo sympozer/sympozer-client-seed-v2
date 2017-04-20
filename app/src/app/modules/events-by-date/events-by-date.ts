@@ -63,8 +63,8 @@ export class EventsByDate implements OnInit {
                                         if (momentEndDate && momentStartDate) {
                                             const duration = moment.duration(momentEndDate.diff(momentStartDate));
 
-                                            var hours = parseInt(duration.asHours());
-                                            var minutes = parseInt(duration.asMinutes()) - hours * 60;
+                                            var hours = parseInt(duration.asHours().toString());
+                                            var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
 
                                             let strDuration = "";
                                             if (hours > 0) {
