@@ -74,7 +74,7 @@ export class LocalDAOService {
         }
 
         this.conferenceURL = this.useJsonld
-            ? 'http://serenitecoex.com/conference2.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
+            ? 'https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/pierre_dev/app/src/dataset.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
             : 'http://dev.sympozer.com/conference/www2012/file-handle/writer/json';
 
         this.$rdf = $rdf;
