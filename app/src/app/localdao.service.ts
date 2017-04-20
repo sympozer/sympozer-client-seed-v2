@@ -570,6 +570,17 @@ console.log(originStartDate, originEndDate);
                         });
                     }
                     break;
+                case "getEventFromPublication":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:InProceedings . \n" +
+                        " <" + data.key + "> scholary:relatesToEvent ?id . \n" +
+                        " ?id schema:label ?label . \n" +
+                        "}";
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getAllLocations":
                     return this.locationLinkMap;
                 case "getLocationLink":
