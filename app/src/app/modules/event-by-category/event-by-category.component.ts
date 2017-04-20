@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
-import { LocalDAOService } from  '../../localdao.service';
+import {LocalDAOService} from  '../../localdao.service';
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 
@@ -14,25 +14,42 @@ import * as moment from 'moment';
     host: {'[@routerTransition]': ''}
 })
 export class EventByCategoryComponent implements OnInit {
-    private eventCategory;
-    private events = {};
-    constructor(private router:Router,
-                private DaoService : LocalDAOService,
-                private route: ActivatedRoute,  private encoder: Encoder) {
+    private trackName;
+    private events = [];
+
+    constructor(private router: Router,
+                private DaoService: LocalDAOService,
+                private route: ActivatedRoute, private encoder: Encoder) {
     }
 
     ngOnInit() {
         //this.events = this.DaoService.query("getAllEvents", null);
         //console.log(this.events);
+        const that = this;
         this.route.params.forEach((params: Params) => {
-            let query = { 'key' : this.encoder.decode(params['id'])};
-           /* this.eventCategory = this.DaoService.query("getEventByTrack", query);
-            for(let i in this.eventCategory.events){
-                let query = { 'key' : this.eventCategory.events[i] };
-                this.events[i] = this.DaoService.query("getEventLink",query);
-            }
-            console.log(this.eventCategory);
-            console.log(this.events);*/
+            that.trackName = params['name'];
+            let query = {'key': this.encoder.decode(params['id'])};
+            this.DaoService.query('getEventByTrack', query, (results) => {
+                if (results) {
+                    const nodeId = results['?id'];
+                    const nodeLabel = results['?label'];
+
+                    if (nodeId && nodeLabel) {
+                        let id = nodeId.value;
+                        const label = nodeLabel.value;
+
+                        if (id && label) {
+                            id = that.encoder.encode(id);
+                            if (id) {
+                                that.events = that.events.concat({
+                                    id: id,
+                                    label: label,
+                                });
+                            }
+                        }
+                    }
+                }
+            });
         });
     }
 

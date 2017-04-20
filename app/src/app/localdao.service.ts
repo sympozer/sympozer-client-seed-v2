@@ -433,18 +433,41 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
+                case "getTrackByEvent":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?id \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:Track . \n" +
+                        " ?id schema:label ?label . \n" +
+                        " ?id scholary:hasSubEvent <" + data.key + "> . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getLocation":
                     return this.eventLinkMapByLocation[data.key];
                 case "getEventByTrack":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?label ?description ?endDate ?startDate \n" +
+                        "SELECT DISTINCT ?label ?id \n" +
                         "WHERE {\n" +
-                        " <" + data.key + "> a scholary:OrganisedEvent . \n" +
-                        " <" + data.key + "> schema:label ?label . \n" +
-                        " <" + data.key + "> scholary:description ?description . \n" +
-                        " <" + data.key + "> scholary:endDate ?endDate . \n" +
-                        " <" + data.key + "> scholary:startDate ?startDate . \n" +
+                        " <" + data.key + "> a scholary:Track . \n" +
+                        " <" + data.key + "> scholary:hasSubEvent ?id . \n" +
+                        " ?id a scholary:Talk . \n" +
+                        " ?id schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getPublicationsByEvent":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?id \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:InProceedings . \n" +
+                        " ?id scholary:relatesToEvent <" + data.key + "> . \n" +
+                        " ?id schema:label ?label . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
