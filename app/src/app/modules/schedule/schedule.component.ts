@@ -3,7 +3,7 @@ import {ActivatedRoute, Params}   from '@angular/router';
 import {Location}              from '@angular/common';
 import {LocalDAOService} from  '../../localdao.service';
 import {routerTransition} from '../../app.router.animation';
-
+import * as moment from 'moment';
 
 @Component({
     selector: 'schedule',
@@ -55,6 +55,7 @@ export class ScheduleComponent implements OnInit {
     schedule;
     schedules;
     test = false;
+    dayPerDay = [];
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
@@ -62,7 +63,37 @@ export class ScheduleComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.schedule = this.DaoService.query("getConferenceSchedule", null);
+        const that = this;
+        that.DaoService.query("getDayPerDay", null, (results) => {
+           if(results){
+                const nodeStartDate = results['?startDate'];
+                if(nodeStartDate){
+                    const startDate = moment(nodeStartDate.value);
+                    if(startDate){
+                        const beginStartDate = startDate.startOf('day');
+                        if(beginStartDate){
+                            const find = that.dayPerDay.find((dpd) => {
+                                return dpd.date === beginStartDate.format();
+                            });
+
+                            if(find){
+                               return false;
+                            }
+
+                            that.dayPerDay = that.dayPerDay.concat({
+                                date: beginStartDate.format(),
+                                showDate: beginStartDate.format('LL'),
+                            });
+
+                            that.dayPerDay.sort((a, b) => {
+                                return a.showDate > b.showDate ? 1 : -1;
+                            });
+                        }
+                    }
+                }
+           }
+        });
+        /*this.schedule = this.DaoService.query("getConferenceSchedule", null);
         if (this.schedule.length === 0) {
             return false;
         }
@@ -134,10 +165,10 @@ export class ScheduleComponent implements OnInit {
         /*this.route.params.forEach((params: Params) => {
          let id = params['id'];
          console.log("id : " + id);
-         });*/
+         });
         console.log("*****Scheds");
         console.log(schedules);
-        this.schedules = schedules;
+        this.schedules = schedules;*/
     }
 
     toggleVisible(schedule) {

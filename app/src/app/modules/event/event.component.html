@@ -27,7 +27,7 @@
 <div class="action-links list-items">
   <md-card>
     <md-icon md-list-avatar>av_timer</md-icon>
-    <p>{{duration}}</p>
+    <p>{{event.duration}}</p>
   </md-card>
 </div>
 
@@ -42,12 +42,22 @@
 
 </div>
 
-<div *ngIf="(publications | json) != '{}'">
+<div *ngIf="event && event.publications && event.publications.length > 0">
   <h2>Publications</h2>
-  <div class="action-links list-items" *ngFor="let publication of publications | keys">
+  <div class="action-links list-items" *ngFor="let publication of event.publications">
     <md-card>
       <md-icon md-list-avatar>place</md-icon>
-      <a [routerLink]="['/publication/'+publication.value.title+'/'+publication.value.id]">{{publication.value.title}}</a>
+      <a [routerLink]="['/publication/'+publication.label+'/'+publication.id]">{{publication.label}}</a>
+    </md-card>
+  </div>
+</div>
+
+<div *ngIf="event && event.tracks && event.tracks.length > 0">
+  <h2>Tracks</h2>
+  <div class="action-links list-items" *ngFor="let track of event.tracks">
+    <md-card>
+      <md-icon md-list-avatar>place</md-icon>
+      <a [routerLink]="['/event-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
     </md-card>
   </div>
 </div>

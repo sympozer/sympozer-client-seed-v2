@@ -13,6 +13,15 @@
   Day by day
 </h1>
 
+<div class="action-links list-items" *ngFor="let dpd of dayPerDay">
+  <md-card>
+    <md-icon md-list-avatar>event</md-icon>
+    <a [routerLink]="'/event-by-date/'+dpd.date">
+      <span>{{dpd.showDate}}</span>
+    </a>
+  </md-card>
+</div>
+
 <md-card class="week-schedule">
   <div *ngFor="let schedule of schedules; trackBy: index ">
     <md-card class="element-date-header" (click)="toggleVisible(schedule)">
