@@ -528,6 +528,48 @@ export class LocalDAOService {
                         });
                     }
                     break;
+                case "getDayPerDay":
+                    for (const type of types) {
+                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?id ?startDate \n" +
+                            "WHERE {\n" +
+                            " ?id a scholary:" + type + " . \n" +
+                            " ?id scholary:startDate ?startDate . \n" +
+                            "}";
+                        that.launchQuerySparql(query, callback);
+                    }
+                    break;
+                case "getEventByDate":
+                    const originStartDate = moment(data.startDate);
+                    const originEndDate = moment(data.endDate);
+console.log(originStartDate, originEndDate);
+                    for (const type of types) {
+                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?id ?label ?startDate ?endDate \n" +
+                            "WHERE {\n" +
+                            " ?id a scholary:" + type + " . \n" +
+                            " ?id schema:label ?label . \n" +
+                            " ?id scholary:startDate ?startDate . \n" +
+                            " ?id scholary:endDate ?endDate . \n" +
+                            "}";
+                        that.launchQuerySparql(query, (results) => {
+                            const nodeStartDate = results['?startDate'];
+                            const nodeEndDate = results['?endDate'];
+
+                            if(nodeStartDate && nodeEndDate){
+                                const startDate = moment(nodeStartDate.value);
+                                const endDate = moment(nodeEndDate.value);
+
+                                //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
+                                if(startDate.isSameOrAfter(originStartDate) && endDate.isSameOrBefore(originEndDate)){
+                                    callback(results);
+                                }
+                            }
+                        });
+                    }
+                    break;
                 case "getAllLocations":
                     return this.locationLinkMap;
                 case "getLocationLink":

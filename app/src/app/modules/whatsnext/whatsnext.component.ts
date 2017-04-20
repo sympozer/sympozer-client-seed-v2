@@ -64,7 +64,14 @@ export class WhatsNextComponent implements OnInit {
                                     label: label,
                                     startDate: momentStartDate.format('LLLL'),
                                     duration: strDuration,
+                                    dateForSort: momentStartDate.format()
                                 });
+
+                                /*that.schedules.sort((a, b) => {
+                                    const momentA = moment(a.dateForSort);
+                                    const momentB = moment(b.dateForSort);
+                                    return momentA.isSameOrAfter(momentB) ? 1 : -1;
+                                });*/
                             }
                         }
                     }

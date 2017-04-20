@@ -34,6 +34,7 @@ import {EventComponent} from "./modules/event/event.component";
 import {ExternPublicationComponent} from "./modules/extern-publication/externpublication.component";
 import {AutocompleteComponent} from './modules/autocomplete/autocomplete.component';
 import {ToolsComponent} from './modules/tools/tools.component';
+import {EventsByDate} from "./modules/events-by-date/events-by-date";
 import {KeysPipe} from "./keys.pipe";
 import {DataLoaderService} from "./data-loader.service";
 import {DBLPDataLoaderService} from "./dblpdata-loader.service";
@@ -79,7 +80,8 @@ const routes: Routes = [];
         AutocompleteComponent,
         ToolsComponent,
         KeysPipe,
-        ToolsComponent
+        ToolsComponent,
+        EventsByDate
     ],
     imports: [
         BrowserModule,
