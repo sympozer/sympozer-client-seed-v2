@@ -15,12 +15,13 @@ import {Encoder} from "../../lib/encoder";
 })
 export class EventsByDate implements OnInit {
     schedules;
-
+    day;
     constructor(private location: Location,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
                 private encoder: Encoder) {
         this.schedules = [];
+        this.day = '';
     }
 
     ngOnInit() {
@@ -29,6 +30,7 @@ export class EventsByDate implements OnInit {
             let date = params['date'];
             if(date){
                 const momentStartDate = moment(date);
+                that.day = momentStartDate.format('LL');
                 let end = moment(date);
                 end.add(1, 'days');
                 end = moment(end.format());
