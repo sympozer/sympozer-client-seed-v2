@@ -2,6 +2,7 @@ import {Injectable}     from '@angular/core';
 import {Headers, Http, Response} from '@angular/http';
 import {Conference} from './model/conference';
 import 'rxjs/add/operator/toPromise';
+import * as moment from 'moment';
 
 import {Config} from  './app-config';
 import {Dataset} from  './dataset';
@@ -79,7 +80,7 @@ export class LocalDAOService {
         that.localStoragexx.clear(this.localstorage_jsonld);
     }
 
-    loadDataset() {
+    loadDataset():Promise<any> {
 
         const that = this;
         return new Promise((resolve, reject) => {
@@ -183,6 +184,7 @@ export class LocalDAOService {
     query(command, data, callback) {
         //Returning an object with the appropriate methods
         const that = this;
+        const types = ["Panel", "Session", 'Talk', 'Tutorial', 'Workshop'];
         if (that.useJsonld && that.store && callback) {
             let query;
             switch (command) {
@@ -404,13 +406,12 @@ export class LocalDAOService {
                 case "getEventLink":
                     return this.eventLinkMap[data.key];
                 case "getAllEvents":
-                    const types = ["Panel", "Session", 'Talk', 'Tutorial', 'Workshop'];
-                    for(const type of types){
+                    for (const type of types) {
                         query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                             "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                             "SELECT DISTINCT ?id ?label \n" +
                             "WHERE {\n" +
-                            " ?id a scholary:"+type+" . \n" +
+                            " ?id a scholary:" + type + " . \n" +
                             " ?id schema:label ?label . \n" +
                             "}";
 
@@ -497,7 +498,36 @@ export class LocalDAOService {
                 case "getConferenceScheduleIcs":
                     return Object.keys(this.eventLinkMap);
                 case "getWhatsNext":
-                    return this.confScheduleList;
+                    //On récup les dates
+                    let dateStart = moment();
+                    let dateEnd = moment().endOf('day');
+
+                    for (const type of types) {
+                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?id ?label ?startDate ?endDate \n" +
+                            "WHERE {\n" +
+                            " ?id a scholary:" + type + " . \n" +
+                            " ?id schema:label ?label . \n" +
+                            " ?id scholary:startDate ?startDate . \n" +
+                            " ?id scholary:endDate ?endDate . \n" +
+                            "}";
+                        that.launchQuerySparql(query, (results) => {
+                            const nodeStartDate = results['?startDate'];
+                            const nodeEndDate = results['?endDate'];
+
+                            if(nodeStartDate && nodeEndDate){
+                                const startDate = moment(nodeStartDate.value);
+                                const endDate = moment(nodeEndDate.value);
+
+                                //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
+                                if(dateStart.isAfter(startDate) && dateEnd.isAfter(endDate)){
+                                    callback(results);
+                                }
+                            }
+                        });
+                    }
+                    break;
                 case "getAllLocations":
                     return this.locationLinkMap;
                 case "getLocationLink":

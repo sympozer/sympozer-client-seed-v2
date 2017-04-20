@@ -19,7 +19,8 @@ export class EventByCategoryComponent implements OnInit {
 
     constructor(private router: Router,
                 private DaoService: LocalDAOService,
-                private route: ActivatedRoute, private encoder: Encoder) {
+                private route: ActivatedRoute,
+                private encoder: Encoder) {
     }
 
     ngOnInit() {

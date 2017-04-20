@@ -56,6 +56,7 @@ export class EventComponent implements OnInit {
                         if (label && description && endDate && startDate) {
                             startDate = moment(startDate);
                             endDate = moment(endDate);
+
                             const duration = moment.duration(endDate.diff(startDate));
 
                             var hours = parseInt(duration.asHours());
