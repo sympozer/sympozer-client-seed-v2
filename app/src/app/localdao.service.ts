@@ -94,12 +94,14 @@ export class LocalDAOService {
                         if (response && response._body) {
                             that.saveDataset(response._body);
                             that.localStoragexx.store(that.localstorage_jsonld, response._body);
+                            console.log('Success');
                             return resolve();
                         }
-
+                        console.log('FAILLLLLLLLL');
                         return reject();
                     })
                     .catch(() => {
+                        console.log('FAILLLLLLLLL');
                         return reject();
                     });
             }
@@ -107,9 +109,11 @@ export class LocalDAOService {
                 try {
                     console.log('have localstorage');
                     that.saveDataset(storage);
+                    console.log('Success');
                     return resolve();
                 } catch (err) {
                     console.log(err);
+                    console.log('FAILLLLLLLLL');
                     return reject();
                 }
             }

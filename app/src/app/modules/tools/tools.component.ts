@@ -15,10 +15,13 @@ import {isSuccess} from "@angular/http/src/http_utils";
 })
 export class ToolsComponent implements OnInit {
 
+    isLoading: boolean;
+
     constructor(private location: Location,
                 private route: ActivatedRoute,
                 private localdao: LocalDAOService,
                 public snackBar: MdSnackBar) {
+        this.isLoading = false;
     }
 
     ngOnInit() {
@@ -27,18 +30,19 @@ export class ToolsComponent implements OnInit {
 
     loadDataset() {
         console.log('load dataset');
-        let isSuccess: boolean;
-        isSuccess = this.localdao.loadDataset();
-        if (isSuccess) {
+        this.isLoading = true;
+        this.localdao.loadDataset().then(() => {
             this.snackBar.open("Dataset properly loaded =)", "", {
                 duration: 2000,
             });
-        }
-        else {
+            console.log("ZEBIIIIII", this.isLoading);
+            this.isLoading = false;
+        }, () => {
             this.snackBar.open("Dataset didn't load properly", "", {
                 duration: 2000,
             });
-        }
+            this.isLoading = false;
+        })
     }
 
     resetDataset() {
