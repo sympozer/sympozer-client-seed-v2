@@ -290,5 +290,13 @@ body {
   position: absolute !important;
   overflow: visible !important;
   bottom: 2%;
-  right: 10px;
+  right: 20px;
+}
+
+.mat-menu-item .mat-icon {
+  vertical-align: sub !important;
+}
+
+button.mat-menu-item {
+    overflow: hidden;
 }
