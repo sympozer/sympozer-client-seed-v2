@@ -1,0 +1,17 @@
+<button md-fab color="primary" [mdMenuTriggerFor]="menu">
+  <md-icon>share</md-icon>
+</button>
+<md-menu #menu="mdMenu" yPosition="above">
+  <button [shareButton]="'facebook'" md-menu-item>
+    <md-icon>dialpad</md-icon>
+    <span>Facebook</span>
+  </button>
+  <button md-menu-item disabled>
+    <md-icon>voicemail</md-icon>
+    <span>Check voicemail</span>
+  </button>
+  <button md-menu-item>
+    <md-icon>notifications_off</md-icon>
+    <span>Disable alerts</span>
+  </button>
+</md-menu>

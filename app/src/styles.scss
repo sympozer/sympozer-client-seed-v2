@@ -284,3 +284,11 @@ body {
   //box-shadow: none !important;
   background: none !important;
 }
+
+.share {
+  z-index: 999999;
+  position: absolute !important;
+  overflow: visible !important;
+  bottom: 2%;
+  right: 10px;
+}
