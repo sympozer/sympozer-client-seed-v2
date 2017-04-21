@@ -105,6 +105,13 @@ menu {
       z-index: 2;
     }
 
+    a {
+      &:hover, &:active {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    }
+
     span {
       width: 100%;
       display: block;

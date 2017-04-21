@@ -9,7 +9,7 @@ import {Encoder} from "../../lib/encoder";
 @Component({
     selector: 'eventsbydate',
     templateUrl: 'events-by-date.html',
-    styleUrls: ['events-by-date.css'],
+    styleUrls: ['events-by-date.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })

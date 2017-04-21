@@ -1,0 +1,11 @@
+@import "../../_globals";
+
+.event {
+  font-weight: bold;
+}
+
+.event-info {
+  b {
+    color: $primary-color !important;
+  }
+}
