@@ -42,8 +42,10 @@ p {
 }
 
 menu {
+  @media screen and (min-width: 1101px) {
+    width: 100%;
+  }
   padding: 0;
-  width: 100%;
 
   &.side {
     .menu {
@@ -298,5 +300,5 @@ body {
 }
 
 button.mat-menu-item {
-    overflow: hidden;
+  overflow: hidden;
 }

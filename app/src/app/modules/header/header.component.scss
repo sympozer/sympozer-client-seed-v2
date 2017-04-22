@@ -11,6 +11,7 @@ header {
   position: relative;
 
   .logo {
+    float: left;
     width: auto;
 
     img {
@@ -19,6 +20,46 @@ header {
       position: relative;
       left: 10px;
       top: 0;
+    }
+  }
+
+  .menu-button-open {
+    float: right;
+    right: 20px;
+    top: 20px;
+    z-index: 100;
+
+    .mat-button-focus-overlay {
+      display: none !important;
+      opacity: 0 !important;
+    }
+
+    @media screen and (min-width: 1101px) {
+      display: none;
+    }
+  }
+
+  .page-title {
+    width: 100%;
+    position: relative;
+
+    p {
+      padding: 0 20px;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      margin: 0;
+      position: relative;
+      top: 50%;
+      transform: translate(-3%, -50%);
+      word-wrap: break-word;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+      hyphens: auto;
+    }
+
+    @media screen and (min-width: 1101px) {
+      display: none;
     }
   }
 }
