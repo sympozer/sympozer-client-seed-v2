@@ -3,7 +3,8 @@
 
   <app-autocomplete [seachFor]="'name'" [items]="persons" [namespace]="'person'"></app-autocomplete>
 
-  <div #itemListViewWrapper class="search-results" (scroll)="onScroll()">
+  <!--<div scrollLoader class="search-results" [listItems]="persons" [partialListItem]="tabPersons">-->
+  <div class="search-results">
     <div class="action-links list-items" *ngFor="let person of persons">
       <md-card>
         <md-icon md-list-avatar>perm_identity</md-icon>
