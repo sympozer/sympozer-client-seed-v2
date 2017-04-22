@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import { LocalDAOService } from  '../../localdao.service';
+import {LocalDAOService} from  '../../localdao.service';
 import {routerTransition} from '../../app.router.animation';
 import {Encoder} from "../../lib/encoder";
 
@@ -13,26 +13,30 @@ import {Encoder} from "../../lib/encoder";
 })
 export class EventsComponent implements OnInit {
     events;
-    constructor(private router:Router,
-                private DaoService : LocalDAOService,
+    title: string = "Events";
+
+    constructor(private router: Router,
+                private DaoService: LocalDAOService,
                 private encoder: Encoder) {
         this.events = [];
     }
 
     ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
         this.DaoService.query("getAllEvents", null, (results) => {
-            if(results){
+            if (results) {
                 const nodeId = results['?id'];
                 const nodeLabel = results['?label'];
 
-                if(nodeId && nodeLabel){
+                if (nodeId && nodeLabel) {
                     let id = nodeId.value;
                     const label = nodeLabel.value;
 
-                    if(id && label){
+                    if (id && label) {
                         id = that.encoder.encode(id);
-                        if(id){
+                        if (id) {
                             that.events = that.events.concat({
                                 id: id,
                                 label: label,

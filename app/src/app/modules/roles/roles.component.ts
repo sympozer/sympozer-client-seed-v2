@@ -1,55 +1,57 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {Encoder} from "../../lib/encoder";
 
-import { LocalDAOService } from  '../../localdao.service';
+import {LocalDAOService} from  '../../localdao.service';
 import {routerTransition} from '../../app.router.animation';
 
 @Component({
-  selector: 'app-roles',
-  templateUrl: './roles.component.html',
-  styleUrls: ['./roles.component.css'],
-  animations: [routerTransition()],
-  host: {'[@routerTransition]': ''}
+    selector: 'app-roles',
+    templateUrl: './roles.component.html',
+    styleUrls: ['./roles.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class RolesComponent implements OnInit {
-  roles;
-  constructor(
-      private router: Router,
-      private DaoService : LocalDAOService,
-      private encoder: Encoder
-  ) {
-    this.roles = [];
-  }
+    roles;
+    title: string = "Roles";
 
-  ngOnInit() {
-    const that = this;
-    that.DaoService.query("getAllRoles", null, (results) => {
-      if (results) {
-        const nodeId = results['?idRole'];
-        const nodeLabel = results['?label'];
+    constructor(private router: Router,
+                private DaoService: LocalDAOService,
+                private encoder: Encoder) {
+        this.roles = [];
+    }
 
-        if (!nodeId || !nodeLabel) {
-          return false;
-        }
+    ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
+        const that = this;
+        that.DaoService.query("getAllRoles", null, (results) => {
+            if (results) {
+                const nodeId = results['?idRole'];
+                const nodeLabel = results['?label'];
 
-        const id = nodeId.value;
-        const label = nodeLabel.value;
+                if (!nodeId || !nodeLabel) {
+                    return false;
+                }
 
-        if (!id || !label) {
-          return false;
-        }
+                const id = nodeId.value;
+                const label = nodeLabel.value;
 
-        that.roles = that.roles.concat({
-          id: that.encoder.encode(id),
-          label: label,
+                if (!id || !label) {
+                    return false;
+                }
+
+                that.roles = that.roles.concat({
+                    id: that.encoder.encode(id),
+                    label: label,
+                });
+
+                that.roles.sort((role, nextRole) => {
+                    return role.label > nextRole.label ? 1 : -1;
+                });
+            }
         });
-
-        that.roles.sort((role, nextRole) => {
-          return role.label > nextRole.label ? 1 : -1;
-        });
-      }
-    });
-  }
+    }
 
 }

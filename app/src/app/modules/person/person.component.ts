@@ -42,6 +42,9 @@ export class PersonComponent implements OnInit {
                 return false;
             }
 
+            if (document.getElementById("page-title-p"))
+                document.getElementById("page-title-p").innerHTML = name;
+
             that.getPublication(name);
 
             let query = {'key': this.encoder.decode(id)};

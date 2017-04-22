@@ -17,8 +17,7 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        // window.twttr.widgets.load(
-        //     document.getElementById("twitter");
-        // );
+         if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = "";
     }
 }

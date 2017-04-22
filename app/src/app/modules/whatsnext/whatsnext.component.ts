@@ -15,6 +15,7 @@ import {Encoder} from "../../lib/encoder";
 })
 export class WhatsNextComponent implements OnInit {
     schedules;
+    title: string = "What's Next";
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
@@ -24,6 +25,8 @@ export class WhatsNextComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
         this.DaoService.query("getWhatsNext", null, (results) => {
             if (results) {
@@ -68,10 +71,10 @@ export class WhatsNextComponent implements OnInit {
                                 });
 
                                 /*that.schedules.sort((a, b) => {
-                                    const momentA = moment(a.dateForSort);
-                                    const momentB = moment(b.dateForSort);
-                                    return momentA.isSameOrAfter(momentB) ? 1 : -1;
-                                });*/
+                                 const momentA = moment(a.dateForSort);
+                                 const momentB = moment(b.dateForSort);
+                                 return momentA.isSameOrAfter(momentB) ? 1 : -1;
+                                 });*/
                             }
                         }
                     }

@@ -20,6 +20,7 @@ export class PersonsComponent implements OnInit {
     conference: Conference = new Conference();
     persons;
     tabPersons;
+    title: string = "Persons";
 
     constructor(private router: Router,
                 private dataLoaderService: DataLoaderService,
@@ -30,9 +31,9 @@ export class PersonsComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('Init Persons Comp');
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
-
         that.DaoService.query("getAllPersons", null, (person) => {
             if (person) {
                 const nodeId = person['?id'];
@@ -61,7 +62,6 @@ export class PersonsComponent implements OnInit {
         });
 
     }
-
 
 
 }

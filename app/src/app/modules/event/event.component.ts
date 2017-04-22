@@ -91,16 +91,19 @@ export class EventComponent implements OnInit {
                                         let id = nodeId.value;
                                         const label = nodeLabel.value;
 
+                                        if (document.getElementById("page-title-p"))
+                                            document.getElementById("page-title-p").innerHTML = label;
+
                                         if (id && label) {
                                             id = that.encoder.encode(id);
 
                                             if (id) {
                                                 //On regarde si on a pas déjà l'event
                                                 const find = that.event.publications.find((event) => {
-                                                   return event.id === id;
+                                                    return event.id === id;
                                                 });
 
-                                                if(find){
+                                                if (find) {
                                                     return false;
                                                 }
 
@@ -115,23 +118,23 @@ export class EventComponent implements OnInit {
                             });
 
                             that.DaoService.query("getTrackByEvent", query, (results) => {
-                                if(results){
+                                if (results) {
                                     const nodeId = results['?id'];
                                     const nodeLabel = results['?label'];
 
-                                    if(nodeId && nodeLabel){
+                                    if (nodeId && nodeLabel) {
                                         let id = nodeId.value;
                                         const label = nodeLabel.value;
 
-                                        if(id && label){
+                                        if (id && label) {
                                             id = that.encoder.encode(id);
-                                            if(id){
+                                            if (id) {
                                                 //On regarde si on a pas déjà le track
                                                 const find = that.event.tracks.find((track) => {
                                                     return track.id === id;
                                                 });
 
-                                                if(find){
+                                                if (find) {
                                                     return false;
                                                 }
 

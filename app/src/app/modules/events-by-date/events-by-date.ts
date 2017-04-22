@@ -16,6 +16,7 @@ import {Encoder} from "../../lib/encoder";
 export class EventsByDate implements OnInit {
     schedules;
     day;
+
     constructor(private location: Location,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
@@ -28,14 +29,16 @@ export class EventsByDate implements OnInit {
         const that = this;
         this.route.params.forEach((params: Params) => {
             let date = params['date'];
-            if(date){
+            if (date) {
                 const momentStartDate = moment(date);
                 that.day = momentStartDate.format('LL');
+                if (document.getElementById("page-title-p"))
+                    document.getElementById("page-title-p").innerHTML = that.day;
                 let end = moment(date);
                 end.add(1, 'days');
                 end = moment(end.format());
 
-                if(momentStartDate){
+                if (momentStartDate) {
                     that.DaoService.query("getEventByDate", {
                         startDate: momentStartDate,
                         endDate: end,

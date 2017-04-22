@@ -16,6 +16,7 @@ import {isSuccess} from "@angular/http/src/http_utils";
 export class ToolsComponent implements OnInit {
 
     isLoading: boolean;
+    title: string = "Tools";
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
@@ -25,6 +26,8 @@ export class ToolsComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
     }
 
 

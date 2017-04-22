@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LocalDAOService } from  '../../localdao.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {LocalDAOService} from  '../../localdao.service';
 import {routerTransition} from '../../app.router.animation';
 import {Encoder} from "../../lib/encoder";
 
@@ -13,36 +13,36 @@ import {Encoder} from "../../lib/encoder";
 })
 export class CategoriesForPublicationsComponent implements OnInit {
     private tracks = [];
-    constructor(
-        private DaoService : LocalDAOService,
-        private encoder: Encoder) {
+    title: string = "Tracks";
+
+    constructor(private DaoService: LocalDAOService,
+                private encoder: Encoder) {
 
     }
 
     ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
         this.DaoService.query("getAllCategoriesForPublications", null, (results) => {
             console.log(results);
-            if(results){
+            if (results) {
                 const nodeId = results['?id'];
                 const nodeLabel = results['?label'];
 
-                if(!nodeLabel || !nodeId)
-                {
+                if (!nodeLabel || !nodeId) {
                     return false;
                 }
 
                 let id = nodeId.value;
                 const label = nodeLabel.value;
 
-                if(!id || !label)
-                {
+                if (!id || !label) {
                     return false;
                 }
 
                 id = that.encoder.encode(id);
-                if(!id)
-                {
+                if (!id) {
                     return false;
                 }
 

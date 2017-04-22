@@ -31,6 +31,8 @@ export class PublicationsByCategoryComponent implements OnInit {
 
             if(labelTrack){
                 that.labelTrack = labelTrack;
+                 if (document.getElementById("page-title-p"))
+                        document.getElementById("page-title-p").innerHTML = labelTrack + " publications";
             }
 
             if (!id) {

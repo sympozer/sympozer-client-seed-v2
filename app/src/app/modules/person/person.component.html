@@ -1,4 +1,4 @@
-<h1>
+<h1 id="description-title">
   {{person.name}}
 </h1>
 <div *ngIf="orgas.length > 0">
@@ -30,7 +30,8 @@
 </div>
 <div *ngIf="externPublications.length > 0">
   <h2>Other Publication(s)</h2>
-  <app-autocomplete [seachFor]="'name'" [items]="externPublications" [namespace]="'externPublication'"></app-autocomplete>
+  <app-autocomplete [seachFor]="'name'" [items]="externPublications"
+                    [namespace]="'externPublication'"></app-autocomplete>
   <div class="action-links list-items" *ngFor="let publication of externPublications">
     <md-card>
       <md-icon md-list-avatar>description</md-icon>
