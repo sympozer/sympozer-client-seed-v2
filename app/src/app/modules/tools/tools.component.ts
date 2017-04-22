@@ -4,7 +4,7 @@ import {MdSnackBar} from '@angular/material'
 import {Location} from "@angular/common";
 import {routerTransition} from "../../app.router.animation";
 import {LocalDAOService} from "../../localdao.service";
-import {isSuccess} from "@angular/http/src/http_utils";
+import {LocalStorageService} from 'ng2-webstorage';
 
 @Component({
     selector: 'app-tools',
@@ -17,17 +17,25 @@ export class ToolsComponent implements OnInit {
 
     isLoading: boolean;
     title: string = "Tools";
+    fontSize: number = 100;
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
                 private localdao: LocalDAOService,
-                public snackBar: MdSnackBar) {
+                public snackBar: MdSnackBar,
+                private localStoragexx: LocalStorageService) {
         this.isLoading = false;
     }
 
     ngOnInit() {
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
+
+        let storage = this.localStoragexx.retrieve("zoomLevel");
+
+        if (storage) {
+            this.fontSize = storage;
+        }
     }
 
 
@@ -58,6 +66,32 @@ export class ToolsComponent implements OnInit {
         catch (err) {
             console.log(err);
             this.snackBar.open("Reset failed please retry", "", {
+                duration: 2000,
+            });
+        }
+    }
+
+    decresaseFontSize() {
+        if (this.fontSize > 60) {
+            this.fontSize = this.fontSize - 10;
+            document.documentElement.style.fontSize = this.fontSize + "%";
+            this.localStoragexx.store("zoomLevel", this.fontSize);
+        }
+        else {
+            this.snackBar.open("You reached the minimum zoom level", "", {
+                duration: 2000,
+            });
+        }
+    }
+
+    increaseFontSize() {
+        if (this.fontSize < 200) {
+            this.fontSize = this.fontSize + 10;
+            document.documentElement.style.fontSize = this.fontSize + "%";
+            this.localStoragexx.store("zoomLevel", this.fontSize);
+        }
+        else {
+            this.snackBar.open("You reached the maximum zoom level", "", {
                 duration: 2000,
             });
         }

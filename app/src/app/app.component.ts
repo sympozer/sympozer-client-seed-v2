@@ -6,6 +6,7 @@ import {Component, OnInit} from '@angular/core';
 import {LocalDAOService} from  './localdao.service';
 import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
 import {routerTransition} from './app.router.animation';
+import {LocalStorageService} from 'ng2-webstorage';
 
 
 @Component({
@@ -17,13 +18,21 @@ export class AppComponent implements OnInit {
 
     constructor(private DaoService: LocalDAOService,
                 private router: Router,
-                private activatedRoute: ActivatedRoute) {
+                private activatedRoute: ActivatedRoute,
+                private localStoragexx: LocalStorageService) {
     }
 
 
     ngOnInit(): void {
-        this.DaoService.loadDataset();
+        let storage = this.localStoragexx.retrieve("zoomLevel");
+        if(storage) {
+            document.documentElement.style.fontSize = storage + "%";
+        } else {
+            let fontSize: number = 100;
+            this.localStoragexx.store("zoomLevel", fontSize);
+        }
 
+        this.DaoService.loadDataset();
         this.router.events
             .filter(event => event instanceof NavigationEnd)
             .map(() => this.activatedRoute)

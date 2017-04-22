@@ -5,8 +5,20 @@
 <!--</div>-->
 
 <!--<div [hidden]="isLoading">-->
-<button md-raised-button color="primary" (click)="loadDataset()">Load dataset</button>
-<!--</div>-->
 
+<h2>Dataset</h2>
+<md-card class="info-text">
+  <button md-raised-button color="primary" (click)="loadDataset()">Load dataset</button>
+  <button md-raised-button color="primary" (click)="resetDataset()">Reset dataset</button>
+</md-card>
 
-<button md-raised-button color="primary" (click)="resetDataset()">Reset dataset</button>
+<h2>Font size</h2>
+<md-card class="info-text">
+  <button md-icon-button color="primary" (click)="decresaseFontSize()">
+    <md-icon>zoom_out</md-icon>
+  </button>
+  <span>{{fontSize + "%"}}</span>
+  <button md-icon-button color="primary" (click)="increaseFontSize()">
+    <md-icon>zoom_in</md-icon>
+  </button>
+</md-card>
