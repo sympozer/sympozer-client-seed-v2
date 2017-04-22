@@ -22,3 +22,14 @@
     <md-icon>zoom_in</md-icon>
   </button>
 </md-card>
+
+<h2>Fullscreen</h2>
+<md-card class="info-text">
+  <md-slide-toggle
+       class="example-margin"
+       color="primary"
+       [checked]="check"
+       (change)="toggleFullScreen()">
+    Fullscreen Mode
+  </md-slide-toggle>
+</md-card>

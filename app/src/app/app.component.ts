@@ -25,12 +25,14 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         let storage = this.localStoragexx.retrieve("zoomLevel");
-        if(storage) {
+        if (storage) {
             document.documentElement.style.fontSize = storage + "%";
         } else {
             let fontSize: number = 100;
             this.localStoragexx.store("zoomLevel", fontSize);
         }
+
+        this.localStoragexx.store("fullScreen", false);
 
         this.DaoService.loadDataset();
         this.router.events

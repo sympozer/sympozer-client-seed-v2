@@ -18,6 +18,7 @@ export class ToolsComponent implements OnInit {
     isLoading: boolean;
     title: string = "Tools";
     fontSize: number = 100;
+    check : boolean;
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
@@ -35,6 +36,12 @@ export class ToolsComponent implements OnInit {
 
         if (storage) {
             this.fontSize = storage;
+        }
+
+        storage = this.localStoragexx.retrieve("fullScreen");
+
+        if (storage) {
+            this.check = storage;
         }
     }
 
@@ -94,6 +101,22 @@ export class ToolsComponent implements OnInit {
             this.snackBar.open("You reached the maximum zoom level", "", {
                 duration: 2000,
             });
+        }
+    }
+
+    toggleFullScreen() {
+        this.check = !this.check;
+        this.localStoragexx.store("fullScreen", this.check);
+        if (this.check) {
+            if (!document.fullscreenElement) {
+                document.documentElement.webkitRequestFullScreen();
+            }
+        }
+        else {
+            console.log("loool");
+            if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
         }
     }
 }
