@@ -34,6 +34,14 @@ export class AppComponent implements OnInit {
 
         this.localStoragexx.store("fullScreen", false);
 
+        storage = this.localStoragexx.retrieve("darkTheme");
+        if (storage) {
+            let html = document.documentElement;
+            if (!html.classList.contains("dark")) {
+                html.classList.add('dark');
+            }
+        }
+
         this.DaoService.loadDataset();
         this.router.events
             .filter(event => event instanceof NavigationEnd)

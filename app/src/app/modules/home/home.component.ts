@@ -4,6 +4,7 @@ import {routerTransition} from '../../app.router.animation';
 import {LocalDAOService} from '../../localdao.service';
 import {window} from "rxjs/operator/window";
 import {WindowReference} from '../../window-reference';
+import {LocalStorageService} from 'ng2-webstorage';
 
 @Component({
     selector: 'home',
@@ -14,34 +15,28 @@ import {WindowReference} from '../../window-reference';
 })
 export class HomeComponent implements OnInit {
 
-    constructor(private router: Router, private localdao: LocalDAOService) {
+    constructor(private router: Router,
+                private localdao: LocalDAOService,
+                private localStoragexx: LocalStorageService) {
     }
 
     ngOnInit() {
-        let win = WindowReference.get();
+        let storage = this.localStoragexx.retrieve("darkTheme");
+        let twiiterTag = document.getElementById("twitter");
+        if (storage) {
+            if (twiiterTag.getAttribute("data-theme") != "dark")
+                twiiterTag.setAttribute("data-theme", "dark");
+        } else {
+                twiiterTag.setAttribute("data-theme", "light");
+        }
 
-        if (document.getElementById("page-title-p"))
+        let win = WindowReference.get();
+        win.twttr.widgets.load();
+
+        if (document.getElementById("page-title-p")) {
             document.getElementById("page-title-p").innerHTML = "";
 
-        //
-        // let twttr = (function (d, s, id) {
-        //     var js, fjs = d.getElementsByTagName(s)[0],
-        //         t = twttr || {};
-        //     if (d.getElementById(id)) return t;
-        //     js = d.createElement(s);
-        //     js.id = id;
-        //     js.src = "https://platform.twitter.com/widgets.js";
-        //     fjs.parentNode.insertBefore(js, fjs);
-        //
-        //     t._e = [];
-        //     t.ready = function (f) {
-        //         t._e.push(f);
-        //     };
-        //
-        //     return t;
-        // }(document, "script", "twitter-wjs"));
-
-        win.twttr.widgets.load();
+        }
     }
 
 }

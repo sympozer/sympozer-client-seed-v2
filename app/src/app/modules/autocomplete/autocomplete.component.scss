@@ -34,6 +34,8 @@
 
     &:not(#not-found):hover {
       background: rgb(238, 238, 238);
+      font-weight: bold;
+      text-decoration: underline;
     }
 
     &#not-found {

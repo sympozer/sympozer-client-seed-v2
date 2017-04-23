@@ -28,8 +28,20 @@
   <md-slide-toggle
        class="example-margin"
        color="primary"
-       [checked]="check"
+       [checked]="fullScreen"
        (change)="toggleFullScreen()">
     Fullscreen Mode
+  </md-slide-toggle>
+</md-card>
+
+
+<h2>Theme</h2>
+<md-card class="info-text">
+  <md-slide-toggle
+       class="example-margin"
+       color="primary"
+       [checked]="darkTheme"
+       (change)="toggleDarkTheme()">
+    Dark Theme
   </md-slide-toggle>
 </md-card>

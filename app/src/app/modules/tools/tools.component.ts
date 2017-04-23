@@ -18,7 +18,8 @@ export class ToolsComponent implements OnInit {
     isLoading: boolean;
     title: string = "Tools";
     fontSize: number = 100;
-    check : boolean;
+    fullScreen : boolean;
+    darkTheme : boolean;
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
@@ -41,7 +42,13 @@ export class ToolsComponent implements OnInit {
         storage = this.localStoragexx.retrieve("fullScreen");
 
         if (storage) {
-            this.check = storage;
+            this.fullScreen = storage;
+        }
+
+        storage = this.localStoragexx.retrieve("darkTheme");
+
+        if (storage) {
+            this.darkTheme = storage;
         }
     }
 
@@ -105,9 +112,9 @@ export class ToolsComponent implements OnInit {
     }
 
     toggleFullScreen() {
-        this.check = !this.check;
-        this.localStoragexx.store("fullScreen", this.check);
-        if (this.check) {
+        this.fullScreen = !this.fullScreen;
+        this.localStoragexx.store("fullScreen", this.fullScreen);
+        if (this.fullScreen) {
             if (!document.fullscreenElement) {
                 document.documentElement.webkitRequestFullScreen();
             }
@@ -116,6 +123,22 @@ export class ToolsComponent implements OnInit {
             console.log("loool");
             if (document.webkitExitFullscreen) {
                 document.webkitExitFullscreen();
+            }
+        }
+    }
+
+    toggleDarkTheme() {
+        this.darkTheme = !this.darkTheme;
+        this.localStoragexx.store("darkTheme", this.darkTheme);
+        let html = document.documentElement;
+        if (this.darkTheme) {
+            if (!html.classList.contains("dark")) {
+                html.classList.add('dark');
+            }
+        }
+        else {
+            if (html.classList.contains("dark")) {
+                html.classList.remove('dark');
             }
         }
     }
