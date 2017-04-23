@@ -54,13 +54,11 @@ export class ToolsComponent implements OnInit {
 
 
     loadDataset() {
-        console.log('load dataset');
         this.isLoading = true;
         this.localdao.loadDataset().then(() => {
             this.snackBar.open("Dataset properly loaded =)", "", {
                 duration: 2000,
             });
-            console.log("ZEBIIIIII", this.isLoading);
             this.isLoading = false;
         }, () => {
             this.snackBar.open("Dataset didn't load properly", "", {
@@ -120,7 +118,6 @@ export class ToolsComponent implements OnInit {
             }
         }
         else {
-            console.log("loool");
             if (document.webkitExitFullscreen) {
                 document.webkitExitFullscreen();
             }

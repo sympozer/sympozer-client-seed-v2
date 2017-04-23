@@ -27,11 +27,14 @@ export class HomeComponent implements OnInit {
             if (twiiterTag.getAttribute("data-theme") != "dark")
                 twiiterTag.setAttribute("data-theme", "dark");
         } else {
-                twiiterTag.setAttribute("data-theme", "light");
+            twiiterTag.setAttribute("data-theme", "light");
         }
 
         let win = WindowReference.get();
-        win.twttr.widgets.load();
+        setTimeout(() => {
+            win.twttr.widgets.load();
+        }, 0);
+
 
         if (document.getElementById("page-title-p")) {
             document.getElementById("page-title-p").innerHTML = "";
