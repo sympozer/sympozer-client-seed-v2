@@ -22,29 +22,29 @@
   </md-card>
 </div>
 
-<md-card class="week-schedule">
-  <div *ngFor="let schedule of schedules; trackBy: index ">
-    <md-card class="element-date-header" (click)="toggleVisible(schedule)">
-      <span>{{schedule.date | date}}</span>
-      <md-icon class="show-event" [ngClass]="{'is-visible': schedule.visible}">chevron_right</md-icon>
-    </md-card>
+<!--<md-card class="week-schedule">-->
+  <!--<div *ngFor="let schedule of schedules; trackBy: index ">-->
+    <!--<md-card class="element-date-header" (click)="toggleVisible(schedule)">-->
+      <!--<span>{{schedule.date | date}}</span>-->
+      <!--<md-icon class="show-event" [ngClass]="{'is-visible': schedule.visible}">chevron_right</md-icon>-->
+    <!--</md-card>-->
 
-    <div class="day-events" *ngIf="schedule.visible" [@enterAnimation]="schedule.visible">
-      <div *ngFor="let sched of schedule.array">
-        <div class="element-time-header"> Starts at {{sched.time | date:'jm'}}</div>
-        <div *ngFor="let scheduleObject of sched.array">
-          <md-card class="single-event">
-            <a [routerLink]="'/event/'+scheduleObject.name+'/'+ scheduleObject.id">
-              <div class="schedule-element">
-                <h3 class="event-name"> {{scheduleObject.name}} </h3>
-                <h3> Lasts: <span class="event-duration">{{scheduleObject.duration.slice(2)}} </span></h3>
-              </div>
-              <md-icon>chevron_right</md-icon>
-            </a>
-          </md-card>
-        </div>
-      </div>
-    </div>
+    <!--<div class="day-events" *ngIf="schedule.visible" [@enterAnimation]="schedule.visible">-->
+      <!--<div *ngFor="let sched of schedule.array">-->
+        <!--<div class="element-time-header"> Starts at {{sched.time | date:'jm'}}</div>-->
+        <!--<div *ngFor="let scheduleObject of sched.array">-->
+          <!--<md-card class="single-event">-->
+            <!--<a [routerLink]="'/event/'+scheduleObject.name+'/'+ scheduleObject.id">-->
+              <!--<div class="schedule-element">-->
+                <!--<h3 class="event-name"> {{scheduleObject.name}} </h3>-->
+                <!--<h3> Lasts: <span class="event-duration">{{scheduleObject.duration.slice(2)}} </span></h3>-->
+              <!--</div>-->
+              <!--<md-icon>chevron_right</md-icon>-->
+            <!--</a>-->
+          <!--</md-card>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
-  </div>
-</md-card>
+  <!--</div>-->
+<!--</md-card>-->
