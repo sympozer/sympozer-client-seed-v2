@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, NgZone} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {MdSnackBar} from '@angular/material'
 import {Location} from "@angular/common";
@@ -15,21 +15,23 @@ import {LocalStorageService} from 'ng2-webstorage';
 })
 export class ToolsComponent implements OnInit {
 
-    isLoading: boolean;
     title: string = "Tools";
     fontSize: number = 100;
-    fullScreen : boolean;
-    darkTheme : boolean;
+    loading: boolean;
+    fullScreen: boolean;
+    darkTheme: boolean;
 
-    constructor(private location: Location,
+    constructor(private zone: NgZone,
+                private location: Location,
                 private route: ActivatedRoute,
                 private localdao: LocalDAOService,
                 public snackBar: MdSnackBar,
                 private localStoragexx: LocalStorageService) {
-        this.isLoading = false;
     }
 
     ngOnInit() {
+        this.loading = false;
+
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
 
@@ -54,18 +56,26 @@ export class ToolsComponent implements OnInit {
 
 
     loadDataset() {
-        this.isLoading = true;
-        this.localdao.loadDataset().then(() => {
-            this.snackBar.open("Dataset properly loaded =)", "", {
-                duration: 2000,
+        // let btn = document.getElementById("dataset-load");
+        // btn.setAttribute("disabled", "true");
+        this.loading = true;
+
+        setTimeout(() => {
+            this.localdao.loadDataset().then(() => {
+                this.snackBar.open("Dataset properly loaded =)", "", {
+                    duration: 2000,
+                });
+            }, () => {
+                this.snackBar.open("Dataset didn't load properly", "", {
+                    duration: 2000,
+                });
             });
-            this.isLoading = false;
-        }, () => {
-            this.snackBar.open("Dataset didn't load properly", "", {
-                duration: 2000,
-            });
-            this.isLoading = false;
-        })
+            this.loading = false;
+        }, 250)
+    }
+
+    isLoading() {
+        return this.loading;
     }
 
     resetDataset() {

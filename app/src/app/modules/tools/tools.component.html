@@ -8,7 +8,7 @@
 
 <h2>Dataset</h2>
 <md-card class="info-text">
-  <button md-raised-button color="primary" (click)="loadDataset()">Load dataset</button>
+  <button id="dataset-load" md-raised-button color="primary" (click)="loadDataset()" [disabled]="isLoading()">Load dataset</button>
   <button md-raised-button color="primary" (click)="resetDataset()">Reset dataset</button>
 </md-card>
 
