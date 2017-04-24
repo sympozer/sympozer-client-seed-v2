@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
             .filter(route => route.outlet === 'primary')
             .mergeMap(route => route.data)
             .subscribe((event) => {
-                window.scrollTo(0, 0);
+                window.scrollTo(0, 1);
             });
     }
 

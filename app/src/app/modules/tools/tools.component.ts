@@ -56,8 +56,6 @@ export class ToolsComponent implements OnInit {
 
 
     loadDataset() {
-        // let btn = document.getElementById("dataset-load");
-        // btn.setAttribute("disabled", "true");
         this.loading = true;
 
         setTimeout(() => {
@@ -65,13 +63,13 @@ export class ToolsComponent implements OnInit {
                 this.snackBar.open("Dataset properly loaded =)", "", {
                     duration: 2000,
                 });
-            }, () => {
+            }).catch(() => {
                 this.snackBar.open("Dataset didn't load properly", "", {
                     duration: 2000,
                 });
             });
             this.loading = false;
-        }, 250)
+        }, 250);
     }
 
     isLoading() {
