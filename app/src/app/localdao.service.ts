@@ -1,4 +1,4 @@
-import {Injectable}     from '@angular/core';
+import {Inject, Injectable}     from '@angular/core';
 import {Headers, Http, Response} from '@angular/http';
 import {Conference} from './model/conference';
 import 'rxjs/add/operator/toPromise';
@@ -11,6 +11,7 @@ import {Encoder} from  './lib/encoder';
 import {DataLoaderService} from "./data-loader.service";
 import {LocalStorageService} from 'ng2-webstorage';
 import {ManagerRequest} from "./services/ManagerRequest";
+import {DOCUMENT} from '@angular/platform-browser';
 
 const $rdf = require('rdflib');
 
@@ -19,7 +20,7 @@ const $rdf = require('rdflib');
 export class LocalDAOService {
     //private conferenceURL = 'https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2016/data_ESWC2016.json';
     private useJsonld = true;
-    private localstorage_jsonld = 'dataset-sympozer-jsonld';
+    private localstorage_jsonld = 'dataset-sympozer';
     private store;
     private $rdf;
     private conferenceURL;
@@ -65,9 +66,15 @@ export class LocalDAOService {
                 private encoder: Encoder,
                 private dataloader: DataLoaderService,
                 private localStoragexx: LocalStorageService,
-                private managerRequest: ManagerRequest) {
+                private managerRequest: ManagerRequest,
+                @Inject(DOCUMENT) private document: any) {
+        const domain = this.document.location.hostname;
+        if (domain) {
+            this.localstorage_jsonld += "-" + domain;
+        }
+
         this.conferenceURL = this.useJsonld
-            ? 'http://serenitecoex.com/conference2.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
+            ? 'https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/pierre_dev/app/src/dataset.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
             : 'http://dev.sympozer.com/conference/www2012/file-handle/writer/json';
 
         this.$rdf = $rdf;
@@ -80,42 +87,44 @@ export class LocalDAOService {
         that.localStoragexx.clear(this.localstorage_jsonld);
     }
 
-    loadDataset():Promise<any> {
+    loadDataset(): Promise<boolean> {
 
         const that = this;
         return new Promise((resolve, reject) => {
             //On récup le dataset jsonld en local storage
-            let storage = that.localStoragexx.retrieve(this.localstorage_jsonld);
+            console.log(that.localstorage_jsonld);
+            let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
 
             //Si on l'a pas, on le télécharge
             if (!storage) {
                 console.log('loading graph jsonld ...');
-                that.managerRequest.get_safe(this.conferenceURL)
+                this.managerRequest.get_safe(this.conferenceURL)
                     .then((response) => {
-                        if (response && response._body) {
-                            that.saveDataset(response._body);
-                            that.localStoragexx.store(that.localstorage_jsonld, response._body);
-                            console.log('Success');
-                            return resolve();
+                        try {
+                            if (response && response._body) {
+                                that.saveDataset(response._body);
+                                that.localStoragexx.store(that.localstorage_jsonld, response._body);
+                                return resolve(true);
+                            }
+
+                            return reject(false);
                         }
-                        console.log('FAILLLLLLLLL');
-                        return reject();
+                        catch (e) {
+                            return reject(false);
+                        }
                     })
                     .catch(() => {
-                        console.log('FAILLLLLLLLL');
-                        return reject();
+                        return reject(false);
                     });
             }
             else {
                 try {
                     console.log('have localstorage');
                     that.saveDataset(storage);
-                    console.log('Success');
-                    return resolve();
+                    return resolve(true);
                 } catch (err) {
                     console.log(err);
-                    console.log('FAILLLLLLLLL');
-                    return reject();
+                    return reject(false);
                 }
             }
         });
@@ -520,12 +529,12 @@ export class LocalDAOService {
                             const nodeStartDate = results['?startDate'];
                             const nodeEndDate = results['?endDate'];
 
-                            if(nodeStartDate && nodeEndDate){
+                            if (nodeStartDate && nodeEndDate) {
                                 const startDate = moment(nodeStartDate.value);
                                 const endDate = moment(nodeEndDate.value);
 
                                 //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
-                                if(dateStart.isAfter(startDate) && dateEnd.isAfter(endDate)){
+                                if (dateStart.isAfter(startDate) && dateEnd.isAfter(endDate)) {
                                     callback(results);
                                 }
                             }
@@ -547,7 +556,7 @@ export class LocalDAOService {
                 case "getEventByDate":
                     const originStartDate = moment(data.startDate);
                     const originEndDate = moment(data.endDate);
-console.log(originStartDate, originEndDate);
+                    console.log(originStartDate, originEndDate);
                     for (const type of types) {
                         query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                             "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
@@ -562,17 +571,28 @@ console.log(originStartDate, originEndDate);
                             const nodeStartDate = results['?startDate'];
                             const nodeEndDate = results['?endDate'];
 
-                            if(nodeStartDate && nodeEndDate){
+                            if (nodeStartDate && nodeEndDate) {
                                 const startDate = moment(nodeStartDate.value);
                                 const endDate = moment(nodeEndDate.value);
 
                                 //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
-                                if(startDate.isSameOrAfter(originStartDate) && endDate.isSameOrBefore(originEndDate)){
+                                if (startDate.isSameOrAfter(originStartDate) && endDate.isSameOrBefore(originEndDate)) {
                                     callback(results);
                                 }
                             }
                         });
                     }
+                    break;
+                case "getEventFromPublication":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:InProceedings . \n" +
+                        " <" + data.key + "> scholary:relatesToEvent ?id . \n" +
+                        " ?id schema:label ?label . \n" +
+                        "}";
+                    that.launchQuerySparql(query, callback);
                     break;
                 case "getAllLocations":
                     return this.locationLinkMap;

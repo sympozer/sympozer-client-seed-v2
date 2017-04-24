@@ -19,6 +19,14 @@
   </md-card>
 </div>
 
+<h2 *ngIf="events.length > 0">Events</h2>
+<div class="action-links list-items" *ngFor="let event of events">
+  <md-card>
+    <md-icon md-list-avatar>perm_identity</md-icon>
+    <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
+  </md-card>
+</div>
+
 <!-- Voting -->
 
 <h2>Vote for best demo</h2>
