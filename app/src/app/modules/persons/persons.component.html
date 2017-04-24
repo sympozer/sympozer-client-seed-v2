@@ -6,6 +6,9 @@
   <div #itemListViewWrapper class="search-results" (scroll)="onScroll()">
     <div class="action-links list-items" *ngFor="let person of persons">
       <md-card>
+        <div *ngIf="person.avatar && person.avatar.length > 0">
+          <img src="{{person.avatar}}"/>
+        </div>
         <md-icon md-list-avatar>perm_identity</md-icon>
         <a [routerLink]="['/person/'+person.name+'/'+person.id]">{{person.name}}</a>
       </md-card>

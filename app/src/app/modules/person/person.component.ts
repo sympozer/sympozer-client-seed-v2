@@ -6,6 +6,7 @@ import {Encoder} from "../../lib/encoder";
 import {PersonService} from "./person.service";
 import {Mutex} from 'async-mutex';
 import {routerTransition} from '../../app.router.animation';
+import {ManagerRequest} from "../../services/ManagerRequest";
 
 @Component({
     selector: 'app-person',
@@ -16,20 +17,24 @@ import {routerTransition} from '../../app.router.animation';
 })
 export class PersonComponent implements OnInit {
     private externPublications = [];
+    private avatar: any;
     public person;
     public roles = [];
     public orgas = [];
     public publiConf = [];
     private mutex: any;
+    private mutex_box: any;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
                 private personService: PersonService,
                 private encoder: Encoder,
-                private  dBPLDataLoaderService: DBLPDataLoaderService) {
+                private  dBPLDataLoaderService: DBLPDataLoaderService,
+                private managerRequest: ManagerRequest) {
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
+        this.mutex_box = new Mutex();
     }
 
     ngOnInit() {
@@ -49,9 +54,58 @@ export class PersonComponent implements OnInit {
                 that.mutex
                     .acquire()
                     .then(function (release) {
-                        that.person = {
-                            name: results['?label'].value
-                        };
+                        const nodeLabel = results['?label'];
+                        const nodeBox = results['?box'];
+
+                        if (nodeLabel) {
+                            const label = nodeLabel.value;
+
+                            if (label) {
+                                let boxs = [];
+
+                                if(nodeBox){
+                                    const boxs_temp = nodeBox.value;
+                                    if(boxs_temp){
+                                        switch(typeof boxs_temp){
+                                            case "string":
+                                                boxs = [boxs_temp];
+                                                break;
+                                            default:
+                                                boxs = boxs_temp;
+                                                break;
+                                        }
+                                    }
+
+                                    for(const box of boxs){
+                                        that.mutex_box
+                                            .acquire()
+                                            .then((release_mutex_box) => {
+                                                if(that.avatar && that.avatar.length > 0){
+                                                    release_mutex_box();
+                                                    return false;
+                                                }
+
+                                                that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1='+box)
+                                                    .then((request) => {
+                                                        if(request && request._body)
+                                                        {
+                                                            const user = JSON.parse(request._body);
+                                                            if(user && user.avatar_view){
+                                                                that.avatar = 'http://localhost:3000/' + user.avatar_view;
+                                                            }
+                                                        }
+                                                    });
+                                                release_mutex_box();
+                                            });
+                                    }
+                                }
+
+                                that.person = {
+                                    name: label,
+                                    boxs: boxs,
+                                };
+                            }
+                        }
                         release();
                     });
             });

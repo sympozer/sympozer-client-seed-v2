@@ -236,10 +236,12 @@ export class LocalDAOService {
                 case "getAllPersons":
                     query = "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                         "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
                         "SELECT DISTINCT ?label ?id \n" +
                         "WHERE {\n" +
                         " ?id a person:Person . \n" +
                         " ?id schema:label ?label . \n" +
+                        " ?id foaf:mbox_sha1sum ?box . \n" +
                         "} LIMIT 10";
                     console.log(query);
                     that.launchQuerySparql(query, callback);
