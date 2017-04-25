@@ -60,48 +60,9 @@ export class PersonsComponent implements OnInit {
                 const person = {
                     id: id,
                     name: name,
-                    avatar: '',
                 };
 
                 that.persons = that.persons.concat(person);
-
-                if (nodeBox) {
-                    let boxs = [];
-                    const mutex_box = new Mutex();
-                    const boxs_temp = nodeBox.value;
-                    if (boxs_temp) {
-                        switch (typeof boxs_temp) {
-                            case "string":
-                                boxs = [boxs_temp];
-                                break;
-                            default:
-                                boxs = boxs_temp;
-                                break;
-                        }
-                    }
-
-                    for (const box of boxs) {
-                        mutex_box
-                            .acquire()
-                            .then((release_mutex_box) => {
-                                if (!person || (person.avatar && person.avatar.length > 0)) {
-                                    release_mutex_box();
-                                    return false;
-                                }
-                                
-                                that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1=' + box)
-                                    .then((request) => {
-                                        if (request && request._body) {
-                                            const user = JSON.parse(request._body);
-                                            if (user && user.avatar_view) {
-                                                person.avatar = 'http://localhost:3000/' + user.avatar_view;
-                                            }
-                                        }
-                                    });
-                                release_mutex_box();
-                            });
-                    }
-                }
 
                 that.persons.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
@@ -110,6 +71,4 @@ export class PersonsComponent implements OnInit {
         });
 
     }
-
-
 }

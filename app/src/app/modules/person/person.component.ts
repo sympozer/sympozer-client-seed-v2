@@ -51,6 +51,7 @@ export class PersonComponent implements OnInit {
 
             let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPerson", query, (results) => {
+                console.log(results);
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -81,28 +82,16 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
-                                    for(const box of boxs){
-                                        that.mutex_box
-                                            .acquire()
-                                            .then((release_mutex_box) => {
-                                                if(that.avatar && that.avatar.length > 0){
-                                                    release_mutex_box();
-                                                    return false;
+                                    that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1='+boxs)
+                                        .then((request) => {
+                                            if(request && request._body)
+                                            {
+                                                const user = JSON.parse(request._body);
+                                                if(user && user.avatar){
+                                                    that.avatar = 'http://localhost:3000/' + user.avatar;
                                                 }
-
-                                                that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1='+box)
-                                                    .then((request) => {
-                                                        if(request && request._body)
-                                                        {
-                                                            const user = JSON.parse(request._body);
-                                                            if(user && user.avatar_view){
-                                                                that.avatar = 'http://localhost:3000/' + user.avatar_view;
-                                                            }
-                                                        }
-                                                    });
-                                                release_mutex_box();
-                                            });
-                                    }
+                                            }
+                                        });
                                 }
                             }
                         }
