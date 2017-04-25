@@ -5,6 +5,7 @@ import {LocalDAOService} from  '../../localdao.service';
 import {routerTransition} from '../../app.router.animation';
 import * as moment from 'moment';
 import {Encoder} from "../../lib/encoder";
+import {RessourceDataset} from '../../services/RessourceDataset';
 
 @Component({
     selector: 'whatsnext',
@@ -20,7 +21,8 @@ export class WhatsNextComponent implements OnInit {
     constructor(private location: Location,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
-                private encoder: Encoder) {
+                private encoder: Encoder,
+                private ressourceDataset: RessourceDataset) {
         this.schedules = [];
     }
 
@@ -34,14 +36,16 @@ export class WhatsNextComponent implements OnInit {
                 const nodeLabel = results['?label'];
                 const nodeStartDate = results['?startDate'];
                 const nodeEndDate = results['?endDate'];
+                const nodeType = results['?type'];
 
-                if (nodeId && nodeLabel && nodeStartDate && nodeEndDate) {
+                if (nodeId && nodeLabel && nodeStartDate && nodeEndDate && nodeType) {
                     let id = nodeId.value;
                     const label = nodeLabel.value;
                     const startDate = nodeStartDate.value;
                     const endDate = nodeEndDate.value;
+                    let type = nodeType.value;
 
-                    if (id && label && startDate && endDate) {
+                    if (id && label && startDate && endDate && type) {
                         id = that.encoder.encode(id);
                         if (id) {
 
@@ -62,12 +66,16 @@ export class WhatsNextComponent implements OnInit {
                                     strDuration += minutes + " minutes";
                                 }
 
+                                //On récup le type dans l'URI
+                                type = that.ressourceDataset.extractType(type, label);
+
                                 that.schedules = that.schedules.concat({
                                     id: id,
                                     label: label,
                                     startDate: momentStartDate.format('LLLL'),
                                     duration: strDuration,
-                                    dateForSort: momentStartDate.format()
+                                    dateForSort: momentStartDate.format(),
+                                    type: type,
                                 });
 
                                 /*that.schedules.sort((a, b) => {

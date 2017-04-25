@@ -7,7 +7,10 @@
     <div class="action-links list-items" *ngFor="let event of tabEvents">
       <md-card>
         <md-icon md-list-avatar>event</md-icon>
-        <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
+        <a [routerLink]="['/event/'+event.label+'/'+event.id]">
+      <span *ngIf="event.type && event.type.length > 0">{{event.type}} : </span>
+      {{event.label}}
+    </a>
       </md-card>
     </div>
   </div>

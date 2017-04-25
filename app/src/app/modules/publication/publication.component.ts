@@ -92,17 +92,33 @@ export class PublicationComponent implements OnInit {
                 if(results){
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
+                    const nodeType = results['?type'];
 
-                    if(nodeId && nodeLabel){
+                    if(nodeId && nodeLabel && nodeType){
                         let id = nodeId.value;
                         const label = nodeLabel.value;
+                        let type = nodeType.value;
 
-                        if(id && label){
+                        if(id && label && type){
                             id = that.encoder.encode(id);
                             if(id){
+                                /*//On récup le type dans l'URI
+                                const tab = type.split('#');
+                                if(tab.length !== 2){
+                                    return false;
+                                }
+
+                                type = tab[1];
+                                type.replace('>', '');
+
+                                if(!type || type.length === 0){
+                                    return false;
+                                }*/
+
                                 that.events = that.events.concat({
                                     id: id,
                                     label: label,
+                                    //type: type,
                                 });
 
                                 that.events.sort((a, b) => {
