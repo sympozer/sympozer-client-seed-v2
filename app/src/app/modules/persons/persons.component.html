@@ -3,9 +3,8 @@
 
   <app-autocomplete [seachFor]="'name'" [items]="persons" [namespace]="'person'"></app-autocomplete>
 
-  <!--<div scrollLoader class="search-results" [listItems]="persons" [partialListItem]="tabPersons">-->
-  <div class="search-results">
-    <div class="action-links list-items" *ngFor="let person of persons">
+  <div scrollLoader class="search-results" [listItems]="persons" (updatePartialTable)="tabPersons = $event">
+    <div class="action-links list-items" *ngFor="let person of tabPersons">
       <md-card>
         <md-icon md-list-avatar>perm_identity</md-icon>
         <a [routerLink]="['/person/'+person.name+'/'+person.id]">{{person.name}}</a>

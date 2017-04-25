@@ -19,7 +19,7 @@ import {routerTransition} from '../../app.router.animation';
 export class PersonsComponent implements OnInit {
     conference: Conference = new Conference();
     persons;
-    tabPersons;
+    tabPersons: Array<Object> = new Array();
     title: string = "Persons";
 
     constructor(private router: Router,
