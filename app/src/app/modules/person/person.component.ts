@@ -82,13 +82,14 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
-                                    that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1='+boxs)
+                                    that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1='+boxs+"&id_ressource="+id)
                                         .then((request) => {
                                             if(request && request._body)
                                             {
                                                 const user = JSON.parse(request._body);
+                                                console.log(user);
                                                 if(user && user.avatar){
-                                                    that.avatar = 'http://localhost:3000/' + user.avatar;
+                                                    that.avatar = user.avatar;
                                                 }
                                             }
                                         });
