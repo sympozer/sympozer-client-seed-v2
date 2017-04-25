@@ -34,6 +34,12 @@ export class AppComponent implements OnInit {
 
         this.localStoragexx.store("fullScreen", false);
 
+        storage = this.localStoragexx.retrieve("socialShare");
+        if (storage == false) {
+            if (document.getElementById("share"))
+                document.getElementById("share").style.display = "none";
+        }
+
         storage = this.localStoragexx.retrieve("darkTheme");
         if (storage) {
             let html = document.documentElement;

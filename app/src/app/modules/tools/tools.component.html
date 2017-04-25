@@ -26,7 +26,6 @@
 <h2>Fullscreen</h2>
 <md-card class="info-text">
   <md-slide-toggle
-       class="example-margin"
        color="primary"
        [checked]="fullScreen"
        (change)="toggleFullScreen()">
@@ -38,10 +37,19 @@
 <h2>Theme</h2>
 <md-card class="info-text">
   <md-slide-toggle
-       class="example-margin"
        color="primary"
        [checked]="darkTheme"
        (change)="toggleDarkTheme()">
     Dark Theme
+  </md-slide-toggle>
+</md-card>
+
+<h2>Share to social networks</h2>
+<md-card class="info-text">
+  <md-slide-toggle
+       color="primary"
+       [checked]="socialShare"
+       (change)="toggleSocialShare()">
+    Share
   </md-slide-toggle>
 </md-card>

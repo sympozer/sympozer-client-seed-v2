@@ -18,6 +18,7 @@ export class ToolsComponent implements OnInit {
     title: string = "Tools";
     fontSize: number = 100;
     loading: boolean;
+    socialShare: boolean;
     fullScreen: boolean;
     darkTheme: boolean;
 
@@ -51,6 +52,12 @@ export class ToolsComponent implements OnInit {
 
         if (storage) {
             this.darkTheme = storage;
+        }
+
+        storage = this.localStoragexx.retrieve("socialShare");
+
+        if (storage) {
+            this.socialShare = storage;
         }
     }
 
@@ -145,6 +152,19 @@ export class ToolsComponent implements OnInit {
             if (html.classList.contains("dark")) {
                 html.classList.remove('dark');
             }
+        }
+    }
+
+    toggleSocialShare() {
+        this.socialShare = !this.socialShare;
+        this.localStoragexx.store("socialShare", this.socialShare);
+        if (this.socialShare) {
+            if (document.getElementById("share"))
+                document.getElementById("share").style.display = "block";
+        }
+        else {
+            if (document.getElementById("share"))
+                document.getElementById("share").style.display = "none";
         }
     }
 }
