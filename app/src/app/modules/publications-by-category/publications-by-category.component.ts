@@ -31,6 +31,8 @@ export class PublicationsByCategoryComponent implements OnInit {
 
             if(labelTrack){
                 that.labelTrack = labelTrack;
+                 if (document.getElementById("page-title-p"))
+                        document.getElementById("page-title-p").innerHTML = labelTrack + " publications";
             }
 
             if (!id) {
@@ -53,6 +55,10 @@ export class PublicationsByCategoryComponent implements OnInit {
                                 that.publications = that.publications.concat({
                                     id: id,
                                     label: label,
+                                });
+
+                                that.publications.sort((a, b) => {
+                                    return a.label > b.label ? 1 : -1;
                                 });
                             }
                         }

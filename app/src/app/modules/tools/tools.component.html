@@ -1,4 +1,47 @@
-<h1> Tools </h1>
+<h1 id="description-title"> {{title}} </h1>
 
-<button md-raised-button color="primary" (click)="loadDataset()">Load dataset</button>
-<button md-raised-button color="primary" (click)="resetDataset()">Reset dataset</button>
+<!--<div [hidden]="!isLoading">-->
+<!--<button md-raised-button color="primary" disabled>Load dataset DISABLED</button>-->
+<!--</div>-->
+
+<!--<div [hidden]="isLoading">-->
+
+<h2>Dataset</h2>
+<md-card class="info-text">
+  <button id="dataset-load" md-raised-button color="primary" (click)="loadDataset()" [disabled]="isLoading()">Load dataset</button>
+  <button md-raised-button color="primary" (click)="resetDataset()">Reset dataset</button>
+</md-card>
+
+<h2>Font size</h2>
+<md-card class="info-text">
+  <button md-icon-button color="primary" (click)="decresaseFontSize()">
+    <md-icon>zoom_out</md-icon>
+  </button>
+  <span>{{fontSize + "%"}}</span>
+  <button md-icon-button color="primary" (click)="increaseFontSize()">
+    <md-icon>zoom_in</md-icon>
+  </button>
+</md-card>
+
+<h2>Fullscreen</h2>
+<md-card class="info-text">
+  <md-slide-toggle
+       class="example-margin"
+       color="primary"
+       [checked]="fullScreen"
+       (change)="toggleFullScreen()">
+    Fullscreen Mode
+  </md-slide-toggle>
+</md-card>
+
+
+<h2>Theme</h2>
+<md-card class="info-text">
+  <md-slide-toggle
+       class="example-margin"
+       color="primary"
+       [checked]="darkTheme"
+       (change)="toggleDarkTheme()">
+    Dark Theme
+  </md-slide-toggle>
+</md-card>

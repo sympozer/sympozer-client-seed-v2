@@ -16,11 +16,10 @@ export class PersonByRoleComponent implements OnInit {
     persons;
     personRole;
 
-    constructor(
-        private location: Location,
-        private route: ActivatedRoute,
-        private DaoService: LocalDAOService,  
-        private encoder: Encoder) {
+    constructor(private location: Location,
+                private route: ActivatedRoute,
+                private DaoService: LocalDAOService,
+                private encoder: Encoder) {
         this.persons = [];
     }
 
@@ -34,27 +33,33 @@ export class PersonByRoleComponent implements OnInit {
 
             this.personRole = decodeURI(name);
 
+            if (document.getElementById("page-title-p"))
+                document.getElementById("page-title-p").innerHTML = this.personRole;
+
             console.log(id);
 
-            if(!id)
-            {
+            if (!id) {
                 return false;
             }
 
-            let query = { 'key' : this.encoder.decode(id) };
+            let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPersonsByRole", query, (results) => {
-                if(results){
+                if (results) {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
 
-                    if(nodeId && nodeLabel){
+                    if (nodeId && nodeLabel) {
                         const id = nodeId.value;
                         const label = nodeLabel.value;
 
-                        if(id && label){
+                        if (id && label) {
                             that.persons.push({
                                 id: that.encoder.encode(id),
                                 label: label,
+                            });
+
+                            that.persons.sort((a, b) => {
+                                return a.label > b.label ? 1 : -1;
                             });
                         }
                     }

@@ -1,14 +1,16 @@
-<h1>Events</h1>
+ <h1 id="description-title">{{title}}</h1>
 
-<app-autocomplete [seachFor]="'name'" [items]="events" [namespace]="'event'"></app-autocomplete>
-<textarea [(ngModel)]="regex">
+<app-autocomplete [seachFor]="'label'" [items]="events" [namespace]="'event'"></app-autocomplete>
+<!--
+ <textarea [(ngModel)]="regex">
 
   </textarea>
-<button (click) = "search(regex)">Submit</button>
-<div class="action-links list-items" *ngFor="let event of events | keys">
+ <button (click) = "search(regex)">Submit</button>
+-->
+
+<div class="action-links list-items" *ngFor="let event of events">
   <md-card>
     <md-icon md-list-avatar>event</md-icon>
-    <a [routerLink]="['/event/'+event.value.name+'/'+event.value.id]">{{event.value.name}}</a>
+    <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
   </md-card>
-
 </div>

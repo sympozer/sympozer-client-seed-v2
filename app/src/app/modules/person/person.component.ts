@@ -42,6 +42,11 @@ export class PersonComponent implements OnInit {
                 return false;
             }
 
+            if (document.getElementById("page-title-p"))
+                document.getElementById("page-title-p").innerHTML = name;
+
+            that.getPublication(name);
+
             let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPerson", query, (results) => {
                 that.mutex
@@ -84,9 +89,10 @@ export class PersonComponent implements OnInit {
         });
     }
 
-    getPublication(person: any) {
+    getPublication(name: any) {
         // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
-        this.dBPLDataLoaderService.getAuthorPublications(person.name).then(response => {
+        this.dBPLDataLoaderService.getAuthorPublications(name).then(response => {
+            console.log(response);
             if (response.results) {
                 let i = 0;
                 for (let result of response.results.bindings) {

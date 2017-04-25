@@ -34,6 +34,9 @@ import {EventComponent} from "./modules/event/event.component";
 import {ExternPublicationComponent} from "./modules/extern-publication/externpublication.component";
 import {AutocompleteComponent} from './modules/autocomplete/autocomplete.component';
 import {ToolsComponent} from './modules/tools/tools.component';
+import {EventsByDate} from "./modules/events-by-date/events-by-date";
+import {Share} from './modules/share-button/share-button.component';
+import {ScrollLoader} from './modules/scroll-loader/scroll-loader.component';
 import {KeysPipe} from "./keys.pipe";
 import {DataLoaderService} from "./data-loader.service";
 import {DBLPDataLoaderService} from "./dblpdata-loader.service";
@@ -45,6 +48,7 @@ import {GithubService} from "./services/github.service";
 import {HylarManager} from './services/hylar.service';
 import {ManagerRequest} from './services/ManagerRequest';
 import {PersonService} from './modules/person/person.service';
+import {ShareButtonsModule} from 'ng2-sharebuttons';
 
 const routes: Routes = [];
 
@@ -79,7 +83,10 @@ const routes: Routes = [];
         AutocompleteComponent,
         ToolsComponent,
         KeysPipe,
-        ToolsComponent
+        ToolsComponent,
+        EventsByDate,
+        Share,
+        ScrollLoader
     ],
     imports: [
         BrowserModule,
@@ -89,6 +96,7 @@ const routes: Routes = [];
         RouterModule.forRoot(routes, {useHash: true}),
         MaterialModule.forRoot(),
         MdGridListModule.forRoot(),
+        ShareButtonsModule.forRoot(),
         Ng2Webstorage,
     ],
     providers: [

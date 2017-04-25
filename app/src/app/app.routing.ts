@@ -25,6 +25,7 @@ import {EventComponent} from "./modules/event/event.component";
 import {EventByCategoryComponent} from "./modules/event-by-category/event-by-category.component";
 import {ExternPublicationComponent} from "./modules/extern-publication/externpublication.component";
 import {ToolsComponent} from './modules/tools/tools.component';
+import {EventsByDate} from './modules/events-by-date/events-by-date';
 
 
 const appRoutes: Routes = [
@@ -124,6 +125,10 @@ const appRoutes: Routes = [
     {
         path: 'event/:name/:id',
         component: EventComponent
+    },
+    {
+        path: 'event-by-date/:date',
+        component: EventsByDate
     },
     {
         path: 'externPublication/:name/:id',

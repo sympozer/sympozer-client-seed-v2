@@ -12,22 +12,6 @@ md-sidenav-container {
    background: $header-background !important;
 }
 
-.menu-button-open, .menu-button-close {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  z-index: 100;
-
-  .mat-button-focus-overlay {
-    display: none !important;
-    opacity: 0 !important;
-  }
-
-  @media screen and (min-width: 1101px) {
-    display: none;
-  }
-}
-
 menu {
   margin: 0;
   padding: 0;

@@ -1,0 +1,11 @@
+<h1 id="description-title">{{day}}</h1>
+<div class="action-links list-items" *ngFor="let schedule of schedules">
+    <md-card>
+        <md-icon md-list-avatar>event</md-icon>
+        <a [routerLink]="'/event/'+schedule.label+'/'+ schedule.id">
+            <span class="event">{{schedule.label}}</span>
+            <span class="event-info"><b> Starts at : </b> {{schedule.startDate}} </span>
+            <span class="event-info"><b> Lasts : </b>{{schedule.duration}} </span>
+        </a>
+    </md-card>
+</div>

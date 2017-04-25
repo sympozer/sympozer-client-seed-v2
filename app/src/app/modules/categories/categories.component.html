@@ -1,7 +1,7 @@
-<h1>Tracks</h1>
-<div class="action-links" *ngFor="let categorie of categories | keys">
+<h1 id="description-title">{{title}}</h1>
+<div class="action-links" *ngFor="let track of tracks">
   <md-card>
-    <a [routerLink]="['/event-by-category/'+categorie.value.name+'/'+categorie.value.id]">{{categorie.value.label}}</a>
+    <a [routerLink]="['/event-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
     <md-icon>trending_flat</md-icon>
   </md-card>
 </div>

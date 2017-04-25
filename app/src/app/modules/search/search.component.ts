@@ -13,6 +13,7 @@ import {routerTransition} from '../../app.router.animation';
 })
 export class SearchComponent implements OnInit {
     testId: String;
+    title: string = "";
 
     constructor(private location: Location,
                 private route: ActivatedRoute) {
@@ -23,7 +24,12 @@ export class SearchComponent implements OnInit {
             console.log(this.route); // snapshot -> _urlSegment -> segments (0, 1, etc.)
             let id = params['id'];
             this.testId = id;
-            //console.log("id : " + id);
+            if (this.testId == 'organization' || this.testId == 'event')
+                this.title = "Find an " + this.testId;
+            else
+                this.title = "Find a " + this.testId;
+            if (document.getElementById("page-title-p"))
+                document.getElementById("page-title-p").innerHTML = this.title;
         });
     }
 

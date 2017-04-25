@@ -1,7 +1,8 @@
-import {Injectable}     from '@angular/core';
+import {Inject, Injectable}     from '@angular/core';
 import {Headers, Http, Response} from '@angular/http';
 import {Conference} from './model/conference';
 import 'rxjs/add/operator/toPromise';
+import * as moment from 'moment';
 
 import {Config} from  './app-config';
 import {Dataset} from  './dataset';
@@ -10,6 +11,7 @@ import {Encoder} from  './lib/encoder';
 import {DataLoaderService} from "./data-loader.service";
 import {LocalStorageService} from 'ng2-webstorage';
 import {ManagerRequest} from "./services/ManagerRequest";
+import {DOCUMENT} from '@angular/platform-browser';
 
 const $rdf = require('rdflib');
 
@@ -18,7 +20,7 @@ const $rdf = require('rdflib');
 export class LocalDAOService {
     //private conferenceURL = 'https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2016/data_ESWC2016.json';
     private useJsonld = true;
-    private localstorage_jsonld = 'dataset-sympozer-jsonld';
+    private localstorage_jsonld = 'dataset-sympozer';
     private store;
     private $rdf;
     private conferenceURL;
@@ -64,47 +66,68 @@ export class LocalDAOService {
                 private encoder: Encoder,
                 private dataloader: DataLoaderService,
                 private localStoragexx: LocalStorageService,
-                private managerRequest: ManagerRequest) {
+                private managerRequest: ManagerRequest,
+                @Inject(DOCUMENT) private document: any) {
+        const domain = this.document.location.hostname;
+        if (domain) {
+            this.localstorage_jsonld += "-" + domain;
+        }
+
         this.conferenceURL = this.useJsonld
-            ? 'http://serenitecoex.com/conference2.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
+            ? 'https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/pierre_dev/app/src/dataset.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
             : 'http://dev.sympozer.com/conference/www2012/file-handle/writer/json';
 
         this.$rdf = $rdf;
     }
 
-    resetDataset(){
+    resetDataset() {
         const that = this;
 
         //On récup le dataset jsonld en local storage
         that.localStoragexx.clear(this.localstorage_jsonld);
     }
 
-    loadDataset() {
+    loadDataset(): Promise<boolean> {
 
         const that = this;
+        return new Promise((resolve, reject) => {
+            //On récup le dataset jsonld en local storage
+            console.log(that.localstorage_jsonld);
+            let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
 
-        //On récup le dataset jsonld en local storage
-        let storage = that.localStoragexx.retrieve(this.localstorage_jsonld);
+            //Si on l'a pas, on le télécharge
+            if (!storage) {
+                console.log('loading graph jsonld ...');
+                this.managerRequest.get_safe(this.conferenceURL)
+                    .then((response) => {
+                        try {
+                            if (response && response._body) {
+                                that.saveDataset(response._body);
+                                that.localStoragexx.store(that.localstorage_jsonld, response._body);
+                                return resolve(true);
+                            }
 
-        //Si on l'a pas, on le télécharge
-        if (!storage) {
-            console.log('loading graph jsonld ...');
-            that.managerRequest.get_safe(this.conferenceURL)
-                .then((response) => {
-                    if (response && response._body) {
-                        that.saveDataset(response._body);
-                        that.localStoragexx.store(that.localstorage_jsonld, response._body);
-                    }
-                });
-        }
-        else {
-            try {
-                console.log('have localstorage');
-                that.saveDataset(storage);
-            } catch (err) {
-                console.log(err)
+                            return reject(false);
+                        }
+                        catch (e) {
+                            return reject(false);
+                        }
+                    })
+                    .catch(() => {
+                        return reject(false);
+                    });
             }
-        }
+            else {
+                try {
+                    console.log('have localstorage');
+                    that.saveDataset(storage);
+                    return resolve(true);
+                } catch (err) {
+                    console.log(err);
+                    return reject(false);
+                }
+            }
+        });
     }
 
     saveDataset(dataset: string) {
@@ -112,12 +135,12 @@ export class LocalDAOService {
         const mimeType = 'text/turtle';
         const store = that.$rdf.graph();
 
-        try{
+        try {
             that.$rdf.parse(dataset, store, this.conferenceURL, mimeType);
             that.store = store;
             that.store.fetcher = null;
         }
-        catch(e){
+        catch (e) {
             console.log(e);
         }
     }
@@ -174,6 +197,7 @@ export class LocalDAOService {
     query(command, data, callback) {
         //Returning an object with the appropriate methods
         const that = this;
+        const types = ["Panel", "Session", 'Talk', 'Tutorial', 'Workshop'];
         if (that.useJsonld && that.store && callback) {
             let query;
             switch (command) {
@@ -216,8 +240,8 @@ export class LocalDAOService {
                         "WHERE {\n" +
                         " ?id a person:Person . \n" +
                         " ?id schema:label ?label . \n" +
-                        "}";
-
+                        "} LIMIT 10";
+                    console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 //return this.personLinkMap;
@@ -310,7 +334,7 @@ export class LocalDAOService {
                         " ?idHoldRole scholary:withRole ?idRole . \n" +
                         " ?idRole schema:label ?label . \n" +
                         "}";
-console.log(query);
+                    console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 //For the moment, it's the same thing, since we haven't role complete descriptions.
@@ -395,20 +419,73 @@ console.log(query);
                 case "getEventLink":
                     return this.eventLinkMap[data.key];
                 case "getAllEvents":
+                    for (const type of types) {
+                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?id ?label \n" +
+                            "WHERE {\n" +
+                            " ?id a scholary:" + type + " . \n" +
+                            " ?id schema:label ?label . \n" +
+                            "}";
+
+                        that.launchQuerySparql(query, callback);
+                    }
+                    break;
+                case "getEventById":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX person: <http://www.scholarlydata.org/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?id ?label \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent \n" +
                         "WHERE {\n" +
-                        " ?id a person:InProceedings . \n" +
+                        " <" + data.key + "> schema:label ?label . \n" +
+                        " <" + data.key + "> scholary:description ?description . \n" +
+                        " <" + data.key + "> scholary:endDate ?endDate . \n" +
+                        " <" + data.key + "> scholary:startDate ?startDate . \n" +
+                        " <" + data.key + "> scholary:isSubEventOf ?isSubEventOf . \n" +
+                        " OPTIONAL { <" + data.key + "> scholary:isEventRelatedTo ?isEventRelatedTo . } \n" +
+                        " OPTIONAL { <" + data.key + "> scholary:hasSubEvent ?hasSubEvent . } \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getTrackByEvent":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?id \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:Track . \n" +
                         " ?id schema:label ?label . \n" +
+                        " ?id scholary:hasSubEvent <" + data.key + "> . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getLocation":
                     return this.eventLinkMapByLocation[data.key];
-                case "getCategory":
-                    return this.categoryMap[data.key];
+                case "getEventByTrack":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?id \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:Track . \n" +
+                        " <" + data.key + "> scholary:hasSubEvent ?id . \n" +
+                        " ?id a scholary:Talk . \n" +
+                        " ?id schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getPublicationsByEvent":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?id \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:InProceedings . \n" +
+                        " ?id scholary:relatesToEvent <" + data.key + "> . \n" +
+                        " ?id schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getCategoryForPublications":
                     return this.categoryForPublicationsMap[data.key];
                 case "getCategoryLink":
@@ -434,7 +511,89 @@ console.log(query);
                 case "getConferenceScheduleIcs":
                     return Object.keys(this.eventLinkMap);
                 case "getWhatsNext":
-                    return this.confScheduleList;
+                    //On récup les dates
+                    let dateStart = moment();
+                    let dateEnd = moment().endOf('day');
+
+                    for (const type of types) {
+                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?id ?label ?startDate ?endDate \n" +
+                            "WHERE {\n" +
+                            " ?id a scholary:" + type + " . \n" +
+                            " ?id schema:label ?label . \n" +
+                            " ?id scholary:startDate ?startDate . \n" +
+                            " ?id scholary:endDate ?endDate . \n" +
+                            "}";
+                        that.launchQuerySparql(query, (results) => {
+                            const nodeStartDate = results['?startDate'];
+                            const nodeEndDate = results['?endDate'];
+
+                            if (nodeStartDate && nodeEndDate) {
+                                const startDate = moment(nodeStartDate.value);
+                                const endDate = moment(nodeEndDate.value);
+
+                                //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
+                                if (dateStart.isAfter(startDate) && dateEnd.isAfter(endDate)) {
+                                    callback(results);
+                                }
+                            }
+                        });
+                    }
+                    break;
+                case "getDayPerDay":
+                    for (const type of types) {
+                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?id ?startDate \n" +
+                            "WHERE {\n" +
+                            " ?id a scholary:" + type + " . \n" +
+                            " ?id scholary:startDate ?startDate . \n" +
+                            "}";
+                        that.launchQuerySparql(query, callback);
+                    }
+                    break;
+                case "getEventByDate":
+                    const originStartDate = moment(data.startDate);
+                    const originEndDate = moment(data.endDate);
+                    console.log(originStartDate, originEndDate);
+                    for (const type of types) {
+                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?id ?label ?startDate ?endDate \n" +
+                            "WHERE {\n" +
+                            " ?id a scholary:" + type + " . \n" +
+                            " ?id schema:label ?label . \n" +
+                            " ?id scholary:startDate ?startDate . \n" +
+                            " ?id scholary:endDate ?endDate . \n" +
+                            "}";
+                        that.launchQuerySparql(query, (results) => {
+                            const nodeStartDate = results['?startDate'];
+                            const nodeEndDate = results['?endDate'];
+
+                            if (nodeStartDate && nodeEndDate) {
+                                const startDate = moment(nodeStartDate.value);
+                                const endDate = moment(nodeEndDate.value);
+
+                                //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
+                                if (startDate.isSameOrAfter(originStartDate) && endDate.isSameOrBefore(originEndDate)) {
+                                    callback(results);
+                                }
+                            }
+                        });
+                    }
+                    break;
+                case "getEventFromPublication":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:InProceedings . \n" +
+                        " <" + data.key + "> scholary:relatesToEvent ?id . \n" +
+                        " ?id schema:label ?label . \n" +
+                        "}";
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getAllLocations":
                     return this.locationLinkMap;
                 case "getLocationLink":

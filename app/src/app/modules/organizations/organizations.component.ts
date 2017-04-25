@@ -1,49 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LocalDAOService } from  '../../localdao.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {LocalDAOService} from  '../../localdao.service';
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 
 @Component({
-  selector: 'app-organizations',
-  templateUrl: './organizations.component.html',
-  styleUrls: ['./organizations.component.css'],
-  animations: [routerTransition()],
-  host: {'[@routerTransition]': ''}
+    selector: 'app-organizations',
+    templateUrl: './organizations.component.html',
+    styleUrls: ['./organizations.component.css'],
+    animations: [routerTransition()],
+    host: {'[@routerTransition]': ''}
 })
 export class OrganizationsComponent implements OnInit {
-  organizations;
-  constructor(
-      private DaoService : LocalDAOService,
-      private encoder: Encoder
-  ) {
-    this.organizations = [];
-  }
+    organizations;
+    title: string = "Organizations";
 
-  ngOnInit() {
-    //this.organizations = this.DaoService.query("getAllOrganizations", null);
-    const that = this;
-    that.DaoService.query("getAllOrganizations", null, (results) => {
-      if(results)
-      {
-        const nodeId = results['?id'];
-        const nodeLabel = results['?label'];
+    constructor(private DaoService: LocalDAOService,
+                private encoder: Encoder) {
+        this.organizations = [];
+    }
 
-        if(nodeId && nodeLabel)
-        {
-          const id = nodeId.value;
-          const label = nodeLabel.value;
+    ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
+        const that = this;
+        that.DaoService.query("getAllOrganizations", null, (results) => {
+            if (results) {
+                const nodeId = results['?id'];
+                const nodeLabel = results['?label'];
 
-          if(id && label)
-          {
-            that.organizations = that.organizations.concat({
-              id: that.encoder.encode(id),
-              label: label,
-            });
-          }
-        }
-      }
-    });
-  }
+                if (nodeId && nodeLabel) {
+                    const id = nodeId.value;
+                    const label = nodeLabel.value;
+
+                    if (id && label) {
+                        that.organizations = that.organizations.concat({
+                            id: that.encoder.encode(id),
+                            label: label,
+                        });
+
+                        that.organizations.sort((a, b) => {
+                            return a.label > b.label ? 1 : -1;
+                        });
+                    }
+                }
+            }
+        });
+    }
 
 }
