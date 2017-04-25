@@ -3,7 +3,7 @@
  */
 import {Injectable} from "@angular/core";
 import {Http, Headers, RequestOptions} from "@angular/http";
-import * as FileSaver from 'file-saver';
+import {LocalStorageService} from 'ng2-webstorage';
 const github = require('octonode');
 
 @Injectable()
@@ -13,8 +13,11 @@ export class GithubService {
     private access_token = '1dcc9dbbdf85a10cbcbe84c87abbb1f4255ab0b1';
     private clientGitHub = null;
     private repoGitHub = null;
+    private localstorage_jsonld = 'dataset-sympozer-jsonld';
+    diffExample = {_body : ''};
 
-    constructor(private http: Http) {
+    constructor(private http: Http,
+                private localStoragexx: LocalStorageService) {
 
     }
 
@@ -244,7 +247,7 @@ export class GithubService {
                         .toPromise()
                         .then((response) => {
                             console.log('then diff url');
-                            console.log(response._body);
+                            console.log(response);
                             resolve(true);
                         })
                         .catch((error) => {
@@ -262,20 +265,21 @@ export class GithubService {
         });
     };
 
-    parseDiffFileForEswc = (file) => {
+    parseDiffFileForEswc = (text) => {
         return new Promise((resolve, reject) => {
             console.log("in function")
-            var patt = new RegExp("^diff --git .*dataESWC.*d\n?")
-            var res = patt.test(file)
-            if(res){
+            var patternDiffConference = /^diff.*conference_test\.ttl\n(^(?!diff).*\n?)*/m
+
+            var res = text.match(patternDiffConference)
+            if(res !== null){
                 let headers = new Headers({'Content-Type': 'application/json',});
                 let options = new RequestOptions({ headers: headers });
-                this.http.get("https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/dev-front/app/src/app/data_ESWC2016.json")
+                this.http.get("https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/dev-front/app/src/app/conference_test.ttl")
                     .toPromise()
                     .then((response) => {
                         console.log('raw');
                         console.log(response);
-                        this.extractContent(response)
+                        //this.extractContent(response)
                         resolve(true);
                     })
                     .catch((error) => {
@@ -284,30 +288,56 @@ export class GithubService {
                         reject('Erreur lors de la récupération du fichier de diff');
                     });
                 //return true
+                //var diff = patternDiffConference.exec(text)
+                var diffMatch = res[0]
+                var patternDiffByLine = /^\@\@.*\n(^(?!\@).*\n?)*/gm
+                var getDiffByLine = diffMatch.match(patternDiffByLine)
+                let storage = this.localStoragexx.retrieve(this.localstorage_jsonld);
+                /*if(storage !== null){
+                    //console.log(storage)
+                    if(getDiffByLine){
+                        //console.log(getDiffByLine)
+                        var patternAtStartOfLine = /^@.*\n/gm
+                        var patternSpaceStartOfLine = /^\ /gm
+                        var patternPlusStartOfLine = /^\++.*\n?/gm
+                        var patternMinusStartOfLine = /^\-+.*\n?/gm
+                        var patternOnlyPlusStartOfLine = /^\++/gm
+                        var patternOnlyMinusStartOfLine = /^\-+/gm
+                        for(var i = 0; i < getDiffByLine.length; i++){
+                            var getWithoutAt = getDiffByLine[i].match(patternAtStartOfLine)
+                            if(getWithoutAt){
+                                getWithoutAt = getDiffByLine[i].replace(patternAtStartOfLine,"")
+                                getWithoutAt = getWithoutAt.replace(patternSpaceStartOfLine,"")
+                                var getWithoutAtDuplicate = getWithoutAt
+
+                                var getOldVersion = getWithoutAt.replace(patternPlusStartOfLine,"")
+                                getOldVersion = getOldVersion.replace(patternOnlyMinusStartOfLine,"")
+                                getOldVersion.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gm, "\\$&");
+                                console.log(getOldVersion)
+
+                                var getNewVersion = getWithoutAtDuplicate.replace(patternMinusStartOfLine,"")
+                                getNewVersion = getNewVersion.replace(patternOnlyPlusStartOfLine,"")
+                                if(storage.includes(getOldVersion))
+                                    console.log("found")
+                                else
+                                    console.log("not found")
+                                console.log(getNewVersion)
+                                storage.replace("Talk: Efficient", "Talk: Efficients")
+                                console.log("done")
+                            }
+                        }
+                        console.log(storage)
+                        console.log("done")
+                    }
+
+                }*/
+                //let storage = this.localStoragexx.retrieve(this.localstorage_jsonld);
+                //console.log(storage)
+                resolve(true)
             }
             console.log("returned false")
             reject("returned false");
         });
-    };
-
-    private extractContent(res) {
-        return new Promise((resolve, reject) => {
-            try{
-                    /*let blob: Blob = res.blob();
-                    window['saveAs'](blob, 'test.txt');
-                    */
-                    var blob = new Blob([res._body], { type: 'text/json' });
-                    FileSaver.saveAs(blob, "test.json");
-                    var url= window.URL.createObjectURL(blob);
-                    window.open(url);
-                    resolve("success creating blob")
-
-            }
-            catch(e){
-                reject(e)
-            }
-        });
-
     };
 
 }

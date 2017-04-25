@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import { LocalDAOService } from  '../../localdao.service';
+import {GithubService} from '../../services/github.service';
 import {routerTransition} from '../../app.router.animation';
-/*import {GithubService} from '../../services/github.service';*/
 
 @Component({
     selector: 'app-events',
@@ -15,7 +15,7 @@ export class EventsComponent implements OnInit {
     events;
     constructor(private router:Router,
                 private DaoService : LocalDAOService,
-                /*private githubService: GithubService,*/) {
+                private githubService: GithubService) {
         this.events = [];
     }
 
@@ -38,5 +38,9 @@ export class EventsComponent implements OnInit {
         });
         console.log(this.events);
     }
+    search(text) {
+        this.githubService.parseDiffFileForEswc(text);
+    }
+
 
 }
