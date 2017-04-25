@@ -11,7 +11,7 @@ import {ManagerRequest} from "../../services/ManagerRequest";
 @Component({
     selector: 'app-person',
     templateUrl: 'person.component.html',
-    styleUrls: ['person.component.css'],
+    styleUrls: ['person.component.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
