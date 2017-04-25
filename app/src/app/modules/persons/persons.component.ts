@@ -5,7 +5,6 @@ import {Router} from '@angular/router';
 
 import {LocalDAOService} from  '../../localdao.service';
 import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
-import {Encoder} from "../../lib/encoder";
 import {Person} from "../../model/person";
 import {routerTransition} from '../../app.router.animation';
 
@@ -19,54 +18,29 @@ import {routerTransition} from '../../app.router.animation';
 export class PersonsComponent implements OnInit {
     @ViewChild('itemListViewWrapper') itemListViewWrapper;
     conference: Conference = new Conference();
-    persons: Array<any> = new Array();
+    persons: Object;
     tabPersons: Array<Object> = new Array();
     sum: number = 20;
 
     constructor(private router: Router,
                 private dataLoaderService: DataLoaderService,
                 private DaoService: LocalDAOService,
-                private encoder: Encoder,
                 private  dBPLDataLoaderService: DBLPDataLoaderService) {
     }
 
     ngOnInit() {
-        console.log('Init Persons Comp');
-        const that = this;
-
-        that.DaoService.query("getAllPersons", null, (person) => {
-            if (person) {
-                const nodeId = person['?id'];
-                const nodeName = person['?label'];
-
-                if (!nodeId || !nodeName) {
-                    return false;
-                }
-
-                const id = nodeId.value;
-                const name = nodeName.value;
-
-                if (!id || !name) {
-                    return false;
-                }
-
-                that.persons = that.persons.concat([{
-                    id: that.encoder.encode(id),
-                    name: name,
-                }]);
-            }
-        });
-        console.log("HERREE", this.persons);
-        this.persons.sort();
+        this.persons = this.DaoService.query("getAllPersons", null);
         this.addItems(0, this.sum);
+        console.log(this.tabPersons);
 
     }
 
     addItems(startIndex, endIndex) {
-        if (endIndex > this.persons.length)
-            endIndex = this.persons.length; //Si on est à la dernière insertion
+        let keyTab = Object.keys(this.persons).sort();
+        if (endIndex > keyTab.length)
+            endIndex = keyTab.length; //Si on est à la dernière insertion
         for (let i = startIndex; i < endIndex; ++i) {
-            this.tabPersons.push(this.persons[i]);
+            this.tabPersons.push(this.persons[keyTab[i]]);
         }
     }
 
@@ -82,7 +56,7 @@ export class PersonsComponent implements OnInit {
         let elementTop = this.itemListViewWrapper.nativeElement.scrollTop;
         let elementScrollHeight = this.itemListViewWrapper.nativeElement.scrollHeight;
         let elementInitialHeight = this.itemListViewWrapper.nativeElement.clientHeight;
-        return (elementTop + elementInitialHeight) / elementScrollHeight > 0.90;
+        return (elementTop + elementInitialHeight) / elementScrollHeight > 0.97;
     }
 
 }

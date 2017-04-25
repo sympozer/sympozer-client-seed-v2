@@ -270,12 +270,12 @@ export class GithubService {
             if(res){
                 let headers = new Headers({'Content-Type': 'application/json',});
                 let options = new RequestOptions({ headers: headers });
-                this.http.get("https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/dev-front/app/src/app/conference_test.ttl")
+                this.http.get("https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/dev-front/app/src/app/data_ESWC2016.json")
                     .toPromise()
                     .then((response) => {
                         console.log('raw');
                         console.log(response);
-                        //this.extractContent(response)
+                        this.extractContent(response)
                         resolve(true);
                     })
                     .catch((error) => {
@@ -293,14 +293,14 @@ export class GithubService {
     private extractContent(res) {
         return new Promise((resolve, reject) => {
             try{
-                /*let blob: Blob = res.blob();
-                 window['saveAs'](blob, 'test.txt');
-                 */
-                var blob = new Blob([res._body], { type: 'text/json' });
-                FileSaver.saveAs(blob, "test.json");
-                var url= window.URL.createObjectURL(blob);
-                window.open(url);
-                resolve("success creating blob")
+                    /*let blob: Blob = res.blob();
+                    window['saveAs'](blob, 'test.txt');
+                    */
+                    var blob = new Blob([res._body], { type: 'text/json' });
+                    FileSaver.saveAs(blob, "test.json");
+                    var url= window.URL.createObjectURL(blob);
+                    window.open(url);
+                    resolve("success creating blob")
 
             }
             catch(e){
