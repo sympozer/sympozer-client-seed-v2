@@ -15,6 +15,7 @@ import {Encoder} from "../../lib/encoder";
 export class AuthorsComponent implements OnInit {
     authors;
     private searchTerms = new Subject<string>();
+    tabAuthors: Array<Object> = new Array();
     title: string = "Authors";
 
     constructor(private router: Router,
@@ -59,9 +60,4 @@ export class AuthorsComponent implements OnInit {
             }
         });
     }
-
-    search(term: string): void {
-        //this.searchTerms.next(term);                                                                                                                                                                                                                                                                                                                                                                                                                     rm);
-    }
-
 }

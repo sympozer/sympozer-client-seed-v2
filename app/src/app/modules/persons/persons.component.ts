@@ -60,8 +60,5 @@ export class PersonsComponent implements OnInit {
                 });
             }
         });
-
     }
-
-
 }

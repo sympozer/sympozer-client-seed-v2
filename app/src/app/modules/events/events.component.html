@@ -1,10 +1,14 @@
- <h1 id="description-title">{{title}}</h1>
+<div class="component-wrapper">
+  <h1 id="description-title">{{title}}</h1>
 
-<app-autocomplete [seachFor]="'label'" [items]="events" [namespace]="'event'"></app-autocomplete>
+  <app-autocomplete [seachFor]="'label'" [items]="events" [namespace]="'event'"></app-autocomplete>
 
-<div class="action-links list-items" *ngFor="let event of events">
-  <md-card>
-    <md-icon md-list-avatar>event</md-icon>
-    <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
-  </md-card>
+  <div scrollLoader class="search-results" [listItems]="events" (updatePartialTable)="tabEvents = $event">
+    <div class="action-links list-items" *ngFor="let event of tabEvents">
+      <md-card>
+        <md-icon md-list-avatar>event</md-icon>
+        <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
+      </md-card>
+    </div>
+  </div>
 </div>

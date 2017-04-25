@@ -14,6 +14,7 @@ import {Encoder} from "../../lib/encoder";
 export class EventsComponent implements OnInit {
     events;
     title: string = "Events";
+    tabEvents: Array<Object> = new Array();
 
     constructor(private router: Router,
                 private DaoService: LocalDAOService,

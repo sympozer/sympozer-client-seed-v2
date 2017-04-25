@@ -14,6 +14,7 @@ import {routerTransition} from '../../app.router.animation';
 })
 export class RolesComponent implements OnInit {
     roles;
+    tabRoles: Array<Object> = new Array();
     title: string = "Roles";
 
     constructor(private router: Router,

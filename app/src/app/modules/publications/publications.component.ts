@@ -15,6 +15,7 @@ import {routerTransition} from '../../app.router.animation';
 export class PublicationsComponent implements OnInit {
     title: string = "Publications";
     publications;
+    tabPubli: Array<Object> = new Array();
 
     constructor(private router: Router,
                 private DaoService: LocalDAOService,

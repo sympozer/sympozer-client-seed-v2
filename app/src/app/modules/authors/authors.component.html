@@ -1,10 +1,14 @@
- <h1 id="description-title"> {{title}} </h1>
+<div class="component-wrapper">
+  <h1 id="description-title"> {{title}} </h1>
 
-<app-autocomplete [seachFor]="'name'" [items]="authors" [namespace]="'person'"></app-autocomplete>
+  <app-autocomplete [seachFor]="'name'" [items]="authors" [namespace]="'person'"></app-autocomplete>
 
-<div class="action-links list-items" *ngFor="let author of authors">
-  <md-card>
-    <md-icon md-list-avatar>perm_identity</md-icon>
-    <a [routerLink]="['/person/'+author.name+'/'+author.id]">{{author.name}}</a>
-  </md-card>
+  <div scrollLoader class="search-results" [listItems]="authors" (updatePartialTable)="tabAuthors = $event">
+    <div class="action-links list-items" *ngFor="let author of tabAuthors">
+      <md-card>
+        <md-icon md-list-avatar>perm_identity</md-icon>
+        <a [routerLink]="['/person/'+author.name+'/'+author.id]">{{author.name}}</a>
+      </md-card>
+    </div>
+  </div>
 </div>
