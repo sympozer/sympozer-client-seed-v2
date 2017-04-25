@@ -21,7 +21,6 @@ import {Mutex} from 'async-mutex';
 export class PersonsComponent implements OnInit {
     conference: Conference = new Conference();
     persons;
-    private mutex_box: any;
 
     constructor(private router: Router,
                 private dataLoaderService: DataLoaderService,
@@ -30,7 +29,6 @@ export class PersonsComponent implements OnInit {
                 private  dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: ManagerRequest) {
         this.persons = [];
-        this.mutex_box = new Mutex();
     }
 
     ngOnInit() {
@@ -55,22 +53,24 @@ export class PersonsComponent implements OnInit {
                 }
 
                 id = that.encoder.encode(id);
-                if(!id){
+                if (!id) {
                     return false;
                 }
 
                 const person = {
                     id: id,
                     name: name,
+                    avatar: '',
                 };
 
                 that.persons = that.persons.concat(person);
 
-                if(nodeBox){
+                if (nodeBox) {
                     let boxs = [];
+                    const mutex_box = new Mutex();
                     const boxs_temp = nodeBox.value;
-                    if(boxs_temp){
-                        switch(typeof boxs_temp){
+                    if (boxs_temp) {
+                        switch (typeof boxs_temp) {
                             case "string":
                                 boxs = [boxs_temp];
                                 break;
@@ -80,29 +80,21 @@ export class PersonsComponent implements OnInit {
                         }
                     }
 
-                    for(const box of boxs){
-                        that.mutex_box
+                    for (const box of boxs) {
+                        mutex_box
                             .acquire()
                             .then((release_mutex_box) => {
-                                const p = that.persons.find((p_temp) => {
-                                    return p_temp.id ===  id;
-                                });
-
-                                if(!p || (p.avatar && p.avatar.length > 0)){
+                                if (!person || (person.avatar && person.avatar.length > 0)) {
                                     release_mutex_box();
                                     return false;
                                 }
-
-                                that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1='+box)
+                                
+                                that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1=' + box)
                                     .then((request) => {
-                                        if(request && request._body)
-                                        {
+                                        if (request && request._body) {
                                             const user = JSON.parse(request._body);
-                                            if(user && user.avatar_view){
-
-                                                if(p){
-                                                    p.avatar = 'http://localhost:3000/' + user.avatar_view;
-                                                }
+                                            if (user && user.avatar_view) {
+                                                person.avatar = 'http://localhost:3000/' + user.avatar_view;
                                             }
                                         }
                                     });
@@ -118,7 +110,6 @@ export class PersonsComponent implements OnInit {
         });
 
     }
-
 
 
 }

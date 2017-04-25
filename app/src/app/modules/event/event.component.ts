@@ -1,11 +1,9 @@
-import {forEach} from "@angular/router/src/utils/collection";
 import {Component, OnInit} from "@angular/core";
-import {Conference} from "../../model/conference";
 import {Router, ActivatedRoute, Params} from "@angular/router";
-import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
+import {RessourceDataset} from '../../services/RessourceDataset';
 
 import * as moment from 'moment';
 
@@ -27,8 +25,11 @@ export class EventComponent implements OnInit {
     private endsAt;
     private duration;
 
-    constructor(private router: Router, private route: ActivatedRoute,
-                private DaoService: LocalDAOService, private encoder: Encoder) {
+    constructor(private router: Router,
+                private route: ActivatedRoute,
+                private DaoService: LocalDAOService,
+                private encoder: Encoder,
+                private ressourceDataset: RessourceDataset) {
         this.event = {};
     }
 
@@ -46,14 +47,16 @@ export class EventComponent implements OnInit {
                     const nodeStartDate = results['?startDate'];
                     const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
                     const nodeIsSubEventOf = results['?isSubEventOf'];
+                    const nodeType = results['?type'];
 
-                    if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate) {
+                    if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate && nodeType) {
                         const label = nodeLabel.value;
                         const description = nodeDescription.value;
                         let endDate = nodeEndDate.value;
                         let startDate = nodeStartDate.value;
+                        let type = nodeType.value;
 
-                        if (label && description && endDate && startDate) {
+                        if (label && description && endDate && startDate && type) {
                             startDate = moment(startDate);
                             endDate = moment(endDate);
 
@@ -70,6 +73,9 @@ export class EventComponent implements OnInit {
                                 strDuration += minutes + " minutes";
                             }
 
+                            //On récup le type dans l'URI
+                            type = that.ressourceDataset.extractType(type, label);
+
                             that.event = {
                                 label: label,
                                 description: description,
@@ -80,6 +86,7 @@ export class EventComponent implements OnInit {
                                 eventsRelatedTo: [],
                                 subEventsOf: [],
                                 tracks: [],
+                                type: type,
                             };
 
                             that.DaoService.query("getPublicationsByEvent", query, (results) => {
@@ -97,10 +104,10 @@ export class EventComponent implements OnInit {
                                             if (id) {
                                                 //On regarde si on a pas déjà l'event
                                                 const find = that.event.publications.find((event) => {
-                                                   return event.id === id;
+                                                    return event.id === id;
                                                 });
 
-                                                if(find){
+                                                if (find) {
                                                     return false;
                                                 }
 
@@ -115,23 +122,23 @@ export class EventComponent implements OnInit {
                             });
 
                             that.DaoService.query("getTrackByEvent", query, (results) => {
-                                if(results){
+                                if (results) {
                                     const nodeId = results['?id'];
                                     const nodeLabel = results['?label'];
 
-                                    if(nodeId && nodeLabel){
+                                    if (nodeId && nodeLabel) {
                                         let id = nodeId.value;
                                         const label = nodeLabel.value;
 
-                                        if(id && label){
+                                        if (id && label) {
                                             id = that.encoder.encode(id);
-                                            if(id){
+                                            if (id) {
                                                 //On regarde si on a pas déjà le track
                                                 const find = that.event.tracks.find((track) => {
                                                     return track.id === id;
                                                 });
 
-                                                if(find){
+                                                if (find) {
                                                     return false;
                                                 }
 

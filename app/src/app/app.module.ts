@@ -45,6 +45,7 @@ import {Ng2Webstorage} from 'ng2-webstorage';
 import {GithubService} from "./services/github.service";
 import {HylarManager} from './services/hylar.service';
 import {ManagerRequest} from './services/ManagerRequest';
+import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
 
 const routes: Routes = [];
@@ -102,7 +103,8 @@ const routes: Routes = [];
         GithubService,
         HylarManager,
         ManagerRequest,
-        PersonService
+        PersonService,
+        RessourceDataset
     ],
     bootstrap: [AppComponent]
 })

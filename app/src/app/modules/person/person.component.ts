@@ -63,6 +63,11 @@ export class PersonComponent implements OnInit {
                             if (label) {
                                 let boxs = [];
 
+                                that.person = {
+                                    name: label,
+                                    boxs: boxs,
+                                };
+
                                 if(nodeBox){
                                     const boxs_temp = nodeBox.value;
                                     if(boxs_temp){
@@ -99,11 +104,6 @@ export class PersonComponent implements OnInit {
                                             });
                                     }
                                 }
-
-                                that.person = {
-                                    name: label,
-                                    boxs: boxs,
-                                };
                             }
                         }
                         release();
