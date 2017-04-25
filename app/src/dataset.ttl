@@ -4751,14 +4751,14 @@ meaning in the Semantic Web context.
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc-2016-posterdemo-demo-84> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
-              """We demonstrate a visualisation aimed at facilitating SPARQL-fluent 
-users to produce queries over a dataset they are not familiar with. 
-This visualisation consists of a labelled graph whose nodes are the different types of entities in the RDF dataset, 
-and where two types are related if entities of these types appear related in the RDF dataset. To avoid a visual overload when 
-the number of types in a dataset is too big, the graph groups together all types that are subclass of a 
-more general type, and users are given the option of navigating through this hierarchy of types, dividing type nodes 
-into subtypes as they see fit. 
-We illustrate our visualisation using the Linked Movie Database dataset, and offer as well the visualisation of DBpedia. 
+              """We demonstrate a visualisation aimed at facilitating SPARQL-fluent
+users to produce queries over a dataset they are not familiar with.
+This visualisation consists of a labelled graph whose nodes are the different types of entities in the RDF dataset,
+and where two types are related if entities of these types appear related in the RDF dataset. To avoid a visual overload when
+the number of types in a dataset is too big, the graph groups together all types that are subclass of a
+more general type, and users are given the option of navigating through this hierarchy of types, dividing type nodes
+into subtypes as they see fit.
+We illustrate our visualisation using the Linked Movie Database dataset, and offer as well the visualisation of DBpedia.
 """ ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAuthorList>
               <https://w3id.org/scholarlydata/authorlist/iswc-2016-posterdemo-demo-84> ;
@@ -5638,7 +5638,7 @@ We illustrate our visualisation using the Linked Movie Database dataset, and off
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc-2016-research-research-119> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
-              """Data stream applications are becoming increasingly popular on the web. In these applications, one query pattern is especially prominent: a join between a continuous data stream and some background data (BGD). Oftentimes, the target BGD is large, maintained externally, changing slowly, and costly to query (both in terms of time and money). Hence, practical applications usually maintain a local (cached) view of the relevant BGD. Given that these caches are not updated as part of the transaction modifying the original BGD, they should be maintained under realistic budget constraints (in terms of latency, computation time, and possibly financial cost) to avoid stale data leading to wrong answers. 
+              """Data stream applications are becoming increasingly popular on the web. In these applications, one query pattern is especially prominent: a join between a continuous data stream and some background data (BGD). Oftentimes, the target BGD is large, maintained externally, changing slowly, and costly to query (both in terms of time and money). Hence, practical applications usually maintain a local (cached) view of the relevant BGD. Given that these caches are not updated as part of the transaction modifying the original BGD, they should be maintained under realistic budget constraints (in terms of latency, computation time, and possibly financial cost) to avoid stale data leading to wrong answers.
 
 This paper proposes to model the join between streams and the BGD as a bipartite graph. By exploiting the graph structure, we keep the quality of results good enough without refreshing the entire cache for each evaluation. We also introduce two extensions to this method: first, we consider both the sliding window (specifying the currently relevant section of the data stream) and the change rate of the BGD to focus on updates that have the longest effect. Second, by considering the future impact of a query to the BGD we propose to sometimes delay updates to provide more fresher answers in future.
 
@@ -5757,7 +5757,7 @@ Using an implemented system we empirically show that we can improve result fresh
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
               """To enable knowledge access across languages, ontologies that are often represented only in English, need to be translated into different languages.
 Since manual multilingual enhancement of domain-specific ontologies is very time consuming and expensive, smart solutions are required to facilitate the translation task for the language and domain experts.
-For this reason, we present ESSOT, an Expert Supporting System for Ontology Translation, which support experts in accomplishing the multilingual ontology management task. Differently than the classic document translation, ontology label translation faces highly specific vocabulary and lack contextual information. 
+For this reason, we present ESSOT, an Expert Supporting System for Ontology Translation, which support experts in accomplishing the multilingual ontology management task. Differently than the classic document translation, ontology label translation faces highly specific vocabulary and lack contextual information.
 Therefore, ESSOT takes advantage of the semantic information of the ontology for translation improvement of the ontology labels.""" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAuthorList>
               <https://w3id.org/scholarlydata/authorlist/iswc-2016-posterdemo-demo-108> ;
@@ -10854,7 +10854,7 @@ Using this method, the measurement of manufacturing process efficiency from sens
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc-2016-research-research-139> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
-              """Advances in information extraction have enabled the automatic construction of large knowledge graphs (KGs) like DBpedia, Freebase, Yago and Wikidata. These KGs are inevitably bound to be incomplete. To fill in the gaps, data correlations in the KG can be analyzed to infer Horn rules and to predict new facts. However, Horn rules do not take into account possible exceptions, so that predicting facts via such rules introduces errors. 
+              """Advances in information extraction have enabled the automatic construction of large knowledge graphs (KGs) like DBpedia, Freebase, Yago and Wikidata. These KGs are inevitably bound to be incomplete. To fill in the gaps, data correlations in the KG can be analyzed to infer Horn rules and to predict new facts. However, Horn rules do not take into account possible exceptions, so that predicting facts via such rules introduces errors.
 To overcome this problem, we present a method for effective revision of learned Horn rules by effectively incorporating exceptions (i.e., negated atoms) into their bodies. This way errors are largely reduced. We apply our method to discover rules with exceptions from real-world KGs. Our experimental results demonstrate the effectiveness of the developed method and the improvements in accuracy for KG completion by rule-based fact prediction.""" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAuthorList>
               <https://w3id.org/scholarlydata/authorlist/iswc-2016-research-research-139> ;
@@ -10939,7 +10939,7 @@ To overcome this problem, we present a method for effective revision of learned 
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc-2016-research-research-224> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
-              """In recent years RDF and OWL have become the most common knowledge representation languages in use on the Web, propelled by the recommendation of the W3C. In this paper we examine an alternative way to represent knowledge based on Prototypes. This Prototype based representation has different properties, which we argue to be 
+              """In recent years RDF and OWL have become the most common knowledge representation languages in use on the Web, propelled by the recommendation of the W3C. In this paper we examine an alternative way to represent knowledge based on Prototypes. This Prototype based representation has different properties, which we argue to be
 more suitable for data sharing and reuse on the Web. Prototypes avoid the distinction between classes and instances and provide means for objects based data sharing and reuse.
 
 In this paper we discuss the requirements and design principles for Knowledge Representation based on Prototypes on the Web, after which we propose a formal syntax and semantics. We show how to embed knowledge representation based on Prototypes in the current Semantic Web standard stack. An implementation and practical evaluation of the system is presented in a separate resource paper.""" ;
@@ -12738,7 +12738,7 @@ We show a use case to apply the method to actual weekly reports and internal doc
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc-2016-posterdemo-demo-95> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
-              """Linked Open Data (LOD) is a powerful mechanism for linking different datasets published on the Web, which is expected to create new value of data through mash-up over various datasets on the Web. One of the important needs to obtain data from LOD is to find a path of resources connecting given two classes, each of which has an end resource of the path. 
+              """Linked Open Data (LOD) is a powerful mechanism for linking different datasets published on the Web, which is expected to create new value of data through mash-up over various datasets on the Web. One of the important needs to obtain data from LOD is to find a path of resources connecting given two classes, each of which has an end resource of the path.
 In this study, the two technologies for the approach are introduced: a labeled multi graph named class graph to compute class-class relationships and an RDF specification named SPARQL Builder Metadata to obtain and store required metadata for construction of a class graph. In addition, as a practical application, we introduce the SPARQL Builder system, which assists users in writing semantic queries for LOD.""" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAuthorList>
               <https://w3id.org/scholarlydata/authorlist/iswc-2016-posterdemo-demo-95> ;
@@ -13065,7 +13065,7 @@ In this study, the two technologies for the approach are introduced: a labeled m
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc-2016-research-research-305> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
-              """The assessment of risk in medicine is a crucial task, depending on scientific knowledge derived by rigorous clinical studies regarding the (quantified) factors affecting biological changes, as well as on particular knowledge about the current status of a particular patient. Existing non-semantic risk prediction tools are typically based on hardcoded scientific knowledge, and only cover a very limited range of patient states. This makes them rapidly out of date, and limited in application, particularly for patients with co-morbidities (multiple co-occurring conditions). Semantic Web and Quantified Self technologies make it possible to address this task in a much more principled way, to maximise knowledge and data reuse and minimise maintenance requirements while enabling new and sophisticated applications involving widely-available biometric sensors. 
+              """The assessment of risk in medicine is a crucial task, depending on scientific knowledge derived by rigorous clinical studies regarding the (quantified) factors affecting biological changes, as well as on particular knowledge about the current status of a particular patient. Existing non-semantic risk prediction tools are typically based on hardcoded scientific knowledge, and only cover a very limited range of patient states. This makes them rapidly out of date, and limited in application, particularly for patients with co-morbidities (multiple co-occurring conditions). Semantic Web and Quantified Self technologies make it possible to address this task in a much more principled way, to maximise knowledge and data reuse and minimise maintenance requirements while enabling new and sophisticated applications involving widely-available biometric sensors.
 
 We present a framework for calculating clinical risk predictions for patients based on automatically-gathered biometric data. This framework relies on generic, reusable ontologies for representing clinical risk, and sensor readings, and reasoning to support the integration of data represented according to these ontologies. This integration makes novel use of Semantic Web technologies, and supports straightforward extension and maintenance by medical professionals. The framework is evaluated in terms of its predictions, extensibility and ease of use for domain experts.""" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAuthorList>
@@ -13134,7 +13134,7 @@ We present a framework for calculating clinical risk predictions for patients ba
               <http://data.semanticweb.org/conference/iswc-2016-posterdemo-poster-7> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
               """Instance matching is the problem of finding the instances that describe the same object. It can be viewed as a classification problem, where a pair of two instances is predicted as match or non-match. A common limitation of existing classifier-based matching systems is the absent of instance pairs ranking.
-We propose using a ranking feature to enhance the classifier in instance matching. 
+We propose using a ranking feature to enhance the classifier in instance matching.
 Experiments on real datasets confirm the significant improvement when applying our method.""" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAuthorList>
               <https://w3id.org/scholarlydata/authorlist/iswc-2016-posterdemo-poster-7> ;
@@ -13595,18 +13595,18 @@ Experiments on real datasets confirm the significant improvement when applying o
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc-2016-research-research-303> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
-              """Large-scale knowledge graphs (KGs) abound in industry and academia. 
-They provide a unified format for integrating information sources, 
-aided by standards such as, e.g., the W3C RDB to RDF Mapping Language. 
-Meaningful semantic integration, however, is much harder than 
-syntactic alignment. Ontologies could be an interoperable and 
-declarative solution to this task. At a closer look, however, we find 
-that popular ontology languages, such as OWL and Datalog, cannot 
-express even the most basic relationships on the normalised data 
-format of KGs. Existential rules are more powerful, but may make 
-reasoning undecidable, and normalising them to suit KGs can destroy 
-syntactic restrictions that ensure decidability and low complexity. We 
-study this issue for several classes of existential rules and derive more 
+              """Large-scale knowledge graphs (KGs) abound in industry and academia.
+They provide a unified format for integrating information sources,
+aided by standards such as, e.g., the W3C RDB to RDF Mapping Language.
+Meaningful semantic integration, however, is much harder than
+syntactic alignment. Ontologies could be an interoperable and
+declarative solution to this task. At a closer look, however, we find
+that popular ontology languages, such as OWL and Datalog, cannot
+express even the most basic relationships on the normalised data
+format of KGs. Existential rules are more powerful, but may make
+reasoning undecidable, and normalising them to suit KGs can destroy
+syntactic restrictions that ensure decidability and low complexity. We
+study this issue for several classes of existential rules and derive more
 general syntactic criteria to recognise well-behaved rule-based ontologies
 over knowledge graphs.""" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAuthorList>
@@ -14716,15 +14716,15 @@ In this paper we present a user-friendly semantic-based smart office platform th
  of complex subtasks, such as structure inference and matching of
  both instances and concepts, each of which gives rise to uncertain
  outcomes. Such uncertainty is unavoidable given the semantically heterogeneous
- nature of web sources, including LD ones. This paper approaches the problem of 
- structuring LD search results as an evidence-based one. In particular, the paper shows 
+ nature of web sources, including LD ones. This paper approaches the problem of
+ structuring LD search results as an evidence-based one. In particular, the paper shows
  how one formalism (viz., probabilistic soft logic (PSL)) can be exploited to assimilate
  different sources of evidence in a principled way and to beneficial
  effect for users. The paper considers syntactic evidence derived from matching
  algorithms, semantic evidence derived from LD vocabularies, and user
- evidence, in the form of feedback. The main contributions are: sets 
- of PSL rules that model the uniform assimilation of diverse kinds of evidence, 
- an empirical evaluation of how the resulting PSL programs perform in terms 
+ evidence, in the form of feedback. The main contributions are: sets
+ of PSL rules that model the uniform assimilation of diverse kinds of evidence,
+ an empirical evaluation of how the resulting PSL programs perform in terms
  of their ability to infer structure in LD search results, and, finally, a concrete
  example of how populating such inferred structures for presentation
  to the end user is beneficial, besides enabling the collection of
@@ -17213,8 +17213,8 @@ techniques.""" ;
 each of them with their own expressivity.
 However, there is no generic client available that can handle querying over multiple interfaces.
 This increases the complexity of combining datasets and designing new interfaces.
-One can imagine the difficulties that arise 
-when trying to create a client querying various interfaces at the same time, 
+One can imagine the difficulties that arise
+when trying to create a client querying various interfaces at the same time,
 that can be discovered just in time.
 To this end, I aim to design a generic Linked Data querying engine
 capable of handling different interfaces that can easily be extended.
@@ -19317,7 +19317,8 @@ based on feedback of the doctoral consortium.""" ;
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/person/abraham-bernstein> ;
       <http://xmlns.com/foaf/0.1/mbox_sha1sum>
-              "8704ad77580618cb845036d3a15626d30fd828c3" ;
+              "8704ad77580618cb845036d3a15626d30fd828c3",
+              "8704ad77580618cb845036d3a15626d30fd828c2" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAffiliation>
               <https://w3id.org/scholarlydata/affiliation-during-event/iswc2016-university-of-zurich-abraham-bernstein> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#name>
@@ -24064,7 +24065,7 @@ In this paper we present the project in which we have applied Semantic Technolog
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc-2016-posterdemo-demo-69> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
-              """Semantic Web of Things(SWoT) applications focus on providing a wide-scale interoperability that allows the sharing of IoT devices across domains and the reusing of available knowledge on the web. However, the application development is difficult because developers have to do various tasks such as designing an application, annotating IoT data, interpreting data, and combining application domains. 
+              """Semantic Web of Things(SWoT) applications focus on providing a wide-scale interoperability that allows the sharing of IoT devices across domains and the reusing of available knowledge on the web. However, the application development is difficult because developers have to do various tasks such as designing an application, annotating IoT data, interpreting data, and combining application domains.
 
 To address the above challenges, this paper demonstrates SWoTSuite, a toolkit for prototyping SWoT applications. It hides the use of semantic web technologies as much as possible to avoid the burden of designing SWoT applications that involves designing ontologies, annotating sensor data, and using reasoning mechanisms to enrich data. Taking inspiration from sharing and reuse approaches, SWoTSuite reuses data and vocabularies. It leverages existing technologies to build applications. We take a hello world naturopathy application as an example and demonstrate an application development process using SWoTSuite. The demo video is available at URL- http://tinyurl.com/zs9flrt.""" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAuthorList>
@@ -30832,11 +30833,11 @@ In the demo presentation, we present refer, a semantic annotation and visualizat
       <http://www.w3.org/2002/07/owl#sameAs>
               <http://data.semanticweb.org/conference/iswc-2016-resource-resource-62> ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#abstract>
-              """Processing data streams is increasingly gaining a momentum, given the need to process these flows of information in real time and at Web scale. 
-In this context, RDF Stream Processing (RSP) and Stream Reasoning (SR) have emerged as solutions to combine semantic technologies with stream and event processing techniques. 
+              """Processing data streams is increasingly gaining a momentum, given the need to process these flows of information in real time and at Web scale.
+In this context, RDF Stream Processing (RSP) and Stream Reasoning (SR) have emerged as solutions to combine semantic technologies with stream and event processing techniques.
 Research in these areas has proposed an ecosystem of solutions to query, reason and perform real time processing over heterogeneous and distributed data streams on the Web.
 However, so far one basic building block has been missing: a mechanism to disseminate and exchange RDF streams on the Web.
-In this work we close this gap, proposing TripleWave, a reusable and generic tool that enables the publication of RDF streams on the Web. 
+In this work we close this gap, proposing TripleWave, a reusable and generic tool that enables the publication of RDF streams on the Web.
 The features of TripleWave have been derived from requirements of real use-cases, and consider a diverse set of scenarios, independent of any specific RSP implementation.
 TripleWave can be fed with existing Web streams (e.g. Twitter and Wikipedia streams) or time-annotated RDF datasets (e.g. the LinkedSensorData set), and it can be invoked through both pull- and push-based mechanisms, thus also enabling RSP engines to automatically register and receive data from TripleWave.""" ;
       <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#hasAuthorList>
@@ -32941,7 +32942,7 @@ is the first RDCQA system and achieves a global F 1 score of 0.43 on the QALD6T3
 datasets produced in a general research institute, RIKEN, we developed
 an infrastructure database named as \"RIKEN MetaDatabase\", which en-
 ables data publication and integration with Resource Description Frame-
-work. We implemented simple data managing work 
+work. We implemented simple data managing work
 ow, relational data-
 base like graphical interface represents data links across laboratories. As
 a result, activities of inter-laboratories collaborations and coordination
