@@ -31,9 +31,11 @@ export class PersonsComponent implements OnInit {
                 private  dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: ManagerRequest) {
         this.persons = [];
+        console.log("INTIT PERSONNNS");
     }
 
     ngOnInit() {
+        console.log("INTIT PERSONNNS");
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;

@@ -62,15 +62,15 @@ export class ToolsComponent implements OnInit {
         this.fullScreen = screenfull.isFullscreen;
     }
 
-     @HostListener("document:mozfullscreenchange") updateFullScreen() {
+     @HostListener("document:mozfullscreenchange") updateFullScreenMoz() {
         this.fullScreen = screenfull.isFullscreen;
     }
 
-     @HostListener("document:msfullscreenchange") updateFullScreen() {
+     @HostListener("document:msfullscreenchange") updateFullScreenIE() {
         this.fullScreen = screenfull.isFullscreen;
     }
 
-     @HostListener("document:webkitfullscreenchange") updateFullScreen() {
+     @HostListener("document:webkitfullscreenchange") updateFullScreenOther() {
         this.fullScreen = screenfull.isFullscreen;
     }
 

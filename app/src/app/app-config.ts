@@ -22,6 +22,7 @@ export var Config = {
     },
     conference: {
         "name": "14th ESWC2017",
+        "hashtag": "#ESWC2017 @eswc_conf",
         "acronym": "ESWC2017",
         "logoUri": "data/images/logo_eswc2017.png",
         "website": "http://2017.eswc-conferences.org/",
