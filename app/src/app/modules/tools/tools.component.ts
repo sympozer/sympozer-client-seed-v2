@@ -1,4 +1,4 @@
-import {Component, OnInit, NgZone, Input} from "@angular/core";
+import {Component, OnInit, NgZone, Input, HostListener} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {MdSnackBar} from '@angular/material'
 import {Location} from "@angular/common";
@@ -58,8 +58,20 @@ export class ToolsComponent implements OnInit {
         }
     }
 
-    ngOnChanges(changes) {
-        console.log("a changééé", changes);
+    @HostListener("document:webkitfullscreenchange") updateFullScreen() {
+        this.fullScreen = screenfull.isFullscreen;
+    }
+
+     @HostListener("document:mozfullscreenchange") updateFullScreen() {
+        this.fullScreen = screenfull.isFullscreen;
+    }
+
+     @HostListener("document:msfullscreenchange") updateFullScreen() {
+        this.fullScreen = screenfull.isFullscreen;
+    }
+
+     @HostListener("document:webkitfullscreenchange") updateFullScreen() {
+        this.fullScreen = screenfull.isFullscreen;
     }
 
 
