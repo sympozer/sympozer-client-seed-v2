@@ -32,8 +32,6 @@ export class AppComponent implements OnInit {
             this.localStoragexx.store("zoomLevel", fontSize);
         }
 
-        this.localStoragexx.store("fullScreen", false);
-
         storage = this.localStoragexx.retrieve("socialShare");
         if (storage != null && storage == false) {
             if (document.getElementById("share"))

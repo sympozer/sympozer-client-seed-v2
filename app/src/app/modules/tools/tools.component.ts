@@ -1,4 +1,4 @@
-import {Component, OnInit, NgZone} from "@angular/core";
+import {Component, OnInit, NgZone, Input} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {MdSnackBar} from '@angular/material'
 import {Location} from "@angular/common";
@@ -43,11 +43,7 @@ export class ToolsComponent implements OnInit {
             this.fontSize = storage;
         }
 
-        storage = this.localStoragexx.retrieve("fullScreen");
-
-        if (storage) {
-            this.fullScreen = storage;
-        }
+        this.fullScreen = screenfull.isFullscreen;
 
         storage = this.localStoragexx.retrieve("darkTheme");
 
@@ -60,6 +56,10 @@ export class ToolsComponent implements OnInit {
         if (storage) {
             this.socialShare = storage;
         }
+    }
+
+    ngOnChanges(changes) {
+        console.log("a changééé", changes);
     }
 
 
@@ -127,7 +127,6 @@ export class ToolsComponent implements OnInit {
 
     toggleFullScreen() {
         this.fullScreen = !this.fullScreen;
-        this.localStoragexx.store("fullScreen", this.fullScreen);
         if (screenfull.enabled) {
             screenfull.toggle();
         }
