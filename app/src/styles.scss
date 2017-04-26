@@ -175,7 +175,7 @@ menu {
   height: calc(100% - 81px);
   padding: 0 10px;
   //border: solid 1px transparent;
-  overflow: scroll;
+  overflow: auto;
 }
 
 app-root + .loading-screen {
