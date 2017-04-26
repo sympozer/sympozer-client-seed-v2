@@ -5,6 +5,7 @@ import {Location} from "@angular/common";
 import {routerTransition} from "../../app.router.animation";
 import {LocalDAOService} from "../../localdao.service";
 import {LocalStorageService} from 'ng2-webstorage';
+const screenfull = require('screenfull');
 
 @Component({
     selector: 'app-tools',
@@ -127,15 +128,8 @@ export class ToolsComponent implements OnInit {
     toggleFullScreen() {
         this.fullScreen = !this.fullScreen;
         this.localStoragexx.store("fullScreen", this.fullScreen);
-        if (this.fullScreen) {
-            if (!document.fullscreenElement) {
-                document.documentElement.webkitRequestFullScreen();
-            }
-        }
-        else {
-            if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            }
+        if (screenfull.enabled) {
+            screenfull.toggle();
         }
     }
 

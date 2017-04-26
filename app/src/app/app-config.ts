@@ -1,34 +1,34 @@
 export var Config = {
-  app : {
-    "appLogo" : "Sympozer_logo.png",
-	//              "conferenceEventCategory": "http:\/\/data.semanticweb.		org\/conference\/eswc\/2017\/category\/conference-event",
-	    "presentationEventCategory": "http:\/\/data.semanticweb.org\/conference\/eswc\/2017\/category\/presentation-event",
-	    "sessionEventCategory": "http:\/\/data.semanticweb.org\/conference\/eswc\/2017\/category\/session-event",
-	    styleMatching: {
-	        "http://data.semanticweb.org/ns/swc/ontology#PosterEvent": "poster",
-	        "http://data.semanticweb.org/ns/swc/ontology#SessionEvent": "session",
-	//                    "http://data.semanticweb.org/ns/swc/ontology#SessionEvent": "research",
-	//                    "http://data.semanticweb.org/conference/eswc/2017/category/in-use-event": "inUse",
-	        "http://data.semanticweb.org/ns/swc/ontology#DemoEvent": "demo",
-	        "http://data.semanticweb.org/ns/swc/ontology#WorkshopEvent": "workshop",
-	        "http://data.semanticweb.org/ns/swc/ontology#TutorialEvent": "tutorial",
-	        "http://data.semanticweb.org/ns/swc/ontology#KeynoteEvent": "keynote"
-	    },
-		"imageFolder": "data/images/", //Needs a trailing slash
-	    "whatsNextDelay": {"hours":2} //MomentJS notation
+    app: {
+        "appLogo": "Sympozer_logo.png",
+        //              "conferenceEventCategory": "http:\/\/data.semanticweb.		org\/conference\/eswc\/2017\/category\/conference-event",
+        "presentationEventCategory": "http:\/\/data.semanticweb.org\/conference\/eswc\/2017\/category\/presentation-event",
+        "sessionEventCategory": "http:\/\/data.semanticweb.org\/conference\/eswc\/2017\/category\/session-event",
+        styleMatching: {
+            "http://data.semanticweb.org/ns/swc/ontology#PosterEvent": "poster",
+            "http://data.semanticweb.org/ns/swc/ontology#SessionEvent": "session",
+            //                    "http://data.semanticweb.org/ns/swc/ontology#SessionEvent": "research",
+            //                    "http://data.semanticweb.org/conference/eswc/2017/category/in-use-event": "inUse",
+            "http://data.semanticweb.org/ns/swc/ontology#DemoEvent": "demo",
+            "http://data.semanticweb.org/ns/swc/ontology#WorkshopEvent": "workshop",
+            "http://data.semanticweb.org/ns/swc/ontology#TutorialEvent": "tutorial",
+            "http://data.semanticweb.org/ns/swc/ontology#KeynoteEvent": "keynote"
+        },
+        "imageFolder": "data/images/", //Needs a trailing slash
+        "whatsNextDelay": {"hours": 2} //MomentJS notation
     },
- 	preferences: {
+    preferences: {
         "storage": "on"
     },
-    conference : {
+    conference: {
         "name": "14th ESWC2017",
         "acronym": "ESWC2017",
         "logoUri": "data/images/logo_eswc2017.png",
         "website": "http://2017.eswc-conferences.org/",
         "baseUri": "http://data.semanticweb.org/conference/eswc/2017",
         "updateUri": "https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2017/data_ESWC2017.json",
-        "lang" : "EN",
-        "momentLang" : "EN_us",
+        "lang": "EN",
+        "momentLang": "EN_us",
         "storage": "on",
         "timeZone": {
             "name": "Europe/Athens",
@@ -38,39 +38,39 @@ export var Config = {
             "changeToStandardMonth": "10"
         }
     },
-    datasources : {
-        "DblpDatasource" : {
-            "uri" : "http://dblp.rkbexplorer.com/sparql/",
-            "crossDomainMode" : "CORS",
-            "commands" : "DBLPCommandStore"
+    datasources: {
+        "DblpDatasource": {
+            "uri": "http://dblp.rkbexplorer.com/sparql/",
+            "crossDomainMode": "CORS",
+            "commands": "DBLPCommandStore"
         },
-        "DuckDuckGoDatasource" : {
-            "uri" : "http://api.duckduckgo.com/",
-            "crossDomainMode" : "JSONP",
-            "commands" : "DDGoCommandStore"
+        "DuckDuckGoDatasource": {
+            "uri": "http://api.duckduckgo.com/",
+            "crossDomainMode": "JSONP",
+            "commands": "DDGoCommandStore"
         },
-        "GoogleDataSource" : {
-            "uri" : "https://ajax.googleapis.com/ajax/services/search/web",
-            "crossDomainMode" : "JSONP",
-            "commands" : "GoogleCommandStore"
+        "GoogleDataSource": {
+            "uri": "https://ajax.googleapis.com/ajax/services/search/web",
+            "crossDomainMode": "JSONP",
+            "commands": "GoogleCommandStore"
         },
-        "localDatasource" : {
-            "uri" : "local:/embedded",
+        "localDatasource": {
+            "uri": "local:/embedded",
             //local configuration
             "local": true,
-            "commands" : "LocalCommandStore"
+            "commands": "LocalCommandStore"
         },
-        "VotingSystemDatasource" : {
-            "uri" : "local:/voting",
+        "VotingSystemDatasource": {
+            "uri": "local:/voting",
             //local configuration
             "local": true,
-            "commands" : "VotingSystemCommandStore"
+            "commands": "VotingSystemCommandStore"
         },
-        "TwitterWidgetDatasource" : {
-            "uri" : "local:/twitter",
+        "TwitterWidgetDatasource": {
+            "uri": "local:/twitter",
             //local configuration
             "local": true,
-            "commands" : "TwitterWidgetCommandStore"
+            "commands": "TwitterWidgetCommandStore"
         }
     }
 };
