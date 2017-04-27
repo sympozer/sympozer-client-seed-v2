@@ -17,7 +17,7 @@ import {ManagerRequest} from "../../services/ManagerRequest";
 })
 export class PersonComponent implements OnInit {
     private externPublications = [];
-    private avatar: any;
+    private photoUrl: any;
     public person;
     public roles = [];
     public orgas = [];
@@ -88,8 +88,8 @@ export class PersonComponent implements OnInit {
                                             {
                                                 const user = JSON.parse(request._body);
                                                 console.log(user);
-                                                if(user && user.avatar){
-                                                    that.avatar = user.avatar;
+                                                if(user && user.photoUrl){
+                                                    that.photoUrl = user.photoUrl;
                                                 }
                                             }
                                         });
