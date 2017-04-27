@@ -29,8 +29,8 @@ export class ManagerRequest {
             .then((response) => {
                 return response
             })
-            .catch(() => {
-                return null;
+            .catch((response) => {
+                return response;
             });
     }
 }
