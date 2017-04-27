@@ -7,6 +7,7 @@ import {PersonService} from "./person.service";
 import {Mutex} from 'async-mutex';
 import {routerTransition} from '../../app.router.animation';
 import {ManagerRequest} from "../../services/ManagerRequest";
+import {Config} from '../../app-config';
 
 @Component({
     selector: 'app-person',
@@ -85,7 +86,7 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
-                                    that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1='+boxs+"&id_ressource="+id)
+                                    that.managerRequest.get_safe(Config.externalServer.url + '/user/sha1?email_sha1='+boxs+"&id_ressource="+id)
                                         .then((request) => {
                                             if(request && request._body)
                                             {
