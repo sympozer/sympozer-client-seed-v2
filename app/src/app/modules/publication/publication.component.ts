@@ -20,8 +20,8 @@ export class PublicationComponent implements OnInit {
     private authors;
     private events = [];
 
-    constructor(private router:Router,private route: ActivatedRoute,
-                private DaoService: LocalDAOService,  private encoder: Encoder) {
+    constructor(private router: Router, private route: ActivatedRoute,
+                private DaoService: LocalDAOService, private encoder: Encoder) {
         this.authors = [];
         this.publication = {
             label: undefined,
@@ -36,50 +36,48 @@ export class PublicationComponent implements OnInit {
             let id = params['id'];
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
-            console.log(query);
             this.DaoService.query("getPublication", query, (results) => {
-                if(results){
+                if (results) {
                     const nodeLabel = results['?label'];
                     const nodeAbstract = results['?abstract'];
 
-                    if(!nodeLabel || !nodeAbstract)
-                    {
+                    if (!nodeLabel || !nodeAbstract) {
                         return false;
                     }
 
                     const label = nodeLabel.value;
                     const abstract = nodeAbstract.value;
 
-                    if(!label || !abstract){
+                    if (!label || !abstract) {
                         return false;
                     }
 
                     that.publication.label = label;
                     that.publication.abstract = abstract;
+                    if (document.getElementById("page-title-p"))
+                        document.getElementById("page-title-p").innerHTML = label;
                 }
             });
 
             this.DaoService.query("getAuthorLinkPublication", query, (results) => {
                 console.log('getAuthorLinkPublication : ', results);
-                if(results){
+                if (results) {
                     const nodeIdPerson = results['?idPerson'];
                     const nodeLabel = results['?label'];
 
-                    if(!nodeIdPerson || !nodeLabel)
-                    {
+                    if (!nodeIdPerson || !nodeLabel) {
                         return false;
                     }
 
                     let idPerson = nodeIdPerson.value;
                     const label = nodeLabel.value;
 
-                    if(!idPerson || !label){
+                    if (!idPerson || !label) {
                         return false;
                     }
 
                     idPerson = that.encoder.encode(idPerson);
-                    if(!idPerson)
-                    {
+                    if (!idPerson) {
                         return false;
                     }
 
@@ -133,9 +131,9 @@ export class PublicationComponent implements OnInit {
             })
 
             /*for(let i in this.publication.authors){
-                let query = { 'key' : this.publication.authors[i] };
-                this.authors[i] = this.DaoService.query("getPersonLink",query);
-            }*/
+             let query = { 'key' : this.publication.authors[i] };
+             this.authors[i] = this.DaoService.query("getPersonLink",query);
+             }*/
         });
     }
 }

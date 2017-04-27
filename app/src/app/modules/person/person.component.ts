@@ -11,7 +11,7 @@ import {ManagerRequest} from "../../services/ManagerRequest";
 @Component({
     selector: 'app-person',
     templateUrl: 'person.component.html',
-    styleUrls: ['person.component.css'],
+    styleUrls: ['person.component.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
@@ -46,6 +46,9 @@ export class PersonComponent implements OnInit {
             if (!id || !name) {
                 return false;
             }
+
+            if (document.getElementById("page-title-p"))
+                document.getElementById("page-title-p").innerHTML = name;
 
             that.getPublication(name);
 

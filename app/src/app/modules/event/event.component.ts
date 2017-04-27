@@ -62,8 +62,8 @@ export class EventComponent implements OnInit {
 
                             const duration = moment.duration(endDate.diff(startDate));
 
-                            var hours = parseInt(duration.asHours());
-                            var minutes = parseInt(duration.asMinutes()) - hours * 60;
+                            var hours = parseInt(duration.asHours().toString());
+                            var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
 
                             let strDuration = "";
                             if (hours > 0) {
@@ -97,6 +97,9 @@ export class EventComponent implements OnInit {
                                     if (nodeId && nodeLabel) {
                                         let id = nodeId.value;
                                         const label = nodeLabel.value;
+
+                                        if (document.getElementById("page-title-p"))
+                                            document.getElementById("page-title-p").innerHTML = label;
 
                                         if (id && label) {
                                             id = that.encoder.encode(id);

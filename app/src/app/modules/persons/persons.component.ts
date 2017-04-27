@@ -21,6 +21,8 @@ import {Mutex} from 'async-mutex';
 export class PersonsComponent implements OnInit {
     conference: Conference = new Conference();
     persons;
+    tabPersons: Array<Object> = new Array();
+    title: string = "Persons";
 
     constructor(private router: Router,
                 private dataLoaderService: DataLoaderService,
@@ -29,10 +31,13 @@ export class PersonsComponent implements OnInit {
                 private  dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: ManagerRequest) {
         this.persons = [];
+        console.log("INTIT PERSONNNS");
     }
 
     ngOnInit() {
-        console.log('Init Persons Comp');
+        console.log("INTIT PERSONNNS");
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
 
         that.DaoService.query("getAllPersons", null, (results) => {
@@ -69,6 +74,5 @@ export class PersonsComponent implements OnInit {
                 });
             }
         });
-
     }
 }

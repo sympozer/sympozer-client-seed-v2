@@ -29,6 +29,8 @@ export class EventByCategoryComponent implements OnInit {
         const that = this;
         this.route.params.forEach((params: Params) => {
             that.trackName = params['name'];
+            if (document.getElementById("page-title-p"))
+                document.getElementById("page-title-p").innerHTML = that.trackName;
             let query = {'key': this.encoder.decode(params['id'])};
             this.DaoService.query('getEventByTrack', query, (results) => {
                 if (results) {

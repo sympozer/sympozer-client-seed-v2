@@ -16,6 +16,7 @@ import {RessourceDataset} from '../../services/RessourceDataset';
 })
 export class WhatsNextComponent implements OnInit {
     schedules;
+    title: string = "What's Next";
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
@@ -26,6 +27,8 @@ export class WhatsNextComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
         this.DaoService.query("getWhatsNext", null, (results) => {
             if (results) {
@@ -52,8 +55,8 @@ export class WhatsNextComponent implements OnInit {
                             if (momentEndDate && momentStartDate) {
                                 const duration = moment.duration(momentEndDate.diff(momentStartDate));
 
-                                var hours = parseInt(duration.asHours());
-                                var minutes = parseInt(duration.asMinutes()) - hours * 60;
+                                var hours = parseInt(duration.asHours().toString());
+                                var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
 
                                 let strDuration = "";
                                 if (hours > 0) {

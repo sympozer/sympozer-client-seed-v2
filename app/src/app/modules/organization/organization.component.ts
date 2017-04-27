@@ -20,8 +20,8 @@ export class OrganizationComponent implements OnInit {
     private organization;
     private members = [];
 
-    constructor(private router:Router,private route: ActivatedRoute,
-                private DaoService: LocalDAOService,  private encoder: Encoder) {
+    constructor(private router: Router, private route: ActivatedRoute,
+                private DaoService: LocalDAOService, private encoder: Encoder) {
         this.organization = {
             label: undefined,
         }
@@ -37,55 +37,51 @@ export class OrganizationComponent implements OnInit {
             let id = params['id'];
             let name = params['name'];
 
-            if(!id || !name){
+            if (!id || !name) {
                 return false;
             }
 
             id = that.encoder.decode(id);
-            if(!id)
-            {
+            if (!id) {
                 return false;
             }
 
             console.log(id);
-            let query = { 'key' : id };
+            let query = {'key': id};
             this.DaoService.query("getOrganization", query, (results) => {
-                if(results){
+                if (results) {
                     const nodeLabel = results['?label'];
-                    if(nodeLabel)
-                    {
+                    if (nodeLabel) {
                         const label = nodeLabel.value;
-                        if(!label)
-                        {
+                        if (!label) {
                             return false;
                         }
 
                         that.organization.label = label;
+                        if (document.getElementById("page-title-p"))
+                            document.getElementById("page-title-p").innerHTML = label;
                     }
                 }
             });
 
             this.DaoService.query("getMemberPersonByOrganisation", query, (results) => {
-                if(results){
+                if (results) {
                     const nodeIdPerson = results['?idPerson'];
                     const nodeName = results['?name'];
 
-                    if(!nodeName || !nodeIdPerson)
-                    {
+                    if (!nodeName || !nodeIdPerson) {
                         return false;
                     }
 
                     let id = nodeIdPerson.value;
                     const name = nodeName.value;
 
-                    if(!id || !name)
-                    {
+                    if (!id || !name) {
                         return false;
                     }
 
                     id = that.encoder.encode(id);
-                    if(!id)
-                    {
+                    if (!id) {
                         return false;
                     }
 

@@ -4,6 +4,49 @@
   </span>
   {{person.name}}
 </h1>
+<!--<h1 id="description-title">-->
+<!--<span *ngIf="avatar && avatar.length > 0">-->
+<!--<img src="{{avatar}}"/>-->
+<!--</span>-->
+<!--{{person.name}}-->
+<!--</h1>-->
+
+<md-card class="profil">
+  <img class="avatar" src="./img/avatar.jpg"/>
+  <div class="info">
+    <div class="name"> {{person.name}}</div>
+    <div class="link-info twitter">
+      <a href="https://twitter.com/realamberheard">
+        <md-icon><i class="fa fa-twitter"></i></md-icon>
+        <span>realamberheard</span>
+      </a>
+    </div>
+    <div class="link-info facebook">
+      <a href="https://www.facebook.com/AmberHeardOfficial/">
+        <md-icon><i class="fa fa-facebook"></i></md-icon>
+        <span>AmberHeardOfficial</span>
+      </a>
+    </div>
+    <div class="link-info google-plus">
+      <a href="">
+        <md-icon><i class="fa fa-google-plus"></i></md-icon>
+        <span>realAmberHeardOfficial</span>
+      </a>
+    </div>
+    <div class="link-info linkedin">
+      <a href="">
+        <md-icon><i class="fa fa-linkedin"></i></md-icon>
+        <span>AmberHeardReal</span>
+      </a>
+    </div>
+    <!--<div class="link-info mail">-->
+      <!--<a href="">-->
+        <!--<md-icon>mail</md-icon>-->
+      <!--</a>-->
+    <!--</div>-->
+  </div>
+</md-card>
+
 <div *ngIf="orgas.length > 0">
   <h2>Organization(s)</h2>
   <div class="action-links list-items" *ngFor="let orga of orgas">
@@ -42,7 +85,8 @@
 </div>
 <div *ngIf="externPublications.length > 0">
   <h2>Other Publication(s)</h2>
-  <app-autocomplete [seachFor]="'name'" [items]="externPublications" [namespace]="'externPublication'"></app-autocomplete>
+  <app-autocomplete [seachFor]="'name'" [items]="externPublications"
+                    [namespace]="'externPublication'"></app-autocomplete>
   <div class="action-links list-items" *ngFor="let publication of externPublications">
     <md-card>
       <md-icon md-list-avatar>description</md-icon>

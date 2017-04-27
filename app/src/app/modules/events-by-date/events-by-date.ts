@@ -10,13 +10,14 @@ import {RessourceDataset} from '../../services/RessourceDataset';
 @Component({
     selector: 'eventsbydate',
     templateUrl: 'events-by-date.html',
-    styleUrls: ['events-by-date.css'],
+    styleUrls: ['events-by-date.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
 export class EventsByDate implements OnInit {
     schedules;
     day;
+
     constructor(private location: Location,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
@@ -30,14 +31,16 @@ export class EventsByDate implements OnInit {
         const that = this;
         this.route.params.forEach((params: Params) => {
             let date = params['date'];
-            if(date){
+            if (date) {
                 const momentStartDate = moment(date);
                 that.day = momentStartDate.format('LL');
+                if (document.getElementById("page-title-p"))
+                    document.getElementById("page-title-p").innerHTML = that.day;
                 let end = moment(date);
                 end.add(1, 'days');
                 end = moment(end.format());
 
-                if(momentStartDate){
+                if (momentStartDate) {
                     that.DaoService.query("getEventByDate", {
                         startDate: momentStartDate,
                         endDate: end,
@@ -66,8 +69,8 @@ export class EventsByDate implements OnInit {
                                         if (momentEndDate && momentStartDate) {
                                             const duration = moment.duration(momentEndDate.diff(momentStartDate));
 
-                                            var hours = parseInt(duration.asHours());
-                                            var minutes = parseInt(duration.asMinutes()) - hours * 60;
+                                            var hours = parseInt(duration.asHours().toString());
+                                            var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
 
                                             let strDuration = "";
                                             if (hours > 0) {

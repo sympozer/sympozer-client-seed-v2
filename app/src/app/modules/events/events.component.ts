@@ -14,18 +14,20 @@ import {RessourceDataset} from '../../services/RessourceDataset';
 })
 export class EventsComponent implements OnInit {
     events;
-
-    constructor(private router: Router,
-                private DaoService: LocalDAOService,
+title: string = "Events";
+    tabEvents: Array<Object> = new Array();    constructor(private router:Router,
+                private DaoService : LocalDAOService,
                 private encoder: Encoder,
                 private ressourceDataset: RessourceDataset) {
         this.events = [];
     }
 
     ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
         this.DaoService.query("getAllEvents", null, (results) => {
-            if (results) {
+            if(results){
                 const nodeId = results['?id'];
                 const nodeLabel = results['?label'];
                 const nodeType = results['?type'];

@@ -1,13 +1,11 @@
 <md-sidenav-container>
-  <header-app></header-app>
+  <header-app [sidenav]="end"></header-app>
   <md-sidenav #end align="end" mode="push">
     <menu class="side" (click)="end.close()"></menu>
   </md-sidenav>
-  <button md-icon-button class="menu-button-open" (click)="end.open()">
-    <md-icon>menu</md-icon>
-  </button>
-  <div class='content'>
+  <div class="content">
     <router-outlet></router-outlet>
   </div>
+  <share id="share" class="share"></share>
 </md-sidenav-container>
 

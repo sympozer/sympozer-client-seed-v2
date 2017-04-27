@@ -13,6 +13,7 @@ import {Encoder} from "../../lib/encoder";
 })
 export class CategoriesComponent implements OnInit {
     tracks;
+    title: string = "Tracks";
 
     constructor(private router: Router,
                 private DaoService: LocalDAOService,
@@ -21,6 +22,8 @@ export class CategoriesComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
         this.DaoService.query("getAllCategoriesForPublications", null, (results) => {
             console.log(results);
