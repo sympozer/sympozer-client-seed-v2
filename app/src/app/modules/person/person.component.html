@@ -1,7 +1,6 @@
 <md-card class="profil">
-  <span *ngIf="photoUrl && photoUrl.length > 0">
-    <img src="{{photoUrl}}"/>
-  </span>
+  <img class="avatar" *ngIf="photoUrl && photoUrl.length > 0" src="{{photoUrl}}"/>
+  <img class="avatar" *ngIf="!photoUrl || photoUrl.length <= 0" src="./img/placeholder.jpg"/>
   <div class="info">
     <div class="name"> {{person.name}}</div>
     <div class="link-info twitter">
@@ -28,11 +27,6 @@
         <span>AmberHeardReal</span>
       </a>
     </div>
-    <!--<div class="link-info mail">-->
-      <!--<a href="">-->
-        <!--<md-icon>mail</md-icon>-->
-      <!--</a>-->
-    <!--</div>-->
   </div>
 </md-card>
 
