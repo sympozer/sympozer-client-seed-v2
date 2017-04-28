@@ -7,6 +7,8 @@ import {PersonService} from "./person.service";
 import {Mutex} from 'async-mutex';
 import {routerTransition} from '../../app.router.animation';
 import {ManagerRequest} from "../../services/ManagerRequest";
+import {Config} from '../../app-config';
+import {ApiExternalServer} from '../../services/ApiExternalServer';
 
 @Component({
     selector: 'app-person',
@@ -17,7 +19,7 @@ import {ManagerRequest} from "../../services/ManagerRequest";
 })
 export class PersonComponent implements OnInit {
     private externPublications = [];
-    private avatar: any;
+    private photoUrl: any;
     public person;
     public roles = [];
     public orgas = [];
@@ -31,13 +33,24 @@ export class PersonComponent implements OnInit {
                 private personService: PersonService,
                 private encoder: Encoder,
                 private  dBPLDataLoaderService: DBLPDataLoaderService,
-                private managerRequest: ManagerRequest) {
+                private managerRequest: ManagerRequest,
+                private apiExternalServer: ApiExternalServer) {
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
         this.mutex_box = new Mutex();
     }
 
     ngOnInit() {
+        this.apiExternalServer.login("iiii@gmail.com", "i")
+            .then((token) => {
+                if (token) {
+                    this.apiExternalServer.vote("1")
+                        .then((body) => {
+                            console.log(body);
+                        });
+                }
+            });
+
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
@@ -72,10 +85,10 @@ export class PersonComponent implements OnInit {
                                     boxs: boxs,
                                 };
 
-                                if(nodeBox){
+                                if (nodeBox) {
                                     const boxs_temp = nodeBox.value;
-                                    if(boxs_temp){
-                                        switch(typeof boxs_temp){
+                                    if (boxs_temp) {
+                                        switch (typeof boxs_temp) {
                                             case "string":
                                                 boxs = [boxs_temp];
                                                 break;
@@ -85,14 +98,13 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
-                                    that.managerRequest.get_safe('http://localhost:3000/user/sha1?email_sha1='+boxs+"&id_ressource="+id)
+                                    that.managerRequest.get_safe(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id)
                                         .then((request) => {
-                                            if(request && request._body)
-                                            {
+                                            if (request && request._body) {
                                                 const user = JSON.parse(request._body);
                                                 console.log(user);
-                                                if(user && user.avatar){
-                                                    that.avatar = user.avatar;
+                                                if (user && user.photoUrl) {
+                                                    that.photoUrl = user.photoUrl;
                                                 }
                                             }
                                         });

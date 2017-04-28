@@ -73,5 +73,8 @@ export var Config = {
             "local": true,
             "commands": "TwitterWidgetCommandStore"
         }
+    },
+    externalServer: {
+        url: "http://localhost:3000"
     }
 };

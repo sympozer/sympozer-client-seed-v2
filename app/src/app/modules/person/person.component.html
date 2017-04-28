@@ -1,12 +1,7 @@
-<!--<h1 id="description-title">-->
-<!--<span *ngIf="avatar && avatar.length > 0">-->
-<!--<img src="{{avatar}}"/>-->
-<!--</span>-->
-<!--{{person.name}}-->
-<!--</h1>-->
-
 <md-card class="profil">
-  <img class="avatar" src="./img/avatar.jpg"/>
+  <span *ngIf="photoUrl && photoUrl.length > 0">
+    <img src="{{photoUrl}}"/>
+  </span>
   <div class="info">
     <div class="name"> {{person.name}}</div>
     <div class="link-info twitter">
