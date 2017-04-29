@@ -18,10 +18,12 @@ import {routerTransition} from '../../app.router.animation';
 export class PublicationsByKeywords implements OnInit {
     title: string = "Keywords";
     private keywords;
+    private publications;
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private DaoService: LocalDAOService, private encoder: Encoder) {
         this.keywords = new Set();
+        this.publications = [];
     }
 
     ngOnInit() {
@@ -47,14 +49,33 @@ export class PublicationsByKeywords implements OnInit {
     }
 
     search(keyword){
-        console.log('click', keyword);
         const that = this;
+        that.publications = [];
         that.DaoService.query("getPublicationsByKeyword", {
             keyword: keyword
         }, (results) => {
            if(results){
                const nodeId = results['?id'];
                const nodeLabel = results['?label'];
+
+               if(nodeId && nodeLabel){
+                   let id = nodeId.value;
+                   const label = nodeLabel.value;
+
+                   if(id && label){
+                       id = that.encoder.encode(id);
+                       if(id){
+                           that.publications.push({
+                               id: id,
+                               label: label,
+                           });
+
+                           that.publications.sort((a, b) => {
+                               return a.label > b.label ? 1 : -1;
+                           });
+                       }
+                   }
+               }
            }
         });
     }
