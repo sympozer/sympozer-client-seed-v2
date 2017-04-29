@@ -20,10 +20,10 @@ export class LocationsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.locations = this.DaoService.query("getAllLocations", null);
-        for (let i in this.locations) {
-            this.locations[i].id = this.encoder.encodeForURI(this.locations[i].id);
-        }
+        // this.locations = this.DaoService.query("getAllLocations", null);
+        // for (let i in this.locations) {
+        //     this.locations[i].id = this.encoder.encodeForURI(this.locations[i].id);
+        // }
         console.log(this.locations);
     }
 

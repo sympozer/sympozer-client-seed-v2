@@ -2,6 +2,7 @@ import {Routes, RouterModule} from "@angular/router";
 import {AppComponent} from "./app.component";
 import {PersonComponent} from "./modules/person/person.component";
 import {BrowserModule} from "@angular/platform-browser";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {routing} from "./app.routing";
@@ -90,6 +91,7 @@ const routes: Routes = [];
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         FormsModule,
         HttpModule,
         routing,

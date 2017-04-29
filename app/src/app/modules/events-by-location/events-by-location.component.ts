@@ -27,12 +27,12 @@ export class EventsByLocationComponent implements OnInit {
             let id = params['id'];
             let name = params['name'];
             let query = { 'key' : this.encoder.decodeForURI(id) };
-            this.eventsLocation = this.DaoService.query("getLocationLink", query);
-            for(let i in this.eventsLocation.events){
-                this.eventsLocation.events[i].startsAt = moment(this.eventsLocation.events[i].startsAt).format('LLLL');
-                this.eventsLocation.events[i].endsAt = moment(this.eventsLocation.events[i].endsAt).format('LLLL');
-                this.eventsLocation.events[i].duration = moment.duration(this.eventsLocation.events[i].duration).humanize();
-            }
+            // this.eventsLocation = this.DaoService.query("getLocationLink", query);
+            // for(let i in this.eventsLocation.events){
+            //     this.eventsLocation.events[i].startsAt = moment(this.eventsLocation.events[i].startsAt).format('LLLL');
+            //     this.eventsLocation.events[i].endsAt = moment(this.eventsLocation.events[i].endsAt).format('LLLL');
+            //     this.eventsLocation.events[i].duration = moment.duration(this.eventsLocation.events[i].duration).humanize();
+            // }
             console.log(this.eventsLocation);
         });
     }

@@ -1,4 +1,5 @@
 {
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
     "version": "1.0.0-beta.15",
     "name": "sympozer"
@@ -10,6 +11,7 @@
       "assets": "assets",
       "index": "index.html",
       "main": "main.ts",
+      "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
       "prefix": "app",
@@ -29,8 +31,8 @@
         "../node_modules/reflect-metadata/Reflect.js",
         "../node_modules/moment/min/moment.min.js"
       ],
+      "environmentSource": "environments/environment.ts",
       "environments": {
-        "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }
@@ -43,6 +45,17 @@
       "config": "./protractor.conf.js"
     }
   },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json"
+    },
+    {
+      "project": "src/tsconfig.spec.json"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json"
+    }
+  ],
   "test": {
     "karma": {
       "config": "./karma.conf.js"
@@ -50,6 +63,10 @@
   },  
   "defaults": {
     "styleExt": "scss",
-    "prefixInterfaces": false
+    "component": {
+      "inlineTemplate": false,
+      "spec": true
+    }
   }
+  
 }
