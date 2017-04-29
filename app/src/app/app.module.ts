@@ -37,6 +37,9 @@ import {ToolsComponent} from './modules/tools/tools.component';
 import {EventsByDate} from "./modules/events-by-date/events-by-date";
 import {Share} from './modules/share-button/share-button.component';
 import {ScrollLoader} from './modules/scroll-loader/scroll-loader.component';
+import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
+
+
 import {KeysPipe} from "./keys.pipe";
 import {DataLoaderService} from "./data-loader.service";
 import {DBLPDataLoaderService} from "./dblpdata-loader.service";
@@ -88,7 +91,8 @@ const routes: Routes = [];
         ToolsComponent,
         EventsByDate,
         Share,
-        ScrollLoader
+        ScrollLoader,
+        PublicationsByKeywords
     ],
     imports: [
         BrowserModule,
