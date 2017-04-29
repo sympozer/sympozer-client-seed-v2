@@ -45,4 +45,17 @@ export class PublicationsByKeywords implements OnInit {
             }
         });
     }
+
+    search(keyword){
+        console.log('click', keyword);
+        const that = this;
+        that.DaoService.query("getPublicationsByKeyword", {
+            keyword: keyword
+        }, (results) => {
+           if(results){
+               const nodeId = results['?id'];
+               const nodeLabel = results['?label'];
+           }
+        });
+    }
 }

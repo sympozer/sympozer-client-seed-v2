@@ -460,7 +460,7 @@ export class LocalDAOService {
                             "}";
 
                         that.launchQuerySparql(query, (results) => {
-                            results['?type'] = { value: type};
+                            results['?type'] = {value: type};
                             callback(results);
                         });
                     }
@@ -570,7 +570,7 @@ export class LocalDAOService {
 
                                 //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
                                 if (dateStart.isAfter(startDate) && dateEnd.isAfter(endDate)) {
-                                    results['?type'] = { value: type};
+                                    results['?type'] = {value: type};
                                     console.log(results);
                                     callback(results);
                                 }
@@ -614,7 +614,7 @@ export class LocalDAOService {
 
                                 //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
                                 if (startDate.isSameOrAfter(originStartDate) && endDate.isSameOrBefore(originEndDate)) {
-                                    results['?type'] = { value: type};
+                                    results['?type'] = {value: type};
                                     callback(results);
                                 }
                             }
@@ -646,12 +646,14 @@ export class LocalDAOService {
                 case "getPublicationsByKeyword":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
                         "SELECT DISTINCT ?id ?label \n" +
                         "WHERE {\n" +
                         " ?id a scholary:InProceedings . \n" +
                         " ?id schema:label ?label . \n" +
-                        " ?id scholary:keyword " + data.keyword +" . \n" +
+                        " ?id scholary:keyword \"" + data.keyword + "\"^^<http://www.w3.org/2001/XMLSchema#string> . \n" +
                         "}";
+
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getAllLocations":
