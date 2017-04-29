@@ -356,6 +356,36 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
+                case "getKeywordsFromPublication":
+                    query =
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?keywords \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:InProceedings . \n" +
+                        " <" + data.key + "> scholary:keyword ?keywords . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getPublicationTrack":
+                    console.log(data.key);
+                    query =
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?isSubEventOf ?label \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:InProceedings . \n" +
+                        " <" + data.key + "> scholary:relatesToEvent ?relatesToEvent . \n" +
+                        " ?relatesToEvent scholary:isSubEventOf ?isSubEventOf . \n" +
+                        " ?isSubEventOf a scholary:Track . \n" +
+                        " ?isSubEventOf schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getAuthorLinkPublication":
                     query =
                         "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +

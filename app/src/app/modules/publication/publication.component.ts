@@ -19,6 +19,8 @@ export class PublicationComponent implements OnInit {
     private publication;
     private authors;
     private events = [];
+    private track = {};
+    private keywords = [];
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private DaoService: LocalDAOService, private encoder: Encoder) {
@@ -52,8 +54,11 @@ export class PublicationComponent implements OnInit {
                         return false;
                     }
 
-                    that.publication.label = label;
-                    that.publication.abstract = abstract;
+                    that.publication = {
+                        label: label,
+                        abstract: abstract,
+                    };
+
                     if (document.getElementById("page-title-p"))
                         document.getElementById("page-title-p").innerHTML = label;
                 }
@@ -128,7 +133,46 @@ export class PublicationComponent implements OnInit {
                         }
                     }
                 }
-            })
+            });
+
+            that.DaoService.query("getPublicationTrack", query, (results) => {
+                console.log(results);
+               if(results){
+                   const nodeLabel = results['?label'];
+                   const nodeId = results['?isSubEventOf'];
+
+                   if(nodeLabel && nodeId){
+                       const label = nodeLabel.value;
+                       let id = nodeId.value;
+
+                       if(label && id){
+                           id = that.encoder.encode(id);
+
+                           if(id){
+                               console.log(label, id);
+                               that.track = {
+                                   id: id,
+                                   label: label,
+                               };
+                           }
+                       }
+                   }
+               }
+            });
+
+            that.DaoService.query("getKeywordsFromPublication", query, (results) => {
+                if(results){
+                    const nodeKeywords = results['?keywords'];
+
+                    if(nodeKeywords){
+                        const keyword = nodeKeywords.value;
+
+                        if(keyword && keyword.length > 0){
+                            that.keywords.push(keyword);
+                        }
+                    }
+                }
+            });
 
             /*for(let i in this.publication.authors){
              let query = { 'key' : this.publication.authors[i] };
