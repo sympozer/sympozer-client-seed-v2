@@ -19,6 +19,8 @@ export class PublicationComponent implements OnInit {
     private publication;
     private authors;
     private events = [];
+    private trackId;
+    private eventType;
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private DaoService: LocalDAOService, private encoder: Encoder) {
@@ -34,6 +36,7 @@ export class PublicationComponent implements OnInit {
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
+            this.trackId = id;
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPublication", query, (results) => {
@@ -90,13 +93,17 @@ export class PublicationComponent implements OnInit {
 
             that.DaoService.query("getEventFromPublication", query, (results) => {
                 if(results){
+                    console.log(results)
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
-
+                    const nodeType = results['?type'];
                     if(nodeId && nodeLabel){
                         let id = nodeId.value;
                         const label = nodeLabel.value;
-
+                        let type = nodeType.value;
+                        //that.eventType = type
+                        console.log(type)
+                        that.eventType = type.replace('Talk',"Poster");
                         if(id && label){
                             id = that.encoder.encode(id);
                             if(id){

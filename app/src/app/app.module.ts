@@ -50,6 +50,8 @@ import {HylarManager} from './services/hylar.service';
 import {ManagerRequest} from './services/ManagerRequest';
 import {PersonService} from './modules/person/person.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
+import {VoteComponent} from './modules/vote/vote.component';
+import {VoteService} from './services/vote.service';
 
 const routes: Routes = [];
 
@@ -87,7 +89,8 @@ const routes: Routes = [];
         ToolsComponent,
         EventsByDate,
         Share,
-        ScrollLoader
+        ScrollLoader,
+        VoteComponent
     ],
     imports: [
         BrowserModule,
@@ -110,7 +113,8 @@ const routes: Routes = [];
         GithubService,
         HylarManager,
         ManagerRequest,
-        PersonService
+        PersonService,
+        VoteService
     ],
     bootstrap: [AppComponent]
 })

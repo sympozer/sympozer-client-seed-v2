@@ -72,5 +72,14 @@ export var Config = {
             "local": true,
             "commands" : "TwitterWidgetCommandStore"
         }
+    },
+
+    externalServer: {
+        url: "http://localhost:3000"
+    },
+
+    vote :{
+        url: 'http://wit.istc.cnr.it/eswc2015/vote', //il faut la nouvelle url
+        tracks: ['https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Poster', 'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Demo']
     }
 };
