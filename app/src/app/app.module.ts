@@ -3,7 +3,7 @@ import {AppComponent} from "./app.component";
 import {PersonComponent} from "./modules/person/person.component";
 import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {routing} from "./app.routing";
 import {MaterialModule, MdGridListModule} from "@angular/material";
@@ -55,6 +55,7 @@ import {PersonService} from './modules/person/person.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
 import {VoteService} from './services/vote.service';
+import { DialogComponent } from './modules/dialog/dialog.component';
 
 const routes: Routes = [];
 
@@ -94,12 +95,14 @@ const routes: Routes = [];
         EventsByDate,
         Share,
         ScrollLoader,
-        VoteComponent
+        VoteComponent,
+        DialogComponent
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpModule,
         routing,
         RouterModule.forRoot(routes, {useHash: true}),
@@ -122,7 +125,7 @@ const routes: Routes = [];
         ApiExternalServer,
         VoteService
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent, DialogComponent]
 })
 export class AppModule {
 }
