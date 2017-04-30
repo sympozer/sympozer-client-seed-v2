@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router}            from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
+import {ApiExternalServer} from '../../services/ApiExternalServer';
 
 @Component({
     selector: 'login',
@@ -13,11 +14,17 @@ export class LoginComponent implements OnInit {
 
     title: string = "Login";
 
-    constructor(private router: Router) {
+
+    constructor(private router: Router,
+                private apiExternalServer: ApiExternalServer) {
     }
 
     ngOnInit() {
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
+    }
+
+    login = (email, password) =>{
+        this.apiExternalServer.login(email,password)
     }
 }

@@ -3,6 +3,7 @@ import {VoteService} from '../../services/vote.service'
 import {Config} from "../../app-config";
 import {LocalStorageService} from 'ng2-webstorage';
 
+
 @Component({
   selector: 'vote',
   templateUrl: './vote.component.html',
@@ -23,9 +24,8 @@ export class VoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
+    this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
     this.hasVoted = this.localStoragexx.retrieve(this.key_localstorage_vote);
-    this.token = "toto456"
     setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.typeEvent)
       console.log(this.votable)
@@ -36,14 +36,12 @@ export class VoteComponent implements OnInit {
   }
 
   vote = () => {
-
-    this.voteService.vote(this.idTrack);
-
-
-  }
-
-  login = () =>{
-
+    if(this.voteService.vote(this.idTrack)){
+        this.hasVoted = true
+    }
+    else{
+       // inserer une alert
+    }
   }
 
 }

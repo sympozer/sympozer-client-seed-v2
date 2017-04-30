@@ -1,7 +1,7 @@
 <div *ngIf="votable">
   <div *ngIf="token !== null && token !== undefined">
-    <div *ngIf="hasVoted">
-      <p>You have already voted!</p>
+    <div *ngIf="hasVoted == true">
+      <p>You have voted!</p>
     </div>
     <div *ngIf="!hasVoted">
       <h2>Vote</h2>
@@ -15,7 +15,8 @@
   </div>
   <div *ngIf="token == undefined && token == null">
     <md-card class="info-text vote">
-      <p>Login to vote.</p>
+      <p>Please login to vote.</p>
+      <button md-raised-button color="primary" [routerLink]="['/login']">Login</button>
     </md-card>
   </div>
 </div>
