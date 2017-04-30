@@ -93,16 +93,15 @@ export class PublicationComponent implements OnInit {
 
             that.DaoService.query("getEventFromPublication", query, (results) => {
                 if(results){
-                    console.log(results)
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
                     const nodeType = results['?type'];
-                    if(nodeId && nodeLabel){
+
+                    if(nodeId && nodeLabel && nodeType){
                         let id = nodeId.value;
                         const label = nodeLabel.value;
                         let type = nodeType.value;
                         //that.eventType = type
-                        console.log(type)
                         that.eventType = type.replace('Talk',"Poster");
                         if(id && label){
                             id = that.encoder.encode(id);

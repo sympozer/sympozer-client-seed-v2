@@ -32,9 +32,7 @@ export class HomeComponent implements OnInit {
         }
 
         let win = WindowReference.get();
-        setTimeout(() => {
-            win.twttr.widgets.load();
-        }, 0);
+        win.twttr.widgets.load();
 
 
         if (document.getElementById("page-title-p")) {

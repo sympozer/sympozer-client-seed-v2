@@ -14,6 +14,7 @@ import {routerTransition} from '../../app.router.animation';
 export class OrganizationsComponent implements OnInit {
     organizations;
     title: string = "Organizations";
+    tabOrgas: Array<Object> = new Array();
 
     constructor(private DaoService: LocalDAOService,
                 private encoder: Encoder) {

@@ -6,33 +6,51 @@ import {Encoder} from "../../lib/encoder";
 import {PersonService} from "./person.service";
 import {Mutex} from 'async-mutex';
 import {routerTransition} from '../../app.router.animation';
+import {ManagerRequest} from "../../services/ManagerRequest";
+import {Config} from '../../app-config';
+import {ApiExternalServer} from '../../services/ApiExternalServer';
 
 @Component({
     selector: 'app-person',
     templateUrl: 'person.component.html',
-    styleUrls: ['person.component.css'],
+    styleUrls: ['person.component.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
 export class PersonComponent implements OnInit {
     private externPublications = [];
+    private photoUrl: any;
     public person;
     public roles = [];
     public orgas = [];
     public publiConf = [];
     private mutex: any;
+    private mutex_box: any;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
                 private personService: PersonService,
                 private encoder: Encoder,
-                private  dBPLDataLoaderService: DBLPDataLoaderService) {
+                private  dBPLDataLoaderService: DBLPDataLoaderService,
+                private managerRequest: ManagerRequest,
+                private apiExternalServer: ApiExternalServer) {
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
+        this.mutex_box = new Mutex();
     }
 
     ngOnInit() {
+        this.apiExternalServer.login("iiii@gmail.com", "i")
+            .then((token) => {
+                if (token) {
+                    this.apiExternalServer.vote("1")
+                        .then((body) => {
+                            console.log(body);
+                        });
+                }
+            });
+
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
@@ -49,12 +67,50 @@ export class PersonComponent implements OnInit {
 
             let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPerson", query, (results) => {
+                console.log(results);
                 that.mutex
                     .acquire()
                     .then(function (release) {
-                        that.person = {
-                            name: results['?label'].value
-                        };
+                        const nodeLabel = results['?label'];
+                        const nodeBox = results['?box'];
+
+                        if (nodeLabel) {
+                            const label = nodeLabel.value;
+
+                            if (label) {
+                                let boxs = [];
+
+                                that.person = {
+                                    name: label,
+                                    boxs: boxs,
+                                };
+
+                                if (nodeBox) {
+                                    const boxs_temp = nodeBox.value;
+                                    if (boxs_temp) {
+                                        switch (typeof boxs_temp) {
+                                            case "string":
+                                                boxs = [boxs_temp];
+                                                break;
+                                            default:
+                                                boxs = boxs_temp;
+                                                break;
+                                        }
+                                    }
+
+                                    that.managerRequest.get_safe(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id)
+                                        .then((request) => {
+                                            if (request && request._body) {
+                                                const user = JSON.parse(request._body);
+                                                console.log(user);
+                                                if (user && user.photoUrl) {
+                                                    that.photoUrl = user.photoUrl;
+                                                }
+                                            }
+                                        });
+                                }
+                            }
+                        }
                         release();
                     });
             });

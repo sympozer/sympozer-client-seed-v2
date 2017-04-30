@@ -48,6 +48,8 @@ import {Ng2Webstorage} from 'ng2-webstorage';
 import {GithubService} from "./services/github.service";
 import {HylarManager} from './services/hylar.service';
 import {ManagerRequest} from './services/ManagerRequest';
+import {ApiExternalServer} from './services/ApiExternalServer';
+import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
@@ -114,6 +116,8 @@ const routes: Routes = [];
         HylarManager,
         ManagerRequest,
         PersonService,
+        RessourceDataset,
+        ApiExternalServer,
         VoteService
     ],
     bootstrap: [AppComponent]

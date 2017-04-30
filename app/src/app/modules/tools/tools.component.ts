@@ -1,10 +1,11 @@
-import {Component, OnInit, NgZone} from "@angular/core";
+import {Component, OnInit, NgZone, Input, HostListener} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {MdSnackBar} from '@angular/material'
 import {Location} from "@angular/common";
 import {routerTransition} from "../../app.router.animation";
 import {LocalDAOService} from "../../localdao.service";
 import {LocalStorageService} from 'ng2-webstorage';
+const screenfull = require('screenfull');
 
 @Component({
     selector: 'app-tools',
@@ -18,6 +19,7 @@ export class ToolsComponent implements OnInit {
     title: string = "Tools";
     fontSize: number = 100;
     loading: boolean;
+    socialShare: boolean;
     fullScreen: boolean;
     darkTheme: boolean;
 
@@ -41,17 +43,35 @@ export class ToolsComponent implements OnInit {
             this.fontSize = storage;
         }
 
-        storage = this.localStoragexx.retrieve("fullScreen");
-
-        if (storage) {
-            this.fullScreen = storage;
-        }
+        this.fullScreen = screenfull.isFullscreen;
 
         storage = this.localStoragexx.retrieve("darkTheme");
 
         if (storage) {
             this.darkTheme = storage;
         }
+
+        storage = this.localStoragexx.retrieve("socialShare");
+
+        if (storage) {
+            this.socialShare = storage;
+        }
+    }
+
+    @HostListener("document:webkitfullscreenchange") updateFullScreen() {
+        this.fullScreen = screenfull.isFullscreen;
+    }
+
+     @HostListener("document:mozfullscreenchange") updateFullScreenMoz() {
+        this.fullScreen = screenfull.isFullscreen;
+    }
+
+     @HostListener("document:msfullscreenchange") updateFullScreenIE() {
+        this.fullScreen = screenfull.isFullscreen;
+    }
+
+     @HostListener("document:webkitfullscreenchange") updateFullScreenOther() {
+        this.fullScreen = screenfull.isFullscreen;
     }
 
 
@@ -119,16 +139,8 @@ export class ToolsComponent implements OnInit {
 
     toggleFullScreen() {
         this.fullScreen = !this.fullScreen;
-        this.localStoragexx.store("fullScreen", this.fullScreen);
-        if (this.fullScreen) {
-            if (!document.fullscreenElement) {
-                document.documentElement.webkitRequestFullScreen();
-            }
-        }
-        else {
-            if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            }
+        if (screenfull.enabled) {
+            screenfull.toggle();
         }
     }
 
@@ -145,6 +157,19 @@ export class ToolsComponent implements OnInit {
             if (html.classList.contains("dark")) {
                 html.classList.remove('dark');
             }
+        }
+    }
+
+    toggleSocialShare() {
+        this.socialShare = !this.socialShare;
+        this.localStoragexx.store("socialShare", this.socialShare);
+        if (this.socialShare) {
+            if (document.getElementById("share"))
+                document.getElementById("share").style.display = "block";
+        }
+        else {
+            if (document.getElementById("share"))
+                document.getElementById("share").style.display = "none";
         }
     }
 }
