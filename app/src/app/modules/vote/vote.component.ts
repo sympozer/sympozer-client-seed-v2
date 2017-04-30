@@ -29,7 +29,6 @@ export class VoteComponent implements OnInit {
   ngOnInit() {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
     this.hasVoted = this.localStoragexx.retrieve(this.key_localstorage_vote);
-    this.hasVoted = false
     setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.typeEvent)
       console.log(this.votable)
