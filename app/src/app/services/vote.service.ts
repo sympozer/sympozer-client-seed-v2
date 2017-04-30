@@ -35,8 +35,8 @@ export class VoteService {
       }
 
       const that = this;
-      const token = that.localStoragexx.retrieve(that.key_localstorage_token);
-
+      let token = that.localStoragexx.retrieve(that.key_localstorage_token);
+      token = "toto456"
       if (!token || token.length === 0) {
         return reject('Vous devez vous connectez avant de pouvoir voter');
       }

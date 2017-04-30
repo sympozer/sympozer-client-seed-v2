@@ -75,10 +75,10 @@ export var Config = {
         }
     },
     externalServer: {
-        url: "http://localhost:3000"
+        url: "http://sympozer.com/external/"
     },
     vote :{
-        url: 'http://wit.istc.cnr.it/eswc2015/vote', //il faut la nouvelle url
+        url: 'http://sympozer.com/external/', //il faut la nouvelle url
         tracks: ['https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Poster', 'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Demo']
     }
 };
