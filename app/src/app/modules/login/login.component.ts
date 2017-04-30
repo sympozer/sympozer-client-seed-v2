@@ -24,6 +24,11 @@ export class LoginComponent implements OnInit {
             document.getElementById("page-title-p").innerHTML = this.title;
     }
 
+    /**
+     * Invoke the login external server service
+     * @param email
+     * @param password
+     */
     login = (email, password) =>{
         this.apiExternalServer.login(email,password)
     }

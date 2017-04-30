@@ -17,16 +17,25 @@ export class VoteService {
 
   }
 
+  /**
+   * Test if the trackName is a voting type
+   * @param trackName
+   * @returns {boolean}
+   */
   isTrackVotable = (trackName) => {
-    console.log(trackName)
     for(var i = 0; i < Config.vote.tracks.length; i++) {
-      console.log(trackName)
       if(Config.vote.tracks[i] === trackName)
         return true;
     }
     return false;
   }
 
+
+  /**
+   * Vote to the track
+   * @param id_ressource
+   * @returns {Promise<T>}
+   */
   vote = (id_ressource) => {
     return new Promise((resolve, reject) => {
       console.log("vote called")
