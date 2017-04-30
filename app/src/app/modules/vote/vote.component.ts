@@ -14,6 +14,9 @@ import {DialogComponent} from '../dialog/dialog.component';
 export class VoteComponent implements OnInit {
   token;
 
+  /***
+   * Retrive the track Id and the event Type from the publication
+   */
   @Input('idTrack') idTrack: Object;
   @Input('typeEvent') typeEvent: String
   private votable;
@@ -26,6 +29,9 @@ export class VoteComponent implements OnInit {
 
   }
 
+  /**
+   * Retrieve login token and all voting credentials on init
+   */
   ngOnInit() {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
     this.hasVoted = this.localStoragexx.retrieve(this.key_localstorage_vote);
@@ -38,6 +44,9 @@ export class VoteComponent implements OnInit {
     console.log(this.typeEvent)
   }
 
+  /**
+   * Invoke voting service with a dialog to confirm
+   */
   vote = () => {
     let dialogRef = this.dialog.open(DialogComponent);
     dialogRef.afterClosed().subscribe(result => {

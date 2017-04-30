@@ -101,8 +101,8 @@ export class PublicationComponent implements OnInit {
                         let id = nodeId.value;
                         const label = nodeLabel.value;
                         let type = nodeType.value;
-                        //that.eventType = type
-                        that.eventType = type.replace('Talk',"Poster");
+                        that.eventType = type
+                        //that.eventType = type.replace('Talk',"Poster");
                         if(id && label){
                             id = that.encoder.encode(id);
                             if(id){
