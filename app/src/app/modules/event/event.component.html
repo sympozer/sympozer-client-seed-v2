@@ -2,10 +2,13 @@
   {{event.type}} : {{event.label}}
 </h1>
 
-<h2>Description</h2>
-<md-card class="info-text">
-  <p>{{event.description}}</p>
-</md-card>
+<div *ngIf="event.description !== null">
+  <h2>Description</h2>
+  <md-card class="info-text">
+    <p>{{event.description}}</p>
+  </md-card>
+</div>
+
 
 <h2>Starts at</h2>
 <div class="action-links list-items">

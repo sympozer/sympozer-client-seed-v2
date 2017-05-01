@@ -3,7 +3,6 @@ import {VoteService} from '../../services/vote.service'
 import {Config} from "../../app-config";
 import {LocalStorageService} from 'ng2-webstorage';
 import {MdDialog, MdDialogRef} from '@angular/material';
-import {DialogComponent} from '../dialog/dialog.component';
 
 
 @Component({
@@ -24,8 +23,7 @@ export class VoteComponent implements OnInit {
   private key_localstorage_token = "token_external_ressource_sympozer";
   private key_localstorage_vote = "hasVoted"
   constructor(private voteService: VoteService,
-              private localStoragexx: LocalStorageService,
-              public dialog: MdDialog) {
+              private localStoragexx: LocalStorageService) {
 
   }
 
@@ -35,6 +33,7 @@ export class VoteComponent implements OnInit {
   ngOnInit() {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
     this.hasVoted = this.localStoragexx.retrieve(this.key_localstorage_vote);
+    this.hasVoted = false
     setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.typeEvent)
       console.log(this.votable)
@@ -48,18 +47,12 @@ export class VoteComponent implements OnInit {
    * Invoke voting service with a dialog to confirm
    */
   vote = () => {
-    let dialogRef = this.dialog.open(DialogComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        if(this.voteService.vote(this.idTrack)){
-            this.hasVoted = true
-        }
-        else{
-           // inserer une alert 
-        }
-      }
-    });
-    
+    if(this.voteService.vote(this.idTrack)){
+        this.hasVoted = true
+    }
+    else{
+       // inserer une alert 
+    }
   }
 
 }

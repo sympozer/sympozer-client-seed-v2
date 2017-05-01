@@ -56,6 +56,7 @@ import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
 import {VoteService} from './services/vote.service';
 import { DialogComponent } from './modules/dialog/dialog.component';
+import {routerTransition} from './app.router.animation'
 
 const routes: Routes = [];
 
@@ -96,7 +97,8 @@ const routes: Routes = [];
         Share,
         ScrollLoader,
         VoteComponent,
-        DialogComponent
+        DialogComponent,
+
     ],
     imports: [
         BrowserModule,
@@ -124,8 +126,9 @@ const routes: Routes = [];
         RessourceDataset,
         ApiExternalServer,
         VoteService
+
     ],
-    bootstrap: [AppComponent, DialogComponent]
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

@@ -32,7 +32,7 @@ export class PersonComponent implements OnInit {
                 private DaoService: LocalDAOService,
                 private personService: PersonService,
                 private encoder: Encoder,
-                private  dBPLDataLoaderService: DBLPDataLoaderService,
+                private dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: ManagerRequest,
                 private apiExternalServer: ApiExternalServer) {
         this.person = this.personService.defaultPerson();

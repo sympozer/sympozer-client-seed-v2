@@ -96,7 +96,7 @@ export class PublicationComponent implements OnInit {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
                     const nodeType = results['?type'];
-
+                    console.log(results)
                     if(nodeId && nodeLabel && nodeType){
                         let id = nodeId.value;
                         const label = nodeLabel.value;
