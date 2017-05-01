@@ -47,19 +47,19 @@ export class VoteComponent implements OnInit {
   /**
    * Invoke voting service with a dialog to confirm
    */
-  vote = () => {
-    let dialogRef = this.dialog.open(DialogComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        if(this.voteService.vote(this.idTrack)){
-            this.hasVoted = true
-        }
-        else{
-           // inserer une alert 
-        }
-      }
-    });
-    
-  }
+  // vote = () => {
+  //   let dialogRef = this.dialog.open(DialogComponent);
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if(result){
+  //       if(this.voteService.vote(this.idTrack)){
+  //           this.hasVoted = true
+  //       }
+  //       else{
+  //          // inserer une alert
+  //       }
+  //     }
+  //   });
+  //
+  // }
 
 }

@@ -125,7 +125,7 @@ const routes: Routes = [];
         ApiExternalServer,
         VoteService
     ],
-    bootstrap: [AppComponent, DialogComponent]
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }
