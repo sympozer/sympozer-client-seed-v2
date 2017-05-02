@@ -37,10 +37,10 @@ export class VoteComponent implements OnInit {
     setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.typeEvent)
       console.log(this.votable)
+      console.log(this.typeEvent)
     }, 1000)
 
     console.log(this.idTrack)
-    console.log(this.typeEvent)
   }
 
   /**

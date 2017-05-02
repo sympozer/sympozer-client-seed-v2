@@ -78,7 +78,7 @@ export var Config = {
         url: "http://sympozer.com/external"
     },
     vote :{
-        url: 'http://sympozer.com/external/', //il faut la nouvelle url
-        tracks: ['https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Poster', 'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#Demo']
+        url: 'http://sympozer.com/external/',
+        tracks: ['https://w3id.org/scholarlydata/track/iswc-2016-posterdemo', 'https%3A%2F%2Fw3id.org%2Fscholarlydata%2Ftrack%2Fiswc-2016-posterdemo']
     }
 };

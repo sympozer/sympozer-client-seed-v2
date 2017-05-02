@@ -106,8 +106,7 @@ export class PublicationComponent implements OnInit {
                         let id = nodeId.value;
                         const label = nodeLabel.value;
                         let type = nodeType.value;
-                        that.eventType = type
-                        //that.eventType = type.replace('Talk',"Poster");
+                        
                         if(id && label){
                             id = that.encoder.encode(id);
                             if(id){
@@ -127,6 +126,7 @@ export class PublicationComponent implements OnInit {
                                 that.events = that.events.concat({
                                     id: id,
                                     label: label,
+                                    //type: type,
                                 });
 
                                 that.events.sort((a, b) => {
@@ -152,6 +152,7 @@ export class PublicationComponent implements OnInit {
                            id = that.encoder.encode(id);
 
                            if(id){
+                               that.eventType = id
                                console.log(label, id);
                                that.track = {
                                    id: id,
