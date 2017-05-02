@@ -4,27 +4,44 @@
 
 <h2>Abstract</h2>
 <md-card class="info-text">
-  <p>
-    {{publication.abstract}}
-  </p>
+    <p>
+        {{publication.abstract}}
+    </p>
 </md-card>
+
+<span *ngIf="track !== {}">
+    <h2>Track</h2>
+    <md-card>
+        <md-icon md-list-avatar>perm_identity</md-icon>
+        <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
+    </md-card>
+</span>
+
+<span *ngIf="keywords && keywords.length > 0">
+    <h2>Keywords</h2>
+    <div class="action-links list-items" *ngFor="let keyword of keywords">
+        <md-card>
+            <p>{{keyword}}</p>
+        </md-card>
+    </div>
+</span>
 
 <!-- Homepage -->
 
 <h2 *ngIf="(authors | json) != '{}'">Authors</h2>
 <div class="action-links list-items" *ngFor="let author of authors">
-  <md-card>
-    <md-icon md-list-avatar>perm_identity</md-icon>
-    <a [routerLink]="['/person/'+author.label+'/'+author.id]">{{author.label}}</a>
-  </md-card>
+    <md-card>
+        <md-icon md-list-avatar>perm_identity</md-icon>
+        <a [routerLink]="['/person/'+author.label+'/'+author.id]">{{author.label}}</a>
+    </md-card>
 </div>
 
 <h2 *ngIf="events.length > 0">Presented in</h2>
 <div class="action-links list-items" *ngFor="let event of events">
-  <md-card>
-    <md-icon md-list-avatar>perm_identity</md-icon>
-    <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
-  </md-card>
+    <md-card>
+        <md-icon md-list-avatar>perm_identity</md-icon>
+        <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
+    </md-card>
 </div>
 
 <!-- Voting -->

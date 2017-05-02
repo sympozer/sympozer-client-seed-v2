@@ -39,6 +39,7 @@ import {EventsByDate} from "./modules/events-by-date/events-by-date";
 import {Share} from './modules/share-button/share-button.component';
 import {LoginComponent} from './modules/login/login.component';
 import {ScrollLoader} from './modules/scroll-loader/scroll-loader.component';
+import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
 import {KeysPipe} from "./keys.pipe";
 import {DataLoaderService} from "./data-loader.service";
 import {DBLPDataLoaderService} from "./dblpdata-loader.service";
@@ -55,7 +56,6 @@ import {PersonService} from './modules/person/person.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
 import {VoteService} from './services/vote.service';
-import { DialogComponent } from './modules/dialog/dialog.component';
 import {routerTransition} from './app.router.animation'
 
 const routes: Routes = [];
@@ -97,8 +97,7 @@ const routes: Routes = [];
         Share,
         ScrollLoader,
         VoteComponent,
-        DialogComponent,
-
+        PublicationsByKeywords
     ],
     imports: [
         BrowserModule,

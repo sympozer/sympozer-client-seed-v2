@@ -19,6 +19,8 @@ export class PublicationComponent implements OnInit {
     private publication;
     private authors;
     private events = [];
+    private track = {};
+    private keywords = [];
     private trackId;
     private eventType;
 
@@ -55,8 +57,11 @@ export class PublicationComponent implements OnInit {
                         return false;
                     }
 
-                    that.publication.label = label;
-                    that.publication.abstract = abstract;
+                    that.publication = {
+                        label: label,
+                        abstract: abstract,
+                    };
+
                     if (document.getElementById("page-title-p"))
                         document.getElementById("page-title-p").innerHTML = label;
                 }
@@ -96,7 +101,7 @@ export class PublicationComponent implements OnInit {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
                     const nodeType = results['?type'];
-                    console.log(results)
+
                     if(nodeId && nodeLabel && nodeType){
                         let id = nodeId.value;
                         const label = nodeLabel.value;
@@ -106,6 +111,19 @@ export class PublicationComponent implements OnInit {
                         if(id && label){
                             id = that.encoder.encode(id);
                             if(id){
+                                /*//On récup le type dans l'URI
+                                const tab = type.split('#');
+                                if(tab.length !== 2){
+                                    return false;
+                                }
+
+                                type = tab[1];
+                                type.replace('>', '');
+
+                                if(!type || type.length === 0){
+                                    return false;
+                                }*/
+
                                 that.events = that.events.concat({
                                     id: id,
                                     label: label,
@@ -118,7 +136,46 @@ export class PublicationComponent implements OnInit {
                         }
                     }
                 }
-            })
+            });
+
+            that.DaoService.query("getPublicationTrack", query, (results) => {
+                console.log(results);
+               if(results){
+                   const nodeLabel = results['?label'];
+                   const nodeId = results['?isSubEventOf'];
+
+                   if(nodeLabel && nodeId){
+                       const label = nodeLabel.value;
+                       let id = nodeId.value;
+
+                       if(label && id){
+                           id = that.encoder.encode(id);
+
+                           if(id){
+                               console.log(label, id);
+                               that.track = {
+                                   id: id,
+                                   label: label,
+                               };
+                           }
+                       }
+                   }
+               }
+            });
+
+            that.DaoService.query("getKeywordsFromPublication", query, (results) => {
+                if(results){
+                    const nodeKeywords = results['?keywords'];
+
+                    if(nodeKeywords){
+                        const keyword = nodeKeywords.value;
+
+                        if(keyword && keyword.length > 0){
+                            that.keywords.push(keyword);
+                        }
+                    }
+                }
+            });
 
             /*for(let i in this.publication.authors){
              let query = { 'key' : this.publication.authors[i] };

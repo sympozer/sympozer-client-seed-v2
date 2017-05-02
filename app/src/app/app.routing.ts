@@ -26,6 +26,7 @@ import {EventByCategoryComponent} from "./modules/event-by-category/event-by-cat
 import {ExternPublicationComponent} from "./modules/extern-publication/externpublication.component";
 import {ToolsComponent} from './modules/tools/tools.component';
 import {EventsByDate} from './modules/events-by-date/events-by-date';
+import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
 import {LoginComponent} from './modules/login/login.component';
 
 
@@ -138,6 +139,10 @@ const appRoutes: Routes = [
     {
         path: 'externPublication/:name/:id',
         component: ExternPublicationComponent
+    },
+    {
+        path: 'publications-by-keywords',
+        component: PublicationsByKeywords
     }
 ];
 

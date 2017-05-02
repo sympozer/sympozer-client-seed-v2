@@ -336,7 +336,6 @@ export class LocalDAOService {
                         " ?idHoldRole scholary:withRole ?idRole . \n" +
                         " ?idRole schema:label ?label . \n" +
                         "}";
-                    console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 //For the moment, it's the same thing, since we haven't role complete descriptions.
@@ -352,6 +351,36 @@ export class LocalDAOService {
                         " <" + data.key + "> a scholary:InProceedings . \n" +
                         " <" + data.key + "> scholary:abstract ?abstract . \n" +
                         " <" + data.key + "> schema:label ?label . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getKeywordsFromPublication":
+                    query =
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?keywords \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:InProceedings . \n" +
+                        " <" + data.key + "> scholary:keyword ?keywords . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getPublicationTrack":
+                    console.log(data.key);
+                    query =
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?isSubEventOf ?label \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:InProceedings . \n" +
+                        " <" + data.key + "> scholary:relatesToEvent ?relatesToEvent . \n" +
+                        " ?relatesToEvent scholary:isSubEventOf ?isSubEventOf . \n" +
+                        " ?isSubEventOf a scholary:Track . \n" +
+                        " ?isSubEventOf schema:label ?label . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
@@ -431,7 +460,7 @@ export class LocalDAOService {
                             "}";
 
                         that.launchQuerySparql(query, (results) => {
-                            results['?type'] = { value: type};
+                            results['?type'] = {value: type};
                             callback(results);
                         });
                     }
@@ -541,7 +570,7 @@ export class LocalDAOService {
 
                                 //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
                                 if (dateStart.isAfter(startDate) && dateEnd.isAfter(endDate)) {
-                                    results['?type'] = { value: type};
+                                    results['?type'] = {value: type};
                                     console.log(results);
                                     callback(results);
                                 }
@@ -585,7 +614,7 @@ export class LocalDAOService {
 
                                 //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
                                 if (startDate.isSameOrAfter(originStartDate) && endDate.isSameOrBefore(originEndDate)) {
-                                    results['?type'] = { value: type};
+                                    results['?type'] = {value: type};
                                     callback(results);
                                 }
                             }
@@ -604,74 +633,29 @@ export class LocalDAOService {
                         "}";
                     that.launchQuerySparql(query, callback);
                     break;
-                case "getAllLocations":
-                    return this.locationLinkMap;
-                case "getLocationLink":
-                    return this.locationLinkMap[data.key];
-                default:
-                    return null;
-            }
-        }
-        else {
-            switch (command) {
-                case "getPerson":
-                    return this.personMap[data.key];
-                case "getPersonLink":
-                    return this.personLinkMap[data.key];
-                case "getAllPersons":
-                    return this.personLinkMap;
-                case "getAllAuthors":
-                    return this.authorLinkMap;
-                case "getPersonsByRole":
-                    return this.personLinkMapByRole[data.key];
-                case "getOrganization":
-                    return this.organizationMap[data.key];
-                case "getOrganizationLink":
-                    return this.organizationLinkMap[data.key];
-                case "getAllOrganizations":
-                    return this.organizationLinkMap;
-                case "getAllRoles":
-                    return this.roleMap;
-                case "getRole":
-                    return this.roleMap[data.key];
-                //For the moment, it's the same thing, since we haven't role complete descriptions.
-                case "getRoleLink":
-                    return this.roleMap[data.key];
-                case "getPublication":
-                    return this.publicationMap[data.key];
-                case "getPublicationLink":
-                    return this.publicationLinkMap[data.key];
-                case "getAllPublications":
-                    return this.publicationLinkMap;
-                case "getEvent":
-                    return this.eventMap[data.key];
-                case "getConferenceEvent":
-                    return this.eventMap[data.key];
-                case "getEventIcs":
-                    return this.eventMap[data.key];
-                case "getEventLink":
-                    return this.eventLinkMap[data.key];
-                case "getAllEvents":
-                    return this.eventLinkMap;
-                case "getLocation":
-                    return this.eventLinkMapByLocation[data.key];
-                case "getCategory":
-                    return this.categoryMap[data.key];
-                case "getCategoryForPublications":
-                    return this.categoryForPublicationsMap[data.key];
-                case "getCategoryLink":
-                    return this.categoryLinkMap[data.key];
-                case "getAllCategories":
-                    return this.categoryLinkMap;
-                case "getAllCategoriesForPublications":
-                    return this.categoryForPublicationsMap;
-                case "getConferenceSchedule":
-                    return this.confScheduleList;
-                //Only need the event URIs, as the ICS will be calculated in the model callback
-                case "getConferenceScheduleIcs":
-                    return Object.keys(this.eventLinkMap);
-                case "getWhatsNext":
-                    return this.confScheduleList;
+                case "getAllKeywords":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?keywords \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:InProceedings . \n" +
+                        " ?id scholary:keyword ?keywords . \n" +
+                        "}";
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getPublicationsByKeyword":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:InProceedings . \n" +
+                        " ?id schema:label ?label . \n" +
+                        " ?id scholary:keyword \"" + data.keyword + "\"^^<http://www.w3.org/2001/XMLSchema#string> . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getAllLocations":
                     return this.locationLinkMap;
                 case "getLocationLink":

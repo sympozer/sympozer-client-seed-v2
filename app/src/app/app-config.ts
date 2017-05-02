@@ -75,7 +75,7 @@ export var Config = {
         }
     },
     externalServer: {
-        url: "http://sympozer.com/external/"
+        url: "http://sympozer.com/external"
     },
     vote :{
         url: 'http://sympozer.com/external/', //il faut la nouvelle url
