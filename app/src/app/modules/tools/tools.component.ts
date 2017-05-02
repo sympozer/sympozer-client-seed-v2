@@ -98,10 +98,17 @@ export class ToolsComponent implements OnInit {
 
     resetDataset() {
         try {
-            this.localdao.resetDataset();
-            this.snackBar.open("Dataset succesfully reset =)", "", {
-                duration: 2000,
-            });
+            if(this.localdao.resetDataset())
+            {
+                this.snackBar.open("Dataset succesfully reset =)", "", {
+                    duration: 2000,
+                });
+            }
+            else {
+                this.snackBar.open("Reset failed please retry", "", {
+                    duration: 2000,
+                });
+            }
         }
         catch (err) {
             console.log(err);
