@@ -19,7 +19,7 @@ export class VoteComponent implements OnInit {
    */
   @Input('idTrack') idTrack: Object;
   @Input('typeEvent') typeEvent: String
-  private votable;
+  public votable;
   private hasVoted;
   private key_localstorage_token = "token_external_ressource_sympozer";
   private key_localstorage_vote = "hasVoted"

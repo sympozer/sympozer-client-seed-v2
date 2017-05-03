@@ -16,11 +16,11 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class PublicationComponent implements OnInit {
-    private publication;
-    private authors;
-    private events = [];
-    private trackId;
-    private eventType;
+    public publication;
+    public authors;
+    public events = [];
+    public trackId;
+    public eventType;
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private DaoService: LocalDAOService, private encoder: Encoder) {
