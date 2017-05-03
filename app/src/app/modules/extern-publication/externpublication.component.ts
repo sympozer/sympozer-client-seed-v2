@@ -15,12 +15,12 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class ExternPublicationComponent implements OnInit {
-    public publication:any = {};
+    public publication: any = {};
     public authors = {};
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private encoder: Encoder,
-                private  dBPLDataLoaderService: DBLPDataLoaderService) {
+                private dBPLDataLoaderService: DBLPDataLoaderService) {
 
     }
 
