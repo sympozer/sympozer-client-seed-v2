@@ -26,7 +26,7 @@ export var Config = {
         "logoUri": "data/images/logo_eswc2017.png",
         "website": "http://2017.eswc-conferences.org/",
         "baseUri": "http://data.semanticweb.org/conference/eswc/2017",
-        "updateUri": "https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2017/data_ESWC2017.json",
+        "updateUri": "https://raw.githubusercontent.com/sympozer/datasets/master/test/conference_test.ttl",
         "lang" : "EN",
         "momentLang" : "EN_us",
         "storage": "on",
