@@ -81,11 +81,21 @@ export class LocalDAOService {
     }
 
     resetDataset() {
-        const that = this;
+        try{
+            const that = this;
 
-        //On récup le dataset jsonld en local storage
-        that.localStoragexx.clear(this.localstorage_jsonld);
-        console.log("cleared")
+            //On récup le dataset jsonld en local storage
+            //that.localStoragexx.clear(this.localstorage_jsonld);
+            let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
+            if(!storage){
+                return false;
+            }
+
+            return that.saveDataset(storage);
+        }
+        catch(err){
+            return false;
+        }
     }
 
     loadDataset(): Promise<boolean> {
@@ -95,7 +105,7 @@ export class LocalDAOService {
             //On récup le dataset jsonld en local storage
             console.log(that.localstorage_jsonld);
             let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
-            console.log(storage)
+
             //Si on l'a pas, on le télécharge
             if (!storage) {
                 console.log('loading graph jsonld ...');
@@ -141,9 +151,11 @@ export class LocalDAOService {
             that.$rdf.parse(dataset, store, this.conferenceURL, mimeType);
             that.store = store;
             that.store.fetcher = null;
+            return true;
         }
         catch (e) {
             console.log(e);
+            return false;
         }
     }
 
