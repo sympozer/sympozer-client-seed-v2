@@ -74,7 +74,7 @@ export class LocalDAOService {
         }
 
         this.conferenceURL = this.useJsonld
-            ? 'https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/pierre_dev/app/src/dataset.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
+            ? Config.conference.updateUri//'http://serenitecoex.com/dataset-conf.jsonld'
             : 'http://dev.sympozer.com/conference/www2012/file-handle/writer/json';
 
         this.$rdf = $rdf;
@@ -85,6 +85,7 @@ export class LocalDAOService {
 
         //On récup le dataset jsonld en local storage
         that.localStoragexx.clear(this.localstorage_jsonld);
+        console.log("cleared")
     }
 
     loadDataset(): Promise<boolean> {
@@ -94,7 +95,7 @@ export class LocalDAOService {
             //On récup le dataset jsonld en local storage
             console.log(that.localstorage_jsonld);
             let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
-
+            console.log(storage)
             //Si on l'a pas, on le télécharge
             if (!storage) {
                 console.log('loading graph jsonld ...');
@@ -102,6 +103,7 @@ export class LocalDAOService {
                     .then((response) => {
                         try {
                             if (response && response._body) {
+                                console.log(this.conferenceURL)
                                 that.saveDataset(response._body);
                                 that.localStoragexx.store(that.localstorage_jsonld, response._body);
                                 return resolve(true);
