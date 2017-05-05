@@ -1,0 +1,35 @@
+#.travis.yml
+
+sudo: required  
+dist: trusty  
+language: node_js
+skip_cleanup: true
+node_js:
+  - "7.0"
+
+branches:
+  only:
+    - master
+
+before_script:
+  - npm install -g typescript
+  - npm install -g @angular/cli
+  - npm --prefix ./app install ./app
+  
+before_install:  
+ - export CHROME_BIN=/usr/bin/google-chrome
+ - export DISPLAY=:99.0 
+ - sh -e /etc/init.d/xvfb start
+ - sudo apt-get update
+ - sudo apt-get install -y libappindicator1 fonts-liberation
+ - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+ - sudo dpkg -i google-chrome*.deb
+
+script:
+  - ng test 
+  - ng build --prod
+
+notifications:
+  email:
+    on_failure: change
+    on_success: change
