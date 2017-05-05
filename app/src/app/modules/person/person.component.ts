@@ -18,8 +18,8 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
     host: {'[@routerTransition]': ''}
 })
 export class PersonComponent implements OnInit {
-    private externPublications = [];
-    private photoUrl: any;
+    public externPublications = [];
+    public photoUrl: any;
     public person;
     public roles = [];
     public orgas = [];

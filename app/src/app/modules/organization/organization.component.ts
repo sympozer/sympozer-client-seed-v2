@@ -17,8 +17,8 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class OrganizationComponent implements OnInit {
-    private organization;
-    private members = [];
+    public organization;
+    public members = [];
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private DaoService: LocalDAOService, private encoder: Encoder) {

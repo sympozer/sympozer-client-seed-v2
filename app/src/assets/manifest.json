@@ -1,0 +1,14 @@
+{
+  "short_name": "Sympozer",
+  "name": "Sympozer ESWC 2017",
+  "icons": [
+    {
+      "src": "../img/logo_eswc2017.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/eswc2017_test/",
+  "display": "fullscreen",
+  "orientation": "landscape"
+}

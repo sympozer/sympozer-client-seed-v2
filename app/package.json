@@ -5,6 +5,8 @@
   "angular-cli": {},
   "scripts": {
     "start": "ng serve",
+    "buildtest": "ng build --prod --aot --bh /eswc2017_test/",
+    "buildbeta": "ng build --prod --aot --bh /eswc2017_beta/",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update",
@@ -24,7 +26,9 @@
     "@angular/platform-browser-dynamic": "^4.1.0",
     "@angular/platform-server": "^4.1.0",
     "@angular/router": "^4.1.0",
+    "ajv": "^5.0.4-beta.3",
     "async-mutex": "^0.1.1",
+    "awesome-typescript-loader": "3.0.0-beta.10",
     "classlist-polyfill": "^1.0.3",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
@@ -41,7 +45,6 @@
     "screenfull": "^3.2.0",
     "ts-helpers": "^1.1.1",
     "typescript": "2.3.2",
-    "awesome-typescript-loader": "3.0.0-beta.10",
     "web-animations-js": "^2.2.2",
     "zone.js": "^0.7.2"
   },
@@ -63,6 +66,6 @@
     "protractor": "~5.1.0",
     "ts-node": "~2.0.0",
     "tslint": "~4.5.0",
-    "typescript" : "~2.1.0"
+    "typescript": "~2.1.0"
   }
 }

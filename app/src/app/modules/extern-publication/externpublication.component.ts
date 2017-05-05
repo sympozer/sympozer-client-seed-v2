@@ -15,12 +15,12 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class ExternPublicationComponent implements OnInit {
-    private publication = {};
-    private authors = {};
+    public publication: any = {};
+    public authors = {};
 
-    constructor(private router:Router,private route: ActivatedRoute,
-    private encoder: Encoder,
-    private  dBPLDataLoaderService: DBLPDataLoaderService) {
+    constructor(private router: Router, private route: ActivatedRoute,
+                private encoder: Encoder,
+                private dBPLDataLoaderService: DBLPDataLoaderService) {
 
     }
 
@@ -40,7 +40,7 @@ export class ExternPublicationComponent implements OnInit {
         });
     }
 
-    getPublicationExternAuthors = (publication: any)=> {
+    getPublicationExternAuthors = (publication: any) => {
         this.dBPLDataLoaderService.getExternPublicationAuthors(publication.id).then(response => {
                 console.log(response);
                 publication.authors = [];
