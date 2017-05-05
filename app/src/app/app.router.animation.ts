@@ -4,7 +4,7 @@ export function routerTransition() {
     return slideToTop();
 }
 
-function slideToTop() {
+export function slideToTop() {
     return trigger('routerTransition', [
         state('void', style({
             position: 'absolute',

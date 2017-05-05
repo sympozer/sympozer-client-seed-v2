@@ -106,7 +106,7 @@ export class PublicationComponent implements OnInit {
                         let id = nodeId.value;
                         const label = nodeLabel.value;
                         let type = nodeType.value;
-                        
+
                         if(id && label){
                             id = that.encoder.encode(id);
                             if(id){

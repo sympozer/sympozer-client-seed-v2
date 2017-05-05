@@ -148,6 +148,32 @@ menu {
     }
   }
 
+  &.multiple-lines {
+    a {
+      padding: 24px;
+
+      span {
+        display: inline;
+      }
+    }
+
+    .other-links {
+      span {
+        display: block;
+      }
+    }
+
+    md-icon {
+      margin-right: 5px;
+      margin-left: -20px;
+      position: static;
+      right: 0;
+      top: 0;
+      transform: translate(0, 25%);
+      z-index: 1;
+    }
+  }
+
   &.search-wrapper {
     md-card {
       box-shadow: $md-search-whiteframe;

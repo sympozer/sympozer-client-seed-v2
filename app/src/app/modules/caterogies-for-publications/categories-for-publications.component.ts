@@ -12,8 +12,8 @@ import {Encoder} from "../../lib/encoder";
     host: {'[@routerTransition]': ''}
 })
 export class CategoriesForPublicationsComponent implements OnInit {
-    private tracks = [];
-    title: string = "Tracks";
+    public tracks = [];
+    public title: string = "Tracks";
 
     constructor(private DaoService: LocalDAOService,
                 private encoder: Encoder) {

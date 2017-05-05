@@ -13,8 +13,8 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class PublicationsByCategoryComponent implements OnInit {
-    private labelTrack;
-    private publications = [];
+    public labelTrack;
+    public publications = [];
 
     constructor(private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
