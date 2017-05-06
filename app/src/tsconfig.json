@@ -23,6 +23,9 @@
     "node_modules",
     "dist"
   ],
+  "include": [
+    "./**/*"
+  ],
   "awesomeTypescriptLoaderOptions": {
     "useCache": true,
     "forkChecker": true,

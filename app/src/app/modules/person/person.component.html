@@ -3,25 +3,25 @@
   <img class="avatar" *ngIf="!photoUrl || photoUrl.length <= 0" src="./img/placeholder.jpg"/>
   <div class="info">
     <div class="name"> {{person.name}}</div>
-    <div class="link-info twitter">
+    <div class="link-info twitter" *ngIf="twitterUrl && twitterUrl.length > 0">
       <a href="https://twitter.com/realamberheard">
         <md-icon><i class="fa fa-twitter"></i></md-icon>
         <span>realamberheard</span>
       </a>
     </div>
-    <div class="link-info facebook">
+    <div class="link-info facebook" *ngIf="facebookrUrl && facebookrUrl.length > 0">
       <a href="https://www.facebook.com/AmberHeardOfficial/">
         <md-icon><i class="fa fa-facebook"></i></md-icon>
         <span>AmberHeardOfficial</span>
       </a>
     </div>
-    <div class="link-info google-plus">
+    <div class="link-info google-plus" *ngIf="googlePlusUrl && googlePlusUrl.length > 0">
       <a href="">
         <md-icon><i class="fa fa-google-plus"></i></md-icon>
         <span>realAmberHeardOfficial</span>
       </a>
     </div>
-    <div class="link-info linkedin">
+    <div class="link-info linkedin" *ngIf="linkedInUrl && linkedInUrl.length > 0">
       <a href="">
         <md-icon><i class="fa fa-linkedin"></i></md-icon>
         <span>AmberHeardReal</span>

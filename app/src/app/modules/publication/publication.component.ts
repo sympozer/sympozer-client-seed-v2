@@ -34,7 +34,6 @@ export class PublicationComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log("Init publication Component");
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
