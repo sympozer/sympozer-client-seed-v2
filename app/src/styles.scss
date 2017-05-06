@@ -99,7 +99,7 @@ menu {
     margin: 20px 0;
     position: relative;
 
-    a, input, p {
+    a, input, p, .wrapper {
       position: relative;
       text-decoration: none;
       font-weight: normal;
@@ -137,7 +137,7 @@ menu {
 
   &.list-items {
     md-card {
-      a, p {
+      a, p, .wrapper {
         padding-left: 40px !important;
       }
 
@@ -149,7 +149,7 @@ menu {
   }
 
   &.multiple-lines {
-    a {
+    a, .wrapper {
       padding: 24px;
 
       span {
