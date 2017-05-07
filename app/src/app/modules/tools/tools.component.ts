@@ -22,6 +22,7 @@ export class ToolsComponent implements OnInit {
     socialShare: boolean;
     fullScreen: boolean;
     darkTheme: boolean;
+    material: boolean;
 
     constructor(private zone: NgZone,
                 private location: Location,
@@ -56,21 +57,27 @@ export class ToolsComponent implements OnInit {
         if (storage) {
             this.socialShare = storage;
         }
+
+        storage = this.localStoragexx.retrieve("materialShadow");
+
+        if (storage) {
+            this.material = storage;
+        }
     }
 
     @HostListener("document:webkitfullscreenchange") updateFullScreen() {
         this.fullScreen = screenfull.isFullscreen;
     }
 
-     @HostListener("document:mozfullscreenchange") updateFullScreenMoz() {
+    @HostListener("document:mozfullscreenchange") updateFullScreenMoz() {
         this.fullScreen = screenfull.isFullscreen;
     }
 
-     @HostListener("document:msfullscreenchange") updateFullScreenIE() {
+    @HostListener("document:msfullscreenchange") updateFullScreenIE() {
         this.fullScreen = screenfull.isFullscreen;
     }
 
-     @HostListener("document:webkitfullscreenchange") updateFullScreenOther() {
+    @HostListener("document:webkitfullscreenchange") updateFullScreenOther() {
         this.fullScreen = screenfull.isFullscreen;
     }
 
@@ -98,8 +105,7 @@ export class ToolsComponent implements OnInit {
 
     resetDataset() {
         try {
-            if(this.localdao.resetDataset())
-            {
+            if (this.localdao.resetDataset()) {
                 this.snackBar.open("Dataset succesfully reset =)", "", {
                     duration: 2000,
                 });
@@ -177,6 +183,23 @@ export class ToolsComponent implements OnInit {
         else {
             if (document.getElementById("share"))
                 document.getElementById("share").style.display = "none";
+        }
+    }
+
+    toggleMaterial() {
+        this.material = !this.material;
+        this.localStoragexx.store("materialShadow", this.material);
+        if (this.material) {
+            if (document.getElementById("share"))
+                document.getElementById("share").style.display = "block";
+        }
+        else {
+            console.log("kool");
+            var elements = document.getElementsByClassName('info-text');
+            console.log(elements);
+            for (var i = 0, l = elements.length; i < l; i++) {
+                (<HTMLElement>elements[i]).style.boxShadow = "none";
+            }
         }
     }
 }
