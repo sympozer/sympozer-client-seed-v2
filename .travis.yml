@@ -14,7 +14,6 @@ branches:
 before_script:
   - npm install -g typescript
   - npm install -g @angular/cli@latest
-  - npm --prefix ./app install ./app
   
 before_install:  
  - export CHROME_BIN=/usr/bin/google-chrome
@@ -26,8 +25,7 @@ before_install:
  - sudo dpkg -i google-chrome*.deb
 
 script:
-  - ng test 
-  - ng build --prod --aot
+  - build.sh
 
 notifications:
   email:
