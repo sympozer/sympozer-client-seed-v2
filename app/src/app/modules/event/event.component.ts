@@ -189,7 +189,9 @@ export class EventComponent implements OnInit {
         });
     }
 
-    
+    /**
+     * Constructs a realistic ICS description of the event, that can be imported in a calendar
+     */
     createICS = () =>{
         var ics = new ICS();
         const that = this
