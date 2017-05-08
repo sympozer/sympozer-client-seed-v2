@@ -2,6 +2,7 @@
   {{event.type}} : {{event.label}}
 </h1>
 
+<button md-raised-button color="primary" (click)="createICS()">Add to calendar</button>
 <div *ngIf="event.description !== null">
   <h2>Description</h2>
   <md-card class="info-text">
@@ -74,7 +75,6 @@
     </md-card>
   </div>
 </div>
-
 <!--<div *ngIf="(contents | json) != '{}'">-->
   <!--<h2>Contents</h2>-->
 <!--</div>-->

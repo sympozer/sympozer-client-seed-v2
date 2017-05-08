@@ -17,8 +17,8 @@ import {routerTransition} from '../../app.router.animation';
 })
 export class PublicationsByKeywords implements OnInit {
     title: string = "Keywords";
-    private keywords;
-    private publications;
+    public keywords;
+    public publications;
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private DaoService: LocalDAOService, private encoder: Encoder) {

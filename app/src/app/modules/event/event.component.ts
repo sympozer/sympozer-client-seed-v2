@@ -4,6 +4,9 @@ import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 import {RessourceDataset} from '../../services/RessourceDataset';
+import {Config} from "../../app-config";
+//import {ICS} from "ics";
+var ICS = require('ics');
 
 import * as moment from 'moment';
 
@@ -24,6 +27,7 @@ export class EventComponent implements OnInit {
     public startsAt;
     public endsAt;
     public duration;
+    public encodedID
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -39,6 +43,7 @@ export class EventComponent implements OnInit {
             let id = params['id'];
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
+            this.encodedID = this.encoder.decode(id)
             this.DaoService.query("getEventById", query, (results, err) => {
                 if (results) {
                     const nodeLabel = results['?label'];
@@ -182,5 +187,32 @@ export class EventComponent implements OnInit {
              this.contents[i] = this.DaoService.query("getEvent", query);
              }*/
         });
+    }
+
+    
+    createICS = () =>{
+        var ics = new ICS();
+        const that = this
+
+        let calendar = ics.buildEvent({
+          uid: '', // (optional) 
+          start: that.event.startsAt,
+          end: that.event.endsAt,
+          title: that.event.label,
+          description: that.event.description,
+          location: 'Floor 4, Room 2A', //
+          url: that.event.publications.id,
+          status: 'confirmed',
+          geo: { lat: 45.515113, lon: 13.571873, },
+          attendees: [
+            //{ name: 'Adam Gibbons', email: 'adam@example.com' }
+          ],
+          categories: that.event.session,
+          alarms:[
+            { action: 'DISPLAY', trigger: '-PT24H', description: 'Reminder', repeat: true, duration: 'PT15M' },
+            { action: 'AUDIO', trigger: '-PT30M' }
+          ]
+        });
+        window.open( "data:text/calendar;charset=utf8," + encodeURIComponent(calendar));
     }
 }

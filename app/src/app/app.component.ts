@@ -7,6 +7,9 @@ import {LocalDAOService} from  './localdao.service';
 import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
 import {routerTransition} from './app.router.animation';
 import {LocalStorageService} from 'ng2-webstorage';
+import { Subscription } from 'rxjs/Subscription';
+import {ToolsService} from './services/tools.service';
+
 
 
 @Component({
@@ -15,11 +18,19 @@ import {LocalStorageService} from 'ng2-webstorage';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
+    public backHistory;
+    public iOS;
+    public fullscreen: any;
+    subscription: Subscription;
     constructor(private DaoService: LocalDAOService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private localStoragexx: LocalStorageService) {
+                private localStoragexx: LocalStorageService,
+                private toolService: ToolsService) {
+
+        this.subscription = this.toolService.getFullScreenStatus().subscribe(status => { 
+            this.fullscreen = status; 
+        });
     }
 
 
@@ -61,6 +72,17 @@ export class AppComponent implements OnInit {
             .subscribe((event) => {
                 window.scrollTo(0, 1);
             });
+        this.iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        if(window.history.length > 1)
+            this.backHistory = true
+        this.fullscreen = this.localStoragexx.retrieve("fullscreen")
     }
+
+    goBack = () =>{
+        window.history.back()
+    }
+
+    
+
 
 }

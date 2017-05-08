@@ -5,6 +5,7 @@ import {Location} from "@angular/common";
 import {routerTransition} from "../../app.router.animation";
 import {LocalDAOService} from "../../localdao.service";
 import {LocalStorageService} from 'ng2-webstorage';
+import {ToolsService} from '../../services/tools.service';
 const screenfull = require('screenfull');
 
 @Component({
@@ -28,7 +29,8 @@ export class ToolsComponent implements OnInit {
                 private route: ActivatedRoute,
                 private localdao: LocalDAOService,
                 public snackBar: MdSnackBar,
-                private localStoragexx: LocalStorageService) {
+                private localStoragexx: LocalStorageService,
+                private toolService: ToolsService) {
     }
 
     ngOnInit() {
@@ -144,8 +146,18 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    sendFullScreenStatus(status: boolean): void {
+        this.toolService.sendFullScreenStatus(status)
+    }
+
+    clearFullScreenStatus(): void {
+        // clear message
+        this.toolService.clearFullScreenStatus();
+    }
+
     toggleFullScreen() {
         this.fullScreen = !this.fullScreen;
+        this.sendFullScreenStatus(this.fullScreen)
         if (screenfull.enabled) {
             screenfull.toggle();
         }
