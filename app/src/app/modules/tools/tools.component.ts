@@ -76,7 +76,9 @@ export class ToolsComponent implements OnInit {
         this.fullScreen = screenfull.isFullscreen;
     }
 
-
+    /**
+     * Load the application dataset
+     */
     loadDataset() {
         this.loading = true;
 
@@ -98,6 +100,9 @@ export class ToolsComponent implements OnInit {
         return this.loading;
     }
 
+    /**
+     * Reset the application dataset
+     */
     resetDataset() {
         try {
             if(this.localdao.resetDataset())
@@ -120,6 +125,9 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    /**
+     * Decrease the application font size
+     */
     decresaseFontSize() {
         if (this.fontSize > 60) {
             this.fontSize = this.fontSize - 10;
@@ -133,6 +141,9 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    /**
+     * Increase the application font size
+     */
     increaseFontSize() {
         if (this.fontSize < 200) {
             this.fontSize = this.fontSize + 10;
@@ -146,6 +157,10 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    /**
+     * Send boolean status to all subscribers
+     * @param status
+     */
     sendFullScreenStatus(status: boolean): void {
         this.toolService.sendFullScreenStatus(status)
     }
@@ -155,6 +170,9 @@ export class ToolsComponent implements OnInit {
         this.toolService.clearFullScreenStatus();
     }
 
+    /**
+     * Change full screen status
+     */
     toggleFullScreen() {
         this.fullScreen = !this.fullScreen;
         this.sendFullScreenStatus(this.fullScreen)
@@ -163,6 +181,9 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    /**
+     * Toggle application theme
+     */
     toggleDarkTheme() {
         this.darkTheme = !this.darkTheme;
         this.localStoragexx.store("darkTheme", this.darkTheme);
@@ -179,6 +200,9 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    /**
+     * Toggle Social share in the application
+     */
     toggleSocialShare() {
         this.socialShare = !this.socialShare;
         this.localStoragexx.store("socialShare", this.socialShare);

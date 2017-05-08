@@ -41,6 +41,10 @@ export class PublicationComponent implements OnInit {
             this.trackId = id;
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
+
+            /**
+             * Retrieve the publication
+             */
             this.DaoService.query("getPublication", query, (results) => {
                 if (results) {
                     const nodeLabel = results['?label'];
@@ -67,6 +71,9 @@ export class PublicationComponent implements OnInit {
                 }
             });
 
+            /**
+             * Retrieve the author by the publication
+             */
             this.DaoService.query("getAuthorLinkPublication", query, (results) => {
                 console.log('getAuthorLinkPublication : ', results);
                 if (results) {
@@ -96,6 +103,9 @@ export class PublicationComponent implements OnInit {
                 }
             });
 
+            /**
+             * Retrieve the event from the publication
+             */
             that.DaoService.query("getEventFromPublication", query, (results) => {
                 if(results){
                     const nodeId = results['?id'];
@@ -138,6 +148,9 @@ export class PublicationComponent implements OnInit {
                 }
             });
 
+            /**
+             * Retrive track from the publication
+             */
             that.DaoService.query("getPublicationTrack", query, (results) => {
                 console.log(results);
                if(results){
@@ -164,6 +177,9 @@ export class PublicationComponent implements OnInit {
                }
             });
 
+            /**
+             * Retrieve keywords from publication
+             */
             that.DaoService.query("getKeywordsFromPublication", query, (results) => {
                 if(results){
                     const nodeKeywords = results['?keywords'];
