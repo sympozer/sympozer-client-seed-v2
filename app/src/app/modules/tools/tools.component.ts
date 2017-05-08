@@ -1,6 +1,6 @@
 import {Component, OnInit, NgZone, Input, HostListener} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {MdSnackBar} from '@angular/material'
+import {MdSnackBar} from '@angular/material';
 import {Location} from "@angular/common";
 import {routerTransition} from "../../app.router.animation";
 import {LocalDAOService} from "../../localdao.service";
