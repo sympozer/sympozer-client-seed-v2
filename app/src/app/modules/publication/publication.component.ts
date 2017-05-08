@@ -34,7 +34,6 @@ export class PublicationComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log("Init publication Component");
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
@@ -61,11 +60,8 @@ export class PublicationComponent implements OnInit {
                         return false;
                     }
 
-                    that.publication = {
-                        label: label,
-                        abstract: abstract,
-                    };
-
+                    that.publication.label = label;
+                    that.publication.abstract = abstract;
                     if (document.getElementById("page-title-p"))
                         document.getElementById("page-title-p").innerHTML = label;
                 }

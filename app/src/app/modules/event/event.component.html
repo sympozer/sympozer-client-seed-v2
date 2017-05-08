@@ -11,27 +11,16 @@
 </div>
 
 
-<h2>Starts at</h2>
-<div class="action-links list-items">
+<h2>Event informations</h2>
+<div class="action-links list-items multiple-lines">
   <md-card class="info-text">
-    <md-icon md-list-avatar>access_time</md-icon>
-    <p>{{event.startsAt}}</p>
-  </md-card>
-</div>
-
-<h2>Ends at</h2>
-<div class="action-links list-items">
-  <md-card class="info-text">
-    <md-icon md-list-avatar>access_time</md-icon>
-    <p>{{event.endsAt}}</p>
-  </md-card>
-</div>
-
-<h2>Duration</h2>
-<div class="action-links list-items">
-  <md-card class="info-text">
-    <md-icon md-list-avatar>hourglass_empty</md-icon>
-    <p>{{event.duration}}</p>
+    <div class="wrapper">
+      <div class="other-links">
+        <span class="event-info"><md-icon>schedule</md-icon> {{event.startsAt}} </span>
+        <span class="event-info"><md-icon>access_time</md-icon> {{event.endsAt}} </span>
+        <span class="event-info"><md-icon>hourglass_empty</md-icon> {{event.duration}} </span>
+      </div>
+    </div>
   </md-card>
 </div>
 
@@ -76,5 +65,5 @@
   </div>
 </div>
 <!--<div *ngIf="(contents | json) != '{}'">-->
-  <!--<h2>Contents</h2>-->
+<!--<h2>Contents</h2>-->
 <!--</div>-->

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router}            from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
+import {MdSnackBar} from "@angular/material";
 
 @Component({
     selector: 'login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
 
 
     constructor(private router: Router,
-                private apiExternalServer: ApiExternalServer) {
+                private apiExternalServer: ApiExternalServer,
+                public snackBar: MdSnackBar,) {
     }
 
     ngOnInit() {
@@ -29,7 +31,15 @@ export class LoginComponent implements OnInit {
      * @param email
      * @param password
      */
-    login = (email, password) =>{
-        this.apiExternalServer.login(email,password)
+    login = (email, password) => {
+        this.apiExternalServer.login(email, password).then(() => {
+            this.snackBar.open("Login successful", "", {
+                duration: 2000,
+            });
+        }).catch((err) => {
+            this.snackBar.open(err, "", {
+                duration: 2000,
+            });
+        });
     }
 }

@@ -20,6 +20,10 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
 export class PersonComponent implements OnInit {
     public externPublications = [];
     public photoUrl: any;
+    public twitterUrl: any;
+    public facebookUrl: any;
+    public googlePlusUrl: any;
+    public linkedInUrl: any;
     public person;
     public roles = [];
     public orgas = [];
@@ -105,6 +109,12 @@ export class PersonComponent implements OnInit {
                                                 console.log(user);
                                                 if (user && user.photoUrl) {
                                                     that.photoUrl = user.photoUrl;
+                                                }
+                                                if (user) {
+                                                    that.twitterUrl = user.twitterpage;
+                                                    that.facebookUrl = user.facebookpage;
+                                                    that.googlePlusUrl = user.googleaccount;
+                                                    that.linkedInUrl = user.linkedinaccount;
                                                 }
                                             }
                                         });
