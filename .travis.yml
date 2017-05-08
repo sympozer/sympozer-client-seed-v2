@@ -27,7 +27,7 @@ before_install:
 
 script:
    - npm install
-   - ng test
+   - ng build --prod --aot
 
 notifications:
   email:
