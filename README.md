@@ -2,7 +2,6 @@
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.15.
 
-
 ## Getting started
 
 Clone this repo
@@ -19,6 +18,16 @@ then run :
 `npm install`
 
 `ng serve`
+
+## Hack XMLHttpRequest
+
+Browse to `node_modules\xmlhttprequest\lib\XMLHttpRequest.js ` and comment the following lines:
+
+`Line 15- var spawn = require("child_process").spawn; `
+
+`Line 503- var syncProc = spawn(process.argv[0], ["-e", execString]);`
+
+`Line 509- syncProc.stdin.end();`
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
