@@ -107,29 +107,29 @@ export class LocalDAOService {
             let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
 
             //Si on l'a pas, on le télécharge
-            if (!storage) {
-                console.log('loading graph jsonld ...');
-                this.managerRequest.get_safe(this.conferenceURL)
-                    .then((response) => {
-                        try {
-                            if (response && response._body) {
-                                console.log(this.conferenceURL)
-                                that.saveDataset(response._body);
-                                that.localStoragexx.store(that.localstorage_jsonld, response._body);
-                                return resolve(true);
-                            }
+            // if (!storage) {
+            console.log('loading graph jsonld ...');
+            this.managerRequest.get_safe(this.conferenceURL)
+                .then((response) => {
+                    try {
+                        if (response && response._body) {
+                            console.log(this.conferenceURL)
+                            that.saveDataset(response._body);
+                            that.localStoragexx.store(that.localstorage_jsonld, response._body);
+                            return resolve(true);
+                        }
 
-                            return reject(false);
-                        }
-                        catch (e) {
-                            return reject(false);
-                        }
-                    })
-                    .catch(() => {
                         return reject(false);
-                    });
-            }
-            else {
+                    }
+                    catch (e) {
+                        return reject(false);
+                    }
+                })
+                .catch(() => {
+                    return reject(false);
+                });
+            // }
+            if(storage) {
                 try {
                     console.log('have localstorage');
                     that.saveDataset(storage);

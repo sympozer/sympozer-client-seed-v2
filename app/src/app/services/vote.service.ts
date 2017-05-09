@@ -4,6 +4,7 @@ import {Injectable} from "@angular/core";
 import {Config} from '../app-config'
 import {ManagerRequest} from "./ManagerRequest";
 import {LocalStorageService} from 'ng2-webstorage';
+import {Encoder} from "../lib/encoder";
 
 @Injectable()
 export class VoteService {
@@ -13,7 +14,8 @@ export class VoteService {
 
   constructor(private http: Http,
               private managerRequest: ManagerRequest,
-              private localStoragexx: LocalStorageService) {
+              private localStoragexx: LocalStorageService,
+              private encoder: Encoder) {
 
   }
 
@@ -24,7 +26,10 @@ export class VoteService {
    */
   isTrackVotable = (trackName) => {
     for(var i = 0; i < Config.vote.tracks.length; i++) {
-      if(Config.vote.tracks[i] === trackName)
+      let uri = this.encoder.encode(Config.vote.tracks[i])
+      console.log(uri)
+      console.log(trackName)
+      if(uri === trackName)
         return true;
     }
     return false;

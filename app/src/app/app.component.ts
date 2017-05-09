@@ -2,13 +2,14 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, HostListener} from '@angular/core';
 import {LocalDAOService} from  './localdao.service';
 import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
 import {routerTransition} from './app.router.animation';
 import {LocalStorageService} from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
 import {ToolsService} from './services/tools.service';
+const screenfull = require('screenfull');
 
 
 
@@ -85,14 +86,35 @@ export class AppComponent implements OnInit {
         this.iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
         if(window.history.length > 1)
             this.backHistory = true
-        this.fullscreen = this.localStoragexx.retrieve("fullscreen")
+        this.fullscreen = screenfull.isFullscreen;
     }
 
-    goBack = () =>{
-        window.history.back()
+    goBack(){
+        console.log("back touch")
+        console.log(document.referrer)
+        console.log(/localhost/.test(document.referrer))
+        var patt = new RegExp("localhost");
+        let test = patt.test(document.referrer)
+        console.log(test)
+        if(test)
+            window.history.back()
     }
 
-    
+    @HostListener("document:webkitfullscreenchange") updateFullScreen() {
+        this.fullscreen = screenfull.isFullscreen;
+    }
+
+    @HostListener("document:mozfullscreenchange") updateFullScreenMoz() {
+        this.fullscreen = screenfull.isFullscreen;
+    }
+
+    @HostListener("document:msfullscreenchange") updateFullScreenIE() {
+        this.fullscreen = screenfull.isFullscreen;
+    }
+
+    @HostListener("document:webkitfullscreenchange") updateFullScreenOther() {
+        this.fullscreen = screenfull.isFullscreen;
+    }
 
 
 }
