@@ -128,17 +128,17 @@ export class LocalDAOService {
                 .catch(() => {
                     return reject(false);
                 });
+            // // }
+            // if(storage) {
+            //     try {
+            //         console.log('have localstorage');
+            //         that.saveDataset(storage);
+            //         return resolve(true);
+            //     } catch (err) {
+            //         console.log(err);
+            //         return reject(false);
+            //     }
             // }
-            if(storage) {
-                try {
-                    console.log('have localstorage');
-                    that.saveDataset(storage);
-                    return resolve(true);
-                } catch (err) {
-                    console.log(err);
-                    return reject(false);
-                }
-            }
         });
     }
 

@@ -33,4 +33,15 @@ export class ManagerRequest {
                 return response;
             });
     }
+
+    post_safe(url, body) {
+        return this.http.post(url, body)
+            .toPromise()
+            .then((response) => {
+                return response
+            })
+            .catch((response) => {
+                return response;
+            });
+    }
 }

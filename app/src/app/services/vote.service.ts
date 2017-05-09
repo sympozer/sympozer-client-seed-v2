@@ -53,11 +53,17 @@ export class VoteService {
       if (!token || token.length === 0) {
         return reject('Vous devez vous connectez avant de pouvoir voter');
       }
+      let bodyRequest = {
+        id_track: id_ressource,
+        token: token
+      }
 
-      that.managerRequest.get_safe(Config.externalServer.url + '/api/vote?token=' + token + '&id_ressource=' + id_ressource)
+      that.managerRequest.post_safe(Config.externalServer.url + '/api/vote', bodyRequest)
           .then((request) => {
             if (request && request._body) {
-              that.localStoragexx.store(that.key_localstorage_vote, true);
+              let votedTracks = that.localStoragexx.retrieve(that.key_localstorage_vote)
+              votedTracks.push(id_ressource)
+              that.localStoragexx.store(that.key_localstorage_vote, votedTracks);
               return resolve(true);
             }
 
@@ -66,8 +72,33 @@ export class VoteService {
           .catch((request) => {
             return reject(request);
           });
+
+
     });
   };
+
+  votedTracks(){
+    return new Promise((resolve, reject) => {
+      const that = this;
+      const token = that.localStoragexx.retrieve(that.key_localstorage_token);
+      if (!token || token.length === 0) {
+        return reject('Vous devez vous connectez avant de pouvoir voter');
+      }
+      that.managerRequest.get_safe(Config.externalServer.url + ' /api/user/vote/information&token=' + token )
+          .then((request) => {
+            if (request && request._body) {
+              that.localStoragexx.store(that.key_localstorage_vote, request._body);
+              return resolve(true);
+            }
+
+            return reject(null);
+          })
+          .catch((request) => {
+            return reject(request);
+          });
+
+    });
+  }
 
 
 

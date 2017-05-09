@@ -17,8 +17,8 @@ export class VoteComponent implements OnInit {
    */
   @Input('idTrack') idTrack: Object;
   @Input('typeEvent') typeEvent: String
-  public votable;
-  private hasVoted;
+  public votable = false;
+  private hasVoted = false;
   private key_localstorage_token = "token_external_ressource_sympozer";
   private key_localstorage_vote = "hasVoted"
   constructor(private voteService: VoteService,
@@ -31,7 +31,11 @@ export class VoteComponent implements OnInit {
    */
   ngOnInit() {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
-    this.hasVoted = this.localStoragexx.retrieve(this.key_localstorage_vote);
+    let votedTracks = this.localStoragexx.retrieve(this.key_localstorage_vote);
+    for(var i = 0; i < votedTracks.length; i++){
+      if(votedTracks[i] === this.idTrack)
+        this.hasVoted = true
+    }
     setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.typeEvent)
       console.log(this.votable)
@@ -42,15 +46,18 @@ export class VoteComponent implements OnInit {
   }
 
   /**
-   * Invoke voting service with a dialog to confirm
+   * Invoke voting service
    */
   vote = () => {
-    if(this.voteService.vote(this.idTrack)){
-        this.hasVoted = true
+    this.voteService.vote(this.idTrack)
+        .then(()=>{
+          this.hasVoted = true
+        })
+        .catch((err) =>{
+          console.log(err)
+        })
+
     }
-    else{
-       // inserer une alert
-    }
-  }
+  
 
 }

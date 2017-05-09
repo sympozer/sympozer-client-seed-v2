@@ -3,6 +3,7 @@ import {Router}            from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {MdSnackBar} from "@angular/material";
+import {VoteService} from '../../services/vote.service'
 
 @Component({
     selector: 'login',
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
 
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
-                public snackBar: MdSnackBar,) {
+                public snackBar: MdSnackBar,
+                private voteService: VoteService) {
     }
 
     ngOnInit() {
@@ -33,6 +35,13 @@ export class LoginComponent implements OnInit {
      */
     login = (email, password) => {
         this.apiExternalServer.login(email, password).then(() => {
+            this.voteService.votedTracks()
+                .then(()=>{
+                    console.log("User voted tracks retrieved")
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
             this.snackBar.open("Login successful", "", {
                 duration: 2000,
             });
