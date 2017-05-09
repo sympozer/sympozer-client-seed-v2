@@ -2,6 +2,12 @@
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.15.
 
+## Hack XMLHttpRequest
+
+Browse to `node_modules\xmlhttprequest\lib\XMLHttpRequest.js ` and comment the following lines:
+`Line 15- var spawn = require("child_process").spawn;
+ Line 503- var syncProc = spawn(process.argv[0], ["-e", execString]);
+ Line 509- syncProc.stdin.end();`
 
 ## Getting started
 
