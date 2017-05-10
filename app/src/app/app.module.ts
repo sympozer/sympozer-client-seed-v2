@@ -56,7 +56,8 @@ import {PersonService} from './modules/person/person.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
 import {VoteService} from './services/vote.service';
-import {routerTransition} from './app.router.animation'
+import {routerTransition} from './app.router.animation';
+import { Angulartics2Module, Angulartics2Piwik } from 'angulartics2';
 
 const routes: Routes = [];
 
@@ -111,6 +112,7 @@ const routes: Routes = [];
         MdGridListModule.forRoot(),
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
+        Angulartics2Module.forRoot([ Angulartics2Piwik ]),
     ],
     providers: [
         DataLoaderService,

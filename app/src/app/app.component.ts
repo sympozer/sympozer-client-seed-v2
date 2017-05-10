@@ -7,6 +7,7 @@ import {LocalDAOService} from  './localdao.service';
 import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
 import {routerTransition} from './app.router.animation';
 import {LocalStorageService} from 'ng2-webstorage';
+import { Angulartics2Piwik } from 'angulartics2';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit {
     constructor(private DaoService: LocalDAOService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private localStoragexx: LocalStorageService) {
+                private localStoragexx: LocalStorageService,
+                angulartics2Piwik: Angulartics2Piwik) {
     }
 
 
