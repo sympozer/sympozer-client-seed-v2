@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
      * @param email
      * @param password
      */
-    login = (email, password) => {
+    login(email, password) {
         this.apiExternalServer.login(email, password).then(() => {
             this.voteService.votedTracks()
                 .then(()=>{

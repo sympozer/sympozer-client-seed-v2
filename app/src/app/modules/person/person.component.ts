@@ -25,6 +25,7 @@ export class PersonComponent implements OnInit {
     public facebookUrl: any;
     public googlePlusUrl: any;
     public linkedInUrl: any;
+    public homepage: any;
     public person;
     public roles = [];
     public orgas = [];
@@ -104,6 +105,8 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
+                                    console.log('request poerson');
+                                    console.log(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id);
                                     that.managerRequest.get_safe(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id)
                                         .then((request) => {
                                             if (request && request._body) {
@@ -117,8 +120,12 @@ export class PersonComponent implements OnInit {
                                                     that.facebookUrl = user.facebookpage;
                                                     that.googlePlusUrl = user.googleaccount;
                                                     that.linkedInUrl = user.linkedinaccount;
+                                                    that.homepage = user.homepage;
                                                 }
                                             }
+                                        })
+                                        .catch((request) => {
+                                        console.log(request);
                                         });
                                 }
                             }

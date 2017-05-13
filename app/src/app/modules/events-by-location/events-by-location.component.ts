@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
-import { LocalDAOService } from  '../../localdao.service';
+import {LocalDAOService} from  '../../localdao.service';
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 
@@ -14,26 +14,74 @@ import * as moment from 'moment';
     host: {'[@routerTransition]': ''}
 })
 export class EventsByLocationComponent implements OnInit {
-    public eventsLocation;
-    constructor(private router:Router,
-                private DaoService : LocalDAOService,
-                private route: ActivatedRoute,  private encoder: Encoder) {
+    private eventsLocation = [];
+    private nameLocation : String;
+
+    constructor(private router: Router,
+                private DaoService: LocalDAOService,
+                private route: ActivatedRoute, private encoder: Encoder) {
     }
 
     ngOnInit() {
         //this.events = this.DaoService.query("getAllEvents", null);
         //console.log(this.events);
+        const that = this;
         this.route.params.forEach((params: Params) => {
-            let id = params['id'];
             let name = params['name'];
-            let query = { 'key' : this.encoder.decodeForURI(id) };
-            // this.eventsLocation = this.DaoService.query("getLocationLink", query);
-            // for(let i in this.eventsLocation.events){
-            //     this.eventsLocation.events[i].startsAt = moment(this.eventsLocation.events[i].startsAt).format('LLLL');
-            //     this.eventsLocation.events[i].endsAt = moment(this.eventsLocation.events[i].endsAt).format('LLLL');
-            //     this.eventsLocation.events[i].duration = moment.duration(this.eventsLocation.events[i].duration).humanize();
-            // }
-            console.log(this.eventsLocation);
+            let query = {'key': this.encoder.decode(name)};
+            that.nameLocation = name;
+
+            that.DaoService.query("getEventByLocation", query, (results) => {
+                if (results) {
+                    const nodeId = results['?id'];
+                    const nodeLabel = results['?label'];
+                    const nodeStartDate = results['?startDate'];
+                    const nodeEndDate = results['?endDate'];
+
+                    if (nodeId && nodeLabel && nodeStartDate && nodeEndDate) {
+                        let id = nodeId.value;
+                        const label = nodeLabel.value;
+                        const startDate = nodeStartDate.value;
+                        const endDate = nodeEndDate.value;
+
+                        if (id && label && startDate && endDate) {
+                            id = that.encoder.encode(id);
+
+                            if (id) {
+
+                                const momentStartDate = moment(startDate);
+                                const momentEndDate = moment(endDate);
+
+                                if (momentEndDate && momentStartDate) {
+                                    const duration = moment.duration(momentEndDate.diff(momentStartDate));
+
+                                    var hours = parseInt(duration.asHours().toString());
+                                    var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
+
+                                    let strDuration = "";
+                                    if (hours > 0) {
+                                        strDuration = hours + " hours ";
+                                    }
+                                    if (minutes > 0) {
+                                        strDuration += "and " + minutes + " minutes";
+                                    }
+
+                                    that.eventsLocation = that.eventsLocation.concat({
+                                        id: id,
+                                        label: label,
+                                        startDate: momentStartDate.format('LLLL'),
+                                        duration: strDuration,
+                                    });
+
+                                    that.eventsLocation.sort((a, b) => {
+                                        return a.label > b.label ? 1 : -1;
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            });
         });
     }
 

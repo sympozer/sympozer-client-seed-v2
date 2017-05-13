@@ -36,15 +36,29 @@ export class RolesComponent implements OnInit {
                     return false;
                 }
 
-                const id = nodeId.value;
+                let id = nodeId.value;
                 const label = nodeLabel.value;
 
                 if (!id || !label) {
                     return false;
                 }
 
+                id = that.encoder.encode(id);
+                if(!id){
+                    return false;
+                }
+
+                //On regarde si on a pas déjà le rôle
+                const find = that.roles.find((r) => {
+                    return r.id === id;
+                });
+
+                if(find){
+                    return false;
+                }
+
                 that.roles = that.roles.concat({
-                    id: that.encoder.encode(id),
+                    id: id,
                     label: label,
                 });
 
