@@ -163,11 +163,12 @@ export class PublicationComponent implements OnInit {
                        let id = nodeId.value;
 
                        if(label && id){
+                           that.trackId = id
                            id = that.encoder.encode(id);
 
                            if(id){
                                that.eventType = id
-                               that.trackId = id
+                               
                                console.log(label, id);
                                that.track = {
                                    id: id,

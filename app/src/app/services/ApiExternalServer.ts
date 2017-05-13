@@ -30,6 +30,7 @@ export class ApiExternalServer {
             const that = this;
             that.managerRequest.get_safe(Config.externalServer.url + '/api/login?email=' + email + '&password=' + password)
                 .then((request) => {
+                    console.log(request)
                     const user = JSON.parse(request._body);
                     if (!user || !user.token) {
                         return reject('Erreur lors de la récupération de vos informations');

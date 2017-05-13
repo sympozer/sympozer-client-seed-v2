@@ -35,16 +35,18 @@ export class LoginComponent implements OnInit {
      */
     login(email, password) {
         this.apiExternalServer.login(email, password).then(() => {
-            this.voteService.votedTracks()
+            this.voteService.votedPublications()
                 .then(()=>{
-                    console.log("User voted tracks retrieved")
+                    this.snackBar.open("Login successful", "", {
+                        duration: 2000,
+                    });
+                    window.history.back()
+                    console.log("User voted publications retrieved")
                 })
                 .catch((err)=>{
                     console.log(err)
                 })
-            this.snackBar.open("Login successful", "", {
-                duration: 2000,
-            });
+            
         }).catch((err) => {
             this.snackBar.open(err, "", {
                 duration: 2000,

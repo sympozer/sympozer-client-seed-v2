@@ -26,9 +26,7 @@ export class VoteService {
    */
   isTrackVotable = (trackName) => {
     for(var i = 0; i < Config.vote.tracks.length; i++) {
-      let uri = this.encoder.encode(Config.vote.tracks[i])
-      console.log(uri)
-      console.log(trackName)
+      let uri = Config.vote.tracks[i]
       if(uri === trackName)
         return true;
     }
@@ -59,7 +57,7 @@ export class VoteService {
       }
       let bodyRequest = {
         id_track: id_track,
-        id_publi: id_publi,
+        id_ressource: id_publi,
         token: token
       }
 
@@ -68,9 +66,30 @@ export class VoteService {
       that.managerRequest.post_safe(Config.externalServer.url + '/api/vote', bodyRequest)
           .then((request) => {
             if (request && request._body) {
-              let votedTracks = that.localStoragexx.retrieve(that.key_localstorage_vote)
-              votedTracks.push(id_publi)
-              that.localStoragexx.store(that.key_localstorage_vote, votedTracks);
+              console.log(request)
+              let votedTracks = JSON.parse(that.localStoragexx.retrieve(that.key_localstorage_vote))
+              if(request._body!=="OK"){
+                let responseBody = JSON.parse(request._body)
+                if(responseBody && responseBody.error){
+                  console.log("entered in error response body error")
+                  console.log(request.status)
+                  if(request.status === 403){
+                    console.log(votedTracks[0])
+                    if(!this.isPublicationVoted(id_publi)){
+                      votedTracks.push(id_publi)
+                    }
+                    that.localStoragexx.store(that.key_localstorage_vote, JSON.stringify(votedTracks));
+                    reject(request.status)
+                  }
+                  reject(responseBody.error) 
+                }
+              }
+
+              console.log(votedTracks)
+              if(!votedTracks.find(id_publi))
+                votedTracks.push(id_publi)
+              console.log(votedTracks)
+              that.localStoragexx.store(that.key_localstorage_vote, JSON.stringify(votedTracks));
               return resolve(true);
             }
 
@@ -84,7 +103,7 @@ export class VoteService {
     });
   };
 
-  votedTracks(){
+  votedPublications(){
     return new Promise((resolve, reject) => {
       const that = this;
       const token = that.localStoragexx.retrieve(that.key_localstorage_token);
@@ -105,6 +124,16 @@ export class VoteService {
           });
 
     });
+  }
+
+  isPublicationVoted(idPublication){
+    let votedPublications = JSON.parse(this.localStoragexx.retrieve(this.key_localstorage_vote))
+    for(var i = 0; i < votedPublications.length; i++){
+      if(votedPublications[i] === idPublication){
+        return true
+      }
+    }
+    return false
   }
 
 

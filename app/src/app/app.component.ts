@@ -7,8 +7,9 @@ import {LocalDAOService} from  './localdao.service';
 import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
 import {routerTransition} from './app.router.animation';
 import {LocalStorageService} from 'ng2-webstorage';
-import { Subscription } from 'rxjs/Subscription';
+import {Subscription} from 'rxjs/Subscription';
 import {ToolsService} from './services/tools.service';
+import {VoteService} from './services/vote.service'
 const screenfull = require('screenfull');
 
 
@@ -27,7 +28,8 @@ export class AppComponent implements OnInit {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
-                private toolService: ToolsService) {
+                private toolService: ToolsService,
+                private voteService: VoteService) {
 
         this.subscription = this.toolService.getFullScreenStatus().subscribe(status => { 
             this.fullscreen = status; 
@@ -87,6 +89,11 @@ export class AppComponent implements OnInit {
         if(window.history.length > 1)
             this.backHistory = true
         this.fullscreen = screenfull.isFullscreen;
+
+        setInterval(() => {
+            if(this.localStoragexx.retrieve("token_external_ressource_sympozer"))
+              this.voteService.votedPublications()
+        }, 300000)
     }
 
     goBack(){

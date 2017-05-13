@@ -54,7 +54,7 @@ export class EventComponent implements OnInit {
                     const nodeIsSubEventOf = results['?isSubEventOf'];
                     const nodeType = results['?type'];
                     const nodeLocation = results['?location'];
-
+                    console.log(nodeLocation)
                     if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate && nodeType) {
                         const label = nodeLabel.value;
                         const description = nodeDescription.value;
@@ -218,7 +218,7 @@ export class EventComponent implements OnInit {
           end: that.event.endsAt,
           title: that.event.label,
           description: that.event.description,
-          location: 'Floor 4, Room 2A', //
+          location: that.event.location, //
           url: that.event.publications.id,
           status: 'confirmed',
           geo: { lat: 45.515113, lon: 13.571873, },

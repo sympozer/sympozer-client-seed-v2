@@ -3,6 +3,7 @@ import {VoteService} from '../../services/vote.service'
 import {Config} from "../../app-config";
 import {LocalStorageService} from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
+import {MdSnackBar} from "@angular/material";
 
 @Component({
   selector: 'vote',
@@ -19,11 +20,12 @@ export class VoteComponent implements OnInit {
   @Input('idPublication') idPublication: Object;
   @Input('typeEvent') typeEvent: String;
   public votable = false;
-  private hasVoted = false;
+  public hasVoted = false;
   private key_localstorage_token = "token_external_ressource_sympozer";
   private key_localstorage_vote = "hasVoted"
   constructor(private voteService: VoteService,
-              private localStoragexx: LocalStorageService) {
+              private localStoragexx: LocalStorageService,
+              private snackBar: MdSnackBar) {
 
       
   }
@@ -34,34 +36,37 @@ export class VoteComponent implements OnInit {
   ngOnInit() {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
     let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
-    //console.log(votedPublications)
-    console.log(this.idPublication)
-    // for(var i = 0; i < votedPublications.length; i++){
-    //   if(votedPublications[i] === this.idPublication)
-    //     this.hasVoted = true
-    // }
+    votedPublications = JSON.parse(votedPublications)
+    this.hasVoted = this.voteService.isPublicationVoted(this.idPublication)
     setTimeout(() => {
-      this.votable = this.voteService.isTrackVotable(this.typeEvent)
-      //console.log(this.votable)
-      //console.log(this.typeEvent)
-      console.log(this.idPublication)
+      this.votable = this.voteService.isTrackVotable(this.idTrack)
     }, 1000)
 
-    
   }
 
   /**
    * Invoke voting service
    */
   vote = () => {
+    this.idTrack = "2"
+    const that = this
     this.voteService.vote(this.idTrack, this.idPublication)
         .then(()=>{
-          this.hasVoted = true
+          this.snackBar.open("Vote successful", "", {
+              duration: 2000,
+          });
+          that.hasVoted = true
         })
         .catch((err) =>{
           console.log(err)
+          if(err === 403){
+            that.hasVoted = true
+            this.snackBar.open("You have already voted", "", {
+              duration: 2000,
+            });
+          }
+          
         })
-
     }
   
 
