@@ -683,8 +683,21 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
-                case "getLocationLink":
-                    return this.locationLinkMap[data.key];
+                case "getEventByLocation":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?id ?startDate ?endDate \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:OrganisedEvent . \n" +
+                        " ?id schema:label ?label . \n" +
+                        " ?id scholary:location \"" + data.key + "\" . \n" +
+                        " ?id scholary:startDate ?startDate . \n" +
+                        " ?id scholary:endDate ?endDate . \n" +
+                        "}";
+
+                    console.log(query);
+                    that.launchQuerySparql(query, callback);
+                    break;
                 default:
                     return null;
             }
