@@ -55,7 +55,7 @@ const appRoutes: Routes = [
         component: PersonByRoleComponent
     },
     {
-        path: 'events-by-location/:name/:id',
+        path: 'events-by-location/:name',
         component: EventsByLocationComponent
     },
     {

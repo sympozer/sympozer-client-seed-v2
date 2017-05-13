@@ -673,7 +673,16 @@ export class LocalDAOService {
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getAllLocations":
-                    return this.locationLinkMap;
+                    query =
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?location \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:OrganisedEvent . \n" +
+                        " ?id scholary:location ?location . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getLocationLink":
                     return this.locationLinkMap[data.key];
                 default:
