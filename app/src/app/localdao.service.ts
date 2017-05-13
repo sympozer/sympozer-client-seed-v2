@@ -74,7 +74,7 @@ export class LocalDAOService {
         }
 
         this.conferenceURL = this.useJsonld
-            ? 'https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/pierre_dev/app/src/dataset.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
+            ? 'https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/master/app/src/dataset.ttl'//'http://serenitecoex.com/dataset-conf.jsonld'
             : 'http://dev.sympozer.com/conference/www2012/file-handle/writer/json';
 
         this.$rdf = $rdf;
@@ -86,12 +86,14 @@ export class LocalDAOService {
 
             //On récup le dataset jsonld en local storage
             //that.localStoragexx.clear(this.localstorage_jsonld);
-            let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
+            that.localStoragexx.clear(that.localstorage_jsonld);
+            return true;
+            /*let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
             if(!storage){
                 return false;
             }
 
-            return that.saveDataset(storage);
+            return that.saveDataset(storage);*/
         }
         catch(err){
             return false;
@@ -481,7 +483,7 @@ export class LocalDAOService {
                 case "getEventById":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type \n" +
+                        "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type ?location \n" +
                         "WHERE {\n" +
                         " <" + data.key + "> a ?type . \n" +
                         " <" + data.key + "> schema:label ?label . \n" +
@@ -489,6 +491,7 @@ export class LocalDAOService {
                         " <" + data.key + "> scholary:endDate ?endDate . \n" +
                         " <" + data.key + "> scholary:startDate ?startDate . \n" +
                         " <" + data.key + "> scholary:isSubEventOf ?isSubEventOf . \n" +
+                        " OPTIONAL { <" + data.key + "> scholary:location ?location . } \n" +
                         " OPTIONAL { <" + data.key + "> scholary:isEventRelatedTo ?isEventRelatedTo . } \n" +
                         " OPTIONAL { <" + data.key + "> scholary:hasSubEvent ?hasSubEvent . } \n" +
                         "}";

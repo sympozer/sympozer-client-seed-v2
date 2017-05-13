@@ -31,15 +31,14 @@
   </md-card>
 </div>
 
-<div *ngIf="(locations | json) != '{}'">
+<div *ngIf="event.location && event.location.length > 0">
   <h2>Location</h2>
-  <div class="action-links list-items" *ngFor="let location of locations | keys">
-    <md-card>
-      <md-icon md-list-avatar>place</md-icon>
-      <a [routerLink]="['/events-by-location/'+location.value.name+'/'+location.value.id]">{{location.value.name}}</a>
+  <div class="action-links list-items">
+    <md-card class="info-text">
+      <md-icon md-list-avatar>access_time</md-icon>
+      <p>{{event.location}}</p>
     </md-card>
   </div>
-
 </div>
 
 <div *ngIf="event && event.publications && event.publications.length > 0">

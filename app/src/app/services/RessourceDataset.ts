@@ -65,6 +65,14 @@ export class RessourceDataset {
     }
 
     isIncludeIntoLabel(type, label){
+        if(!type || type.length === 0){
+            return false;
+        }
+
+        if(!label || label.length === 0){
+            return false;
+        }
+
         type = type.toLowerCase();
         label = label.toLowerCase();
         return label.includes(type);
