@@ -44,30 +44,5 @@ export class ApiExternalServer {
         });
     };
 
-    vote = (id_ressource) => {
-        return new Promise((resolve, reject) => {
-            if (!id_ressource || id_ressource.length === 0) {
-                return reject('Erreur lors de la récupération de l\'identifiant de la ressource');
-            }
-
-            const that = this;
-            const token = that.localStoragexx.retrieve(that.key_localstorage_token);
-
-            if (!token || token.length === 0) {
-                return reject('Vous devez vous connectez avant de pouvoir voter');
-            }
-
-            that.managerRequest.get_safe(Config.externalServer.url + '/api/vote?token=' + token + '&id_ressource=' + id_ressource)
-                .then((request) => {
-                    if (request && request._body) {
-                        return resolve(request._body);
-                    }
-
-                    return reject(null);
-                })
-                .catch((request) => {
-                    return reject(request);
-                });
-        });
-    };
+   
 }

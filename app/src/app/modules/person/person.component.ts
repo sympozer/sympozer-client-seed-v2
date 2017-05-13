@@ -9,6 +9,7 @@ import {routerTransition} from '../../app.router.animation';
 import {ManagerRequest} from "../../services/ManagerRequest";
 import {Config} from '../../app-config';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
+import {VoteService} from '../../services/vote.service'
 
 @Component({
     selector: 'app-person',
@@ -38,7 +39,8 @@ export class PersonComponent implements OnInit {
                 private encoder: Encoder,
                 private dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: ManagerRequest,
-                private apiExternalServer: ApiExternalServer) {
+                private apiExternalServer: ApiExternalServer,
+                private voteService: VoteService) {
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
         this.mutex_box = new Mutex();
@@ -48,7 +50,7 @@ export class PersonComponent implements OnInit {
         this.apiExternalServer.login("iiii@gmail.com", "i")
             .then((token) => {
                 if (token) {
-                    this.apiExternalServer.vote("1")
+                    this.voteService.vote("1", "1")
                         .then((body) => {
                             console.log(body);
                         });

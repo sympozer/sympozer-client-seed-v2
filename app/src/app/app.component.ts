@@ -90,14 +90,7 @@ export class AppComponent implements OnInit {
     }
 
     goBack(){
-        console.log("back touch")
-        console.log(document.referrer)
-        console.log(/localhost/.test(document.referrer))
-        var patt = new RegExp("localhost");
-        let test = patt.test(document.referrer)
-        console.log(test)
-        if(test)
-            window.history.back()
+        window.history.back()
     }
 
     @HostListener("document:webkitfullscreenchange") updateFullScreen() {

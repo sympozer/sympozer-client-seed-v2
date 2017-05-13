@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Injectable} from "@angular/core";
 import {Config} from '../app-config'
 import {ManagerRequest} from "./ManagerRequest";
@@ -41,11 +41,15 @@ export class VoteService {
    * @param id_ressource
    * @returns {Promise<T>}
    */
-  vote = (id_ressource) => {
+  vote = (id_track, id_publi) => {
     return new Promise((resolve, reject) => {
       console.log("vote called")
-      if (!id_ressource || id_ressource.length === 0) {
+      if (!id_publi || id_publi.length === 0) {
         return reject('Erreur lors de la récupération de l\'identifiant de la ressource');
+      }
+
+      if (!id_track || id_track.length === 0) {
+        return reject('Erreur lors de la récupération de l\'identifiant de la track');
       }
 
       const that = this;
@@ -54,15 +58,18 @@ export class VoteService {
         return reject('Vous devez vous connectez avant de pouvoir voter');
       }
       let bodyRequest = {
-        id_track: id_ressource,
+        id_track: id_track,
+        id_publi: id_publi,
         token: token
       }
 
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
       that.managerRequest.post_safe(Config.externalServer.url + '/api/vote', bodyRequest)
           .then((request) => {
             if (request && request._body) {
               let votedTracks = that.localStoragexx.retrieve(that.key_localstorage_vote)
-              votedTracks.push(id_ressource)
+              votedTracks.push(id_publi)
               that.localStoragexx.store(that.key_localstorage_vote, votedTracks);
               return resolve(true);
             }
@@ -84,7 +91,7 @@ export class VoteService {
       if (!token || token.length === 0) {
         return reject('Vous devez vous connectez avant de pouvoir voter');
       }
-      that.managerRequest.get_safe(Config.externalServer.url + ' /api/user/vote/information&token=' + token )
+      that.managerRequest.get_safe(Config.externalServer.url + '/api/user/vote/information?token=' + token )
           .then((request) => {
             if (request && request._body) {
               that.localStoragexx.store(that.key_localstorage_vote, request._body);

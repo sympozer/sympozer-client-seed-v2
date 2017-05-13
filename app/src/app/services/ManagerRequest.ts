@@ -2,7 +2,7 @@
  * Created by pierremarsot on 23/01/2017.
  */
 
-import {Http} from '@angular/http';
+import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {Injectable} from "@angular/core";
 
 @Injectable()
@@ -34,8 +34,8 @@ export class ManagerRequest {
             });
     }
 
-    post_safe(url, body) {
-        return this.http.post(url, body)
+    post_safe(url, body, options?) {
+        return this.http.post(url, body, options)
             .toPromise()
             .then((response) => {
                 return response

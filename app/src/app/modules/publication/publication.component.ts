@@ -7,7 +7,7 @@ import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
-
+import { Subscription } from 'rxjs/Subscription';
 @Component({
     selector: 'app-publication',
     templateUrl: 'publication.component.html',
@@ -16,36 +16,41 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class PublicationComponent implements OnInit {
+    subscription: Subscription;
     public publication;
     public authors;
     public events = [];
     public track = {};
     public keywords = [];
+    public publicationId;
     public trackId;
     public eventType;
 
-    constructor(private router: Router, private route: ActivatedRoute,
-                private DaoService: LocalDAOService, private encoder: Encoder) {
+    constructor(private router: Router, 
+                private route: ActivatedRoute,
+                private DaoService: LocalDAOService, 
+                private encoder: Encoder) {
         this.authors = [];
         this.publication = {
             label: undefined,
             abstract: undefined
         };
+
     }
 
     ngOnInit() {
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
-            this.trackId = id;
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
-
+            this.publicationId = query.key;    
             /**
              * Retrieve the publication
              */
             this.DaoService.query("getPublication", query, (results) => {
                 if (results) {
+                    console.log(results)
                     const nodeLabel = results['?label'];
                     const nodeAbstract = results['?abstract'];
 
@@ -162,6 +167,7 @@ export class PublicationComponent implements OnInit {
 
                            if(id){
                                that.eventType = id
+                               that.trackId = id
                                console.log(label, id);
                                that.track = {
                                    id: id,
