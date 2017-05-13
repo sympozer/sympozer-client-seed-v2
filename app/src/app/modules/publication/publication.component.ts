@@ -16,11 +16,13 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class PublicationComponent implements OnInit {
-    private publication;
-    private authors;
-    private events = [];
-    private track = {};
-    private keywords = [];
+    public publication;
+    public authors;
+    public events = [];
+    public track = {};
+    public keywords = [];
+    public trackId;
+    public eventType;
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private DaoService: LocalDAOService, private encoder: Encoder) {
@@ -32,10 +34,10 @@ export class PublicationComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log("Init publication Component");
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
+            this.trackId = id;
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPublication", query, (results) => {
@@ -54,11 +56,8 @@ export class PublicationComponent implements OnInit {
                         return false;
                     }
 
-                    that.publication = {
-                        label: label,
-                        abstract: abstract,
-                    };
-
+                    that.publication.label = label;
+                    that.publication.abstract = abstract;
                     if (document.getElementById("page-title-p"))
                         document.getElementById("page-title-p").innerHTML = label;
                 }
@@ -104,7 +103,7 @@ export class PublicationComponent implements OnInit {
                         const label = nodeLabel.value;
                         let type = nodeType.value;
 
-                        if(id && label && type){
+                        if(id && label){
                             id = that.encoder.encode(id);
                             if(id){
                                 /*//On récup le type dans l'URI
@@ -149,6 +148,7 @@ export class PublicationComponent implements OnInit {
                            id = that.encoder.encode(id);
 
                            if(id){
+                               that.eventType = id
                                console.log(label, id);
                                that.track = {
                                    id: id,

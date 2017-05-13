@@ -2,7 +2,8 @@ import {Routes, RouterModule} from "@angular/router";
 import {AppComponent} from "./app.component";
 import {PersonComponent} from "./modules/person/person.component";
 import {BrowserModule} from "@angular/platform-browser";
-import {FormsModule} from "@angular/forms";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {routing} from "./app.routing";
 import {MaterialModule, MdGridListModule} from "@angular/material";
@@ -36,10 +37,9 @@ import {AutocompleteComponent} from './modules/autocomplete/autocomplete.compone
 import {ToolsComponent} from './modules/tools/tools.component';
 import {EventsByDate} from "./modules/events-by-date/events-by-date";
 import {Share} from './modules/share-button/share-button.component';
+import {LoginComponent} from './modules/login/login.component';
 import {ScrollLoader} from './modules/scroll-loader/scroll-loader.component';
 import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
-
-
 import {KeysPipe} from "./keys.pipe";
 import {DataLoaderService} from "./data-loader.service";
 import {DBLPDataLoaderService} from "./dblpdata-loader.service";
@@ -54,6 +54,9 @@ import {ApiExternalServer} from './services/ApiExternalServer';
 import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
+import {VoteComponent} from './modules/vote/vote.component';
+import {VoteService} from './services/vote.service';
+import {routerTransition} from './app.router.animation'
 
 const routes: Routes = [];
 
@@ -87,16 +90,20 @@ const routes: Routes = [];
         ExternPublicationComponent,
         AutocompleteComponent,
         ToolsComponent,
+        LoginComponent,
         KeysPipe,
         ToolsComponent,
         EventsByDate,
         Share,
         ScrollLoader,
+        VoteComponent,
         PublicationsByKeywords
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpModule,
         routing,
         RouterModule.forRoot(routes, {useHash: true}),
@@ -116,7 +123,9 @@ const routes: Routes = [];
         ManagerRequest,
         PersonService,
         RessourceDataset,
-        ApiExternalServer
+        ApiExternalServer,
+        VoteService
+
     ],
     bootstrap: [AppComponent]
 })

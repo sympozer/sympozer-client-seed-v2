@@ -14,7 +14,7 @@ import {RessourceDataset} from '../../services/RessourceDataset';
 })
 export class EventsComponent implements OnInit {
     events;
-title: string = "Events";
+    title: string = "Events";
     tabEvents: Array<Object> = new Array();    constructor(private router:Router,
                 private DaoService : LocalDAOService,
                 private encoder: Encoder,

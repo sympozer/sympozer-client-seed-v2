@@ -48,7 +48,7 @@ p {
 }
 
 menu {
-  @media screen and (min-width: 1101px) {
+  @media screen and (min-width: 1181px) {
     width: 100%;
   }
   padding: 0;
@@ -86,7 +86,7 @@ menu {
         }
       }
 
-      @media screen and (max-width: 1100px) {
+      @media screen and (max-width: 1180px) {
         display: block;
       }
     }
@@ -99,7 +99,7 @@ menu {
     margin: 20px 0;
     position: relative;
 
-    a, input, p {
+    a, input, p, .wrapper {
       position: relative;
       text-decoration: none;
       font-weight: normal;
@@ -137,7 +137,7 @@ menu {
 
   &.list-items {
     md-card {
-      a, p {
+      a, p, .wrapper {
         padding-left: 40px !important;
       }
 
@@ -145,6 +145,32 @@ menu {
         color: $font-color-dark;
         left: 10px;
       }
+    }
+  }
+
+  &.multiple-lines {
+    a, .wrapper {
+      padding: 24px;
+
+      span {
+        display: inline;
+      }
+    }
+
+    .other-links {
+      span {
+        display: block;
+      }
+    }
+
+    md-icon {
+      margin-right: 5px;
+      margin-left: -20px;
+      position: static;
+      right: 0;
+      top: 0;
+      transform: translate(0, 25%);
+      z-index: 1;
     }
   }
 
@@ -310,7 +336,7 @@ button.mat-menu-item {
 }
 
 #description-title {
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: 1180px) {
     display: none;
   }
 }

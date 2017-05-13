@@ -27,6 +27,8 @@ import {ExternPublicationComponent} from "./modules/extern-publication/externpub
 import {ToolsComponent} from './modules/tools/tools.component';
 import {EventsByDate} from './modules/events-by-date/events-by-date';
 import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
+import {LoginComponent} from './modules/login/login.component';
+
 
 const appRoutes: Routes = [
     {
@@ -129,6 +131,10 @@ const appRoutes: Routes = [
     {
         path: 'event-by-date/:date',
         component: EventsByDate
+    },
+    {
+        path: 'login',
+        component: LoginComponent
     },
     {
         path: 'externPublication/:name/:id',

@@ -18,8 +18,12 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
     host: {'[@routerTransition]': ''}
 })
 export class PersonComponent implements OnInit {
-    private externPublications = [];
-    private photoUrl: any;
+    public externPublications = [];
+    public photoUrl: any;
+    public twitterUrl: any;
+    public facebookUrl: any;
+    public googlePlusUrl: any;
+    public linkedInUrl: any;
     public person;
     public roles = [];
     public orgas = [];
@@ -32,7 +36,7 @@ export class PersonComponent implements OnInit {
                 private DaoService: LocalDAOService,
                 private personService: PersonService,
                 private encoder: Encoder,
-                private  dBPLDataLoaderService: DBLPDataLoaderService,
+                private dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: ManagerRequest,
                 private apiExternalServer: ApiExternalServer) {
         this.person = this.personService.defaultPerson();
@@ -107,6 +111,12 @@ export class PersonComponent implements OnInit {
                                                 console.log(user);
                                                 if (user && user.photoUrl) {
                                                     that.photoUrl = user.photoUrl;
+                                                }
+                                                if (user) {
+                                                    that.twitterUrl = user.twitterpage;
+                                                    that.facebookUrl = user.facebookpage;
+                                                    that.googlePlusUrl = user.googleaccount;
+                                                    that.linkedInUrl = user.linkedinaccount;
                                                 }
                                             }
                                         })

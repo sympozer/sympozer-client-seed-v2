@@ -3,8 +3,8 @@
 
   <app-autocomplete [seachFor]="'label'" [items]="organizations" [namespace]="'organization'"></app-autocomplete>
 
-  <div scrollLoader class="search-results" [listItems]="organizations" (updatePartialTable)="tabOrga = $event">
-    <div class="action-links list-items" *ngFor="let organization of tabOrga">
+  <div scrollLoader class="search-results" [listItems]="organizations" (updatePartialTable)="tabOrgas = $event">
+    <div class="action-links list-items" *ngFor="let organization of tabOrgas">
       <md-card>
         <md-icon md-list-avatar>account_balance</md-icon>
         <a [routerLink]="['/organization/'+organization.label+'/'+organization.id]">{{organization.label}}</a>

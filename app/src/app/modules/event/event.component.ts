@@ -16,14 +16,14 @@ import * as moment from 'moment';
     host: {'[@routerTransition]': ''}
 })
 export class EventComponent implements OnInit {
-    private event;
-    private partof;
-    private publications = {};
-    private locations = {};
-    private contents = {};
-    private startsAt;
-    private endsAt;
-    private duration;
+    public event;
+    public partof;
+    public publications = {};
+    public locations = {};
+    public contents = {};
+    public startsAt;
+    public endsAt;
+    public duration;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,

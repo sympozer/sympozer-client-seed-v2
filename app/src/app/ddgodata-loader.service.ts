@@ -12,8 +12,8 @@ export class DDGoDataLoaderService {
         let params:URLSearchParams = new URLSearchParams();
         params.set('q', authorName);
         params.set('format', 'json');
-        params.set('pretty', 1);
-        params.set('no_redirect', 1);
+        params.set('pretty', "1");
+        params.set('no_redirect', "1");
         params.set('output', 'json');
         return this.http.get(this.uri, {search: params})
             .toPromise()

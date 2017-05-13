@@ -12,9 +12,9 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class OrganizationsComponent implements OnInit {
-    organizations;
-    title: string = "Organizations";
-    tabOrgas: Array<Object> = new Array();
+    public organizations;
+    public title: string = "Organizations";
+    public tabOrgas: Array<Object> = new Array();
 
     constructor(private DaoService: LocalDAOService,
                 private encoder: Encoder) {

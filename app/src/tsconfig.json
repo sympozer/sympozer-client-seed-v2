@@ -18,5 +18,17 @@
     "typeRoots": [
       "../node_modules/@types"
     ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "./**/*"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useCache": true,
+    "forkChecker": true,
+    "cacheDirectory": "node_modules/.awesome-typescript-loader-cache"
   }
 }
