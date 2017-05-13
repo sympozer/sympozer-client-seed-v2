@@ -75,7 +75,7 @@ export class VoteService {
                   console.log(request.status)
                   if(request.status === 403){
                     console.log(votedTracks[0])
-                    if(!this.isPublicationVoted(id_publi)){
+                    if(!this.isTrackVoted(id_publi)){
                       votedTracks.push(id_publi)
                     }
                     that.localStoragexx.store(that.key_localstorage_vote, JSON.stringify(votedTracks));
@@ -86,8 +86,9 @@ export class VoteService {
               }
 
               console.log(votedTracks)
-              if(!votedTracks.find(id_publi))
-                votedTracks.push(id_publi)
+              if(!this.isTrackVoted(id_track)){
+                votedTracks.push(id_track)
+              }
               console.log(votedTracks)
               that.localStoragexx.store(that.key_localstorage_vote, JSON.stringify(votedTracks));
               return resolve(true);
@@ -126,10 +127,10 @@ export class VoteService {
     });
   }
 
-  isPublicationVoted(idPublication){
+  isTrackVoted(idTrack){
     let votedPublications = JSON.parse(this.localStoragexx.retrieve(this.key_localstorage_vote))
     for(var i = 0; i < votedPublications.length; i++){
-      if(votedPublications[i] === idPublication){
+      if(votedPublications[i] === idTrack){
         return true
       }
     }

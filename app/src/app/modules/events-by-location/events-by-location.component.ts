@@ -14,8 +14,8 @@ import * as moment from 'moment';
     host: {'[@routerTransition]': ''}
 })
 export class EventsByLocationComponent implements OnInit {
-    private eventsLocation = [];
-    private nameLocation : String;
+    public eventsLocation = [];
+    public nameLocation : String;
 
     constructor(private router: Router,
                 private DaoService: LocalDAOService,

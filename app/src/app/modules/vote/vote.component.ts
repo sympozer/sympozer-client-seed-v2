@@ -37,7 +37,7 @@ export class VoteComponent implements OnInit {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
     let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
     votedPublications = JSON.parse(votedPublications)
-    this.hasVoted = this.voteService.isPublicationVoted(this.idPublication)
+    this.hasVoted = this.voteService.isTrackVoted(this.idTrack)
     setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.idTrack)
     }, 1000)
@@ -48,7 +48,6 @@ export class VoteComponent implements OnInit {
    * Invoke voting service
    */
   vote = () => {
-    this.idTrack = "2"
     const that = this
     this.voteService.vote(this.idTrack, this.idPublication)
         .then(()=>{
