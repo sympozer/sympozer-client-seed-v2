@@ -24,6 +24,7 @@ export class PersonComponent implements OnInit {
     public facebookUrl: any;
     public googlePlusUrl: any;
     public linkedInUrl: any;
+    public homepage: any;
     public person;
     public roles = [];
     public orgas = [];
@@ -117,6 +118,7 @@ export class PersonComponent implements OnInit {
                                                     that.facebookUrl = user.facebookpage;
                                                     that.googlePlusUrl = user.googleaccount;
                                                     that.linkedInUrl = user.linkedinaccount;
+                                                    that.homepage = user.homepage;
                                                 }
                                             }
                                         })
