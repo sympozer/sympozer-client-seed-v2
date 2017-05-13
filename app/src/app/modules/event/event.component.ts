@@ -76,6 +76,8 @@ export class EventComponent implements OnInit {
                             //On récup le type dans l'URI
                             type = that.ressourceDataset.extractType(type, label);
 
+                            const typeIsIntoLabel = that.ressourceDataset.isIncludeIntoLabel(type, label);
+
                             that.event = {
                                 label: label,
                                 description: description,
@@ -86,7 +88,7 @@ export class EventComponent implements OnInit {
                                 eventsRelatedTo: [],
                                 subEventsOf: [],
                                 tracks: [],
-                                type: type,
+                                type: typeIsIntoLabel ? null : type,
                             };
 
                             that.DaoService.query("getPublicationsByEvent", query, (results) => {
@@ -112,6 +114,12 @@ export class EventComponent implements OnInit {
 
                                                 if (find) {
                                                     return false;
+                                                }
+
+                                                //Si l'event est de type Track et qu'on est ici (au moin une publi)
+                                                // alors on redirige sur la publi
+                                                if(type && type.length > 0 && type.toLowerCase() === "talk"){
+                                                    return that.router.navigate(['/publication/'+label+'/'+id]);
                                                 }
 
                                                 that.event.publications = that.event.publications.concat({

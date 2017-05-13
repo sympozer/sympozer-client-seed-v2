@@ -98,6 +98,8 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
+                                    console.log('request poerson');
+                                    console.log(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id);
                                     that.managerRequest.get_safe(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id)
                                         .then((request) => {
                                             if (request && request._body) {
@@ -107,6 +109,9 @@ export class PersonComponent implements OnInit {
                                                     that.photoUrl = user.photoUrl;
                                                 }
                                             }
+                                        })
+                                        .catch((request) => {
+                                        console.log(request);
                                         });
                                 }
                             }

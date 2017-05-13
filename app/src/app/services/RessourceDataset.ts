@@ -10,7 +10,7 @@ export class RessourceDataset {
         switch(typeof type){
             case "object":
                 for(const t of type){
-                    const r = this.parseStringType(t, label);
+                    const r = this.parseStringType(t);
                     if(r !== null){
                         return r;
                     }
@@ -18,17 +18,19 @@ export class RessourceDataset {
 
                 return null;
             case "string":
-                return this.parseStringType(type, label);
+                return this.parseStringType(type);
             default:
                 return null;
         }
     }
 
-    private parseStringType(type, label){
+    private parseStringType(type){
 
-        if(!type || type.length === 0 || !label){
+        if(!type || type.length === 0){
             return null;
         }
+
+        console.log(type);
 
         if(type.includes('#')){
             const tab = type.split('#');
@@ -42,12 +44,13 @@ export class RessourceDataset {
             if (!type || type.length === 0) {
                 return null;
             }
+            console.log(type);
         }
 
         //On regarde si le type n'est pas déjà présent dans le label
-        if(label.includes(type)){
+        /*if(label.includes(type)){
             return null;
-        }
+        }*/
 
         type = type.toLowerCase();
 
@@ -59,5 +62,11 @@ export class RessourceDataset {
         }
 
         return null;
+    }
+
+    isIncludeIntoLabel(type, label){
+        type = type.toLowerCase();
+        label = label.toLowerCase();
+        return label.includes(type);
     }
 }

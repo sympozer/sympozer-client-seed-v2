@@ -1,5 +1,5 @@
 <h1 id="description-title">
-  {{event.type}} : {{event.label}}
+  <span *ngIf="event.type && event.type.length > 0" >{{event.type}} : </span>{{event.label}}
 </h1>
 
 <h2>Description</h2>
