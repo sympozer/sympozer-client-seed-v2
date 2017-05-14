@@ -4,6 +4,9 @@ import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 import {RessourceDataset} from '../../services/RessourceDataset';
+import {Config} from "../../app-config";
+//import {ICS} from "ics";
+var ICS = require('ics');
 
 import * as moment from 'moment';
 
@@ -24,6 +27,7 @@ export class EventComponent implements OnInit {
     public startsAt;
     public endsAt;
     public duration;
+    public encodedID
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -39,6 +43,7 @@ export class EventComponent implements OnInit {
             let id = params['id'];
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
+            this.encodedID = this.encoder.decode(id)
             this.DaoService.query("getEventById", query, (results, err) => {
                 if (results) {
                     const nodeLabel = results['?label'];
@@ -48,13 +53,20 @@ export class EventComponent implements OnInit {
                     const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
                     const nodeIsSubEventOf = results['?isSubEventOf'];
                     const nodeType = results['?type'];
-
+                    const nodeLocation = results['?location'];
+                    console.log(nodeLocation)
                     if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate && nodeType) {
                         const label = nodeLabel.value;
                         const description = nodeDescription.value;
                         let endDate = nodeEndDate.value;
                         let startDate = nodeStartDate.value;
                         let type = nodeType.value;
+
+                        let location = null;
+                        if(nodeLocation)
+                        {
+                            location = nodeLocation.value;
+                        }
 
                         if (label && description && endDate && startDate && type) {
                             startDate = moment(startDate);
@@ -76,17 +88,20 @@ export class EventComponent implements OnInit {
                             //On récup le type dans l'URI
                             type = that.ressourceDataset.extractType(type, label);
 
+                            const typeIsIntoLabel = that.ressourceDataset.isIncludeIntoLabel(type, label);
+
                             that.event = {
                                 label: label,
                                 description: description,
                                 startsAt: startDate.format('LLLL'),
                                 endsAt: endDate.format('LLLL'),
                                 duration: strDuration,
+                                location: location,
                                 publications: [],
                                 eventsRelatedTo: [],
                                 subEventsOf: [],
                                 tracks: [],
-                                type: type,
+                                type: typeIsIntoLabel ? null : type,
                             };
 
                             that.DaoService.query("getPublicationsByEvent", query, (results) => {
@@ -112,6 +127,12 @@ export class EventComponent implements OnInit {
 
                                                 if (find) {
                                                     return false;
+                                                }
+
+                                                //Si l'event est de type Track et qu'on est ici (au moin une publi)
+                                                // alors on redirige sur la publi
+                                                if(type && type.length > 0 && type.toLowerCase() === "talk"){
+                                                    return that.router.navigate(['/publication/'+label+'/'+id]);
                                                 }
 
                                                 that.event.publications = that.event.publications.concat({
@@ -182,5 +203,34 @@ export class EventComponent implements OnInit {
              this.contents[i] = this.DaoService.query("getEvent", query);
              }*/
         });
+    }
+
+    /**
+     * Constructs a realistic ICS description of the event, that can be imported in a calendar
+     */
+    createICS = () =>{
+        var ics = new ICS();
+        const that = this
+
+        let calendar = ics.buildEvent({
+          uid: '', // (optional) 
+          start: that.event.startsAt,
+          end: that.event.endsAt,
+          title: that.event.label,
+          description: that.event.description,
+          location: that.event.location, //
+          url: that.event.publications.id,
+          status: 'confirmed',
+          geo: { lat: 45.515113, lon: 13.571873, },
+          attendees: [
+            //{ name: 'Adam Gibbons', email: 'adam@example.com' }
+          ],
+          categories: that.event.session,
+          alarms:[
+            { action: 'DISPLAY', trigger: '-PT24H', description: 'Reminder', repeat: true, duration: 'PT15M' },
+            { action: 'AUDIO', trigger: '-PT30M' }
+          ]
+        });
+        window.open( "data:text/calendar;charset=utf8," + encodeURIComponent(calendar));
     }
 }

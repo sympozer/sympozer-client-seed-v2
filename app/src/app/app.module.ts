@@ -57,6 +57,7 @@ import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
 import {VoteService} from './services/vote.service';
 import {routerTransition} from './app.router.animation'
+import {ToolsService} from './services/tools.service';
 
 const routes: Routes = [];
 
@@ -107,8 +108,8 @@ const routes: Routes = [];
         HttpModule,
         routing,
         RouterModule.forRoot(routes, {useHash: true}),
-        MaterialModule.forRoot(),
-        MdGridListModule.forRoot(),
+        MaterialModule,
+        MdGridListModule,
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
     ],
@@ -124,8 +125,8 @@ const routes: Routes = [];
         PersonService,
         RessourceDataset,
         ApiExternalServer,
-        VoteService
-
+        VoteService,
+        ToolsService
     ],
     bootstrap: [AppComponent]
 })

@@ -7,7 +7,7 @@ import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
-
+import { Subscription } from 'rxjs/Subscription';
 @Component({
     selector: 'app-publication',
     templateUrl: 'publication.component.html',
@@ -16,32 +16,41 @@ import {routerTransition} from '../../app.router.animation';
     host: {'[@routerTransition]': ''}
 })
 export class PublicationComponent implements OnInit {
+    subscription: Subscription;
     public publication;
     public authors;
     public events = [];
     public track = {};
     public keywords = [];
+    public publicationId;
     public trackId;
     public eventType;
 
-    constructor(private router: Router, private route: ActivatedRoute,
-                private DaoService: LocalDAOService, private encoder: Encoder) {
+    constructor(private router: Router, 
+                private route: ActivatedRoute,
+                private DaoService: LocalDAOService, 
+                private encoder: Encoder) {
         this.authors = [];
         this.publication = {
             label: undefined,
             abstract: undefined
         };
+
     }
 
     ngOnInit() {
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
-            this.trackId = id;
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
+            this.publicationId = query.key;    
+            /**
+             * Retrieve the publication
+             */
             this.DaoService.query("getPublication", query, (results) => {
                 if (results) {
+                    console.log(results)
                     const nodeLabel = results['?label'];
                     const nodeAbstract = results['?abstract'];
 
@@ -63,6 +72,9 @@ export class PublicationComponent implements OnInit {
                 }
             });
 
+            /**
+             * Retrieve the author by the publication
+             */
             this.DaoService.query("getAuthorLinkPublication", query, (results) => {
                 console.log('getAuthorLinkPublication : ', results);
                 if (results) {
@@ -92,6 +104,9 @@ export class PublicationComponent implements OnInit {
                 }
             });
 
+            /**
+             * Retrieve the event from the publication
+             */
             that.DaoService.query("getEventFromPublication", query, (results) => {
                 if(results){
                     const nodeId = results['?id'];
@@ -134,6 +149,9 @@ export class PublicationComponent implements OnInit {
                 }
             });
 
+            /**
+             * Retrive track from the publication
+             */
             that.DaoService.query("getPublicationTrack", query, (results) => {
                 console.log(results);
                if(results){
@@ -145,10 +163,12 @@ export class PublicationComponent implements OnInit {
                        let id = nodeId.value;
 
                        if(label && id){
+                           that.trackId = id
                            id = that.encoder.encode(id);
 
                            if(id){
                                that.eventType = id
+                               
                                console.log(label, id);
                                that.track = {
                                    id: id,
@@ -160,6 +180,9 @@ export class PublicationComponent implements OnInit {
                }
             });
 
+            /**
+             * Retrieve keywords from publication
+             */
             that.DaoService.query("getKeywordsFromPublication", query, (results) => {
                 if(results){
                     const nodeKeywords = results['?keywords'];

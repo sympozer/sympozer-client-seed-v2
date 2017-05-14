@@ -9,6 +9,7 @@ import {routerTransition} from '../../app.router.animation';
 import {ManagerRequest} from "../../services/ManagerRequest";
 import {Config} from '../../app-config';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
+import {VoteService} from '../../services/vote.service'
 
 @Component({
     selector: 'app-person',
@@ -24,6 +25,7 @@ export class PersonComponent implements OnInit {
     public facebookUrl: any;
     public googlePlusUrl: any;
     public linkedInUrl: any;
+    public homepage: any;
     public person;
     public roles = [];
     public orgas = [];
@@ -38,7 +40,8 @@ export class PersonComponent implements OnInit {
                 private encoder: Encoder,
                 private dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: ManagerRequest,
-                private apiExternalServer: ApiExternalServer) {
+                private apiExternalServer: ApiExternalServer,
+                private voteService: VoteService) {
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
         this.mutex_box = new Mutex();
@@ -48,7 +51,7 @@ export class PersonComponent implements OnInit {
         this.apiExternalServer.login("iiii@gmail.com", "i")
             .then((token) => {
                 if (token) {
-                    this.apiExternalServer.vote("1")
+                    this.voteService.vote("1", "1")
                         .then((body) => {
                             console.log(body);
                         });
@@ -102,6 +105,8 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
+                                    console.log('request poerson');
+                                    console.log(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id);
                                     that.managerRequest.get_safe(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id)
                                         .then((request) => {
                                             if (request && request._body) {
@@ -115,8 +120,12 @@ export class PersonComponent implements OnInit {
                                                     that.facebookUrl = user.facebookpage;
                                                     that.googlePlusUrl = user.googleaccount;
                                                     that.linkedInUrl = user.linkedinaccount;
+                                                    that.homepage = user.homepage;
                                                 }
                                             }
+                                        })
+                                        .catch((request) => {
+                                        console.log(request);
                                         });
                                 }
                             }

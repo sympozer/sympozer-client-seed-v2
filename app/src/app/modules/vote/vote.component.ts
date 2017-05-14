@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import {VoteService} from '../../services/vote.service'
 import {Config} from "../../app-config";
 import {LocalStorageService} from 'ng2-webstorage';
-
+import { Subscription } from 'rxjs/Subscription';
+import {MdSnackBar} from "@angular/material";
 
 @Component({
   selector: 'vote',
@@ -11,19 +12,23 @@ import {LocalStorageService} from 'ng2-webstorage';
 })
 export class VoteComponent implements OnInit {
   token;
-
+  subscription: Subscription;
   /***
    * Retrive the track Id and the event Type from the publication
    */
   @Input('idTrack') idTrack: Object;
-  @Input('typeEvent') typeEvent: String
-  public votable;
-  private hasVoted;
+  @Input('idPublication') idPublication: Object;
+  @Input('typeEvent') typeEvent: String;
+  public votable = false;
+  public hasVoted = false;
+  public justVoted = false;
   private key_localstorage_token = "token_external_ressource_sympozer";
   private key_localstorage_vote = "hasVoted"
   constructor(private voteService: VoteService,
-              private localStoragexx: LocalStorageService) {
+              private localStoragexx: LocalStorageService,
+              private snackBar: MdSnackBar) {
 
+      
   }
 
   /**
@@ -31,26 +36,39 @@ export class VoteComponent implements OnInit {
    */
   ngOnInit() {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
-    this.hasVoted = this.localStoragexx.retrieve(this.key_localstorage_vote);
+    let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
+    votedPublications = JSON.parse(votedPublications)
     setTimeout(() => {
-      this.votable = this.voteService.isTrackVotable(this.typeEvent)
-      console.log(this.votable)
-      console.log(this.typeEvent)
+      this.votable = this.voteService.isTrackVotable(this.idTrack)
+      this.hasVoted = this.voteService.isTrackVoted(this.idTrack)
     }, 1000)
 
-    console.log(this.idTrack)
   }
 
   /**
-   * Invoke voting service with a dialog to confirm
+   * Invoke voting service
    */
   vote = () => {
-    if(this.voteService.vote(this.idTrack)){
-        this.hasVoted = true
+    const that = this
+    this.voteService.vote(this.idTrack, this.idPublication)
+        .then(()=>{
+          this.snackBar.open("Vote successful", "", {
+              duration: 2000,
+          });
+          that.hasVoted = true
+          that.justVoted = true
+        })
+        .catch((err) =>{
+          console.log(err)
+          if(err === 403){
+            that.hasVoted = true
+            this.snackBar.open("You have already voted", "", {
+              duration: 2000,
+            });
+          }
+          
+        })
     }
-    else{
-       // inserer une alert
-    }
-  }
+  
 
 }

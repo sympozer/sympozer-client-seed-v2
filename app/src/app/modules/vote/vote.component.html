@@ -1,7 +1,10 @@
 <div *ngIf="votable">
   <div *ngIf="token !== null && token !== undefined">
-    <div *ngIf="hasVoted == true">
-      <p>You have voted!</p>
+    <div *ngIf="hasVoted == true && justVoted == false">
+      <p>You have already voted!</p>
+    </div>
+    <div *ngIf="hasVoted == true && justVoted == true">
+      <p>Your vote has been succesfully recorded.</p>
     </div>
     <div *ngIf="!hasVoted">
       <h2>Vote</h2>

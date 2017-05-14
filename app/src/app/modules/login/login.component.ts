@@ -3,6 +3,7 @@ import {Router}            from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {MdSnackBar} from "@angular/material";
+import {VoteService} from '../../services/vote.service'
 
 @Component({
     selector: 'login',
@@ -18,7 +19,8 @@ export class LoginComponent implements OnInit {
 
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
-                public snackBar: MdSnackBar,) {
+                public snackBar: MdSnackBar,
+                private voteService: VoteService) {
     }
 
     ngOnInit() {
@@ -33,13 +35,28 @@ export class LoginComponent implements OnInit {
      */
     login(email, password) {
         this.apiExternalServer.login(email, password).then(() => {
-            this.snackBar.open("Login successful", "", {
-                duration: 2000,
-            });
+            this.voteService.votedPublications()
+                .then(()=>{
+                    this.snackBar.open("Login successful", "", {
+                        duration: 2000,
+                    });
+                    window.history.back()
+                    this.sendLoginStatus(true)
+                    console.log("User voted publications retrieved")
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+            
         }).catch((err) => {
             this.snackBar.open(err, "", {
                 duration: 2000,
             });
         });
+    }
+
+    sendLoginStatus(status : boolean): void {
+        // send message to subscribers via observable subject
+        this.apiExternalServer.sendLoginStatus(status);
     }
 }
