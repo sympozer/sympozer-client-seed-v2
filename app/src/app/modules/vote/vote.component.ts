@@ -21,6 +21,7 @@ export class VoteComponent implements OnInit {
   @Input('typeEvent') typeEvent: String;
   public votable = false;
   public hasVoted = false;
+  public justVoted = false;
   private key_localstorage_token = "token_external_ressource_sympozer";
   private key_localstorage_vote = "hasVoted"
   constructor(private voteService: VoteService,
@@ -37,9 +38,9 @@ export class VoteComponent implements OnInit {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
     let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
     votedPublications = JSON.parse(votedPublications)
-    this.hasVoted = this.voteService.isTrackVoted(this.idTrack)
     setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.idTrack)
+      this.hasVoted = this.voteService.isTrackVoted(this.idTrack)
     }, 1000)
 
   }
@@ -55,6 +56,7 @@ export class VoteComponent implements OnInit {
               duration: 2000,
           });
           that.hasVoted = true
+          that.justVoted = true
         })
         .catch((err) =>{
           console.log(err)

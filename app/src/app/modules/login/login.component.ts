@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit {
                         duration: 2000,
                     });
                     window.history.back()
+                    this.sendLoginStatus(true)
                     console.log("User voted publications retrieved")
                 })
                 .catch((err)=>{
@@ -52,5 +53,10 @@ export class LoginComponent implements OnInit {
                 duration: 2000,
             });
         });
+    }
+
+    sendLoginStatus(status : boolean): void {
+        // send message to subscribers via observable subject
+        this.apiExternalServer.sendLoginStatus(status);
     }
 }
