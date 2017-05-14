@@ -58,7 +58,7 @@ export class ToolsComponent implements OnInit {
             this.socialShare = storage;
         }
 
-        storage = this.localStoragexx.retrieve("materialShadow");
+        storage = this.localStoragexx.retrieve("material");
 
         if (storage) {
             this.material = storage;
@@ -87,7 +87,7 @@ export class ToolsComponent implements OnInit {
 
         setTimeout(() => {
             this.localdao.loadDataset().then(() => {
-                this.snackBar.open("Dataset properly loaded =)", "", {
+                this.snackBar.open("Dataset properly loaded", "", {
                     duration: 2000,
                 });
             }).catch(() => {
@@ -106,7 +106,7 @@ export class ToolsComponent implements OnInit {
     resetDataset() {
         try {
             if (this.localdao.resetDataset()) {
-                this.snackBar.open("Dataset succesfully reset =)", "", {
+                this.snackBar.open("Dataset succesfully reset", "", {
                     duration: 2000,
                 });
             }
@@ -188,17 +188,16 @@ export class ToolsComponent implements OnInit {
 
     toggleMaterial() {
         this.material = !this.material;
-        this.localStoragexx.store("materialShadow", this.material);
+        this.localStoragexx.store("material", this.material);
+        let html = document.documentElement;
         if (this.material) {
-            if (document.getElementById("share"))
-                document.getElementById("share").style.display = "block";
+            if (html.classList.contains("no-material")) {
+                html.classList.remove('no-material');
+            }
         }
         else {
-            console.log("kool");
-            var elements = document.getElementsByClassName('info-text');
-            console.log(elements);
-            for (var i = 0, l = elements.length; i < l; i++) {
-                (<HTMLElement>elements[i]).style.boxShadow = "none";
+            if (!html.classList.contains("no-material")) {
+                html.classList.add('no-material');
             }
         }
     }
