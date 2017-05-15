@@ -37,22 +37,49 @@ export class AuthorsComponent implements OnInit {
                     return false;
                 }
 
-                let id = nodeIdPerson.value;
+                let idBase = nodeIdPerson.value;
                 const name = nodeName.value;
 
-                if (!id || !name) {
+                if (!idBase || !name) {
                     return false;
                 }
 
-                id = that.encoder.encode(id);
+                const id = that.encoder.encode(idBase);
                 if (!id) {
                     return false;
                 }
 
-                that.authors = that.authors.concat({
+                let person = {
                     id: id,
                     name: name,
+                    publications: [],
+                };
+
+                that.DaoService.query("getPublicationLink", {key: idBase}, (results) => {
+                    const nodeLabel = results['?label'];
+                    const nodeId = results['?id'];
+
+                    if(nodeLabel && nodeId)
+                    {
+                        const label = nodeLabel.value;
+                        let id = nodeId.value;
+
+                        if(label && id)
+                        {
+                            id = this.encoder.encode(id);
+                            if(!id){
+                                return false;
+                            }
+
+                            person.publications = person.publications.concat({
+                                label: label,
+                                id: id,
+                            });
+                        }
+                    }
                 });
+
+                that.authors = that.authors.concat(person);
 
                 that.authors.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;

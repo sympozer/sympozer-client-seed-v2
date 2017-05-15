@@ -148,8 +148,7 @@ export class PublicationComponent implements OnInit {
                            id = that.encoder.encode(id);
 
                            if(id){
-                               that.eventType = id
-                               console.log(label, id);
+                               that.eventType = id;
                                that.track = {
                                    id: id,
                                    label: label,
