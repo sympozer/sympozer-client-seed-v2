@@ -52,6 +52,8 @@ export class AppComponent implements OnInit {
             if (!html.classList.contains("no-material")) {
                 html.classList.add('no-material');
             }
+        } else {
+            this.localStoragexx.store("material", true);
         }
 
         storage = this.localStoragexx.retrieve("socialShare");
@@ -59,7 +61,7 @@ export class AppComponent implements OnInit {
             if (document.getElementById("share"))
                 document.getElementById("share").style.display = "none";
         } else {
-            this.localStoragexx.store("materialShadow", true);
+            this.localStoragexx.store("socialShare", true);
         }
 
 
