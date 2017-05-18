@@ -9,16 +9,6 @@
   </p>
 </md-card>
 
-<div *ngIf="track !== {}">
-  <h2>Track</h2>
-  <div class="action-links list-items">
-    <md-card>
-      <md-icon md-list-avatar>perm_identity</md-icon>
-      <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
-    </md-card>
-  </div>
-</div>
-
 <div *ngIf="keywords && keywords.length > 0">
   <h2>Keywords</h2>
   <div class="action-links list-items">
@@ -48,6 +38,16 @@
   </md-card>
 </div>
 
+<div *ngIf="track !== {}">
+  <h2>Track</h2>
+  <div class="action-links list-items">
+    <md-card>
+      <md-icon md-list-avatar>perm_identity</md-icon>
+      <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
+    </md-card>
+  </div>
+</div>
+
 <!-- Voting -->
-<vote [typeEvent]="eventType" [idTrack]="trackId"></vote>
+<vote [typeEvent]="eventType" [idTrack]="trackId" [idPublication]="publicationId"></vote>
 

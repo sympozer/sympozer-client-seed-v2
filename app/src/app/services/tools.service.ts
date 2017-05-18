@@ -10,7 +10,7 @@ export class ToolsService {
 
     /**
      * Send to all subscribers fullscreen status
-     * @param message
+     * @param status
      */
   	sendFullScreenStatus(status: boolean) {
         this.subjectFullscreen.next(status);

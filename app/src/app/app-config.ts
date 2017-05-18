@@ -75,10 +75,10 @@ export var Config = {
         }
     },
     externalServer: {
-        url: "http://sympozer.com/external"
+        url: "https://sympozer.com/external"
     },
     vote :{
-        url: 'http://sympozer.com/external/',
+        url: 'https://sympozer.com/external/',
         tracks: ['https://w3id.org/scholarlydata/track/eswc-2017-research', 'https://w3id.org/scholarlydata/track/eswc-2017-in-use']
     }
 };

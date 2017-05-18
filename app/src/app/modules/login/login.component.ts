@@ -4,6 +4,7 @@ import {routerTransition} from '../../app.router.animation';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {MdSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
+import {LocalDAOService} from "../../localdao.service";
 
 @Component({
     selector: 'login',
@@ -15,12 +16,13 @@ import {VoteService} from '../../services/vote.service'
 export class LoginComponent implements OnInit {
 
     title: string = "Login";
-
+    username: string = "User"
 
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
                 public snackBar: MdSnackBar,
-                private voteService: VoteService) {
+                private voteService: VoteService,
+                private DaoService: LocalDAOService) {
     }
 
     ngOnInit() {
@@ -33,22 +35,63 @@ export class LoginComponent implements OnInit {
      * @param email
      * @param password
      */
-    login = (email, password) => {
-        this.apiExternalServer.login(email, password).then(() => {
-            this.voteService.votedTracks()
-                .then(()=>{
-                    console.log("User voted tracks retrieved")
+    login(email, password) {
+        this.apiExternalServer.login(email, password)
+            .then(() => {
+                this.snackBar.open("Login successful.", "", {
+                    duration: 2000,
+                });
+                window.history.back()
+                this.voteService.votedPublications()
+                    .then(()=>{
+                        this.sendLoginStatus(true)
+                    })
+                    .catch((err)=>{
+                        this.snackBar.open("A network error occured. Please try again later.", "", {
+                            duration: 2000,
+                        });
+                    })
+
+
+                    let query = {'key': "260fe2621184e204687dd63e25eeb65c84eeecff"};
+                    const that = this
+                    console.log("about to test")
+                    this.DaoService.query("getPersonBySha", query, (results) => {
+                        console.log(results);
+                        if(results){
+                            const nodeLabel = results['?label'];
+                            const nodeId = results['?id'];
+
+                            if(nodeLabel && nodeId){
+                                const label = nodeLabel.value;
+                                let id = nodeId.value;
+
+                                if(label && id){
+                                    console.log(label)
+                                    that.sendAuthorizationStatus(true)
+                                }
+                            }
+                        }
+                        else{
+                            that.sendAuthorizationStatus(false)
+                        }
+
+                    });
                 })
-                .catch((err)=>{
-                    console.log(err)
-                })
-            this.snackBar.open("Login successful", "", {
-                duration: 2000,
+            .catch((err) => {
+                this.snackBar.open("A network occured during login. Please try again later.", "", {
+                    duration: 2000,
+                });
             });
-        }).catch((err) => {
-            this.snackBar.open(err, "", {
-                duration: 2000,
-            });
-        });
+    }
+
+    sendLoginStatus(status : boolean): void {
+        // send status to subscribers via observable subject
+        this.apiExternalServer.sendLoginStatus(status);
+    }
+
+    sendAuthorizationStatus(status : boolean): void {
+        // send status to subscribers via observable subject
+        this.apiExternalServer.sendAuthorizationVoteStatus(status);
     }
 }

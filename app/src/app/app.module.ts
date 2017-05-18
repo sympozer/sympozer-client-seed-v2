@@ -59,7 +59,6 @@ import {VoteService} from './services/vote.service';
 import {routerTransition} from './app.router.animation'
 import {ToolsService} from './services/tools.service';
 
-
 const routes: Routes = [];
 
 @NgModule({
@@ -109,8 +108,8 @@ const routes: Routes = [];
         HttpModule,
         routing,
         RouterModule.forRoot(routes, {useHash: true}),
-        MaterialModule.forRoot(),
-        MdGridListModule.forRoot(),
+        MaterialModule,
+        MdGridListModule,
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
     ],
@@ -128,7 +127,6 @@ const routes: Routes = [];
         ApiExternalServer,
         VoteService,
         ToolsService
-
     ],
     bootstrap: [AppComponent]
 })

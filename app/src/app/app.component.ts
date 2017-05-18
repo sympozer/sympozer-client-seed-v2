@@ -7,8 +7,10 @@ import {LocalDAOService} from  './localdao.service';
 import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
 import {routerTransition} from './app.router.animation';
 import {LocalStorageService} from 'ng2-webstorage';
-import { Subscription } from 'rxjs/Subscription';
+import {Subscription} from 'rxjs/Subscription';
 import {ToolsService} from './services/tools.service';
+import {VoteService} from './services/vote.service'
+import {MdSnackBar} from "@angular/material";
 const screenfull = require('screenfull');
 
 
@@ -27,7 +29,9 @@ export class AppComponent implements OnInit {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
-                private toolService: ToolsService) {
+                private toolService: ToolsService,
+                private voteService: VoteService,
+                public snackBar: MdSnackBar) {
 
         this.subscription = this.toolService.getFullScreenStatus().subscribe(status => { 
             this.fullscreen = status; 
@@ -70,7 +74,15 @@ export class AppComponent implements OnInit {
             }
         }
 
-        this.DaoService.loadDataset();
+        this.DaoService.loadDataset()
+            .then(()=>{
+
+            })
+            .catch((err)=>{
+                this.snackBar.open("A network error occured. Please try again later.", "", {
+                    duration: 2000,
+                });
+            });
         this.router.events
             .filter(event => event instanceof NavigationEnd)
             .map(() => this.activatedRoute)
@@ -87,17 +99,15 @@ export class AppComponent implements OnInit {
         if(window.history.length > 1)
             this.backHistory = true
         this.fullscreen = screenfull.isFullscreen;
+
+        setInterval(() => {
+            if(this.localStoragexx.retrieve("token_external_ressource_sympozer"))
+              this.voteService.votedPublications()
+        }, 300000)
     }
 
     goBack(){
-        console.log("back touch")
-        console.log(document.referrer)
-        console.log(/localhost/.test(document.referrer))
-        var patt = new RegExp("localhost");
-        let test = patt.test(document.referrer)
-        console.log(test)
-        if(test)
-            window.history.back()
+        window.history.back()
     }
 
     @HostListener("document:webkitfullscreenchange") updateFullScreen() {

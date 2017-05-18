@@ -53,13 +53,20 @@ export class EventComponent implements OnInit {
                     const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
                     const nodeIsSubEventOf = results['?isSubEventOf'];
                     const nodeType = results['?type'];
-
+                    const nodeLocation = results['?location'];
+                    console.log(nodeLocation)
                     if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate && nodeType) {
                         const label = nodeLabel.value;
                         const description = nodeDescription.value;
                         let endDate = nodeEndDate.value;
                         let startDate = nodeStartDate.value;
                         let type = nodeType.value;
+
+                        let location = null;
+                        if(nodeLocation)
+                        {
+                            location = nodeLocation.value;
+                        }
 
                         if (label && description && endDate && startDate && type) {
                             startDate = moment(startDate);
@@ -81,17 +88,20 @@ export class EventComponent implements OnInit {
                             //On récup le type dans l'URI
                             type = that.ressourceDataset.extractType(type, label);
 
+                            const typeIsIntoLabel = that.ressourceDataset.isIncludeIntoLabel(type, label);
+
                             that.event = {
                                 label: label,
                                 description: description,
                                 startsAt: startDate.format('LLLL'),
                                 endsAt: endDate.format('LLLL'),
                                 duration: strDuration,
+                                location: location,
                                 publications: [],
                                 eventsRelatedTo: [],
                                 subEventsOf: [],
                                 tracks: [],
-                                type: type,
+                                type: typeIsIntoLabel ? null : type,
                             };
 
                             that.DaoService.query("getPublicationsByEvent", query, (results) => {
@@ -117,6 +127,12 @@ export class EventComponent implements OnInit {
 
                                                 if (find) {
                                                     return false;
+                                                }
+
+                                                //Si l'event est de type Track et qu'on est ici (au moin une publi)
+                                                // alors on redirige sur la publi
+                                                if(type && type.length > 0 && type.toLowerCase() === "talk"){
+                                                    return that.router.navigate(['/publication/'+label+'/'+id]);
                                                 }
 
                                                 that.event.publications = that.event.publications.concat({
@@ -202,7 +218,7 @@ export class EventComponent implements OnInit {
           end: that.event.endsAt,
           title: that.event.label,
           description: that.event.description,
-          location: 'Floor 4, Room 2A', //
+          location: that.event.location, //
           url: that.event.publications.id,
           status: 'confirmed',
           geo: { lat: 45.515113, lon: 13.571873, },

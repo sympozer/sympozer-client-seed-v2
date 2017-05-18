@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalDAOService} from  '../../localdao.service';
 import {Encoder} from "../../lib/encoder";
-
 import {routerTransition} from '../../app.router.animation';
 
 @Component({

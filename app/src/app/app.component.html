@@ -6,11 +6,11 @@
   <div class="content">
   	<div *ngIf="backHistory">
   		<div *ngIf="iOS">
-  			<md-icon class="arrow-back" (click)="goBack()">arrow_back</md-icon>
+  			<a><md-icon class="arrow-back" (click)="goBack()">arrow_back</md-icon></a>
   		</div>
   		<div *ngIf="!iOS">
   			<div *ngIf="fullscreen">
-  				<md-icon class="arrow-back" (click)="goBack()">arrow_back</md-icon>
+  				<a><md-icon class="arrow-back" (click)="goBack()">arrow_back</md-icon></a>
   			</div>
 		</div>
   	</div>
