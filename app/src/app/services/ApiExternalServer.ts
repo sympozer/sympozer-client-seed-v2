@@ -13,6 +13,7 @@ import {LocalStorageService} from 'ng2-webstorage';
 @Injectable()
 export class ApiExternalServer {
     private subjectLogin = new Subject<any>();
+    private subjectAuthorization = new Subject<any>();
     private key_localstorage_token = "token_external_ressource_sympozer";
 
     constructor(private http: Http,
@@ -39,7 +40,13 @@ export class ApiExternalServer {
             }
 
             const that = this;
-            that.managerRequest.get_safe(Config.externalServer.url + '/api/login?email=' + email + '&password=' + password)
+
+            let bodyRequest = {
+                email : email,
+                password: password 
+            }
+            console.log("post error")
+            that.managerRequest.post_safe(Config.externalServer.url + '/api/login',bodyRequest)
                 .then((request) => {
                     console.log(request)
                     const user = JSON.parse(request._body);
@@ -81,9 +88,33 @@ export class ApiExternalServer {
      * @returns {Observable<any>}
      */
     getLoginStatus(): Observable<any> {
-        console.log("get login status")
         return this.subjectLogin.asObservable();
     }
 
-   
+    /**
+     * Send to all subscribers Authorization status
+     * @param message
+     */
+    sendAuthorizationVoteStatus(status: boolean) {
+        console.log(status)
+        this.subjectAuthorization.next(status);
+    }
+
+    /**
+     * Clear the Authorization status
+     */
+    clearAuthorizationVoteStatus() {
+        this.subjectAuthorization.next();
+    }
+
+    /**
+     * Retrieve the Login status
+     * @returns {Observable<any>}
+     */
+    getAuthorizationVoteStatus(): Observable<any> {
+        console.log("get authorization status")
+        return this.subjectAuthorization.asObservable();
+    }
+
+
 }

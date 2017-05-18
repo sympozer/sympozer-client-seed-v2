@@ -94,14 +94,18 @@ export class ToolsComponent implements OnInit {
         this.loading = true;
 
         setTimeout(() => {
-            this.localdao.loadDataset().then(() => {
-                this.snackBar.open("Dataset properly loaded =)", "", {
-                    duration: 2000,
-                });
-            }).catch(() => {
-                this.snackBar.open("Dataset didn't load properly", "", {
-                    duration: 2000,
-                });
+            this.localdao.loadDataset()
+                .then((status) => {
+                    console.log(status)
+                    this.snackBar.open("Dataset properly loaded.", "", {
+                        duration: 2000,
+                    });
+                })
+                .catch((err) => {
+                    console.log(err)
+                    this.snackBar.open("Dataset didn't load properly", "", {
+                        duration: 2000,
+                    });
             });
             this.loading = false;
         }, 250);

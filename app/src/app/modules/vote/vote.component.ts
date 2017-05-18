@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {VoteService} from '../../services/vote.service'
+import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {Config} from "../../app-config";
 import {LocalStorageService} from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
@@ -13,6 +14,7 @@ import {MdSnackBar} from "@angular/material";
 export class VoteComponent implements OnInit {
   token;
   subscription: Subscription;
+  canVote: any
   /***
    * Retrive the track Id and the event Type from the publication
    */
@@ -26,9 +28,13 @@ export class VoteComponent implements OnInit {
   private key_localstorage_vote = "hasVoted"
   constructor(private voteService: VoteService,
               private localStoragexx: LocalStorageService,
-              private snackBar: MdSnackBar) {
+              private snackBar: MdSnackBar,
+              private apiExternalServer: ApiExternalServer) {
 
-      
+      this.subscription = this.apiExternalServer.getAuthorizationVoteStatus().subscribe(status => {
+            console.log(status) 
+            this.canVote = status; 
+        });
   }
 
   /**
@@ -42,7 +48,7 @@ export class VoteComponent implements OnInit {
       this.votable = this.voteService.isTrackVotable(this.idTrack)
       this.hasVoted = this.voteService.isTrackVoted(this.idTrack)
     }, 1000)
-
+    this.canVote = true
   }
 
   /**

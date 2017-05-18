@@ -10,6 +10,7 @@ import {LocalStorageService} from 'ng2-webstorage';
 import {Subscription} from 'rxjs/Subscription';
 import {ToolsService} from './services/tools.service';
 import {VoteService} from './services/vote.service'
+import {MdSnackBar} from "@angular/material";
 const screenfull = require('screenfull');
 
 
@@ -29,7 +30,8 @@ export class AppComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
                 private toolService: ToolsService,
-                private voteService: VoteService) {
+                private voteService: VoteService,
+                public snackBar: MdSnackBar) {
 
         this.subscription = this.toolService.getFullScreenStatus().subscribe(status => { 
             this.fullscreen = status; 
@@ -72,7 +74,15 @@ export class AppComponent implements OnInit {
             }
         }
 
-        this.DaoService.loadDataset();
+        this.DaoService.loadDataset()
+            .then(()=>{
+
+            })
+            .catch((err)=>{
+                this.snackBar.open("A network error occured. Please try again later.", "", {
+                    duration: 2000,
+                });
+            });
         this.router.events
             .filter(event => event instanceof NavigationEnd)
             .map(() => this.activatedRoute)

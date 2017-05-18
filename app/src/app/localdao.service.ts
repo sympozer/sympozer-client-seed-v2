@@ -244,6 +244,21 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
+                case "getPersonBySha":
+                    console.log(data.key)
+                    query =
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:Person . \n" +
+                        " ?id schema:label ?label . \n" +
+                        " ?id foaf:mbox_sha1sum " + data.key + " . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 //return this.personMap[data.key];
                 case "getPersonLink":
                     return this.personLinkMap[data.key];
