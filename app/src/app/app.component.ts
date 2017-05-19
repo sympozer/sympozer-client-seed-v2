@@ -7,12 +7,13 @@ import {LocalDAOService} from  './localdao.service';
 import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
 import {routerTransition} from './app.router.animation';
 import {LocalStorageService} from 'ng2-webstorage';
+
+import { Angulartics2Piwik } from 'angulartics2';
 import {Subscription} from 'rxjs/Subscription';
 import {ToolsService} from './services/tools.service';
 import {VoteService} from './services/vote.service'
 import {MdSnackBar} from "@angular/material";
 const screenfull = require('screenfull');
-
 
 
 @Component({
@@ -29,11 +30,12 @@ export class AppComponent implements OnInit {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
+                private angulartics2Piwik: Angulartics2Piwik,
                 private toolService: ToolsService,
                 private voteService: VoteService,
                 public snackBar: MdSnackBar) {
 
-        this.subscription = this.toolService.getFullScreenStatus().subscribe(status => { 
+                  this.subscription = this.toolService.getFullScreenStatus().subscribe(status => { 
             this.fullscreen = status; 
         });
     }
