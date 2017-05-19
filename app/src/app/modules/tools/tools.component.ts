@@ -1,10 +1,11 @@
 import {Component, OnInit, NgZone, Input, HostListener} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {MdSnackBar} from '@angular/material'
+import {MdSnackBar} from '@angular/material';
 import {Location} from "@angular/common";
 import {routerTransition} from "../../app.router.animation";
 import {LocalDAOService} from "../../localdao.service";
 import {LocalStorageService} from 'ng2-webstorage';
+import {ToolsService} from '../../services/tools.service';
 const screenfull = require('screenfull');
 
 @Component({
@@ -22,13 +23,15 @@ export class ToolsComponent implements OnInit {
     socialShare: boolean;
     fullScreen: boolean;
     darkTheme: boolean;
+    material: boolean;
 
     constructor(private zone: NgZone,
                 private location: Location,
                 private route: ActivatedRoute,
                 private localdao: LocalDAOService,
                 public snackBar: MdSnackBar,
-                private localStoragexx: LocalStorageService) {
+                private localStoragexx: LocalStorageService,
+                private toolService: ToolsService) {
     }
 
     ngOnInit() {
@@ -56,37 +59,53 @@ export class ToolsComponent implements OnInit {
         if (storage) {
             this.socialShare = storage;
         }
+
+        storage = this.localStoragexx.retrieve("materialShadow");
+
+        if (storage) {
+            this.material = storage;
+        }
     }
 
     @HostListener("document:webkitfullscreenchange") updateFullScreen() {
         this.fullScreen = screenfull.isFullscreen;
+        this.sendFullScreenStatus(this.fullScreen)
     }
 
-     @HostListener("document:mozfullscreenchange") updateFullScreenMoz() {
+    @HostListener("document:mozfullscreenchange") updateFullScreenMoz() {
         this.fullScreen = screenfull.isFullscreen;
+        this.sendFullScreenStatus(this.fullScreen)
     }
 
-     @HostListener("document:msfullscreenchange") updateFullScreenIE() {
+    @HostListener("document:msfullscreenchange") updateFullScreenIE() {
         this.fullScreen = screenfull.isFullscreen;
+        this.sendFullScreenStatus(this.fullScreen)
     }
 
-     @HostListener("document:webkitfullscreenchange") updateFullScreenOther() {
+    @HostListener("document:webkitfullscreenchange") updateFullScreenOther() {
         this.fullScreen = screenfull.isFullscreen;
+        this.sendFullScreenStatus(this.fullScreen)
     }
 
-
+    /**
+     * Load the application dataset
+     */
     loadDataset() {
         this.loading = true;
 
         setTimeout(() => {
-            this.localdao.loadDataset().then(() => {
-                this.snackBar.open("Dataset properly loaded =)", "", {
-                    duration: 2000,
-                });
-            }).catch(() => {
-                this.snackBar.open("Dataset didn't load properly", "", {
-                    duration: 2000,
-                });
+            this.localdao.loadDataset()
+                .then((status) => {
+                    console.log(status)
+                    this.snackBar.open("Dataset properly loaded.", "", {
+                        duration: 2000,
+                    });
+                })
+                .catch((err) => {
+                    console.log(err)
+                    this.snackBar.open("Dataset didn't load properly", "", {
+                        duration: 2000,
+                    });
             });
             this.loading = false;
         }, 250);
@@ -96,10 +115,12 @@ export class ToolsComponent implements OnInit {
         return this.loading;
     }
 
+    /**
+     * Reset the application dataset
+     */
     resetDataset() {
         try {
-            if(this.localdao.resetDataset())
-            {
+            if (this.localdao.resetDataset()) {
                 this.snackBar.open("Dataset succesfully reset =)", "", {
                     duration: 2000,
                 });
@@ -118,6 +139,9 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    /**
+     * Decrease the application font size
+     */
     decresaseFontSize() {
         if (this.fontSize > 60) {
             this.fontSize = this.fontSize - 10;
@@ -131,6 +155,9 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    /**
+     * Increase the application font size
+     */
     increaseFontSize() {
         if (this.fontSize < 200) {
             this.fontSize = this.fontSize + 10;
@@ -144,13 +171,33 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    /**
+     * Send boolean status to all subscribers
+     * @param status
+     */
+    sendFullScreenStatus(status: boolean): void {
+        this.toolService.sendFullScreenStatus(status)
+    }
+
+    clearFullScreenStatus(): void {
+        // clear message
+        this.toolService.clearFullScreenStatus();
+    }
+
+    /**
+     * Change full screen status
+     */
     toggleFullScreen() {
         this.fullScreen = !this.fullScreen;
+        this.sendFullScreenStatus(this.fullScreen)
         if (screenfull.enabled) {
             screenfull.toggle();
         }
     }
 
+    /**
+     * Toggle application theme
+     */
     toggleDarkTheme() {
         this.darkTheme = !this.darkTheme;
         this.localStoragexx.store("darkTheme", this.darkTheme);
@@ -167,6 +214,9 @@ export class ToolsComponent implements OnInit {
         }
     }
 
+    /**
+     * Toggle Social share in the application
+     */
     toggleSocialShare() {
         this.socialShare = !this.socialShare;
         this.localStoragexx.store("socialShare", this.socialShare);
@@ -177,6 +227,23 @@ export class ToolsComponent implements OnInit {
         else {
             if (document.getElementById("share"))
                 document.getElementById("share").style.display = "none";
+        }
+    }
+
+    toggleMaterial() {
+        this.material = !this.material;
+        this.localStoragexx.store("materialShadow", this.material);
+        if (this.material) {
+            if (document.getElementById("share"))
+                document.getElementById("share").style.display = "block";
+        }
+        else {
+            console.log("kool");
+            var elements = document.getElementsByClassName('info-text');
+            console.log(elements);
+            for (var i = 0, l = elements.length; i < l; i++) {
+                (<HTMLElement>elements[i]).style.boxShadow = "none";
+            }
         }
     }
 }

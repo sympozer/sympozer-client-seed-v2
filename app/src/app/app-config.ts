@@ -27,7 +27,7 @@ export var Config = {
         "logoUri": "data/images/logo_eswc2017.png",
         "website": "http://2017.eswc-conferences.org/",
         "baseUri": "http://data.semanticweb.org/conference/eswc/2017",
-        "updateUri": "https://raw.githubusercontent.com/sympozer/datasets/master/test/conference_test.ttl",
+        "updateUri": "https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2017/ESWC2017.ttl",
         "lang": "EN",
         "momentLang": "EN_us",
         "storage": "on",
@@ -75,10 +75,10 @@ export var Config = {
         }
     },
     externalServer: {
-        url: "http://sympozer.com/external"
+        url: "https://sympozer.com/external"
     },
     vote :{
-        url: 'http://sympozer.com/external/',
+        url: 'https://sympozer.com/external/',
         tracks: ['https://w3id.org/scholarlydata/track/eswc-2017-research', 'https://w3id.org/scholarlydata/track/eswc-2017-in-use']
     }
 };

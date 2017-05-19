@@ -58,6 +58,8 @@ import {VoteComponent} from './modules/vote/vote.component';
 import {VoteService} from './services/vote.service';
 import {routerTransition} from './app.router.animation';
 import { Angulartics2Module, Angulartics2Piwik } from 'angulartics2';
+import {ToolsService} from './services/tools.service';
+
 
 const routes: Routes = [];
 
@@ -108,8 +110,8 @@ const routes: Routes = [];
         HttpModule,
         routing,
         RouterModule.forRoot(routes, {useHash: true}),
-        MaterialModule.forRoot(),
-        MdGridListModule.forRoot(),
+        MaterialModule,
+        MdGridListModule,
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
         Angulartics2Module.forRoot([ Angulartics2Piwik ]),
@@ -126,8 +128,8 @@ const routes: Routes = [];
         PersonService,
         RessourceDataset,
         ApiExternalServer,
-        VoteService
-
+        VoteService,
+        ToolsService
     ],
     bootstrap: [AppComponent]
 })

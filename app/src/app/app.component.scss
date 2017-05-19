@@ -6,6 +6,11 @@ md-sidenav-container {
   padding: 0;
   margin: 0;
   background: $header-background !important;
+  .content{
+    .arrow-back{
+      font-size: 3.5em;
+    }
+  }
 }
 
 .mat-sidenav.mat-sidenav-push {
@@ -23,7 +28,7 @@ md-sidenav {
   background-color: $header-background;
   padding: 0;
 
-  @media screen and (min-width: 1101px) {
+  @media screen and (min-width: 1181px) {
     display: none;
   }
 }

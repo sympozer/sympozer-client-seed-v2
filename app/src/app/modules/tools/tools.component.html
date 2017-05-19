@@ -1,14 +1,9 @@
 <h1 id="description-title"> {{title}} </h1>
-
-<!--<div [hidden]="!isLoading">-->
-<!--<button md-raised-button color="primary" disabled>Load dataset DISABLED</button>-->
-<!--</div>-->
-
-<!--<div [hidden]="isLoading">-->
-
 <h2>Dataset</h2>
 <md-card class="info-text">
-  <button id="dataset-load" md-raised-button color="primary" (click)="loadDataset()" [disabled]="isLoading()">Load dataset</button>
+  <button id="dataset-load" md-raised-button color="primary" (click)="loadDataset()" [disabled]="isLoading()">Load
+    dataset
+  </button>
   <button md-raised-button color="primary" (click)="resetDataset()">Reset dataset</button>
 </md-card>
 
@@ -41,6 +36,13 @@
        [checked]="darkTheme"
        (change)="toggleDarkTheme()">
     Dark Theme
+  </md-slide-toggle>
+
+  <md-slide-toggle
+       color="primary"
+       [checked]="material"
+       (change)="toggleMaterial()">
+    Material
   </md-slide-toggle>
 </md-card>
 

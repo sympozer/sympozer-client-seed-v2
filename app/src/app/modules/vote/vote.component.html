@@ -1,21 +1,29 @@
 <div *ngIf="votable">
   <div *ngIf="token !== null && token !== undefined">
-    <div *ngIf="hasVoted == true">
-      <p>You have voted!</p>
+    <div *ngIf="!canVote">
+      <p>Sorry, your account does not belong to the conference participants list. You must be registered with the same account as the one you used to register to the conference. If you believe this is an error, please send an email to sympozer-adm@sympozer.com</p>
     </div>
-    <div *ngIf="!hasVoted">
-      <h2>Vote</h2>
-      <md-card class="info-text vote">
-        <p>Caution! You can vote only once.</p>
-        <div>
-          <button md-raised-button color="primary" (click)="vote()">Submit Vote</button>
-        </div>
-      </md-card>
+    <div *ngIf="canVote">
+      <div *ngIf="hasVoted == true && justVoted == false">
+        <p>You have already voted in this track. Your vote has not been taken into account.</p>
+      </div>
+      <div *ngIf="hasVoted == true && justVoted == true">
+        <p>Your vote has been succesfully recorded.</p>
+      </div>
+      <div *ngIf="!hasVoted">
+        <h2>Vote</h2>
+        <md-card class="info-text vote">
+          <p>Caution! You can vote only once.</p>
+          <div>
+            <button md-raised-button color="primary" (click)="vote()">Submit Vote</button>
+          </div>
+        </md-card>
+      </div>
     </div>
   </div>
   <div *ngIf="token == undefined && token == null">
     <md-card class="info-text vote">
-      <p>Please login to vote.</p>
+      <p>Please login to be able to vote.</p>
       <button md-raised-button color="primary" [routerLink]="['/login']">Login</button>
     </md-card>
   </div>

@@ -4,6 +4,16 @@
     <menu class="side" (click)="end.close()"></menu>
   </md-sidenav>
   <div class="content">
+  	<div *ngIf="backHistory">
+  		<div *ngIf="iOS">
+  			<a><md-icon class="arrow-back" (click)="goBack()">arrow_back</md-icon></a>
+  		</div>
+  		<div *ngIf="!iOS">
+  			<div *ngIf="fullscreen">
+  				<a><md-icon class="arrow-back" (click)="goBack()">arrow_back</md-icon></a>
+  			</div>
+		</div>
+  	</div>
     <router-outlet></router-outlet>
   </div>
   <share id="share" class="share"></share>

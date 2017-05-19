@@ -107,38 +107,38 @@ export class LocalDAOService {
             let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
 
             //Si on l'a pas, on le télécharge
-            if (!storage) {
-                console.log('loading graph jsonld ...');
-                this.managerRequest.get_safe(this.conferenceURL)
-                    .then((response) => {
-                        try {
-                            if (response && response._body) {
-                                console.log(this.conferenceURL)
-                                that.saveDataset(response._body);
-                                that.localStoragexx.store(that.localstorage_jsonld, response._body);
-                                return resolve(true);
-                            }
+            // if (!storage) {
+            console.log('loading graph jsonld ...');
+            this.managerRequest.get_safe(this.conferenceURL)
+                .then((response) => {
+                    try {
+                        if (response && response._body) {
+                            console.log(this.conferenceURL)
+                            that.saveDataset(response._body);
+                            that.localStoragexx.store(that.localstorage_jsonld, response._body);
+                            return resolve(true);
+                        }
 
-                            return reject(false);
-                        }
-                        catch (e) {
-                            return reject(false);
-                        }
-                    })
-                    .catch(() => {
                         return reject(false);
-                    });
-            }
-            else {
-                try {
-                    console.log('have localstorage');
-                    that.saveDataset(storage);
-                    return resolve(true);
-                } catch (err) {
-                    console.log(err);
+                    }
+                    catch (e) {
+                        return reject(false);
+                    }
+                })
+                .catch(() => {
                     return reject(false);
-                }
-            }
+                });
+            // // }
+            // if(storage) {
+            //     try {
+            //         console.log('have localstorage');
+            //         that.saveDataset(storage);
+            //         return resolve(true);
+            //     } catch (err) {
+            //         console.log(err);
+            //         return reject(false);
+            //     }
+            // }
         });
     }
 
@@ -240,6 +240,21 @@ export class LocalDAOService {
                         " <" + data.key + "> a person:Person . \n" +
                         " <" + data.key + "> schema:label ?label . \n" +
                         " <" + data.key + "> foaf:mbox_sha1sum ?box . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getPersonBySha":
+                    console.log(data.key)
+                    query =
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:Person . \n" +
+                        " ?id schema:label ?label . \n" +
+                        " ?id foaf:mbox_sha1sum " + data.key + " . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
@@ -482,7 +497,7 @@ export class LocalDAOService {
                 case "getEventById":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type \n" +
+                        "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type ?location \n" +
                         "WHERE {\n" +
                         " <" + data.key + "> a ?type . \n" +
                         " <" + data.key + "> schema:label ?label . \n" +
@@ -490,6 +505,7 @@ export class LocalDAOService {
                         " <" + data.key + "> scholary:endDate ?endDate . \n" +
                         " <" + data.key + "> scholary:startDate ?startDate . \n" +
                         " <" + data.key + "> scholary:isSubEventOf ?isSubEventOf . \n" +
+                        " OPTIONAL { <" + data.key + "> scholary:location ?location . } \n" +
                         " OPTIONAL { <" + data.key + "> scholary:isEventRelatedTo ?isEventRelatedTo . } \n" +
                         " OPTIONAL { <" + data.key + "> scholary:hasSubEvent ?hasSubEvent . } \n" +
                         "}";
@@ -671,9 +687,31 @@ export class LocalDAOService {
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getAllLocations":
-                    return this.locationLinkMap;
-                case "getLocationLink":
-                    return this.locationLinkMap[data.key];
+                    query =
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?location \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:OrganisedEvent . \n" +
+                        " ?id scholary:location ?location . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+                case "getEventByLocation":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?id ?startDate ?endDate \n" +
+                        "WHERE {\n" +
+                        " ?id a scholary:OrganisedEvent . \n" +
+                        " ?id schema:label ?label . \n" +
+                        " ?id scholary:location \"" + data.key + "\" . \n" +
+                        " ?id scholary:startDate ?startDate . \n" +
+                        " ?id scholary:endDate ?endDate . \n" +
+                        "}";
+
+                    console.log(query);
+                    that.launchQuerySparql(query, callback);
+                    break;
                 default:
                     return null;
             }

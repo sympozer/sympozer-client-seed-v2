@@ -1,8 +1,10 @@
-<h2>Locations</h2>
+<h1 id="description-title">
+  Locations
+</h1>
 
-<div class="action-links list-items" *ngFor="let location of locations | keys">
+<div class="action-links list-items" *ngFor="let location of locations">
   <md-card>
     <md-icon md-list-avatar>place</md-icon>
-    <a [routerLink]="['/events-by-location/'+location.value.name+'/'+location.value.id]">{{location.value.name}}</a>
+    <a [routerLink]="['/events-by-location/'+location.location]">{{location.location}}</a>
   </md-card>
 </div>

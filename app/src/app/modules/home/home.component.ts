@@ -15,6 +15,7 @@ import '../../../assets/twitter.js';
     host: {'[@routerTransition]': ''}
 })
 export class HomeComponent implements OnInit {
+    title: string = "ESWC 2017";
 
     constructor(private router: Router,
                 private localdao: LocalDAOService,
@@ -22,6 +23,8 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         let storage = this.localStoragexx.retrieve("darkTheme");
         let twiiterTag = document.getElementById("twitter");
         if (storage) {

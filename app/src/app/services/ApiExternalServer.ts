@@ -2,19 +2,31 @@
  * Created by pierremarsot on 27/02/2017.
  */
 import {Injectable} from "@angular/core";
+import { Observable } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import {Http} from "@angular/http";
 import {ManagerRequest} from "./ManagerRequest";
 import {Config} from "../app-config";
 import {LocalStorageService} from 'ng2-webstorage';
 
+
 @Injectable()
 export class ApiExternalServer {
+    private subjectLogin = new Subject<any>();
+    private subjectAuthorization = new Subject<any>();
     private key_localstorage_token = "token_external_ressource_sympozer";
 
     constructor(private http: Http,
                 private managerRequest: ManagerRequest,
                 private localStoragexx: LocalStorageService) {
 
+    }
+
+    checkUserLogin(){
+        let token = this.localStoragexx.retrieve(this.key_localstorage_token)
+        if(token && token.length > 0)
+            return true;
+        return false;
     }
 
     login = (email, password) => {
@@ -28,8 +40,15 @@ export class ApiExternalServer {
             }
 
             const that = this;
-            that.managerRequest.get_safe(Config.externalServer.url + '/api/login?email=' + email + '&password=' + password)
+
+            let bodyRequest = {
+                email : email,
+                password: password 
+            }
+            console.log("post error")
+            that.managerRequest.post_safe(Config.externalServer.url + '/api/login',bodyRequest)
                 .then((request) => {
+                    console.log(request)
                     const user = JSON.parse(request._body);
                     if (!user || !user.token) {
                         return reject('Erreur lors de la récupération de vos informations');
@@ -44,30 +63,58 @@ export class ApiExternalServer {
         });
     };
 
-    vote = (id_ressource) => {
-        return new Promise((resolve, reject) => {
-            if (!id_ressource || id_ressource.length === 0) {
-                return reject('Erreur lors de la récupération de l\'identifiant de la ressource');
-            }
+    logoutUser(){
+        this.localStoragexx.clear(this.key_localstorage_token)
+    }
 
-            const that = this;
-            const token = that.localStoragexx.retrieve(that.key_localstorage_token);
+    /**
+     * Send to all subscribers Login status
+     * @param message
+     */
+    sendLoginStatus(status: boolean) {
+        console.log(status)
+        this.subjectLogin.next(status);
+    }
 
-            if (!token || token.length === 0) {
-                return reject('Vous devez vous connectez avant de pouvoir voter');
-            }
+    /**
+     * Clear the Login status
+     */
+    clearLoginStatus() {
+        this.subjectLogin.next();
+    }
 
-            that.managerRequest.get_safe(Config.externalServer.url + '/api/vote?token=' + token + '&id_ressource=' + id_ressource)
-                .then((request) => {
-                    if (request && request._body) {
-                        return resolve(request._body);
-                    }
+    /**
+     * Retrieve the Login status
+     * @returns {Observable<any>}
+     */
+    getLoginStatus(): Observable<any> {
+        return this.subjectLogin.asObservable();
+    }
 
-                    return reject(null);
-                })
-                .catch((request) => {
-                    return reject(request);
-                });
-        });
-    };
+    /**
+     * Send to all subscribers Authorization status
+     * @param message
+     */
+    sendAuthorizationVoteStatus(status: boolean) {
+        console.log(status)
+        this.subjectAuthorization.next(status);
+    }
+
+    /**
+     * Clear the Authorization status
+     */
+    clearAuthorizationVoteStatus() {
+        this.subjectAuthorization.next();
+    }
+
+    /**
+     * Retrieve the Login status
+     * @returns {Observable<any>}
+     */
+    getAuthorizationVoteStatus(): Observable<any> {
+        console.log("get authorization status")
+        return this.subjectAuthorization.asObservable();
+    }
+
+
 }
