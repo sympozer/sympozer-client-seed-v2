@@ -512,6 +512,22 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
+
+                case "getTalkById":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type ?location \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:Talk . \n" +
+                        " <" + data.key + "> schema:label ?label . \n" +
+                        " <" + data.key + "> scholary:description ?description . \n" +
+                        " <" + data.key + "> scholary:endDate ?endDate . \n" +
+                        " <" + data.key + "> scholary:startDate ?startDate . \n" +
+                        " <" + data.key + "> scholary:isSubEventOf ?isSubEventOf . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getTrackByEvent":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
