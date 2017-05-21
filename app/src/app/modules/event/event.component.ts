@@ -79,10 +79,20 @@ export class EventComponent implements OnInit {
 
                             let strDuration = "";
                             if (hours > 0) {
-                                strDuration = hours + " hours and ";
+                                if(hours < 2){
+                                    strDuration = hours + " hour and ";
+                                }
+                                else{
+                                    strDuration = hours + " hours and ";
+                                }
                             }
                             if (minutes > 0) {
-                                strDuration += minutes + " minutes";
+                                if(minutes < 2){
+                                    strDuration += minutes + " minute";
+                                }
+                                else{
+                                    strDuration += minutes + " minutes";
+                                }
                             }
 
                             //On récup le type dans l'URI
