@@ -54,7 +54,7 @@ export class EventComponent implements OnInit {
                     const nodeIsSubEventOf = results['?isSubEventOf'];
                     const nodeType = results['?type'];
                     const nodeLocation = results['?location'];
-                    console.log(nodeLocation)
+
                     if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate && nodeType) {
                         const label = nodeLabel.value;
                         const description = nodeDescription.value;

@@ -27,9 +27,9 @@
 <div *ngIf="event.location && event.location.length > 0">
   <h2>Location</h2>
   <div class="action-links list-items">
-    <md-card class="info-text">
+    <md-card>
       <md-icon md-list-avatar>access_time</md-icon>
-      <p>{{event.location}}</p>
+      <a [routerLink]="['/events-by-location/'+event.location]">{{event.location}}</a>
     </md-card>
   </div>
 </div>
