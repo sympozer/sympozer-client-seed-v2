@@ -30,6 +30,7 @@ export class EventComponent implements OnInit {
     public duration;
     public encodedID;
     public subEventOf;
+    public hasSubEvent;
     private mutex;
 
     constructor(private router: Router,
@@ -40,6 +41,7 @@ export class EventComponent implements OnInit {
         this.event = {};
         this.subEventOf = [];
         this.mutex = new Mutex();
+        this.hasSubEvent = [];
     }
 
     ngOnInit() {
@@ -55,7 +57,7 @@ export class EventComponent implements OnInit {
                     const nodeDescription = results['?description'];
                     const nodeEndDate = results['?endDate'];
                     const nodeStartDate = results['?startDate'];
-                    const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
+                    const nodeHasSubEvent = results['?hasSubEvent'];
                     const nodeIsSubEventOf = results['?isSubEventOf'];
                     const nodeType = results['?type'];
                     const nodeLocation = results['?location'];
@@ -121,13 +123,10 @@ export class EventComponent implements OnInit {
                                 const subEventOfBase = nodeIsSubEventOf.value;
 
                                 const subEventOf = that.encoder.encode(subEventOfBase);
-                                console.log('subEventOf : ', subEventOf);
-                                console.log('subEventOfBase : ', subEventOfBase);
 
                                 if (subEventOf) {
 
                                     that.DaoService.query("getIsSubEvent", {key: subEventOfBase}, (results) => {
-                                        console.log(results);
                                         if (results) {
                                             const nodeLabel = results['?label'];
 
@@ -151,6 +150,45 @@ export class EventComponent implements OnInit {
                                                                     label: label,
                                                                     idCompare: subEventOfBase,
                                                                     isConference: subEventOfBase.includes('conference')
+                                                                });
+                                                            }
+
+                                                            release();
+                                                        });
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+
+                            //Check is we have hasSubEvent
+                            if(nodeHasSubEvent){
+                                const hasSubEvent = nodeHasSubEvent.value;
+
+                                if(hasSubEvent){
+                                    that.DaoService.query("getTalkById", {key: hasSubEvent}, (results) => {
+                                        if(results){
+                                            const nodeLabel = results['?label'];
+
+                                            if(nodeLabel){
+                                                const label = nodeLabel.value;
+                                                if(label){
+                                                    that.mutex
+                                                        .acquire()
+                                                        .then(function (release) {
+                                                            //On regade si on l'a déjà
+                                                            const find = that.hasSubEvent.find((subOf) => {
+                                                                return subOf.idCompare === hasSubEvent;
+                                                            });
+
+                                                            if (!find) {
+                                                                const idEncode = that.encoder.encode(hasSubEvent);
+
+                                                                that.hasSubEvent = that.hasSubEvent.concat({
+                                                                    id: idEncode,
+                                                                    label: label,
+                                                                    idCompare: hasSubEvent,
                                                                 });
                                                             }
 
