@@ -1,0 +1,26 @@
+<h1 id="description-title">
+    <span *ngIf="event.type && event.type.length > 0" >{{event.type}} : </span>{{event.label}}
+</h1>
+
+<h2>Schedule</h2>
+<div class="action-links list-items multiple-lines">
+    <md-card class="info-text">
+        <div class="wrapper">
+            <div class="other-links">
+                <span class="event-info"><md-icon>schedule</md-icon> {{event.startsAt}} </span>
+                <span class="event-info"><md-icon>access_time</md-icon> {{event.endsAt}} </span>
+                <span class="event-info"><md-icon>hourglass_empty</md-icon> {{event.duration}} </span>
+            </div>
+        </div>
+    </md-card>
+</div>
+
+<div *ngIf="event.location && event.location.length > 0">
+    <h2>Location</h2>
+    <div class="action-links list-items">
+        <md-card>
+            <md-icon md-list-avatar>access_time</md-icon>
+            <a [routerLink]="['/events-by-location/'+event.location]">{{event.location}}</a>
+        </md-card>
+    </div>
+</div>

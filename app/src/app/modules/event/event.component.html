@@ -54,6 +54,17 @@
   </div>
 </div>
 
+<div *ngIf="subEventOf && subEventOf.length > 0">
+  <h2>SubEvent of</h2>
+  <div class="action-links list-items" *ngFor="let subEvent of subEventOf">
+    <md-card>
+      <md-icon md-list-avatar>place</md-icon>
+      <a *ngIf="!subEvent.isConference" [routerLink]="['/event-by-category/'+subEvent.label+'/'+subEvent.id]">{{subEvent.label}}</a>
+      <a *ngIf="subEvent.isConference" [routerLink]="['/conference/'+subEvent.id]">{{subEvent.label}}</a>
+    </md-card>
+  </div>
+</div>
+
 <div *ngIf="partof != null">
   <h2>Part of</h2>
   <div class="action-links list-items">

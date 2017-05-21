@@ -28,6 +28,7 @@ import {ToolsComponent} from './modules/tools/tools.component';
 import {EventsByDate} from './modules/events-by-date/events-by-date';
 import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
 import {LoginComponent} from './modules/login/login.component';
+import {ConferenceComponent} from './modules/conference/conference.component';
 
 
 const appRoutes: Routes = [
@@ -127,6 +128,10 @@ const appRoutes: Routes = [
     {
         path: 'event/:name/:id',
         component: EventComponent
+    },
+    {
+        path: 'conference/:id',
+        component: ConferenceComponent
     },
     {
         path: 'event-by-date/:date',

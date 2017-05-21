@@ -55,6 +55,7 @@ import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
+import {ConferenceComponent} from './modules/conference/conference.component';
 import {VoteService} from './services/vote.service';
 import {routerTransition} from './app.router.animation';
 import { Angulartics2Module, Angulartics2Piwik } from 'angulartics2';
@@ -100,7 +101,8 @@ const routes: Routes = [];
         Share,
         ScrollLoader,
         VoteComponent,
-        PublicationsByKeywords
+        PublicationsByKeywords,
+        ConferenceComponent
     ],
     imports: [
         BrowserModule,
