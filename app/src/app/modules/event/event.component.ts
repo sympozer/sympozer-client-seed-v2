@@ -162,7 +162,7 @@ export class EventComponent implements OnInit {
                                 }
                             }
 
-                            //Check is we have hasSubEvent
+                            //Check if we have hasSubEvent
                             if(nodeHasSubEvent){
                                 const hasSubEvent = nodeHasSubEvent.value;
 

@@ -60,7 +60,7 @@ import {VoteService} from './services/vote.service';
 import {routerTransition} from './app.router.animation';
 import { Angulartics2Module, Angulartics2Piwik } from 'angulartics2';
 import {ToolsService} from './services/tools.service';
-
+import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
 
 const routes: Routes = [];
 
@@ -102,7 +102,8 @@ const routes: Routes = [];
         ScrollLoader,
         VoteComponent,
         PublicationsByKeywords,
-        ConferenceComponent
+        ConferenceComponent,
+        PublicationsByKeyword,
     ],
     imports: [
         BrowserModule,
