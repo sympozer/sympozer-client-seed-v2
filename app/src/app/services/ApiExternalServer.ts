@@ -66,7 +66,7 @@ export class ApiExternalServer {
                     return resolve(user);
                 })
                 .catch((request) => {
-                    return reject();
+                    return reject(request);
                 });
         });
     };
