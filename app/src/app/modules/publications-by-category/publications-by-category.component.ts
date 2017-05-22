@@ -41,6 +41,7 @@ export class PublicationsByCategoryComponent implements OnInit {
 
             let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getPublicationLinkByTrack", query, (results) => {
+                console.log(results);
                 if (results) {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];

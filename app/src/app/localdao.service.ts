@@ -575,7 +575,6 @@ export class LocalDAOService {
                         "WHERE {\n" +
                         " <" + data.key + "> a scholary:Track . \n" +
                         " <" + data.key + "> scholary:hasSubEvent ?id . \n" +
-                        " ?id a scholary:Talk . \n" +
                         " ?id schema:label ?label . \n" +
                         "}";
 
