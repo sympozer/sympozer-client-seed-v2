@@ -36,14 +36,29 @@ export class EventByCategoryComponent implements OnInit {
                 if (results) {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
+                    const nodeType = results['?type'];
 
-                    if (nodeId && nodeLabel) {
+                    if (nodeId && nodeLabel && nodeType) {
                         let id = nodeId.value;
                         const label = nodeLabel.value;
+                        const type = nodeType.value;
+
+                        if(type.toLowerCase().includes("talk")){
+                            return false;
+                        }
 
                         if (id && label) {
                             id = that.encoder.encode(id);
                             if (id) {
+
+                                const find = that.events.find((e) => {
+                                   return e.id === id;
+                                });
+
+                                if(find){
+                                    return false;
+                                }
+
                                 that.events = that.events.concat({
                                     id: id,
                                     label: label,

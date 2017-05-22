@@ -571,11 +571,12 @@ export class LocalDAOService {
                 case "getEventByTrack":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?label ?id \n" +
+                        "SELECT DISTINCT ?label ?id ?type \n" +
                         "WHERE {\n" +
                         " <" + data.key + "> a scholary:Track . \n" +
                         " <" + data.key + "> scholary:hasSubEvent ?id . \n" +
                         " ?id schema:label ?label . \n" +
+                        " ?id a ?type . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
