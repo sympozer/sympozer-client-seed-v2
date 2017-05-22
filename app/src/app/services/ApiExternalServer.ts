@@ -58,7 +58,7 @@ export class ApiExternalServer {
                     return resolve(user.token);
                 })
                 .catch((request) => {
-                    return reject();
+                    return reject(request);
                 });
         });
     };
