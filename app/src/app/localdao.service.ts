@@ -664,6 +664,10 @@ export class LocalDAOService {
 
                 case "getIsSubEvent":
                     for (const type of types) {
+                        if(type.toLowerCase() === "track"){
+                            continue;
+                        }
+
                         query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                             "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                             "SELECT DISTINCT ?label \n" +

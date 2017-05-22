@@ -55,7 +55,7 @@
 </div>
 
 <div *ngIf="hasSubEvent && hasSubEvent.length > 0">
-  <h2>Super Events</h2>
+  <h2>Sub events</h2>
   <div class="action-links list-items" *ngFor="let hasSubEv of hasSubEvent">
     <md-card>
       <md-icon md-list-avatar>place</md-icon>
@@ -65,7 +65,7 @@
 </div>
 
 <div *ngIf="subEventOf && subEventOf.length > 0">
-  <h2>Parent events</h2>
+  <h2>Super events</h2>
   <div class="action-links list-items" *ngFor="let subEvent of subEventOf">
     <md-card>
       <md-icon md-list-avatar>place</md-icon>
