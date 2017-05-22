@@ -107,9 +107,7 @@ export class ApiExternalServer {
                     if(request.status === 404){
                         return reject("A network error has occured. Please try again later.");
                     }
-                    if (!user || !user.token) {
-                        return reject('Erreur lors de la récupération de vos informations.');
-                    }
+                   
                     return resolve(true);
                 })
                 .catch((request) => {
