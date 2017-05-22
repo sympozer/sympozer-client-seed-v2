@@ -4,14 +4,14 @@
   <div class="info">
     <div class="name"> {{person.name}}</div>
     <div class="link-info twitter" *ngIf="twitterUrl && twitterUrl.length > 0">
-      <a href="https://twitter.com/realamberheard">
+      <a target="_blank" href="https://twitter.com/{{twitterUrl}}">
         <md-icon><i class="fa fa-twitter"></i></md-icon>
-        <span>realamberheard</span>
+        <span>@{{twitterUrl}}</span>
       </a>
     </div>
     <div class="link-info twitter" *ngIf="homepage && homepage.length > 0">
-      <a href="{{homepage}}">
-        <md-icon><i class="fa fa-twitter"></i></md-icon>
+      <a target="_blanck" href="{{homepage}}">
+        <md-icon><i class="fa fa-globe"></i></md-icon>
         <span>Homepage</span>
       </a>
     </div>
