@@ -15,6 +15,12 @@
         <span>Homepage</span>
       </a>
     </div>
+    <div class="link-info linkedin" *ngIf="linkedInUrl && linkedInUrl.length > 0">
+      <a href="https://www.linkedin.com/in/{{linkedInUrl}}">
+        <md-icon><i class="fa fa-linkedin"></i></md-icon>
+        <span>{{linkedInUrl}}</span>
+      </a>
+    </div>
     <!--<div class="link-info facebook" *ngIf="facebookUrl && facebookUrl.length > 0">
       <a href="https://www.facebook.com/AmberHeardOfficial/">
         <md-icon><i class="fa fa-facebook"></i></md-icon>
@@ -27,12 +33,7 @@
         <span>realAmberHeardOfficial</span>
       </a>
     </div>
-    <div class="link-info linkedin" *ngIf="linkedInUrl && linkedInUrl.length > 0">
-      <a href="">
-        <md-icon><i class="fa fa-linkedin"></i></md-icon>
-        <span>AmberHeardReal</span>
-      </a>
-    </div>-->
+   -->
   </div>
 </md-card>
 
