@@ -11,8 +11,11 @@
 
     <button md-icon-button [mdMenuTriggerFor]="menu" class="avatar-open">
       <div class="avatar-wrapper">
-        <div>
+        <div *ngIf="!hasLogged">
           <img class="avatar" src="./img/placeholder.jpg"/>
+        </div>
+        <div *ngIf="hasLogged">
+          <img class="avatar" src={{avatar}}/>
         </div>
         <md-icon>arrow_drop_down</md-icon>
       </div>
