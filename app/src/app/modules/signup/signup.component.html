@@ -1,0 +1,31 @@
+<div class="login-wrapper">
+  <md-card class="inscription-card">
+  	<div class="header">
+      <h4>Sign Up</h4>
+    </div>
+    <div class="inscription-form">
+        <h5>Sign up with your account</h5>
+        <form>
+          <md-input-container>
+            <input #email mdInput type="email" placeholder="Email">
+          </md-input-container>
+
+          <md-input-container>
+            <input #password mdInput type="password" placeholder="Password">
+          </md-input-container>
+
+          <md-input-container>
+            <input #confirmPassword mdInput type="password" placeholder="Confirm password">
+          </md-input-container>
+
+          <div class="inscription-footer">
+            <button md-button color="primary" (click)="signup(email.value, password.value, confirmPassword.value)">Sign up</button>
+            <div class="sign-up">
+              <span>Have an account? </span>
+              <a [routerLink]="['/login/']">Login in</a>
+            </div>
+          </div>
+        </form>
+    </div>
+  </md-card>
+</div>
