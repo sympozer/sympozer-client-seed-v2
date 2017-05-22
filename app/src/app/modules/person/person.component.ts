@@ -48,16 +48,6 @@ export class PersonComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.apiExternalServer.login("iiii@gmail.com", "i")
-        //     .then((token) => {
-        //         if (token) {
-        //             this.voteService.vote("1", "1")
-        //                 .then((body) => {
-        //                     console.log(body);
-        //                 });
-        //         }
-        //     });
-
         const that = this;
         this.route.params.forEach((params: Params) => {
             let id = params['id'];

@@ -409,3 +409,9 @@ html.dark {
     background: $dark-theme-bg !important;
   }
 }
+
+html.no-material {
+  .info-text {
+    box-shadow: none;
+  }
+}

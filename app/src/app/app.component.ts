@@ -48,21 +48,22 @@ export class AppComponent implements OnInit {
             this.localStoragexx.store("zoomLevel", fontSize);
         }
 
-        storage = this.localStoragexx.retrieve("socialShare");
+        storage = this.localStoragexx.retrieve("material");
         if (storage != null && storage == false) {
-            var sheet = document.createElement('style')
-            sheet.innerHTML = ".info-text {box-shadow:none}";
-            document.body.appendChild(sheet);
+            let html = document.documentElement;
+            if (!html.classList.contains("no-material")) {
+                html.classList.add('no-material');
+            }
         } else {
-            this.localStoragexx.store("socialShare", true);
+            this.localStoragexx.store("material", true);
         }
 
-        storage = this.localStoragexx.retrieve("materialShadow");
+        storage = this.localStoragexx.retrieve("socialShare");
         if (storage != null && storage == false) {
             if (document.getElementById("share"))
                 document.getElementById("share").style.display = "none";
         } else {
-            this.localStoragexx.store("materialShadow", true);
+            this.localStoragexx.store("socialShare", true);
         }
 
 
