@@ -30,8 +30,6 @@ export class RessourceDataset {
             return null;
         }
 
-        console.log(type);
-
         if(type.includes('#')){
             const tab = type.split('#');
             if (tab.length !== 2) {
@@ -44,7 +42,6 @@ export class RessourceDataset {
             if (!type || type.length === 0) {
                 return null;
             }
-            console.log(type);
         }
 
         //On regarde si le type n'est pas déjà présent dans le label

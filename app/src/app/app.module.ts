@@ -55,9 +55,12 @@ import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
+import {ConferenceComponent} from './modules/conference/conference.component';
 import {VoteService} from './services/vote.service';
-import {routerTransition} from './app.router.animation'
+import {routerTransition} from './app.router.animation';
+import { Angulartics2Module, Angulartics2Piwik } from 'angulartics2';
 import {ToolsService} from './services/tools.service';
+import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
 
 const routes: Routes = [];
 
@@ -98,7 +101,9 @@ const routes: Routes = [];
         Share,
         ScrollLoader,
         VoteComponent,
-        PublicationsByKeywords
+        PublicationsByKeywords,
+        ConferenceComponent,
+        PublicationsByKeyword,
     ],
     imports: [
         BrowserModule,
@@ -112,6 +117,7 @@ const routes: Routes = [];
         MdGridListModule,
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
+        Angulartics2Module.forRoot([ Angulartics2Piwik ]),
     ],
     providers: [
         DataLoaderService,

@@ -28,7 +28,8 @@ import {ToolsComponent} from './modules/tools/tools.component';
 import {EventsByDate} from './modules/events-by-date/events-by-date';
 import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
 import {LoginComponent} from './modules/login/login.component';
-
+import {ConferenceComponent} from './modules/conference/conference.component';
+import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
 
 const appRoutes: Routes = [
     {
@@ -129,6 +130,10 @@ const appRoutes: Routes = [
         component: EventComponent
     },
     {
+        path: 'conference/:id',
+        component: ConferenceComponent
+    },
+    {
         path: 'event-by-date/:date',
         component: EventsByDate
     },
@@ -143,6 +148,10 @@ const appRoutes: Routes = [
     {
         path: 'publications-by-keywords',
         component: PublicationsByKeywords
+    },
+    {
+        path: 'publications-by-keyword/:keyword',
+        component: PublicationsByKeyword
     }
 ];
 

@@ -11,7 +11,7 @@
 </div>
 
 
-<h2>Event informations</h2>
+<h2>Schedule</h2>
 <div class="action-links list-items multiple-lines">
   <md-card class="info-text">
     <div class="wrapper">
@@ -27,9 +27,9 @@
 <div *ngIf="event.location && event.location.length > 0">
   <h2>Location</h2>
   <div class="action-links list-items">
-    <md-card class="info-text">
+    <md-card>
       <md-icon md-list-avatar>access_time</md-icon>
-      <p>{{event.location}}</p>
+      <a [routerLink]="['/events-by-location/'+event.location]">{{event.location}}</a>
     </md-card>
   </div>
 </div>
@@ -50,6 +50,27 @@
     <md-card>
       <md-icon md-list-avatar>place</md-icon>
       <a [routerLink]="['/event-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
+    </md-card>
+  </div>
+</div>
+
+<div *ngIf="subEventOf && subEventOf.length > 0">
+  <h2>SubEvent of</h2>
+  <div class="action-links list-items" *ngFor="let subEvent of subEventOf">
+    <md-card>
+      <md-icon md-list-avatar>place</md-icon>
+      <a *ngIf="!subEvent.isConference" [routerLink]="['/event-by-category/'+subEvent.label+'/'+subEvent.id]">{{subEvent.label}}</a>
+      <a *ngIf="subEvent.isConference" [routerLink]="['/conference/'+subEvent.id]">{{subEvent.label}}</a>
+    </md-card>
+  </div>
+</div>
+
+<div *ngIf="hasSubEvent && hasSubEvent.length > 0">
+  <h2>Super Event</h2>
+  <div class="action-links list-items" *ngFor="let hasSubEv of hasSubEvent">
+    <md-card>
+      <md-icon md-list-avatar>place</md-icon>
+      <a [routerLink]="['/event/'+hasSubEv.label+'/'+hasSubEv.id]">{{hasSubEv.label}}</a>
     </md-card>
   </div>
 </div>

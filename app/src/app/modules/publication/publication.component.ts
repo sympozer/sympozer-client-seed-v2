@@ -8,6 +8,9 @@ import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 
+import { Subscription } from 'rxjs/Subscription';
+import * as moment from 'moment';
+
 @Component({
     selector: 'app-publication',
     templateUrl: 'publication.component.html',
@@ -24,6 +27,7 @@ export class PublicationComponent implements OnInit {
     public publicationId;
     public trackId;
     public eventType;
+    public talk: any;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -112,26 +116,76 @@ export class PublicationComponent implements OnInit {
                     const nodeType = results['?type'];
 
                     if(nodeId && nodeLabel && nodeType){
-                        let id = nodeId.value;
+                        let idBase = nodeId.value;
                         const label = nodeLabel.value;
                         let type = nodeType.value;
 
-                        if(id && label){
-                            id = that.encoder.encode(id);
+                        if(idBase && label){
+                            const id = that.encoder.encode(idBase);
                             if(id){
-                                /*//On récup le type dans l'URI
-                                const tab = type.split('#');
-                                if(tab.length !== 2){
-                                    return false;
-                                }
 
-                                type = tab[1];
-                                type.replace('>', '');
+                                //On va chercher les infos du Talk
+                                that.DaoService.query("getTalkById", {key: idBase}, (results) => {
+                                    console.log('results talk : ', results);
+                                   if(results){
+                                       const nodeLabel = results['?label'];
+                                       const nodeDescription = results['?description'];
+                                       const nodeEndDate = results['?endDate'];
+                                       const nodeStartDate = results['?startDate'];
+                                       const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
+                                       const nodeIsSubEventOf = results['?isSubEventOf'];
+                                       const nodeLocation = results['?location'];
 
-                                if(!type || type.length === 0){
-                                    return false;
-                                }*/
+                                       if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate) {
+                                           const label = nodeLabel.value;
+                                           const description = nodeDescription.value;
+                                           let endDate = nodeEndDate.value;
+                                           let startDate = nodeStartDate.value;
 
+                                           let location = null;
+                                           if (nodeLocation) {
+                                               location = nodeLocation.value;
+                                           }
+
+                                           if (label && description && endDate && startDate) {
+                                               startDate = moment(startDate);
+                                               endDate = moment(endDate);
+
+                                               const duration = moment.duration(endDate.diff(startDate));
+
+                                               var hours = parseInt(duration.asHours().toString());
+                                               var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
+
+                                               let strDuration = "";
+                                               if (hours > 0) {
+                                                   if (hours < 2) {
+                                                       strDuration = hours + " hour and ";
+                                                   }
+                                                   else {
+                                                       strDuration = hours + " hours and ";
+                                                   }
+                                               }
+                                               if (minutes > 0) {
+                                                   if (minutes < 2) {
+                                                       strDuration += minutes + " minute";
+                                                   }
+                                                   else {
+                                                       strDuration += minutes + " minutes";
+                                                   }
+                                               }
+
+                                               that.talk = {
+                                                   label: label,
+                                                   description: description,
+                                                   startsAt: startDate.format('LLLL'),
+                                                   endsAt: endDate.format('LLLL'),
+                                                   duration: strDuration,
+                                                   location: location,
+                                               };
+                                           }
+                                       }
+                                   }
+                                });
                                 that.events = that.events.concat({
                                     id: id,
                                     label: label,

@@ -95,8 +95,6 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
-                                    console.log('request poerson');
-                                    console.log(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id);
                                     that.managerRequest.get_safe(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id)
                                         .then((request) => {
                                             if (request && request._body) {
@@ -106,6 +104,7 @@ export class PersonComponent implements OnInit {
                                                     that.photoUrl = user.photoUrl;
                                                 }
                                                 if (user) {
+                                                    console.log(user);
                                                     that.twitterUrl = user.twitterpage;
                                                     that.facebookUrl = user.facebookpage;
                                                     that.googlePlusUrl = user.googleaccount;
@@ -115,7 +114,7 @@ export class PersonComponent implements OnInit {
                                             }
                                         })
                                         .catch((request) => {
-                                        console.log(request);
+
                                         });
                                 }
                             }
@@ -143,7 +142,6 @@ export class PersonComponent implements OnInit {
             });
 
             this.DaoService.query("getRole", query, (results) => {
-                console.log('roles: ', results);
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -157,7 +155,6 @@ export class PersonComponent implements OnInit {
     getPublication(name: any) {
         // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
         this.dBPLDataLoaderService.getAuthorPublications(name).then(response => {
-            console.log(response);
             if (response.results) {
                 let i = 0;
                 for (let result of response.results.bindings) {

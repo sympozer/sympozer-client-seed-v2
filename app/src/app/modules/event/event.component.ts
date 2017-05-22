@@ -4,6 +4,7 @@ import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 import {RessourceDataset} from '../../services/RessourceDataset';
+import {Mutex} from 'async-mutex';
 import {Config} from "../../app-config";
 //import {ICS} from "ics";
 var ICS = require('ics');
@@ -27,7 +28,10 @@ export class EventComponent implements OnInit {
     public startsAt;
     public endsAt;
     public duration;
-    public encodedID
+    public encodedID;
+    public subEventOf;
+    public hasSubEvent;
+    private mutex;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -35,6 +39,9 @@ export class EventComponent implements OnInit {
                 private encoder: Encoder,
                 private ressourceDataset: RessourceDataset) {
         this.event = {};
+        this.subEventOf = [];
+        this.mutex = new Mutex();
+        this.hasSubEvent = [];
     }
 
     ngOnInit() {
@@ -50,11 +57,11 @@ export class EventComponent implements OnInit {
                     const nodeDescription = results['?description'];
                     const nodeEndDate = results['?endDate'];
                     const nodeStartDate = results['?startDate'];
-                    const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
+                    const nodeHasSubEvent = results['?hasSubEvent'];
                     const nodeIsSubEventOf = results['?isSubEventOf'];
                     const nodeType = results['?type'];
                     const nodeLocation = results['?location'];
-                    console.log(nodeLocation)
+
                     if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate && nodeType) {
                         const label = nodeLabel.value;
                         const description = nodeDescription.value;
@@ -63,8 +70,7 @@ export class EventComponent implements OnInit {
                         let type = nodeType.value;
 
                         let location = null;
-                        if(nodeLocation)
-                        {
+                        if (nodeLocation) {
                             location = nodeLocation.value;
                         }
 
@@ -79,10 +85,20 @@ export class EventComponent implements OnInit {
 
                             let strDuration = "";
                             if (hours > 0) {
-                                strDuration = hours + " hours and ";
+                                if (hours < 2) {
+                                    strDuration = hours + " hour and ";
+                                }
+                                else {
+                                    strDuration = hours + " hours and ";
+                                }
                             }
                             if (minutes > 0) {
-                                strDuration += minutes + " minutes";
+                                if (minutes < 2) {
+                                    strDuration += minutes + " minute";
+                                }
+                                else {
+                                    strDuration += minutes + " minutes";
+                                }
                             }
 
                             //On récup le type dans l'URI
@@ -98,11 +114,92 @@ export class EventComponent implements OnInit {
                                 duration: strDuration,
                                 location: location,
                                 publications: [],
-                                eventsRelatedTo: [],
-                                subEventsOf: [],
                                 tracks: [],
                                 type: typeIsIntoLabel ? null : type,
                             };
+
+                            //On regarde si il y a des sub event of
+                            if (nodeIsSubEventOf) {
+                                const subEventOfBase = nodeIsSubEventOf.value;
+
+                                const subEventOf = that.encoder.encode(subEventOfBase);
+
+                                if (subEventOf) {
+
+                                    that.DaoService.query("getIsSubEvent", {key: subEventOfBase}, (results) => {
+                                        if (results) {
+                                            const nodeLabel = results['?label'];
+
+                                            if (nodeLabel) {
+                                                const label = nodeLabel.value;
+
+                                                if (label) {
+                                                    that.mutex
+                                                        .acquire()
+                                                        .then(function (release) {
+                                                            //On regade si on l'a déjà
+                                                            const find = that.subEventOf.find((evOf) => {
+                                                                return evOf.idCompare === subEventOfBase;
+                                                            });
+
+                                                            if (!find) {
+                                                                const idEncode = that.encoder.encode(subEventOfBase);
+
+                                                                that.subEventOf = that.subEventOf.concat({
+                                                                    id: idEncode,
+                                                                    label: label,
+                                                                    idCompare: subEventOfBase,
+                                                                    isConference: subEventOfBase.includes('conference')
+                                                                });
+                                                            }
+
+                                                            release();
+                                                        });
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+
+                            //Check if we have hasSubEvent
+                            if(nodeHasSubEvent){
+                                const hasSubEvent = nodeHasSubEvent.value;
+
+                                if(hasSubEvent){
+                                    that.DaoService.query("getTalkById", {key: hasSubEvent}, (results) => {
+                                        if(results){
+                                            const nodeLabel = results['?label'];
+
+                                            if(nodeLabel){
+                                                const label = nodeLabel.value;
+                                                if(label){
+                                                    that.mutex
+                                                        .acquire()
+                                                        .then(function (release) {
+                                                            //On regade si on l'a déjà
+                                                            const find = that.hasSubEvent.find((subOf) => {
+                                                                return subOf.idCompare === hasSubEvent;
+                                                            });
+
+                                                            if (!find) {
+                                                                const idEncode = that.encoder.encode(hasSubEvent);
+
+                                                                that.hasSubEvent = that.hasSubEvent.concat({
+                                                                    id: idEncode,
+                                                                    label: label,
+                                                                    idCompare: hasSubEvent,
+                                                                });
+                                                            }
+
+                                                            release();
+                                                        });
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
 
                             that.DaoService.query("getPublicationsByEvent", query, (results) => {
                                 if (results) {
@@ -131,8 +228,8 @@ export class EventComponent implements OnInit {
 
                                                 //Si l'event est de type Track et qu'on est ici (au moin une publi)
                                                 // alors on redirige sur la publi
-                                                if(type && type.length > 0 && type.toLowerCase() === "talk"){
-                                                    return that.router.navigate(['/publication/'+label+'/'+id]);
+                                                if (type && type.length > 0 && type.toLowerCase() === "talk") {
+                                                    return that.router.navigate(['/publication/' + label + '/' + id]);
                                                 }
 
                                                 that.event.publications = that.event.publications.concat({
@@ -179,58 +276,35 @@ export class EventComponent implements OnInit {
                     }
                 }
             });
-            /*console.log(this.event);
-             this.startsAt = moment(this.event.startsAt).format('LLLL');
-             this.endsAt = moment(this.event.endsAt).format('LLLL');
-             this.duration = moment.duration(this.event.duration).humanize();
-             this.event.description = this.event.description.split('<')[0];
-
-             for (let i in this.event.papers) {
-             let query = {'key': this.event.papers[i]};
-             this.publications[i] = this.DaoService.query("getPublicationLink", query);
-             }
-             if (this.event.parent != null) {
-             let query = {'key': this.event.parent};
-             this.partof = this.DaoService.query("getEventLink", query);
-             }
-             for (let i in this.event.locations) {
-             let query = {'key': this.event.locations[i]};
-             this.locations[i] = this.DaoService.query("getLocationLink", query);
-             this.locations[i].id = this.encoder.encodeForURI(this.locations[i].id);
-             }
-             for (let i in this.event.children) {
-             let query = {'key': this.event.children[i]};
-             this.contents[i] = this.DaoService.query("getEvent", query);
-             }*/
         });
     }
 
     /**
      * Constructs a realistic ICS description of the event, that can be imported in a calendar
      */
-    createICS = () =>{
+    createICS = () => {
         var ics = new ICS();
         const that = this
 
         let calendar = ics.buildEvent({
-          uid: '', // (optional) 
-          start: that.event.startsAt,
-          end: that.event.endsAt,
-          title: that.event.label,
-          description: that.event.description,
-          location: that.event.location, //
-          url: that.event.publications.id,
-          status: 'confirmed',
-          geo: { lat: 45.515113, lon: 13.571873, },
-          attendees: [
-            //{ name: 'Adam Gibbons', email: 'adam@example.com' }
-          ],
-          categories: that.event.session,
-          alarms:[
-            { action: 'DISPLAY', trigger: '-PT24H', description: 'Reminder', repeat: true, duration: 'PT15M' },
-            { action: 'AUDIO', trigger: '-PT30M' }
-          ]
+            uid: '', // (optional)
+            start: that.event.startsAt,
+            end: that.event.endsAt,
+            title: that.event.label,
+            description: that.event.description,
+            location: that.event.location, //
+            url: that.event.publications.id,
+            status: 'confirmed',
+            geo: {lat: 45.515113, lon: 13.571873,},
+            attendees: [
+                //{ name: 'Adam Gibbons', email: 'adam@example.com' }
+            ],
+            categories: that.event.session,
+            alarms: [
+                {action: 'DISPLAY', trigger: '-PT24H', description: 'Reminder', repeat: true, duration: 'PT15M'},
+                {action: 'AUDIO', trigger: '-PT30M'}
+            ]
         });
-        window.open( "data:text/calendar;charset=utf8," + encodeURIComponent(calendar));
+        window.open("data:text/calendar;charset=utf8," + encodeURIComponent(calendar));
     }
 }

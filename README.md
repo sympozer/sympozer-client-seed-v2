@@ -11,7 +11,7 @@ then run :
 
 `git clone https://github.com/sympozer/sympozer-client-seed-v2 `
 
-`npm install -g typescript protractor angular-cli`
+`npm install -g typescript protractor @angular/cli`
 
 `cd sympozer-client-seed-v2/app`
 
