@@ -14,7 +14,9 @@ import {LocalStorageService} from 'ng2-webstorage';
 export class ApiExternalServer {
     private subjectLogin = new Subject<any>();
     private subjectAuthorization = new Subject<any>();
+    private subjectUsername = new Subject<any>();
     private key_localstorage_token = "token_external_ressource_sympozer";
+    private key_localstorage_username = "username_external_ressource_sympozer";
 
     constructor(private http: Http,
                 private managerRequest: ManagerRequest,
@@ -45,17 +47,23 @@ export class ApiExternalServer {
                 email : email,
                 password: password 
             }
-            console.log("post error")
             that.managerRequest.post_safe(Config.externalServer.url + '/api/login',bodyRequest)
                 .then((request) => {
                     console.log(request)
                     const user = JSON.parse(request._body);
+                    if(request.status === 403){
+                        return reject("Invalid username or password")
+                    }
+                    if(request.status === 404){
+                        return reject("A network error has occured. Please try again later.");
+                    }
                     if (!user || !user.token) {
                         return reject('Erreur lors de la récupération de vos informations');
                     }
-
+                    this.sendUsername(user.firstname)
                     that.localStoragexx.store(that.key_localstorage_token, user.token);
-                    return resolve(user.token);
+                    that.localStoragexx.store(that.key_localstorage_username, user.firstname);
+                    return resolve(user);
                 })
                 .catch((request) => {
                     return reject();
@@ -63,8 +71,57 @@ export class ApiExternalServer {
         });
     };
 
+    signup(email, password, confirmPassWord){
+        return new Promise((resolve, reject) => {
+            if (!email || email.length === 0) {
+                return reject('Invalid email address.');
+            }
+
+            if (!password || password.length === 0) {
+                return reject('Invalid password');
+            }
+
+            if (!confirmPassWord || confirmPassWord.length === 0) {
+                return reject('Invalid password');
+            }
+
+            if(password !== confirmPassWord){
+                return reject('Passwords don\'t match.');
+            }
+
+            const that = this;
+
+            let bodyRequest = {
+                email: email,
+                password: password,
+                confirmPassword: password
+            }
+
+            that.managerRequest.post_safe(Config.externalServer.url + '/api/register',bodyRequest)
+                .then((request) => {
+                    console.log(request)
+                    const user = JSON.parse(request._body);
+                    if(request.status === 403){
+                        return reject("Invalid email or password.")
+                    }
+                    if(request.status === 404){
+                        return reject("A network error has occured. Please try again later.");
+                    }
+                    if (!user || !user.token) {
+                        return reject('Erreur lors de la récupération de vos informations.');
+                    }
+                    return resolve(true);
+                })
+                .catch((request) => {
+                    console.log(request)
+                    return reject(request);
+                });
+        });
+    }
+
     logoutUser(){
         this.localStoragexx.clear(this.key_localstorage_token)
+        this.localStoragexx.clear(this.key_localstorage_username)
     }
 
     /**
@@ -112,8 +169,33 @@ export class ApiExternalServer {
      * @returns {Observable<any>}
      */
     getAuthorizationVoteStatus(): Observable<any> {
-        console.log("get authorization status")
         return this.subjectAuthorization.asObservable();
+    }
+
+
+
+
+    /**
+     * Send to all subscribers Username status
+     * @param message
+     */
+    sendUsername(firstname: string) {
+        this.subjectUsername.next(firstname);
+    }
+
+    /**
+     * Clear the Username status
+     */
+    clearUsername() {
+        this.subjectUsername.next("User");
+    }
+
+    /**
+     * Retrieve the Username status
+     * @returns {Observable<any>}
+     */
+    getUsername(): Observable<any> {
+        return this.subjectUsername.asObservable();
     }
 
 

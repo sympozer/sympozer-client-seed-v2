@@ -61,6 +61,7 @@ import {routerTransition} from './app.router.animation';
 import { Angulartics2Module, Angulartics2Piwik } from 'angulartics2';
 import {ToolsService} from './services/tools.service';
 import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
+import { SignupComponent } from './modules/signup/signup.component';
 
 const routes: Routes = [];
 
@@ -104,6 +105,7 @@ const routes: Routes = [];
         PublicationsByKeywords,
         ConferenceComponent,
         PublicationsByKeyword,
+        SignupComponent,
     ],
     imports: [
         BrowserModule,

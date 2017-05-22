@@ -28,11 +28,15 @@
           <md-icon class="fa-icon"><i class="fa fa-sign-in" aria-hidden="true"></i></md-icon>
           <span>Login</span>
         </button>
+        <button [routerLink]="['/signup/']" md-menu-item>
+          <md-icon class="fa-icon"><i class="fa fa-sign-in" aria-hidden="true"></i></md-icon>
+          <span>Sign up</span>
+        </button>
       </div>
       <div *ngIf="hasLogged">
         <button md-menu-item disabled>
           <md-icon>account_circle</md-icon>
-          <span>User</span>
+          <span>{{username}}</span>
         </button>
         <button (click)="logout()" md-menu-item>
           <md-icon class="fa-icon"><i class="fa fa-sign-out" aria-hidden="true"></i></md-icon>

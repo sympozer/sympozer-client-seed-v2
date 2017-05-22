@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
 
     title: string = "Login";
     username: string = "User"
-
+    toggleLogin = true
+    private key_localstorage_username = "username_external_ressource_sympozer";
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
                 public snackBar: MdSnackBar,
@@ -37,11 +38,12 @@ export class LoginComponent implements OnInit {
      */
     login(email, password) {
         this.apiExternalServer.login(email, password)
-            .then(() => {
+            .then((user) => {
                 this.snackBar.open("Login successful.", "", {
                     duration: 2000,
                 });
                 window.history.back()
+                //window.location.href = 'http://www.google.com';
                 this.voteService.votedPublications()
                     .then(()=>{
                         this.sendLoginStatus(true)
@@ -52,34 +54,11 @@ export class LoginComponent implements OnInit {
                         });
                     })
 
-
-                    let query = {'key': "260fe2621184e204687dd63e25eeb65c84eeecff"};
-                    const that = this
-                    console.log("about to test")
-                    this.DaoService.query("getPersonBySha", query, (results) => {
-                        console.log(results);
-                        if(results){
-                            const nodeLabel = results['?label'];
-                            const nodeId = results['?id'];
-
-                            if(nodeLabel && nodeId){
-                                const label = nodeLabel.value;
-                                let id = nodeId.value;
-
-                                if(label && id){
-                                    console.log(label)
-                                    that.sendAuthorizationStatus(true)
-                                }
-                            }
-                        }
-                        else{
-                            that.sendAuthorizationStatus(false)
-                        }
-
-                    });
+                 console.log(user)
+                 
                 })
             .catch((err) => {
-                this.snackBar.open("A network occured during login. Please try again later.", "", {
+                this.snackBar.open(err, "", {
                     duration: 2000,
                 });
             });
@@ -94,4 +73,7 @@ export class LoginComponent implements OnInit {
         // send status to subscribers via observable subject
         this.apiExternalServer.sendAuthorizationVoteStatus(status);
     }
+
+    
+
 }

@@ -1,6 +1,6 @@
 <div class="login-wrapper">
   <md-card class="inscription-card">
-    <div class="header">
+    <!-- <div class="header">
       <h4>Sign In</h4>
       <div class="social">
         <a href="#">
@@ -16,7 +16,7 @@
           <i class="fa fa-linkedin"></i>
         </a>
       </div>
-    </div>
+    </div> -->
     <div class="inscription-form">
       <h5> Or login with your account </h5>
       <form>
@@ -32,7 +32,7 @@
           <button md-button color="primary" (click)="login(email.value, password.value)">Login</button>
           <div class="sign-up">
             <span>Don’t have an account yet? </span>
-            <a href=""> Sign up </a>
+            <a [routerLink]="['/signup/']">Sign up</a>
           </div>
         </div>
       </form>
