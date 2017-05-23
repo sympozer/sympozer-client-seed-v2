@@ -79,6 +79,6 @@ export var Config = {
     },
     vote :{
         url: 'https://sympozer.com/external/',
-        tracks: ['https://w3id.org/scholarlydata/track/eswc-2017-research', 'https://w3id.org/scholarlydata/track/eswc-2017-in-use']
+        tracks: ['https://w3id.org/scholarlydata/track/eswc-2017-demo', 'https://w3id.org/scholarlydata/track/eswc-2017-poster']
     }
 };
