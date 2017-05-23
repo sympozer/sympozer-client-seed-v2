@@ -51,7 +51,6 @@ export class ApiExternalServer {
             }
             that.managerRequest.post_safe(Config.externalServer.url + '/api/login',bodyRequest)
                 .then((request) => {
-                    console.log(request)
                     const user = JSON.parse(request._body);
                     if(request.status === 403){
                         return reject("Invalid username or password")
@@ -80,15 +79,13 @@ export class ApiExternalServer {
             if (!token || token.length === 0) {
                 return reject('An error occured. Please re-login.');
             }
-
             const that = this;
 
             let bodyRequest = {
                 token : token
             }
-            that.managerRequest.get_safe(Config.externalServer.url + '/api/user/login?token='+token)
+            that.managerRequest.get_safe(Config.externalServer.url + '/api/user?token='+token)
                 .then((request) => {
-                    console.log(request)
                     const user = JSON.parse(request._body);
                     if(request.status === 403){
                         return reject("Invalid username or password")
@@ -96,18 +93,15 @@ export class ApiExternalServer {
                     if(request.status === 404){
                         return reject("A network error has occured. Please try again later.");
                     }
-                    if (!user || !user.token) {
-                        return reject('Erreur lors de la récupération de vos informations');
-                    }
-                    if(!user.firstname || user.firstname.length === 0){
+                    if(user.firstname && user.firstname.length > 0){
                         this.sendUsername(user.firstname)
                         that.localStoragexx.store(that.key_localstorage_username, user.firstname);
                     }
-                    if(!user.photoUrl || user.photoUrl.length === 0){
+                    if(user.photoUrl && user.photoUrl.length > 0){
                         this.sendAvatar(user.photoUrl)
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
-                    that.localStoragexx.store(that.key_localstorage_token, user.token);
+                    //that.localStoragexx.store(that.key_localstorage_token, user.token);
                     return resolve(user);
                 })
                 .catch((request) => {
@@ -144,7 +138,6 @@ export class ApiExternalServer {
 
             that.managerRequest.post_safe(Config.externalServer.url + '/api/register',bodyRequest)
                 .then((request) => {
-                    console.log(request)
                     const user = JSON.parse(request._body);
                     if(request.status === 403){
                         return reject("Invalid email or password.")
@@ -172,7 +165,6 @@ export class ApiExternalServer {
      * @param message
      */
     sendLoginStatus(status: boolean) {
-        console.log(status)
         this.subjectLogin.next(status);
     }
 
