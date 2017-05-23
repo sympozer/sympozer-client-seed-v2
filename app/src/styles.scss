@@ -367,6 +367,34 @@ button.mat-menu-item {
   }
 }
 
+.sympozer-logo {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+
+  a {
+    display: block;
+
+    img {
+      width: 150px;
+    }
+  }
+}
+
+.conf-logo {
+  padding: 15px;
+
+  a {
+    display: block;
+
+    img {
+      width: 80px;
+      height: 65px;
+    }
+  }
+}
+
 html.dark {
   * {
     color: white !important;

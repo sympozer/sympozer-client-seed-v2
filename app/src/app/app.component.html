@@ -2,7 +2,17 @@
   <header-app [sidenav]="end"></header-app>
 
   <md-sidenav #end align="end" mode="push">
+    <div class="conf-logo">
+      <a class="logo" [routerLink]="['/home/']">
+        <img src="./img/logo_eswc2017.png">
+      </a>
+    </div>
     <menu class="side" (click)="end.close()"></menu>
+    <div class="sympozer-logo">
+      <a href="http://sympozer.liris.cnrs.fr/">
+        <img src="./img/Sympozer_logo.png"/>
+      </a>
+    </div>
   </md-sidenav>
 
   <div class="content">
