@@ -82,7 +82,9 @@ export class AppComponent implements OnInit {
                 });
             });
 
-        this.apiExternalServer.loginWithToken(this.localStoragexx.retrieve(this.key_localstorage_token))
+        let token = this.localStoragexx.retrieve(this.key_localstorage_token)
+        if(token && token.length > 0)
+            this.apiExternalServer.loginWithToken(token)
         
         this.router.events
             .filter(event => event instanceof NavigationEnd)
