@@ -48,8 +48,7 @@ export class ApiExternalServer {
             let bodyRequest = {
                 email : email,
                 password: password 
-            }
-            
+            };
             that.managerRequest.post_safe(Config.externalServer.url + '/api/login', bodyRequest)
                 .then((request) => {
                     const user = JSON.parse(request._body);
@@ -147,7 +146,6 @@ export class ApiExternalServer {
                     return resolve(true);
                 })
                 .catch((request) => {
-                    console.log(request)
                     return reject(request);
                 });
         });
@@ -186,7 +184,6 @@ export class ApiExternalServer {
      * @param message
      */
     sendAuthorizationVoteStatus(status: boolean) {
-        console.log(status)
         this.subjectAuthorization.next(status);
     }
 
