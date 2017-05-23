@@ -36,8 +36,6 @@ export class PersonByRoleComponent implements OnInit {
             if (document.getElementById("page-title-p"))
                 document.getElementById("page-title-p").innerHTML = this.personRole;
 
-            console.log(id);
-
             if (!id) {
                 return false;
             }

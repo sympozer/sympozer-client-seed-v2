@@ -104,8 +104,15 @@ export class PersonComponent implements OnInit {
                                                     that.photoUrl = user.photoUrl;
                                                 }
                                                 if (user) {
-                                                    console.log(user);
-                                                    that.twitterUrl = user.twitterpage;
+                                                    let twitterpage = user.twitterpage;
+
+                                                    if(twitterpage && twitterpage.length > 0){
+                                                        if(twitterpage.includes('@')){
+                                                            twitterpage = twitterpage.replace('@', '');
+                                                        }
+                                                    }
+
+                                                    that.twitterUrl = twitterpage;
                                                     that.facebookUrl = user.facebookpage;
                                                     that.googlePlusUrl = user.googleaccount;
                                                     that.linkedInUrl = user.linkedinaccount;
