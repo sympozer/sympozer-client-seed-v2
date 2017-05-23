@@ -1,73 +1,74 @@
-<h1 id="description-title">{{publication.label}}</h1>
+<div class="component-wrapper">
+  <h1 id="description-title">{{publication.label}}</h1>
 
-<!-- Logo -->
+  <!-- Logo -->
 
-<h2>Abstract</h2>
-<md-card class="info-text">
+  <h2>Abstract</h2>
+  <md-card class="info-text">
     <p>
-        {{publication.abstract}}
+      {{publication.abstract}}
     </p>
-</md-card>
+  </md-card>
 
-<div *ngIf="keywords && keywords.length > 0">
+  <div *ngIf="keywords && keywords.length > 0">
     <h2>Keywords</h2>
     <div class="action-links list-items">
-        <md-card class="info-text keywords">
-            <md-chip-list>
-                <md-chip color="primary" selected="true" *ngFor="let keyword of keywords">
+      <md-card class="info-text keywords">
+        <md-chip-list>
+          <md-chip color="primary" selected="true" *ngFor="let keyword of keywords">
                     <span class="span-link" [routerLink]="['/publications-by-keyword/'+keyword]">
                     {{keyword}}
                     </span>
-                </md-chip>
-            </md-chip-list>
-        </md-card>
+          </md-chip>
+        </md-chip-list>
+      </md-card>
     </div>
-</div>
+  </div>
 
-<!-- Homeoage -->
+  <!-- Homeoage -->
 
-<h2 *ngIf="(authors | json) != '{}'">Authors</h2>
-<div class="action-links list-items" *ngFor="let author of authors">
+  <h2 *ngIf="(authors | json) != '{}'">Authors</h2>
+  <div class="action-links list-items" *ngFor="let author of authors">
     <md-card>
-        <md-icon md-list-avatar>perm_identity</md-icon>
-        <a [routerLink]="['/person/'+author.label+'/'+author.id]">{{author.label}}</a>
+      <md-icon md-list-avatar>perm_identity</md-icon>
+      <a [routerLink]="['/person/'+author.label+'/'+author.id]">{{author.label}}</a>
     </md-card>
-</div>
+  </div>
 
-<!--<h2 *ngIf="events.length > 0">Presented in</h2>
-<div class="action-links list-items" *ngFor="let event of events">
-  <md-card>
-    <md-icon md-list-avatar>perm_identity</md-icon>
-    <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
-  </md-card>
-</div>-->
+  <!--<h2 *ngIf="events.length > 0">Presented in</h2>
+  <div class="action-links list-items" *ngFor="let event of events">
+    <md-card>
+      <md-icon md-list-avatar>perm_identity</md-icon>
+      <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
+    </md-card>
+  </div>-->
 
-<div *ngIf="talk !== undefined">
+  <div *ngIf="talk !== undefined">
     <h2>Talk informations</h2>
     <div class="action-links list-items multiple-lines">
-        <md-card class="info-text">
-            <div class="wrapper">
-                <div class="other-links">
-                    <span class="event-info"> {{talk.label}} </span>
-                    <span class="event-info"><md-icon>schedule</md-icon> {{talk.startsAt}} </span>
-                    <span class="event-info"><md-icon>access_time</md-icon> {{talk.endsAt}} </span>
-                    <span class="event-info"><md-icon>hourglass_empty</md-icon> {{talk.duration}} </span>
-                </div>
-            </div>
-        </md-card>
+      <md-card class="info-text">
+        <div class="wrapper">
+          <div class="other-links">
+            <span class="event-info"> {{talk.label}} </span>
+            <span class="event-info"><md-icon>schedule</md-icon> {{talk.startsAt}} </span>
+            <span class="event-info"><md-icon>access_time</md-icon> {{talk.endsAt}} </span>
+            <span class="event-info"><md-icon>hourglass_empty</md-icon> {{talk.duration}} </span>
+          </div>
+        </div>
+      </md-card>
     </div>
-</div>
+  </div>
 
-<div *ngIf="track !== {}">
+  <div *ngIf="track !== {}">
     <h2>Track</h2>
     <div class="action-links list-items">
-        <md-card>
-            <md-icon md-list-avatar>perm_identity</md-icon>
-            <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
-        </md-card>
+      <md-card>
+        <md-icon md-list-avatar>perm_identity</md-icon>
+        <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
+      </md-card>
     </div>
+  </div>
+
+  <!-- Voting -->
+  <vote [typeEvent]="eventType" [idTrack]="trackId" [idPublication]="publicationId"></vote>
 </div>
-
-<!-- Voting -->
-<vote [typeEvent]="eventType" [idTrack]="trackId" [idPublication]="publicationId"></vote>
-

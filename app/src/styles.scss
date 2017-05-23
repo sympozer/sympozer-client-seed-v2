@@ -327,6 +327,14 @@ body {
   right: 20px;
 }
 
+.back {
+  z-index: 999999;
+  position: absolute !important;
+  overflow: visible !important;
+  bottom: 2%;
+  left: 20px;
+}
+
 .mat-menu-item .mat-icon {
   vertical-align: sub !important;
 }
@@ -350,9 +358,13 @@ button.mat-menu-item {
 }
 
 .component-wrapper {
-  height: 100%;
   display: flex;
   flex-direction: column;
+  margin-bottom: 80px;
+
+  &.fixed-height {
+    height: 100%;
+  }
 }
 
 html.dark {

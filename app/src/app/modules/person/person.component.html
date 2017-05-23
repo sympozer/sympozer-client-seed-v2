@@ -1,87 +1,88 @@
-<md-card class="profil">
-  <img class="avatar" *ngIf="photoUrl && photoUrl.length > 0" src="{{photoUrl}}"/>
-  <img class="avatar" *ngIf="!photoUrl || photoUrl.length <= 0" src="./img/placeholder.jpg"/>
-  <div class="info">
-    <div class="name"> {{person.name}}</div>
-    <div class="link-info twitter" *ngIf="twitterUrl && twitterUrl.length > 0">
-      <a target="_blank" href="https://twitter.com/{{twitterUrl}}">
-        <md-icon><i class="fa fa-twitter"></i></md-icon>
-        <span>@{{twitterUrl}}</span>
-      </a>
+<div class="component-wrapper">
+  <md-card class="profil">
+    <img class="avatar" *ngIf="photoUrl && photoUrl.length > 0" src="{{photoUrl}}"/>
+    <img class="avatar" *ngIf="!photoUrl || photoUrl.length <= 0" src="./img/placeholder.jpg"/>
+    <div class="info">
+      <div class="name"> {{person.name}}</div>
+      <div class="link-info twitter" *ngIf="twitterUrl && twitterUrl.length > 0">
+        <a target="_blank" href="https://twitter.com/{{twitterUrl}}">
+          <md-icon><i class="fa fa-twitter"></i></md-icon>
+          <span>@{{twitterUrl}}</span>
+        </a>
+      </div>
+      <div class="link-info twitter" *ngIf="homepage && homepage.length > 0">
+        <a target="_blanck" href="{{homepage}}">
+          <md-icon><i class="fa fa-globe"></i></md-icon>
+          <span>Homepage</span>
+        </a>
+      </div>
+      <div class="link-info linkedin" *ngIf="linkedInUrl && linkedInUrl.length > 0">
+        <a target="_blank" href="https://www.linkedin.com/in/{{linkedInUrl}}">
+          <md-icon><i class="fa fa-linkedin"></i></md-icon>
+          <span>{{linkedInUrl}}</span>
+        </a>
+      </div>
+      <!--<div class="link-info facebook" *ngIf="facebookUrl && facebookUrl.length > 0">
+        <a href="https://www.facebook.com/AmberHeardOfficial/">
+          <md-icon><i class="fa fa-facebook"></i></md-icon>
+          <span>AmberHeardOfficial</span>
+        </a>
+      </div>
+      <div class="link-info google-plus" *ngIf="googlePlusUrl && googlePlusUrl.length > 0">
+        <a href="">
+          <md-icon><i class="fa fa-google-plus"></i></md-icon>
+          <span>realAmberHeardOfficial</span>
+        </a>
+      </div>
+     -->
     </div>
-    <div class="link-info twitter" *ngIf="homepage && homepage.length > 0">
-      <a target="_blanck" href="{{homepage}}">
-        <md-icon><i class="fa fa-globe"></i></md-icon>
-        <span>Homepage</span>
-      </a>
-    </div>
-    <div class="link-info linkedin" *ngIf="linkedInUrl && linkedInUrl.length > 0">
-      <a target="_blank" href="https://www.linkedin.com/in/{{linkedInUrl}}">
-        <md-icon><i class="fa fa-linkedin"></i></md-icon>
-        <span>{{linkedInUrl}}</span>
-      </a>
-    </div>
-    <!--<div class="link-info facebook" *ngIf="facebookUrl && facebookUrl.length > 0">
-      <a href="https://www.facebook.com/AmberHeardOfficial/">
-        <md-icon><i class="fa fa-facebook"></i></md-icon>
-        <span>AmberHeardOfficial</span>
-      </a>
-    </div>
-    <div class="link-info google-plus" *ngIf="googlePlusUrl && googlePlusUrl.length > 0">
-      <a href="">
-        <md-icon><i class="fa fa-google-plus"></i></md-icon>
-        <span>realAmberHeardOfficial</span>
-      </a>
-    </div>
-   -->
-  </div>
-</md-card>
+  </md-card>
 
-<div *ngIf="orgas.length > 0">
-  <h2>Organization(s)</h2>
-  <div class="action-links list-items" *ngFor="let orga of orgas">
-    <md-card>
-      <md-icon md-list-avatar>account_balance</md-icon>
-      <a [routerLink]="['/organization/'+orga.name+'/'+orga.id]">{{orga.name}}</a>
-    </md-card>
+  <div *ngIf="orgas.length > 0">
+    <h2>Organization(s)</h2>
+    <div class="action-links list-items" *ngFor="let orga of orgas">
+      <md-card>
+        <md-icon md-list-avatar>account_balance</md-icon>
+        <a [routerLink]="['/organization/'+orga.name+'/'+orga.id]">{{orga.name}}</a>
+      </md-card>
+    </div>
+  </div>
+  <div *ngIf="roles.length > 0">
+    <h2>Role(s)</h2>
+    <div class="action-links list-items" *ngFor="let role of roles">
+      <md-card>
+        <md-icon md-list-avatar>perm_identity</md-icon>
+        <a [routerLink]="['/person-by-role/'+role.label+'/'+role.id]">{{role.label}}</a>
+      </md-card>
+    </div>
+  </div>
+  <div *ngIf="person.boxs && person.boxs.length > 0">
+    <h2>Boxs Email</h2>
+    <div class="action-links list-items" *ngFor="let boxs of person.boxs">
+      <md-card>
+        <md-icon md-list-avatar>perm_identity</md-icon>
+        {{boxs}}
+      </md-card>
+    </div>
+  </div>
+  <div *ngIf="publiConf.length > 0">
+    <h2>Conference Publication(s)</h2>
+    <div class="action-links list-items" *ngFor="let publication of publiConf">
+      <md-card>
+        <md-icon md-list-avatar>description</md-icon>
+        <a [routerLink]="['/publication/'+publication.label+'/'+publication.id]">{{publication.label}}</a>
+      </md-card>
+    </div>
+  </div>
+  <div *ngIf="externPublications.length > 0">
+    <h2>Other Publication(s)</h2>
+    <app-autocomplete [seachFor]="'name'" [items]="externPublications"
+                      [namespace]="'externPublication'"></app-autocomplete>
+    <div class="action-links list-items" *ngFor="let publication of externPublications">
+      <md-card>
+        <md-icon md-list-avatar>description</md-icon>
+        <a [routerLink]="['/externPublication/'+publication.name+'/'+publication.id]">{{publication.name}}</a>
+      </md-card>
+    </div>
   </div>
 </div>
-<div *ngIf="roles.length > 0">
-  <h2>Role(s)</h2>
-  <div class="action-links list-items" *ngFor="let role of roles">
-    <md-card>
-      <md-icon md-list-avatar>perm_identity</md-icon>
-      <a [routerLink]="['/person-by-role/'+role.label+'/'+role.id]">{{role.label}}</a>
-    </md-card>
-  </div>
-</div>
-<div *ngIf="person.boxs && person.boxs.length > 0">
-  <h2>Boxs Email</h2>
-  <div class="action-links list-items" *ngFor="let boxs of person.boxs">
-    <md-card>
-      <md-icon md-list-avatar>perm_identity</md-icon>
-      {{boxs}}
-    </md-card>
-  </div>
-</div>
-<div *ngIf="publiConf.length > 0">
-  <h2>Conference Publication(s)</h2>
-  <div class="action-links list-items" *ngFor="let publication of publiConf">
-    <md-card>
-      <md-icon md-list-avatar>description</md-icon>
-      <a [routerLink]="['/publication/'+publication.label+'/'+publication.id]">{{publication.label}}</a>
-    </md-card>
-  </div>
-</div>
-<div *ngIf="externPublications.length > 0">
-  <h2>Other Publication(s)</h2>
-  <app-autocomplete [seachFor]="'name'" [items]="externPublications"
-                    [namespace]="'externPublication'"></app-autocomplete>
-  <div class="action-links list-items" *ngFor="let publication of externPublications">
-    <md-card>
-      <md-icon md-list-avatar>description</md-icon>
-      <a [routerLink]="['/externPublication/'+publication.name+'/'+publication.id]">{{publication.name}}</a>
-    </md-card>
-  </div>
-</div>
-
