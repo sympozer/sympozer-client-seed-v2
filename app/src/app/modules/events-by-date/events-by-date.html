@@ -1,7 +1,7 @@
 <h1 id="description-title">{{day}}</h1>
 <div class="action-links list-items multiple-lines" *ngFor="let schedule of schedules">
   <md-card>
-    <a [routerLink]="'/event/'+schedule.label+'/'+ schedule.id">
+    <a class="wrapper" [routerLink]="'/event/'+schedule.label+'/'+ schedule.id">
       <md-icon>event</md-icon>
       <span ><b *ngIf="schedule.type && schedule.type.length > 0">{{schedule.type}} :</b>{{schedule.label}}</span>
       <div class="other-links">

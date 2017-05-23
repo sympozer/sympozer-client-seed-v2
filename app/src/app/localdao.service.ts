@@ -61,6 +61,8 @@ export class LocalDAOService {
     //Locations
     private locationLinkMap = {};
 
+    private queryWaiting = [];
+
     constructor(private http: Http,
                 private ev: eventHelper,
                 private encoder: Encoder,
@@ -113,7 +115,7 @@ export class LocalDAOService {
                 .then((response) => {
                     try {
                         if (response && response._body) {
-                            console.log(this.conferenceURL)
+                            console.log(this.conferenceURL);
                             that.saveDataset(response._body);
                             that.localStoragexx.store(that.localstorage_jsonld, response._body);
                             return resolve(true);
@@ -151,6 +153,12 @@ export class LocalDAOService {
             that.$rdf.parse(dataset, store, this.conferenceURL, mimeType);
             that.store = store;
             that.store.fetcher = null;
+
+            //We if we have query waiting
+            for(const qw of that.queryWaiting){
+                that.query(qw.command, qw.data, qw.callback);
+            }
+
             return true;
         }
         catch (e) {
@@ -767,12 +775,42 @@ export class LocalDAOService {
                         " ?id scholary:endDate ?endDate . \n" +
                         "}";
 
-                    console.log(query);
+                    that.launchQuerySparql(query, callback);
+                    break;
+
+                case "getSubEventOfConference":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?subEvent ?type \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:Conference . \n" +
+                        " <" + data.key + "> scholary:hasSubEvent ?subEvent . \n" +
+                        " ?subEvent a ?type . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+
+                case "getLabelById":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?subEvent \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> schema:label ?label . \n" +
+                        "}";
+
                     that.launchQuerySparql(query, callback);
                     break;
                 default:
                     return null;
             }
+        }
+        else{
+            that.queryWaiting.push({
+               command: command,
+                data: data,
+                callback: callback,
+            });
         }
     }
 }

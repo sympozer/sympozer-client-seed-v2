@@ -42,7 +42,6 @@ export class ConferenceComponent implements OnInit {
 
             let query = {'key': this.encoder.decode(id)};
             this.DaoService.query("getConference", query, (results, err) => {
-                console.log('conférence : ', results);
                 if (results) {
                     const nodeLabel = results['?label'];
                     const nodeEndDate = results['?endDate'];
@@ -93,6 +92,79 @@ export class ConferenceComponent implements OnInit {
                                 duration: strDuration,
                                 location: location,
                             };
+                        }
+                    }
+                }
+            });
+
+            that.DaoService.query("getSubEventOfConference", query, (results) => {
+                console.log(results);
+                if(results){
+                    const nodeSubEvent = results['?subEvent'];
+                    const nodeType = results['?type'];
+
+                    if(nodeSubEvent && nodeType){
+                        const subEvent = nodeSubEvent.value;
+                        const typeRessourceTemp = nodeType.value;
+
+                        let type;
+                        if(typeRessourceTemp){
+                            const tab = typeRessourceTemp.split('#');
+                            if(tab.length !== 2) {
+                                return false;
+                            }
+
+                            type = tab[1];
+                        }
+
+                        if(subEvent && type){
+                            let idEncoded = that.encoder.encode(subEvent);
+
+                            const find = that.subEventOf.find((s) => {
+                                return idEncoded === s.id;
+                            });
+
+                            if(find){
+                                return false;
+                            }
+
+                            const sub = {
+                                id: idEncoded,
+                                label: '',
+                                urlToSearch: '',
+                            };
+
+                            that.subEventOf = that.subEventOf.concat(sub);
+
+                            that.DaoService.query("getLabelById", {
+                                key: subEvent
+                            }, (results) => {
+                                if(results){
+                                    const nodeLabel = results['?label'];
+
+                                    if(nodeLabel){
+                                        const label = nodeLabel.value;
+
+                                        if(!label){
+                                            return false;
+                                        }
+
+                                        type = type.toLowerCase();
+
+                                        let urlToSearch;
+
+                                        if(type === "track"){
+                                            urlToSearch = '/event-by-category/';
+                                        }
+                                        else {
+                                            urlToSearch = '/event/';
+                                        }
+
+                                        sub.label = label;
+                                        sub.urlToSearch = urlToSearch;
+                                    }
+                                }
+                            });
                         }
                     }
                 }

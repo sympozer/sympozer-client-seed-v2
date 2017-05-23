@@ -46,6 +46,14 @@ export class CategoriesForPublicationsComponent implements OnInit {
                     return false;
                 }
 
+                const find = that.tracks.find((t) => {
+                   return t.id === id;
+                });
+
+                if(find){
+                    return false;
+                }
+
                 that.tracks = that.tracks.concat({
                     id: id,
                     label: label,

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer, ViewChild} from '@angular/core';
 import {Conference} from '../../model/conference';
 import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';
@@ -57,6 +57,14 @@ export class PersonsComponent implements OnInit {
 
                 id = that.encoder.encode(id);
                 if (!id) {
+                    return false;
+                }
+
+                const find = that.persons.find((p) => {
+                   return p.id === id;
+                });
+
+                if(find){
                     return false;
                 }
 

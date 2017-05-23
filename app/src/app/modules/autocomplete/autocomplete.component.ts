@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, OnInit, Input, SimpleChange, SimpleChanges, Renderer, ElementRef, ViewChild} from '@angular/core';
 import {Conference} from '../../model/conference';
 import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';
@@ -25,7 +25,8 @@ export class AutocompleteComponent implements OnInit {
     constructor(private router: Router,
                 private dataLoaderService: DataLoaderService,
                 private DaoService: LocalDAOService,
-                private  dBPLDataLoaderService: DBLPDataLoaderService) {
+                private  dBPLDataLoaderService: DBLPDataLoaderService,
+                private renderer: Renderer) {
     }
 
     ngOnInit() {

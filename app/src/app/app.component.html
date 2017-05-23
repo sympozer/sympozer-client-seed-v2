@@ -1,21 +1,31 @@
 <md-sidenav-container>
   <header-app [sidenav]="end"></header-app>
+
   <md-sidenav #end align="end" mode="push">
+    <div class="conf-logo">
+      <a class="logo" [routerLink]="['/home/']">
+        <img src="./img/logo_eswc2017.png">
+      </a>
+    </div>
     <menu class="side" (click)="end.close()"></menu>
+    <div class="sympozer-logo">
+      <a href="http://sympozer.liris.cnrs.fr/">
+        <img src="./img/Sympozer_logo.png"/>
+      </a>
+    </div>
   </md-sidenav>
+
   <div class="content">
-  	<div *ngIf="backHistory">
-  		<div *ngIf="iOS">
-  			<a><md-icon class="arrow-back" (click)="goBack()">arrow_back</md-icon></a>
-  		</div>
-  		<div *ngIf="!iOS">
-  			<div *ngIf="fullscreen">
-  				<a><md-icon class="arrow-back" (click)="goBack()">arrow_back</md-icon></a>
-  			</div>
-		</div>
-  	</div>
     <router-outlet></router-outlet>
   </div>
+
+  <div class="back" *ngIf="backHistory && (iOS || (!iOS && fullscreen))">
+    <button md-fab color="primary" (click)="goBack()">
+      <md-icon>arrow_back</md-icon>
+    </button>
+  </div>
+
   <share id="share" class="share"></share>
+
 </md-sidenav-container>
 

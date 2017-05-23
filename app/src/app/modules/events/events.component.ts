@@ -43,6 +43,14 @@ export class EventsComponent implements OnInit {
                             //On récup le type dans l'URI
                             type = that.ressourceDataset.extractType(type, label);
 
+                            const find = that.events.find((e) => {
+                                return e.id === id;
+                            });
+
+                            if(find){
+                                return false;
+                            }
+
                             that.events = that.events.concat({
                                 id: id,
                                 label: label,

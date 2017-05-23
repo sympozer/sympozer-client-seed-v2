@@ -55,6 +55,14 @@ export class AuthorsComponent implements OnInit {
                     publications: [],
                 };
 
+                const find = that.authors.find((a) => {
+                   return a.id === id;
+                });
+
+                if(find){
+                    return false;
+                }
+
                 that.DaoService.query("getPublicationLink", {key: idBase}, (results) => {
                     const nodeLabel = results['?label'];
                     const nodeId = results['?id'];
