@@ -47,6 +47,14 @@ export class PublicationsComponent implements OnInit {
                     return false;
                 }
 
+                const find = that.publications.find((p) => {
+                    return p.id === id;
+                });
+
+                if(find){
+                    return false;
+                }
+
                 that.publications = that.publications.concat({
                     id: id,
                     label: label,

@@ -41,6 +41,14 @@ export class PersonService {
             return false;
           }
 
+          const find = roles.find((r) => {
+            return r.id === id;
+          });
+
+          if(find){
+            return roles;
+          }
+
           roles.push({
             label: label,
             id: id,
@@ -67,6 +75,14 @@ export class PersonService {
           id = this.encoder.encode(id);
           if(!id){
             return false;
+          }
+
+          const find = orgas.find((o) => {
+            return o.id === id;
+          });
+
+          if(find){
+            return orgas;
           }
 
           orgas.push({

@@ -66,6 +66,14 @@ export class EventsByLocationComponent implements OnInit {
                                         strDuration += "and " + minutes + " minutes";
                                     }
 
+                                    const find = that.eventsLocation.find((e) => {
+                                       return e.id === id;
+                                    });
+
+                                    if(find){
+                                        return false;
+                                    }
+
                                     that.eventsLocation = that.eventsLocation.concat({
                                         id: id,
                                         label: label,
