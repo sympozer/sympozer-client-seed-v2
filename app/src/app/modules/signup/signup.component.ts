@@ -30,12 +30,13 @@ export class SignupComponent implements OnInit {
 	 * @param confirm password
 	 */
 	signup(email, password, confirmPassword){
+		const that = this
 	    this.apiExternalServer.signup(email, password, confirmPassword)
 	        .then(() => {
 	            this.snackBar.open("Signing up was successful.", "", {
 	                duration: 2000,
 	            });
-	            window.history.back()
+	            that.router.navigate(['/login'])
 	          
 	        })
 	        .catch((err) => {

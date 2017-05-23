@@ -35,8 +35,18 @@ export class OrganizationsComponent implements OnInit {
                     const label = nodeLabel.value;
 
                     if (id && label) {
+                        const idEncoded = that.encoder.encode(id);
+
+                        const find = that.organizations.find((o) => {
+                            return o.id === idEncoded;
+                        });
+
+                        if(find){
+                            return false;
+                        }
+
                         that.organizations = that.organizations.concat({
-                            id: that.encoder.encode(id),
+                            id: idEncoded,
                             label: label,
                         });
 

@@ -36,8 +36,6 @@ export class PersonByRoleComponent implements OnInit {
             if (document.getElementById("page-title-p"))
                 document.getElementById("page-title-p").innerHTML = this.personRole;
 
-            console.log(id);
-
             if (!id) {
                 return false;
             }
@@ -53,8 +51,18 @@ export class PersonByRoleComponent implements OnInit {
                         const label = nodeLabel.value;
 
                         if (id && label) {
+                            const idEncoded = that.encoder.encode(id);
+
+                            const find = that.persons.find((p) => {
+                                return p.id === idEncoded;
+                            });
+
+                            if(find){
+                                return false;
+                            }
+
                             that.persons.push({
-                                id: that.encoder.encode(id),
+                                id: idEncoded,
                                 label: label,
                             });
 

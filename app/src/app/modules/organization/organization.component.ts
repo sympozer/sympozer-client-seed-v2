@@ -46,7 +46,6 @@ export class OrganizationComponent implements OnInit {
                 return false;
             }
 
-            console.log(id);
             let query = {'key': id};
             this.DaoService.query("getOrganization", query, (results) => {
                 if (results) {
@@ -85,7 +84,15 @@ export class OrganizationComponent implements OnInit {
                         return false;
                     }
 
-                    that.members.push({
+                    const find = that.members.find((m) => {
+                       return m.id === id;
+                    });
+
+                    if(find){
+                        return false;
+                    }
+
+                    that.members = that.members.concat({
                         id: id,
                         name: name,
                     });

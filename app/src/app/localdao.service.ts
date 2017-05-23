@@ -61,6 +61,8 @@ export class LocalDAOService {
     //Locations
     private locationLinkMap = {};
 
+    private queryWaiting = [];
+
     constructor(private http: Http,
                 private ev: eventHelper,
                 private encoder: Encoder,
@@ -113,7 +115,7 @@ export class LocalDAOService {
                 .then((response) => {
                     try {
                         if (response && response._body) {
-                            console.log(this.conferenceURL)
+                            console.log(this.conferenceURL);
                             that.saveDataset(response._body);
                             that.localStoragexx.store(that.localstorage_jsonld, response._body);
                             return resolve(true);
@@ -151,6 +153,12 @@ export class LocalDAOService {
             that.$rdf.parse(dataset, store, this.conferenceURL, mimeType);
             that.store = store;
             that.store.fetcher = null;
+
+            //We if we have query waiting
+            for(const qw of that.queryWaiting){
+                that.query(qw.command, qw.data, qw.callback);
+            }
+
             return true;
         }
         catch (e) {
@@ -773,6 +781,13 @@ export class LocalDAOService {
                 default:
                     return null;
             }
+        }
+        else{
+            that.queryWaiting.push({
+               command: command,
+                data: data,
+                callback: callback,
+            });
         }
     }
 }

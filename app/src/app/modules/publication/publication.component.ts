@@ -99,6 +99,14 @@ export class PublicationComponent implements OnInit {
                         return false;
                     }
 
+                    const find = that.authors.find((a) => {
+                        return a.id === idPerson;
+                    });
+
+                    if(find){
+                        return false;
+                    }
+
                     that.authors.push({
                         id: idPerson,
                         label: label,
@@ -123,6 +131,14 @@ export class PublicationComponent implements OnInit {
                         if(idBase && label){
                             const id = that.encoder.encode(idBase);
                             if(id){
+
+                                const find = that.events.find((e) => {
+                                    return e.id ===id;
+                                });
+
+                                if(find){
+                                    return false;
+                                }
 
                                 //On va chercher les infos du Talk
                                 that.DaoService.query("getTalkById", {key: idBase}, (results) => {
@@ -215,7 +231,7 @@ export class PublicationComponent implements OnInit {
                        let id = nodeId.value;
 
                        if(label && id){
-                           that.trackId = id
+                           that.trackId = id;
                            id = that.encoder.encode(id);
 
                            if(id){

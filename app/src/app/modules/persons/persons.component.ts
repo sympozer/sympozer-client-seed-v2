@@ -60,6 +60,14 @@ export class PersonsComponent implements OnInit {
                     return false;
                 }
 
+                const find = that.persons.find((p) => {
+                   return p.id === id;
+                });
+
+                if(find){
+                    return false;
+                }
+
                 const person = {
                     id: id,
                     name: name,

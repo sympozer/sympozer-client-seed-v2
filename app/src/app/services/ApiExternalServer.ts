@@ -15,8 +15,10 @@ export class ApiExternalServer {
     private subjectLogin = new Subject<any>();
     private subjectAuthorization = new Subject<any>();
     private subjectUsername = new Subject<any>();
+    private subjectAvatar = new Subject<any>();
     private key_localstorage_token = "token_external_ressource_sympozer";
     private key_localstorage_username = "username_external_ressource_sympozer";
+    private key_localstorage_avatar = "avatar_external_ressource_sympozer";
 
     constructor(private http: Http,
                 private managerRequest: ManagerRequest,
@@ -61,8 +63,10 @@ export class ApiExternalServer {
                         return reject('Erreur lors de la récupération de vos informations');
                     }
                     this.sendUsername(user.firstname)
+                    this.sendAvatar(user.photoUrl)
                     that.localStoragexx.store(that.key_localstorage_token, user.token);
                     that.localStoragexx.store(that.key_localstorage_username, user.firstname);
+                    that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     return resolve(user);
                 })
                 .catch((request) => {
@@ -107,7 +111,7 @@ export class ApiExternalServer {
                     if(request.status === 404){
                         return reject("A network error has occured. Please try again later.");
                     }
-                   
+
                     return resolve(true);
                 })
                 .catch((request) => {
@@ -171,8 +175,6 @@ export class ApiExternalServer {
     }
 
 
-
-
     /**
      * Send to all subscribers Username status
      * @param message
@@ -194,6 +196,30 @@ export class ApiExternalServer {
      */
     getUsername(): Observable<any> {
         return this.subjectUsername.asObservable();
+    }
+
+
+    /**
+     * Send to all subscribers Avatar status
+     * @param message
+     */
+    sendAvatar(avatar: string) {
+        this.subjectAvatar.next(avatar);
+    }
+
+    /**
+     * Clear the Avatar status
+     */
+    clearAvatar() {
+        this.subjectAvatar.next();
+    }
+
+    /**
+     * Retrieve the Avatar status
+     * @returns {Observable<any>}
+     */
+    getAvatar(): Observable<any> {
+        return this.subjectAvatar.asObservable();
     }
 
 
