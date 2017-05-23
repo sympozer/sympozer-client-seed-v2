@@ -7,6 +7,7 @@ import {LocalDAOService} from  './localdao.service';
 import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
 import {routerTransition} from './app.router.animation';
 import {LocalStorageService} from 'ng2-webstorage';
+import {ApiExternalServer} from './services/ApiExternalServer';
 
 import { Angulartics2Piwik } from 'angulartics2';
 import {Subscription} from 'rxjs/Subscription';
@@ -26,7 +27,10 @@ export class AppComponent implements OnInit {
     public iOS;
     public fullscreen: any;
     subscription: Subscription;
+    private key_localstorage_token = "token_external_ressource_sympozer";
+
     constructor(private DaoService: LocalDAOService,
+                private apiExternalServer: ApiExternalServer,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
@@ -86,6 +90,9 @@ export class AppComponent implements OnInit {
                     duration: 2000,
                 });
             });
+
+        this.apiExternalServer.loginWithToken(this.localStoragexx.retrieve(this.key_localstorage_token))
+        
         this.router.events
             .filter(event => event instanceof NavigationEnd)
             .map(() => this.activatedRoute)

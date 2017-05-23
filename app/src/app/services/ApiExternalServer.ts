@@ -75,6 +75,47 @@ export class ApiExternalServer {
         });
     };
 
+    loginWithToken = (token) => {
+        return new Promise((resolve, reject) => {
+            if (!token || token.length === 0) {
+                return reject('An error occured. Please re-login.');
+            }
+
+            const that = this;
+
+            let bodyRequest = {
+                token : token
+            }
+            that.managerRequest.get_safe(Config.externalServer.url + '/api/user/login?token='+token)
+                .then((request) => {
+                    console.log(request)
+                    const user = JSON.parse(request._body);
+                    if(request.status === 403){
+                        return reject("Invalid username or password")
+                    }
+                    if(request.status === 404){
+                        return reject("A network error has occured. Please try again later.");
+                    }
+                    if (!user || !user.token) {
+                        return reject('Erreur lors de la récupération de vos informations');
+                    }
+                    if(!user.firstname || user.firstname.length === 0){
+                        this.sendUsername(user.firstname)
+                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
+                    }
+                    if(!user.photoUrl || user.photoUrl.length === 0){
+                        this.sendAvatar(user.photoUrl)
+                        that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
+                    }
+                    that.localStoragexx.store(that.key_localstorage_token, user.token);
+                    return resolve(user);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    };
+
     signup(email, password, confirmPassWord){
         return new Promise((resolve, reject) => {
             if (!email || email.length === 0) {
