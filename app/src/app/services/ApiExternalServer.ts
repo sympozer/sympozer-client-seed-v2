@@ -111,7 +111,7 @@ export class ApiExternalServer {
                     if(request.status === 404){
                         return reject("A network error has occured. Please try again later.");
                     }
-                    
+
                     return resolve(true);
                 })
                 .catch((request) => {
