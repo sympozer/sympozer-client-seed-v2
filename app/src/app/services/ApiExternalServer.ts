@@ -49,7 +49,8 @@ export class ApiExternalServer {
                 email : email,
                 password: password 
             }
-            that.managerRequest.post_safe(Config.externalServer.url + '/api/login',bodyRequest)
+            
+            that.managerRequest.post_safe(Config.externalServer.url + '/api/login', bodyRequest)
                 .then((request) => {
                     const user = JSON.parse(request._body);
                     if(request.status === 403){
@@ -80,10 +81,7 @@ export class ApiExternalServer {
                 return reject('An error occured. Please re-login.');
             }
             const that = this;
-
-            let bodyRequest = {
-                token : token
-            }
+            
             that.managerRequest.get_safe(Config.externalServer.url + '/api/user?token='+token)
                 .then((request) => {
                     const user = JSON.parse(request._body);
