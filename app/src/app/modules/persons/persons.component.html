@@ -1,7 +1,7 @@
 <div class="component-wrapper fixed-height">
   <h1 id="description-title">{{title}}</h1>
 
-  <app-autocomplete [seachFor]="'name'" [items]="persons" [namespace]="'person'"></app-autocomplete>
+  <app-autocomplete name="search-bar" [seachFor]="'name'" [items]="persons" [namespace]="'person'"></app-autocomplete>
 
   <div scrollLoader class="search-results" [listItems]="persons" (updatePartialTable)="tabPersons = $event">
     <div class="action-links list-items" *ngFor="let person of tabPersons">

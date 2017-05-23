@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer, ViewChild} from '@angular/core';
 import {Conference} from '../../model/conference';
 import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';

@@ -1,5 +1,5 @@
 <h1 id="description-title">
-    <span *ngIf="event.type && event.type.length > 0" >{{event.type}} : </span>{{event.label}}
+    <span *ngIf="event.type && event.type.length > 0">{{event.type}} : </span>{{event.label}}
 </h1>
 
 <h2>Schedule</h2>
@@ -21,6 +21,16 @@
         <md-card>
             <md-icon md-list-avatar>access_time</md-icon>
             <a [routerLink]="['/events-by-location/'+event.location]">{{event.location}}</a>
+        </md-card>
+    </div>
+</div>
+
+<div *ngIf="subEventOf && subEventOf.length > 0">
+    <h2>Sub events</h2>
+    <div class="action-links list-items" *ngFor="let subEvent of subEventOf">
+        <md-card>
+            <md-icon md-list-avatar>place</md-icon>
+            <a [routerLink]="[subEvent.urlToSearch + subEvent.label+'/'+subEvent.id]">{{subEvent.label}}</a>
         </md-card>
     </div>
 </div>

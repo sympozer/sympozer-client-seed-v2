@@ -775,7 +775,30 @@ export class LocalDAOService {
                         " ?id scholary:endDate ?endDate . \n" +
                         "}";
 
-                    console.log(query);
+                    that.launchQuerySparql(query, callback);
+                    break;
+
+                case "getSubEventOfConference":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?subEvent ?type \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:Conference . \n" +
+                        " <" + data.key + "> scholary:hasSubEvent ?subEvent . \n" +
+                        " ?subEvent a ?type . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+
+                case "getLabelById":
+                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?subEvent \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> schema:label ?label . \n" +
+                        "}";
+
                     that.launchQuerySparql(query, callback);
                     break;
                 default:
