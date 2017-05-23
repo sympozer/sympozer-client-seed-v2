@@ -11,10 +11,10 @@
 
     <button md-icon-button [mdMenuTriggerFor]="menu" class="avatar-open">
       <div class="avatar-wrapper">
-        <div *ngIf="!hasLogged">
+        <div *ngIf="!hasLogged || (hasLogged && avatar == null)">
           <img class="avatar" src="./img/placeholder.jpg"/>
         </div>
-        <div *ngIf="hasLogged">
+        <div *ngIf="hasLogged && avatar != null">
           <img class="avatar" src={{avatar}}/>
         </div>
         <md-icon>arrow_drop_down</md-icon>
@@ -39,6 +39,7 @@
       <div *ngIf="hasLogged">
         <button md-menu-item disabled>
           <md-icon>account_circle</md-icon>
+          
           <span>{{username}}</span>
         </button>
         <button (click)="logout()" md-menu-item>
