@@ -11,6 +11,8 @@ export class UserProfileComponent implements OnInit {
 
   @Input()
   user : Object
+  firstname: string
+  lastname: string
   constructor(private apiExternalServer: ApiExternalServer,
               private snackBar: MdSnackBar) { }
 
