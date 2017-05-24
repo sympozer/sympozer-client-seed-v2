@@ -15,8 +15,12 @@ import {RessourceDataset} from '../../services/RessourceDataset';
 export class EventsComponent implements OnInit {
     events;
     title: string = "Events";
-    tabEvents: Array<Object> = new Array();    constructor(private router:Router,
-                private DaoService : LocalDAOService,
+    private mutex: any;
+
+    tabEvents: Array<Object> = new Array();
+
+    constructor(private router: Router,
+                private DaoService: LocalDAOService,
                 private encoder: Encoder,
                 private ressourceDataset: RessourceDataset) {
         this.events = [];
@@ -27,7 +31,7 @@ export class EventsComponent implements OnInit {
             document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
         this.DaoService.query("getAllEvents", null, (results) => {
-            if(results){
+            if (results) {
                 const nodeId = results['?id'];
                 const nodeLabel = results['?label'];
                 const nodeType = results['?type'];
@@ -47,7 +51,7 @@ export class EventsComponent implements OnInit {
                                 return e.id === id;
                             });
 
-                            if(find){
+                            if (find) {
                                 return false;
                             }
 
@@ -58,7 +62,7 @@ export class EventsComponent implements OnInit {
                             });
 
                             that.events.sort((a, b) => {
-                                return a.label.trim() > b.label.trim() ? 1 : -1;
+                                return a.label > b.label ? 1 : -1;
                             });
                         }
                     }

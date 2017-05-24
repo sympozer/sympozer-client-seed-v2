@@ -501,10 +501,11 @@ export class LocalDAOService {
                             " ?id a ?type . \n" +
                             "}";
 
-                        that.launchQuerySparql(query, (results) => {
+                        /*that.launchQuerySparql(query, (results) => {
                             //results['?type'] = {value: type};
                             callback(results);
-                        });
+                        });*/
+                        that.launchQuerySparql(query, callback);
                     }
                     break;
                 case "getEventById":
