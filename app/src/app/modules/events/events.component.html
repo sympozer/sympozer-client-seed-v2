@@ -4,11 +4,11 @@
   <app-autocomplete [seachFor]="'label'" [items]="events" [namespace]="'event'"></app-autocomplete>
 
   <div scrollLoader class="search-results" [listItems]="events" (updatePartialTable)="tabEvents = $event">
-    <div class="action-links list-items" *ngFor="let event of tabEvents">
+    <div class="action-links list-items" *ngFor="let event of events">
       <md-card>
         <md-icon md-list-avatar>event</md-icon>
         <a [routerLink]="['/event/'+event.label+'/'+event.id]">
-          <span class="event-type" *ngIf="event.type && event.type.length > 0">{{event.type}} : </span>
+          <!--<span class="event-type" *ngIf="event.type && event.type.length > 0">{{event.type}} : </span>-->
           {{event.label}}
         </a>
       </md-card>
