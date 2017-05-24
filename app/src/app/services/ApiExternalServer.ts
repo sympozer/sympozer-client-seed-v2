@@ -109,6 +109,7 @@ export class ApiExternalServer {
                         this.sendAvatar(user.photoUrl)
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
+                    that.localStoragexx.store(that.key_localstorage_token, user.token);
                     return resolve(user);
                 })
                 .catch((request) => {
