@@ -727,32 +727,36 @@ export class LocalDAOService {
                     }
                     break;
                 case "getEventByDateDayPerDay":
+                    const localTypesDayPerDay = ["Workshop", "Tutorial", "Session", "Panel"];
                     const originStartDateDayPerDay = moment(data.startDate);
                     const originEndDateDayPerDay = moment(data.endDate);
-                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?id ?label ?startDate ?endDate ?type \n" +
-                        "WHERE {\n" +
-                        " ?id a scholary:Session . \n" +
-                        " ?id schema:label ?label . \n" +
-                        " ?id scholary:startDate ?startDate . \n" +
-                        " ?id scholary:endDate ?endDate . \n" +
-                        "}";
-                    that.launchQuerySparql(query, (results) => {
-                        const nodeStartDate = results['?startDate'];
-                        const nodeEndDate = results['?endDate'];
 
-                        if (nodeStartDate && nodeEndDate) {
-                            const startDate = moment(nodeStartDate.value);
-                            const endDate = moment(nodeEndDate.value);
+                    for (const type of localTypesDayPerDay) {
+                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                            "SELECT DISTINCT ?id ?label ?startDate ?endDate ?type \n" +
+                            "WHERE {\n" +
+                            " ?id a scholary:" + type + " . \n" +
+                            " ?id schema:label ?label . \n" +
+                            " ?id scholary:startDate ?startDate . \n" +
+                            " ?id scholary:endDate ?endDate . \n" +
+                            "}";
+                        that.launchQuerySparql(query, (results) => {
+                            const nodeStartDate = results['?startDate'];
+                            const nodeEndDate = results['?endDate'];
 
-                            //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
-                            if (startDate.isSameOrAfter(originStartDateDayPerDay) && endDate.isSameOrBefore(originEndDateDayPerDay)) {
-                                results['?type'] = {value: 'Session'};
-                                callback(results);
+                            if (nodeStartDate && nodeEndDate) {
+                                const startDate = moment(nodeStartDate.value);
+                                const endDate = moment(nodeEndDate.value);
+
+                                //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
+                                if (startDate.isSameOrAfter(originStartDateDayPerDay) && endDate.isSameOrBefore(originEndDateDayPerDay)) {
+                                    results['?type'] = {value: type};
+                                    callback(results);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                     break;
                 case "getEventFromPublication":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +

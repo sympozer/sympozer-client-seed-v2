@@ -108,7 +108,7 @@ export class EventsByDate implements OnInit {
                                              });*/
 
                                             that.schedules.sort((a, b) => {
-                                                return a.compare.isAfter(b.compare);
+                                                return a.compare.isAfter(b.compare) ? 1 : -1;
                                                 //return a.compare > b.beginStartDate ? 1 : -1;
                                             });
                                         }
