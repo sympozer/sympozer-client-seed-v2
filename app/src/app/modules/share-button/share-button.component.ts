@@ -11,12 +11,13 @@ import {routerTransition} from '../../app.router.animation';
 })
 export class Share {
     url: string;
-
+    urlShare: string
     constructor(private router: Router,
                 private route: ActivatedRoute) {
     }
 
     setRoute() {
         this.url = window.location.href;
+
     }
 }

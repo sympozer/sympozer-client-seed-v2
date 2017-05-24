@@ -28,9 +28,10 @@ import {ToolsComponent} from './modules/tools/tools.component';
 import {EventsByDate} from './modules/events-by-date/events-by-date';
 import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
 import {LoginComponent} from './modules/login/login.component';
-import { SignupComponent } from './modules/signup/signup.component';
+import {SignupComponent} from './modules/signup/signup.component';
 import {ConferenceComponent} from './modules/conference/conference.component';
 import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
+import {UserProfileComponent} from './modules/user-profile/user-profile.component';
 
 const appRoutes: Routes = [
     {
@@ -145,6 +146,10 @@ const appRoutes: Routes = [
     {
         path: 'signup',
         component: SignupComponent
+    },
+    {
+        path: 'profile',
+        component: UserProfileComponent
     },
     {
         path: 'externPublication/:name/:id',

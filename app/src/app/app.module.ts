@@ -63,6 +63,7 @@ import { Angulartics2Module, Angulartics2Piwik } from 'angulartics2';
 import {ToolsService} from './services/tools.service';
 import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
 import { SignupComponent } from './modules/signup/signup.component';
+import { UserProfileComponent } from './modules/user-profile/user-profile.component';
 
 const routes: Routes = [];
 
@@ -107,6 +108,7 @@ const routes: Routes = [];
         ConferenceComponent,
         PublicationsByKeyword,
         SignupComponent,
+        UserProfileComponent,
     ],
     imports: [
         BrowserModule,
