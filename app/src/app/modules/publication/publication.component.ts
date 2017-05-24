@@ -10,6 +10,7 @@ import {routerTransition} from '../../app.router.animation';
 
 import { Subscription } from 'rxjs/Subscription';
 import * as moment from 'moment';
+import {TimeManager} from "../../services/timeManager.service";
 
 @Component({
     selector: 'app-publication',
@@ -167,28 +168,7 @@ export class PublicationComponent implements OnInit {
                                                startDate = moment(startDate);
                                                endDate = moment(endDate);
 
-                                               const duration = moment.duration(endDate.diff(startDate));
-
-                                               var hours = parseInt(duration.asHours().toString());
-                                               var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
-
-                                               let strDuration = "";
-                                               if (hours > 0) {
-                                                   if (hours < 2) {
-                                                       strDuration = hours + " hour and ";
-                                                   }
-                                                   else {
-                                                       strDuration = hours + " hours and ";
-                                                   }
-                                               }
-                                               if (minutes > 0) {
-                                                   if (minutes < 2) {
-                                                       strDuration += minutes + " minute";
-                                                   }
-                                                   else {
-                                                       strDuration += minutes + " minutes";
-                                                   }
-                                               }
+                                               const strDuration = TimeManager.startAndEndTimeToString(startDate, endDate);
 
                                                that.talk = {
                                                    label: label,

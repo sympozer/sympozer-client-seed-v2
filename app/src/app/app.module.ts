@@ -53,6 +53,7 @@ import {ManagerRequest} from './services/ManagerRequest';
 import {ApiExternalServer} from './services/ApiExternalServer';
 import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
+import {TimeManager} from './services/timeManager.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
 import {ConferenceComponent} from './modules/conference/conference.component';
@@ -62,6 +63,7 @@ import { Angulartics2Module, Angulartics2Piwik } from 'angulartics2';
 import {ToolsService} from './services/tools.service';
 import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
 import { SignupComponent } from './modules/signup/signup.component';
+import { UserProfileComponent } from './modules/user-profile/user-profile.component';
 
 const routes: Routes = [];
 
@@ -106,6 +108,7 @@ const routes: Routes = [];
         ConferenceComponent,
         PublicationsByKeyword,
         SignupComponent,
+        UserProfileComponent,
     ],
     imports: [
         BrowserModule,
@@ -134,7 +137,8 @@ const routes: Routes = [];
         RessourceDataset,
         ApiExternalServer,
         VoteService,
-        ToolsService
+        ToolsService,
+        TimeManager,
     ],
     bootstrap: [AppComponent]
 })

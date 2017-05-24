@@ -58,7 +58,7 @@ export class EventsComponent implements OnInit {
                             });
 
                             that.events.sort((a, b) => {
-                                return a.label > b.label ? 1 : -1;
+                                return a.label.trim() > b.label.trim() ? 1 : -1;
                             });
                         }
                     }

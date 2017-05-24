@@ -5,6 +5,7 @@ import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 
 import * as moment from 'moment';
+import {TimeManager} from "../../services/timeManager.service";
 
 @Component({
     selector: 'app-events-by-location',
@@ -53,18 +54,7 @@ export class EventsByLocationComponent implements OnInit {
                                 const momentEndDate = moment(endDate);
 
                                 if (momentEndDate && momentStartDate) {
-                                    const duration = moment.duration(momentEndDate.diff(momentStartDate));
-
-                                    var hours = parseInt(duration.asHours().toString());
-                                    var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
-
-                                    let strDuration = "";
-                                    if (hours > 0) {
-                                        strDuration = hours + " hours ";
-                                    }
-                                    if (minutes > 0) {
-                                        strDuration += "and " + minutes + " minutes";
-                                    }
+                                    const strDuration = TimeManager.startAndEndTimeToString(momentStartDate, momentEndDate);
 
                                     const find = that.eventsLocation.find((e) => {
                                        return e.id === id;

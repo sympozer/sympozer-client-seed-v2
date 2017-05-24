@@ -6,6 +6,7 @@ import {routerTransition} from '../../app.router.animation';
 import * as moment from 'moment';
 import {Encoder} from "../../lib/encoder";
 import {RessourceDataset} from '../../services/RessourceDataset';
+import {TimeManager} from '../../services/timeManager.service';
 
 @Component({
     selector: 'eventsbydate',
@@ -41,7 +42,7 @@ export class EventsByDate implements OnInit {
                 end = moment(end.format());
 
                 if (momentStartDate) {
-                    that.DaoService.query("getEventByDate", {
+                    that.DaoService.query("getEventByDateDayPerDay", {
                         startDate: momentStartDate,
                         endDate: end,
                     }, (results) => {
@@ -67,18 +68,7 @@ export class EventsByDate implements OnInit {
                                         const momentEndDate = moment(endDate);
 
                                         if (momentEndDate && momentStartDate) {
-                                            const duration = moment.duration(momentEndDate.diff(momentStartDate));
-
-                                            var hours = parseInt(duration.asHours().toString());
-                                            var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
-
-                                            let strDuration = "";
-                                            if (hours > 0) {
-                                                strDuration = hours + " hours and ";
-                                            }
-                                            if (minutes > 0) {
-                                                strDuration += minutes + " minutes";
-                                            }
+                                            const strDuration = TimeManager.startAndEndTimeToString(momentStartDate, momentEndDate);
 
                                             //On récup le type dans l'URI
                                             type = that.ressourceDataset.extractType(type, label);
@@ -90,6 +80,7 @@ export class EventsByDate implements OnInit {
                                                 duration: strDuration,
                                                 dateForSort: momentStartDate.format(),
                                                 type: type,
+                                                compare: momentStartDate,
                                             });
 
                                             /*that.schedules.sort((a, b) => {
@@ -97,6 +88,11 @@ export class EventsByDate implements OnInit {
                                              const momentB = moment(b.dateForSort);
                                              return momentA.isSameOrAfter(momentB) ? 1 : -1;
                                              });*/
+
+                                            that.schedules.sort((a, b) => {
+                                                return a.compare.isAfter(b.compare) ? 1 : -1;
+                                                //return a.compare > b.beginStartDate ? 1 : -1;
+                                            });
                                         }
                                     }
                                 }
