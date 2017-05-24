@@ -92,6 +92,8 @@ export class ConferenceComponent implements OnInit {
                                 duration: strDuration,
                                 location: location,
                             };
+                            if (document.getElementById("page-title-p"))
+                                document.getElementById("page-title-p").innerHTML = label;
                         }
                     }
                 }

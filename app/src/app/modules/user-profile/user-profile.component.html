@@ -1,0 +1,34 @@
+<div class="component-wrapper">
+  <div class="login-wrapper">
+    <md-card class="inscription-card">
+      <div class="header">
+        <h4>Edit your account</h4>
+      </div>
+      <div class="inscription-form">
+        {{firstname}} {{lastname}}
+        <form>
+          <md-input-container>
+            <input #homepage mdInput type="text" placeholder="Home page">
+          </md-input-container>
+
+          <md-input-container>
+            <input #photo mdInput type="text" placeholder="Photo url">
+          </md-input-container>
+
+          <md-icon><i class="fa fa-twitter"></i></md-icon>
+          <md-input-container>
+            <input #tweeter mdInput type="text" placeholder="Tweeter url">
+          </md-input-container>
+          <md-icon><i class="fa fa-linkedin"></i></md-icon>
+          <md-input-container>
+            <input #linkedin mdInput type="text" placeholder="Linkedin url">
+          </md-input-container>
+
+          <div class="inscription-footer">
+            <button md-button color="primary" (click)="update(homepage.value, photo.value, tweeter.value, linkedin.value)">Update</button>
+          </div>
+        </form>
+      </div>
+    </md-card>
+  </div>
+</div>

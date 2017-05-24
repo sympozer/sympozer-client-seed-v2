@@ -117,7 +117,8 @@ export class EventComponent implements OnInit {
                                 tracks: [],
                                 type: typeIsIntoLabel ? null : type,
                             };
-
+                            if (document.getElementById("page-title-p"))
+                                document.getElementById("page-title-p").innerHTML = label;
                             //On regarde si il y a des sub event of
                             if (nodeIsSubEventOf) {
                                 const subEventOfBase = nodeIsSubEventOf.value;
