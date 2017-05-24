@@ -588,7 +588,7 @@ export class LocalDAOService {
                 case "getTalkById":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type ?location \n" +
+                        "SELECT DISTINCT ?isEventRelatedTo ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type ?location \n" +
                         "WHERE {\n" +
                         " <" + data.key + "> a scholary:Talk . \n" +
                         " <" + data.key + "> schema:label ?label . \n" +
@@ -596,6 +596,7 @@ export class LocalDAOService {
                         " <" + data.key + "> scholary:endDate ?endDate . \n" +
                         " <" + data.key + "> scholary:startDate ?startDate . \n" +
                         " <" + data.key + "> scholary:isSubEventOf ?isSubEventOf . \n" +
+                        " <" + data.key + "> scholary:isEventRelatedTo ?isEventRelatedTo . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
