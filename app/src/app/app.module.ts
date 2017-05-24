@@ -53,6 +53,7 @@ import {ManagerRequest} from './services/ManagerRequest';
 import {ApiExternalServer} from './services/ApiExternalServer';
 import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
+import {TimeManager} from './services/timeManager.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
 import {ConferenceComponent} from './modules/conference/conference.component';
@@ -134,7 +135,8 @@ const routes: Routes = [];
         RessourceDataset,
         ApiExternalServer,
         VoteService,
-        ToolsService
+        ToolsService,
+        TimeManager,
     ],
     bootstrap: [AppComponent]
 })

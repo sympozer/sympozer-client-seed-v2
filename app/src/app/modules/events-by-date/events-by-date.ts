@@ -6,6 +6,7 @@ import {routerTransition} from '../../app.router.animation';
 import * as moment from 'moment';
 import {Encoder} from "../../lib/encoder";
 import {RessourceDataset} from '../../services/RessourceDataset';
+import {TimeManager} from '../../services/timeManager.service';
 
 @Component({
     selector: 'eventsbydate',
@@ -67,26 +68,7 @@ export class EventsByDate implements OnInit {
                                         const momentEndDate = moment(endDate);
 
                                         if (momentEndDate && momentStartDate) {
-                                            const duration = moment.duration(momentEndDate.diff(momentStartDate));
-
-                                            var hours = parseInt(duration.asHours().toString());
-                                            var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
-
-                                            let strDuration = "";
-                                            if (hours > 0) {
-                                                if(hours < 2){
-                                                    strDuration = hours + " hour ";
-                                                }else{
-                                                    strDuration = hours + " hours ";
-                                                }
-                                            }
-                                            if (minutes > 0) {
-                                                if(minutes < 2){
-                                                    strDuration += "and " + minutes + " minute";
-                                                }else{
-                                                    strDuration += "and " + minutes + " minutes";
-                                                }
-                                            }
+                                            const strDuration = TimeManager.startAndEndTimeToString(momentStartDate, momentEndDate);
 
                                             //On récup le type dans l'URI
                                             type = that.ressourceDataset.extractType(type, label);
