@@ -99,7 +99,7 @@ export class ApiExternalServer {
                         return reject("A network error has occured. Please try again later.");
                     }
                     if (!user || !user.token) {
-                        return reject('Erreur lors de la récupération de vos informations');
+                        return reject('Error while retrieving your data. Please try again later.');
                     }
                     if(user.firstname && user.firstname.length > 0){
                         this.sendUsername(user.firstname)
