@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {MdSnackBar} from "@angular/material";
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-user-profile',
@@ -9,12 +10,49 @@ import {MdSnackBar} from "@angular/material";
 })
 export class UserProfileComponent implements OnInit {
 
+  subscriptionHomepage: Subscription;
+  subscriptionPhotoUrl: Subscription;
+  subscriptionTwitter: Subscription;
+  subscriptionLinkedin: Subscription;
+
+
+
   @Input()
   user : Object
   firstname: string
   lastname: string
+  photoUrl: any
+  homepage: any
+  tweeter: any
+  linkedin: any
+
+
   constructor(private apiExternalServer: ApiExternalServer,
-              private snackBar: MdSnackBar) { }
+              private snackBar: MdSnackBar) { 
+
+      this.subscriptionHomepage = this.apiExternalServer.getHomepage().subscribe(homepage => {
+            console.log(homepage) 
+            this.homepage = homepage; 
+        });
+
+      this.subscriptionPhotoUrl = this.apiExternalServer.getAvatar().subscribe(photoUrl => {
+            console.log(photoUrl) 
+            this.photoUrl = photoUrl; 
+        });
+
+      this.subscriptionTwitter = this.apiExternalServer.getTwitter().subscribe(tweeter => {
+            console.log(tweeter) 
+            this.tweeter = tweeter; 
+        });
+
+      this.subscriptionLinkedin = this.apiExternalServer.getLinkedin().subscribe(linkedin => {
+            console.log(linkedin) 
+            this.linkedin = linkedin; 
+        });
+
+
+
+  }
 
   ngOnInit() {
     this.user = new Object()
@@ -28,6 +66,7 @@ export class UserProfileComponent implements OnInit {
           this.snackBar.open("Update successful.", "", {
             duration: 2000,
           });
+          window.history.back()
         })
         .catch((err)=>{
           this.snackBar.open(err, "", {

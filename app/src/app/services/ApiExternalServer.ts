@@ -16,6 +16,10 @@ export class ApiExternalServer {
     private subjectAuthorization = new Subject<any>();
     private subjectUsername = new Subject<any>();
     private subjectAvatar = new Subject<any>();
+    private subjectTwitter = new Subject<any>();
+    private subjectLinkedin = new Subject<any>();
+    private subjectHomepage = new Subject<any>();
+
     private key_localstorage_token = "token_external_ressource_sympozer";
     private key_localstorage_username = "username_external_ressource_sympozer";
     private key_localstorage_avatar = "avatar_external_ressource_sympozer";
@@ -46,8 +50,8 @@ export class ApiExternalServer {
                 token :  token,
                 homepage: homepage,
                 photoUrl : photo,
-                tweeter: tweeter,
-                linkedin: linkedin
+                twitterpage: tweeter,
+                linkedinaccount: linkedin
             }
 
             that.managerRequest.post_safe(Config.externalServer.url + '/api/ressource/person', bodyRequest)
@@ -61,10 +65,14 @@ export class ApiExternalServer {
                     }
 
 
-                    this.sendUsername(user.firstname)
-                    this.sendAvatar(user.photoUrl)
-                    that.localStoragexx.store(that.key_localstorage_username, user.firstname);
-                    that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
+                    if(user.firstname && user.firstname.length > 0){
+                        this.sendUsername(user.firstname)
+                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
+                    }
+                    if(user.photoUrl && user.photoUrl.length > 0){
+                        this.sendAvatar(user.photoUrl)
+                        that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
+                    }
                     return resolve(user);
                 })
                 .catch((request) => {
@@ -142,6 +150,17 @@ export class ApiExternalServer {
                         this.sendAvatar(user.photoUrl)
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
+
+                    if(user.linkedinaccount && user.linkedinaccount.length > 0){
+                        this.sendLinkedin(user.linkedinaccount)
+                    }
+                    if(user.twitterpage && user.twitterpage.length > 0){
+                        this.sendTweeter(user.twitterpage)
+                    }
+                    if(user.homepage && user.homepage.length > 0){
+                        this.sendHomepage(user.homepage)
+                    }
+                    this.sendLoginStatus(true)
                     //that.localStoragexx.store(that.key_localstorage_token, user.token);
                     return resolve(user);
                 })
@@ -292,6 +311,75 @@ export class ApiExternalServer {
      */
     getAvatar(): Observable<any> {
         return this.subjectAvatar.asObservable();
+    }
+
+    /**
+     * Send to all subscribers Twitter status
+     * @param message
+     */
+    sendTweeter(Twitter: string) {
+        this.subjectTwitter.next(Twitter);
+    }
+
+    /**
+     * Clear the Twitter status
+     */
+    clearTwitter() {
+        this.subjectTwitter.next();
+    }
+
+    /**
+     * Retrieve the Twitter status
+     * @returns {Observable<any>}
+     */
+    getTwitter(): Observable<any> {
+        return this.subjectTwitter.asObservable();
+    }
+
+    /**
+     * Send to all subscribers Linkedin status
+     * @param message
+     */
+    sendLinkedin(Linkedin: string) {
+        this.subjectLinkedin.next(Linkedin);
+    }
+
+    /**
+     * Clear the Linkedin status
+     */
+    clearLinkedin() {
+        this.subjectLinkedin.next();
+    }
+
+    /**
+     * Retrieve the Linkedin status
+     * @returns {Observable<any>}
+     */
+    getLinkedin(): Observable<any> {
+        return this.subjectLinkedin.asObservable();
+    }
+
+    /**
+     * Send to all subscribers Homepage status
+     * @param message
+     */
+    sendHomepage(Homepage: string) {
+        this.subjectHomepage.next(Homepage);
+    }
+
+    /**
+     * Clear the Homepage status
+     */
+    clearHomepage() {
+        this.subjectHomepage.next();
+    }
+
+    /**
+     * Retrieve the Homepage status
+     * @returns {Observable<any>}
+     */
+    getHomepage(): Observable<any> {
+        return this.subjectHomepage.asObservable();
     }
 
 
