@@ -437,6 +437,49 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
+
+                case "getFirstAuthorLinkPublication":
+                    query =
+                        "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?id \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:InProceedings . \n" +
+                        " <" + data.key + "> scholary:hasAuthorList ?firstAuthorList . \n" +
+                        " ?firstAuthorList scholary:hasFirstItem ?id . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+
+                case "getNextAuthorLinkPublication":
+                    query =
+                        "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?id \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:ListItem . \n" +
+                        " <" + data.key + "> scholary:next ?id . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+
+                case "getIdPersonByAuthorListItem":
+                    query =
+                        "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?id \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:ListItem . \n" +
+                        " <" + data.key + "> scholary:hasContent ?id . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getPublicationLink":
                     query =
                         "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
