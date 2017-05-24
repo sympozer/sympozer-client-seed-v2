@@ -220,6 +220,7 @@ export class LocalDAOService {
         //Returning an object with the appropriate methods
         const that = this;
         const types = ["Panel", "Session", 'Talk', 'Tutorial', 'Workshop', 'Track', 'Conference'];
+        const noAcademicEventTypes = ["Meal", "SocialEvent", "Break"];
         if (that.useJsonld && that.store && callback) {
             let query;
             switch (command) {
@@ -487,12 +488,9 @@ export class LocalDAOService {
                 case "getEventLink":
                     return this.eventLinkMap[data.key];
                 case "getAllEvents":
-                    const localType = ["workshop", "tutorial", "session", "panel"];
-                    for (const type of types) {
-                        let t = type.toLowerCase();
-                        if (!that.arrayIncludes(localType, t)) {
-                            continue;
-                        }
+                    const localType = ["Workshop", "Tutorial", "Session", "Panel"];
+                    const allTypesAllEvents = localType.concat(noAcademicEventTypes);
+                    for (const type of allTypesAllEvents) {
 
                         query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                             "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
@@ -500,10 +498,11 @@ export class LocalDAOService {
                             "WHERE {\n" +
                             " ?id a scholary:" + type + " . \n" +
                             " ?id schema:label ?label . \n" +
+                            " ?id a ?type . \n" +
                             "}";
 
                         that.launchQuerySparql(query, (results) => {
-                            results['?type'] = {value: type};
+                            //results['?type'] = {value: type};
                             callback(results);
                         });
                     }
@@ -731,7 +730,8 @@ export class LocalDAOService {
                     const originStartDateDayPerDay = moment(data.startDate);
                     const originEndDateDayPerDay = moment(data.endDate);
 
-                    for (const type of localTypesDayPerDay) {
+                    const allTypesEventByDateDayPerDay = localTypesDayPerDay.concat(noAcademicEventTypes);
+                    for (const type of allTypesEventByDateDayPerDay) {
                         query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                             "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                             "SELECT DISTINCT ?id ?label ?startDate ?endDate ?type \n" +
@@ -806,7 +806,8 @@ export class LocalDAOService {
                     break;
                 case "getEventByLocation":
                     const localTypesEventByLocation = ["Workshop", "Tutorial", "Session", "Panel"];
-                    for (const type of localTypesEventByLocation) {
+                    const allTypesEventByLocation = localTypesEventByLocation.concat(noAcademicEventTypes);
+                    for (const type of allTypesEventByLocation) {
                         query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                             "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                             "SELECT DISTINCT ?label ?id ?startDate ?endDate \n" +
