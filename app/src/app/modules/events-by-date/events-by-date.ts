@@ -41,7 +41,7 @@ export class EventsByDate implements OnInit {
                 end = moment(end.format());
 
                 if (momentStartDate) {
-                    that.DaoService.query("getEventByDate", {
+                    that.DaoService.query("getEventByDateDayPerDay", {
                         startDate: momentStartDate,
                         endDate: end,
                     }, (results) => {
@@ -74,10 +74,18 @@ export class EventsByDate implements OnInit {
 
                                             let strDuration = "";
                                             if (hours > 0) {
-                                                strDuration = hours + " hours and ";
+                                                if(hours < 2){
+                                                    strDuration = hours + " hour ";
+                                                }else{
+                                                    strDuration = hours + " hours ";
+                                                }
                                             }
                                             if (minutes > 0) {
-                                                strDuration += minutes + " minutes";
+                                                if(minutes < 2){
+                                                    strDuration += "and " + minutes + " minute";
+                                                }else{
+                                                    strDuration += "and " + minutes + " minutes";
+                                                }
                                             }
 
                                             //On récup le type dans l'URI
@@ -90,6 +98,7 @@ export class EventsByDate implements OnInit {
                                                 duration: strDuration,
                                                 dateForSort: momentStartDate.format(),
                                                 type: type,
+                                                compare: momentStartDate,
                                             });
 
                                             /*that.schedules.sort((a, b) => {
@@ -97,6 +106,11 @@ export class EventsByDate implements OnInit {
                                              const momentB = moment(b.dateForSort);
                                              return momentA.isSameOrAfter(momentB) ? 1 : -1;
                                              });*/
+
+                                            that.schedules.sort((a, b) => {
+                                                return a.compare.isAfter(b.compare);
+                                                //return a.compare > b.beginStartDate ? 1 : -1;
+                                            });
                                         }
                                     }
                                 }

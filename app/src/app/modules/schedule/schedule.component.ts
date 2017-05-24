@@ -45,13 +45,16 @@ export class ScheduleComponent implements OnInit {
                                 return false;
                             }
 
+                            console.log(beginStartDate.format(), beginStartDate.format('LL'));
                             that.dayPerDay = that.dayPerDay.concat({
                                 date: beginStartDate.format(),
                                 showDate: beginStartDate.format('LL'),
+                                compare: startDate,
                             });
 
                             that.dayPerDay.sort((a, b) => {
-                                return a.showDate > b.showDate ? 1 : -1;
+                                return a.compare.isAfter(b.compare);
+                                //return a.compare > b.beginStartDate ? 1 : -1;
                             });
                         }
                     }

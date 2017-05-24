@@ -60,10 +60,18 @@ export class EventsByLocationComponent implements OnInit {
 
                                     let strDuration = "";
                                     if (hours > 0) {
-                                        strDuration = hours + " hours ";
+                                        if(hours < 2){
+                                            strDuration = hours + " hour ";
+                                        }else{
+                                            strDuration = hours + " hours ";
+                                        }
                                     }
                                     if (minutes > 0) {
-                                        strDuration += "and " + minutes + " minutes";
+                                        if(minutes < 2){
+                                            strDuration += "and " + minutes + " minute";
+                                        }else{
+                                            strDuration += "and " + minutes + " minutes";
+                                        }
                                     }
 
                                     const find = that.eventsLocation.find((e) => {
