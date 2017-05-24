@@ -51,7 +51,7 @@ export class EventComponent implements OnInit {
             let id = params['id'];
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
-            this.encodedID = this.encoder.decode(id)
+            this.encodedID = this.encoder.decode(id);
             this.DaoService.query("getEventById", query, (results, err) => {
                 if (results) {
                     const nodeLabel = results['?label'];

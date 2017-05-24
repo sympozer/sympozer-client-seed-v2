@@ -273,6 +273,7 @@ export class PublicationComponent implements OnInit {
                                 let idPerson = nodeIdPerson.value;
 
                                 if (idPerson) {
+                                    const idPersonEncoded = that.encoder.encode(idPerson);
                                     that.DaoService.query("getPerson", {key: idPerson}, (results) => {
                                         if (results) {
                                             const nodeLabel = results['?label'];
@@ -282,7 +283,7 @@ export class PublicationComponent implements OnInit {
 
                                                 if (label) {
                                                     const find = that.authors.find((a) => {
-                                                        return a.id === idAuhtorList;
+                                                        return a.id === idPersonEncoded;
                                                     });
 
                                                     if (find) {
@@ -290,7 +291,7 @@ export class PublicationComponent implements OnInit {
                                                     }
 
                                                     that.authors = that.authors.concat({
-                                                        id: idAuhtorList,
+                                                        id: idPersonEncoded,
                                                         label: label
                                                     });
 
