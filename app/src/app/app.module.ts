@@ -65,6 +65,7 @@ import {PublicationsByKeyword} from './modules/publications-by-keyword/publicati
 import { SignupComponent } from './modules/signup/signup.component';
 import { UserProfileComponent } from './modules/user-profile/user-profile.component';
 
+
 const routes: Routes = [];
 
 @NgModule({
@@ -138,7 +139,7 @@ const routes: Routes = [];
         ApiExternalServer,
         VoteService,
         ToolsService,
-        TimeManager,
+        TimeManager
     ],
     bootstrap: [AppComponent]
 })

@@ -245,12 +245,15 @@ export class ApiExternalServer {
         this.localStoragexx.clear(this.key_localstorage_user)
     }
 
+    getToken(){
+        return this.localStoragexx.retrieve(this.key_localstorage_token)
+    }
+
     /**
      * Send to all subscribers Login status
      * @param message
      */
     sendLoginStatus(status: boolean) {
-        console.log(status)
         this.subjectLogin.next(status);
     }
     /**
@@ -273,7 +276,6 @@ export class ApiExternalServer {
      * @returns {Observable<any>}
      */
     getLoginStatus(): Observable<any> {
-        console.log("requesting status..")
         return this.subjectLogin.asObservable();
     }
 

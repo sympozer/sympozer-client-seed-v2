@@ -7,10 +7,7 @@ import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {LocalStorageService} from 'ng2-webstorage';
-//import {Sha1} from '../../services/sha1'
-
-
-//var sha1 = require('../../services/sha1')
+const sha1 = require('sha-1')
 
 @Component({
     selector: 'login',
@@ -67,14 +64,12 @@ export class LoginComponent implements OnInit {
                         });
                     })
 
-                window.history.back()
-                 console.log(user)
-                
+            
             /**
              * Retrieve the author by the publication
              */
             const that = this
-            let emailSha1 = 'cb6e61ece04f3d3a91c1ed15388beacd6fa1affa'
+            let emailSha1 = sha1('mailto:'+email)
             let query = {'key': emailSha1};
             this.DaoService.query("getPersonBySha", query, (results) => {
                 
@@ -92,16 +87,17 @@ export class LoginComponent implements OnInit {
                     if (!idPerson || !label) {
                         return false;
                     }
-                    console.log("You are " + label)
-                    idPerson = that.encoder.encode(idPerson);
-                    if (!idPerson) {
-                        return false;
-                    }
+                    let username = label.split(' ')
 
-                   
+                    if(username[0] && username[0].length > 0){
+                        this.update(user, username[0], username[1])
+                    }
                 }
             });
-                })
+
+            window.history.back()
+            
+            })
             .catch((err) => {
                 this.snackBar.open(err, "", {
                     duration: 2000,
@@ -117,6 +113,30 @@ export class LoginComponent implements OnInit {
     sendAuthorizationStatus(status : boolean): void {
         // send status to subscribers via observable subject
         this.apiExternalServer.sendAuthorizationVoteStatus(status);
+    }
+
+    /**
+     * Send boolean firstname to all subscribers
+     * @param firstname
+     */
+    sendFirstname(firstname: string): void {
+        this.apiExternalServer.sendUsername(firstname)
+    }
+
+    update(user, firstname, lastname){
+    	console.log(user)
+        if(user && user.firstname !== null){
+        	if(user.firstname !== firstname){
+        		user.firstname = firstname
+	            user.lastname = lastname
+	            this.apiExternalServer.update(user)
+	                .then(()=>{
+	                })
+	                .catch((err)=>{
+	                    console.log(err)
+	                })
+        	}
+        }
     }
 
     
