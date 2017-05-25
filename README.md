@@ -19,9 +19,9 @@ then run :
 
 `ng serve`
 
-## Hack XMLHttpRequest
+## Hack broken dependency
 
-Browse to `node_modules\xmlhttprequest\lib\XMLHttpRequest.js ` and comment the following lines:
+There is a missing dependency in the XMLHttpRequest module, which is itself a dependency of other modules. To solve that, browse to `node_modules/xmlhttprequest/lib/XMLHttpRequest.js` and comment the following lines:
 
 `Line 15- var spawn = require("child_process").spawn; `
 
@@ -38,7 +38,9 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` option for a production build and `-bh` to set up the base hash that will be included in the index.html file (see examples in `app/package.json` file).
+
+In case you define commands in the `app/package.json`, run them with `npm run <commandName>`.
 
 ## Running unit tests
 
