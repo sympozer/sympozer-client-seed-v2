@@ -436,6 +436,49 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
+
+                case "getFirstAuthorLinkPublication":
+                    query =
+                        "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?id \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:InProceedings . \n" +
+                        " <" + data.key + "> scholary:hasAuthorList ?firstAuthorList . \n" +
+                        " ?firstAuthorList scholary:hasFirstItem ?id . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+
+                case "getNextAuthorLinkPublication":
+                    query =
+                        "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?id \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:ListItem . \n" +
+                        " <" + data.key + "> scholary:next ?id . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
+
+                case "getIdPersonByAuthorListItem":
+                    query =
+                        "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
+                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?id \n" +
+                        "WHERE {\n" +
+                        " <" + data.key + "> a scholary:ListItem . \n" +
+                        " <" + data.key + "> scholary:hasContent ?id . \n" +
+                        "}";
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case "getPublicationLink":
                     query =
                         "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
@@ -500,10 +543,11 @@ export class LocalDAOService {
                             " ?id a ?type . \n" +
                             "}";
 
-                        that.launchQuerySparql(query, (results) => {
+                        /*that.launchQuerySparql(query, (results) => {
                             //results['?type'] = {value: type};
                             callback(results);
-                        });
+                        });*/
+                        that.launchQuerySparql(query, callback);
                     }
                     break;
                 case "getEventById":
@@ -543,7 +587,7 @@ export class LocalDAOService {
                 case "getTalkById":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type ?location \n" +
+                        "SELECT DISTINCT ?isEventRelatedTo ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type ?location \n" +
                         "WHERE {\n" +
                         " <" + data.key + "> a scholary:Talk . \n" +
                         " <" + data.key + "> schema:label ?label . \n" +
@@ -551,6 +595,7 @@ export class LocalDAOService {
                         " <" + data.key + "> scholary:endDate ?endDate . \n" +
                         " <" + data.key + "> scholary:startDate ?startDate . \n" +
                         " <" + data.key + "> scholary:isSubEventOf ?isSubEventOf . \n" +
+                        " <" + data.key + "> scholary:isEventRelatedTo ?isEventRelatedTo . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
