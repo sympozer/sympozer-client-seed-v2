@@ -8,7 +8,6 @@
     "buildprod": "ng build --prod --aot --bh /eswc2017/",
     "buildtest": "ng build --prod --aot --bh /eswc2017_test/",
     "buildbeta": "ng build --prod --aot --bh /eswc2017_beta/",
-    "buildprod": "ng build --prod --aot --bh /eswc2017/",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update",
