@@ -14,7 +14,7 @@
 
     <p>Periodically (but not too often), you can update the conference dataset in the Tools menu item.</p>
 
-	<p>You can create an account on our server, to enrich your data in the app, as well as to be able to vote for best poster and demo.</p>
+	<p>You can create an account on our server to enrich your data in the app, as well as to be able to participate in the vote.</p>
 
     <h3>How it works</h3>
 
@@ -23,7 +23,9 @@
       <li>Its core engine is based on RDF data (instead of JSON), internally served using the <a
            href="https://github.com/linkeddata/rdflib.js/">rdflib.js</a> library. Feel free to open the console and
         watch
-        the app sending SPARQL requests to the store. The conference dataset has been issued using <a
+        the app sending SPARQL requests to the store.</li>
+		<li>The conference dataset now follows the <a
+             href="https://scholarlydata.org/">ScholarlyData</a> ontology and has been issued using <a
              href="https://github.com/anuzzolese/cLODg2">cLODg</a> (conference Linked Open Data generator) V2.
       </li>
       <li>It fully runs on the client side, and relies on the <a href="https://angular.io/">Angular 2</a> JavaScript
