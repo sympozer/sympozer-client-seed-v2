@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, NgModule } from '@angular/core';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {MdSnackBar} from "@angular/material";
 import { Subscription } from 'rxjs/Subscription';
+import {LocalStorageService} from 'ng2-webstorage';
 
 @Component({
   selector: 'app-user-profile',
@@ -9,59 +10,49 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-
+  logSubscription: Subscription;
   subscriptionHomepage: Subscription;
   subscriptionPhotoUrl: Subscription;
   subscriptionTwitter: Subscription;
   subscriptionLinkedin: Subscription;
+  subscriptionFirstname: Subscription;
+  subscriptionLastname: Subscription;
 
 
-
-  @Input()
-  user : Object
-  firstname: string
-  lastname: string
-  photoUrl: any
-  homepage: any
-  tweeter: any
-  linkedin: any
-
+  hasLogged: any
+  user
+  private key_localstorage_user = "user_external_ressource_sympozer"
 
   constructor(private apiExternalServer: ApiExternalServer,
-              private snackBar: MdSnackBar) { 
-
-      this.subscriptionHomepage = this.apiExternalServer.getHomepage().subscribe(homepage => {
-            console.log(homepage) 
-            this.homepage = homepage; 
-        });
-
-      this.subscriptionPhotoUrl = this.apiExternalServer.getAvatar().subscribe(photoUrl => {
-            console.log(photoUrl) 
-            this.photoUrl = photoUrl; 
-        });
-
-      this.subscriptionTwitter = this.apiExternalServer.getTwitter().subscribe(tweeter => {
-            console.log(tweeter) 
-            this.tweeter = tweeter; 
-        });
-
-      this.subscriptionLinkedin = this.apiExternalServer.getLinkedin().subscribe(linkedin => {
-            console.log(linkedin) 
-            this.linkedin = linkedin; 
-        });
-
-
-
+              private snackBar: MdSnackBar,
+              private localStoragexx: LocalStorageService) { 
+      this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
+          console.log(status)
+          this.hasLogged = status;
+          if(!this.hasLogged){
+            let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
+            window.location.replace(urlHost+'#/home');
+          }
+          console.log(status)
+          
+      });
   }
 
   ngOnInit() {
-    this.user = new Object()
-
+    this.user = this.localStoragexx.retrieve(this.key_localstorage_user)
+    console.log(this.user)
+    if(this.user){
+      this.user = JSON.parse(this.user)
+      console.log(this.user)
+    }
+    console.log(this.hasLogged)
+     
   }
 
-  update(homepage, photo, tweeter, linkedin){
-    console.log(homepage + " " + photo + " " + tweeter + " " + linkedin)
-    this.apiExternalServer.update(homepage, photo, tweeter, linkedin)
+  update(user){
+    console.log(user)
+
+    this.apiExternalServer.update(user)
         .then((status)=>{
           this.snackBar.open("Update successful.", "", {
             duration: 2000,

@@ -51,7 +51,7 @@ export class EventComponent implements OnInit {
             let id = params['id'];
             let name = params['name'];
             let query = {'key': this.encoder.decode(id)};
-            this.encodedID = this.encoder.decode(id)
+            this.encodedID = this.encoder.decode(id);
             this.DaoService.query("getEventById", query, (results, err) => {
                 if (results) {
                     const nodeLabel = results['?label'];
@@ -151,9 +151,11 @@ export class EventComponent implements OnInit {
                                     that.DaoService.query("getTalkById", {key: hasSubEvent}, (results) => {
                                         if(results){
                                             const nodeLabel = results['?label'];
+                                            const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
 
-                                            if(nodeLabel){
+                                            if(nodeLabel && nodeIsEventRelatedTo){
                                                 const label = nodeLabel.value;
+                                                const isEventRelatedTo = nodeIsEventRelatedTo.value;
                                                 if(label){
                                                     that.mutex
                                                         .acquire()
@@ -165,11 +167,16 @@ export class EventComponent implements OnInit {
 
                                                             if (!find) {
                                                                 const idEncode = that.encoder.encode(hasSubEvent);
+                                                                const isEventRelatedToEncoded = that.encoder.encode(isEventRelatedTo);
 
                                                                 that.hasSubEvent = that.hasSubEvent.concat({
-                                                                    id: idEncode,
+                                                                    id: isEventRelatedToEncoded,
                                                                     label: label,
                                                                     idCompare: hasSubEvent,
+                                                                });
+
+                                                                that.hasSubEvent.sort((a, b) => {
+                                                                    return a.label > b.label ? 1 : -1;
                                                                 });
                                                             }
 

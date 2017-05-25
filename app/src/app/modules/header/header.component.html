@@ -37,9 +37,8 @@
         </button>
       </div>
       <div *ngIf="hasLogged">
-        <button md-menu-item disabled>
+        <button [routerLink]="['/profile/']" md-menu-item>
           <md-icon>account_circle</md-icon>
-          
           <span>{{username}}</span>
         </button>
         <button (click)="logout()" md-menu-item>

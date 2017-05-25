@@ -8,7 +8,7 @@ import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 
-import { Subscription } from 'rxjs/Subscription';
+import {Subscription} from 'rxjs/Subscription';
 import * as moment from 'moment';
 import {TimeManager} from "../../services/timeManager.service";
 
@@ -78,40 +78,46 @@ export class PublicationComponent implements OnInit {
             /**
              * Retrieve the author by the publication
              */
-            this.DaoService.query("getAuthorLinkPublication", query, (results) => {
-                console.log('getAuthorLinkPublication : ', results);
+            /*this.DaoService.query("getAuthorLinkPublication", query, (results) => {
+             console.log('getAuthorLinkPublication : ', results);
+             if (results) {
+             const nodeIdPerson = results['?idPerson'];
+             const nodeLabel = results['?label'];
+
+             if (!nodeIdPerson || !nodeLabel) {
+             return false;
+             }
+
+             let idPerson = nodeIdPerson.value;
+             const label = nodeLabel.value;
+
+             if (!idPerson || !label) {
+             return false;
+             }
+
+             idPerson = that.encoder.encode(idPerson);
+             if (!idPerson) {
+             return false;
+             }
+
+             const find = that.authors.find((a) => {
+             return a.id === idPerson;
+             });
+
+             if(find){
+             return false;
+             }
+
+             that.authors.push({
+             id: idPerson,
+             label: label,
+             });
+             }
+             });*/
+
+            this.DaoService.query("getFirstAuthorLinkPublication", query, (results) => {
                 if (results) {
-                    const nodeIdPerson = results['?idPerson'];
-                    const nodeLabel = results['?label'];
-
-                    if (!nodeIdPerson || !nodeLabel) {
-                        return false;
-                    }
-
-                    let idPerson = nodeIdPerson.value;
-                    const label = nodeLabel.value;
-
-                    if (!idPerson || !label) {
-                        return false;
-                    }
-
-                    idPerson = that.encoder.encode(idPerson);
-                    if (!idPerson) {
-                        return false;
-                    }
-
-                    const find = that.authors.find((a) => {
-                        return a.id === idPerson;
-                    });
-
-                    if(find){
-                        return false;
-                    }
-
-                    that.authors.push({
-                        id: idPerson,
-                        label: label,
-                    });
+                    that.authorlistitem(results);
                 }
             });
 
@@ -119,68 +125,68 @@ export class PublicationComponent implements OnInit {
              * Retrieve the event from the publication
              */
             that.DaoService.query("getEventFromPublication", query, (results) => {
-                if(results){
+                if (results) {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
                     const nodeType = results['?type'];
 
-                    if(nodeId && nodeLabel && nodeType){
+                    if (nodeId && nodeLabel && nodeType) {
                         let idBase = nodeId.value;
                         const label = nodeLabel.value;
                         let type = nodeType.value;
 
-                        if(idBase && label){
+                        if (idBase && label) {
                             const id = that.encoder.encode(idBase);
-                            if(id){
+                            if (id) {
 
                                 const find = that.events.find((e) => {
-                                    return e.id ===id;
+                                    return e.id === id;
                                 });
 
-                                if(find){
+                                if (find) {
                                     return false;
                                 }
 
                                 //On va chercher les infos du Talk
                                 that.DaoService.query("getTalkById", {key: idBase}, (results) => {
                                     console.log('results talk : ', results);
-                                   if(results){
-                                       const nodeLabel = results['?label'];
-                                       const nodeDescription = results['?description'];
-                                       const nodeEndDate = results['?endDate'];
-                                       const nodeStartDate = results['?startDate'];
-                                       const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
-                                       const nodeIsSubEventOf = results['?isSubEventOf'];
-                                       const nodeLocation = results['?location'];
+                                    if (results) {
+                                        const nodeLabel = results['?label'];
+                                        const nodeDescription = results['?description'];
+                                        const nodeEndDate = results['?endDate'];
+                                        const nodeStartDate = results['?startDate'];
+                                        const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
+                                        const nodeIsSubEventOf = results['?isSubEventOf'];
+                                        const nodeLocation = results['?location'];
 
-                                       if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate) {
-                                           const label = nodeLabel.value;
-                                           const description = nodeDescription.value;
-                                           let endDate = nodeEndDate.value;
-                                           let startDate = nodeStartDate.value;
+                                        if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate) {
+                                            const label = nodeLabel.value;
+                                            const description = nodeDescription.value;
+                                            let endDate = nodeEndDate.value;
+                                            let startDate = nodeStartDate.value;
 
-                                           let location = null;
-                                           if (nodeLocation) {
-                                               location = nodeLocation.value;
-                                           }
+                                            let location = null;
+                                            if (nodeLocation) {
+                                                location = nodeLocation.value;
+                                            }
 
-                                           if (label && description && endDate && startDate) {
-                                               startDate = moment(startDate);
-                                               endDate = moment(endDate);
+                                            if (label && description && endDate && startDate) {
+                                                startDate = moment(startDate);
+                                                endDate = moment(endDate);
 
-                                               const strDuration = TimeManager.startAndEndTimeToString(startDate, endDate);
+                                                const strDuration = TimeManager.startAndEndTimeToString(startDate, endDate);
 
-                                               that.talk = {
-                                                   label: label,
-                                                   description: description,
-                                                   startsAt: startDate.format('LLLL'),
-                                                   endsAt: endDate.format('LLLL'),
-                                                   duration: strDuration,
-                                                   location: location,
-                                               };
-                                           }
-                                       }
-                                   }
+                                                that.talk = {
+                                                    label: label,
+                                                    description: description,
+                                                    startsAt: startDate.format('LLLL'),
+                                                    endsAt: endDate.format('LLLL'),
+                                                    duration: strDuration,
+                                                    location: location,
+                                                };
+                                            }
+                                        }
+                                    }
                                 });
                                 that.events = that.events.concat({
                                     id: id,
@@ -202,41 +208,41 @@ export class PublicationComponent implements OnInit {
              */
             that.DaoService.query("getPublicationTrack", query, (results) => {
                 console.log(results);
-               if(results){
-                   const nodeLabel = results['?label'];
-                   const nodeId = results['?isSubEventOf'];
+                if (results) {
+                    const nodeLabel = results['?label'];
+                    const nodeId = results['?isSubEventOf'];
 
-                   if(nodeLabel && nodeId){
-                       const label = nodeLabel.value;
-                       let id = nodeId.value;
+                    if (nodeLabel && nodeId) {
+                        const label = nodeLabel.value;
+                        let id = nodeId.value;
 
-                       if(label && id){
-                           that.trackId = id;
-                           id = that.encoder.encode(id);
+                        if (label && id) {
+                            that.trackId = id;
+                            id = that.encoder.encode(id);
 
-                           if(id){
-                               that.eventType = id;
-                               that.track = {
-                                   id: id,
-                                   label: label,
-                               };
-                           }
-                       }
-                   }
-               }
+                            if (id) {
+                                that.eventType = id;
+                                that.track = {
+                                    id: id,
+                                    label: label,
+                                };
+                            }
+                        }
+                    }
+                }
             });
 
             /**
              * Retrieve keywords from publication
              */
             that.DaoService.query("getKeywordsFromPublication", query, (results) => {
-                if(results){
+                if (results) {
                     const nodeKeywords = results['?keywords'];
 
-                    if(nodeKeywords){
+                    if (nodeKeywords) {
                         const keyword = nodeKeywords.value;
 
-                        if(keyword && keyword.length > 0){
+                        if (keyword && keyword.length > 0) {
                             that.keywords.push(keyword);
                         }
                     }
@@ -249,4 +255,61 @@ export class PublicationComponent implements OnInit {
              }*/
         });
     }
+
+    authorlistitem = (stream) => {
+        const that = this;
+        if (stream) {
+            const nodeIdAuhtorList = stream['?id'];
+
+            if (nodeIdAuhtorList) {
+                let idAuhtorList = nodeIdAuhtorList.value;
+
+                if (idAuhtorList) {
+                    that.DaoService.query("getIdPersonByAuthorListItem", {key: idAuhtorList}, (results) => {
+                        if (results) {
+                            const nodeIdPerson = results['?id'];
+
+                            if (nodeIdPerson) {
+                                let idPerson = nodeIdPerson.value;
+
+                                if (idPerson) {
+                                    const idPersonEncoded = that.encoder.encode(idPerson);
+                                    that.DaoService.query("getPerson", {key: idPerson}, (results) => {
+                                        if (results) {
+                                            const nodeLabel = results['?label'];
+
+                                            if (nodeLabel) {
+                                                const label = nodeLabel.value;
+
+                                                if (label) {
+                                                    const find = that.authors.find((a) => {
+                                                        return a.id === idPersonEncoded;
+                                                    });
+
+                                                    if (find) {
+                                                        return false;
+                                                    }
+
+                                                    that.authors = that.authors.concat({
+                                                        id: idPersonEncoded,
+                                                        label: label
+                                                    });
+
+                                                    that.DaoService.query("getNextAuthorLinkPublication", {key: idAuhtorList}, (results) => {
+                                                        if(results){
+                                                            that.authorlistitem(results);
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    };
 }

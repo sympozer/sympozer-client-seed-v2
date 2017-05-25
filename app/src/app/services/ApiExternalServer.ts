@@ -15,12 +15,14 @@ export class ApiExternalServer {
     private subjectLogin = new Subject<any>();
     private subjectAuthorization = new Subject<any>();
     private subjectUsername = new Subject<any>();
+    private subjectLastname = new Subject<any>();
     private subjectAvatar = new Subject<any>();
     private subjectTwitter = new Subject<any>();
     private subjectLinkedin = new Subject<any>();
     private subjectHomepage = new Subject<any>();
 
     private key_localstorage_token = "token_external_ressource_sympozer";
+    private key_localstorage_user = "user_external_ressource_sympozer"
     private key_localstorage_username = "username_external_ressource_sympozer";
     private key_localstorage_avatar = "avatar_external_ressource_sympozer";
 
@@ -37,7 +39,7 @@ export class ApiExternalServer {
         return false;
     }
 
-    update(homepage, photo, tweeter, linkedin){
+    update(user){
         return new Promise((resolve, reject) => {
             let token = this.localStoragexx.retrieve(this.key_localstorage_token)
             if (!token || token.length === 0) {
@@ -48,10 +50,11 @@ export class ApiExternalServer {
 
             let bodyRequest = {
                 token :  token,
-                homepage: homepage,
-                photoUrl : photo,
-                twitterpage: tweeter,
-                linkedinaccount: linkedin
+                firstname: user.firstname,
+                homepage: user.homepage,
+                photoUrl : user.photoUrl,
+                twitterpage: user.twitterpage,
+                linkedinaccount: user.linkedinaccount
             }
 
             that.managerRequest.post_safe(Config.externalServer.url + '/api/ressource/person', bodyRequest)
@@ -64,15 +67,18 @@ export class ApiExternalServer {
                         return reject("A network error has occured. Please try again later.");
                     }
 
+                    if(user.error){
+                        return reject(user.error);
+                    }
 
                     if(user.firstname && user.firstname.length > 0){
                         this.sendUsername(user.firstname)
-                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
                     }
                     if(user.photoUrl && user.photoUrl.length > 0){
                         this.sendAvatar(user.photoUrl)
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
+                    that.localStoragexx.store(that.key_localstorage_user, request._body);
                     return resolve(user);
                 })
                 .catch((request) => {
@@ -117,7 +123,21 @@ export class ApiExternalServer {
                         this.sendAvatar(user.photoUrl)
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
+                    if(user.linkedinaccount && user.linkedinaccount.length > 0){
+                        this.sendLinkedin(user.linkedinaccount)
+                    }
+                    if(user.twitterpage && user.twitterpage.length > 0){
+                        this.sendTwitter(user.twitterpage)
+                    }
+                    if(user.homepage && user.homepage.length > 0){
+                        this.sendHomepage(user.homepage)
+                    }
+
+                    if(user.lastname && user.lastname.length > 0){
+                        this.sendLastname(user.lastname)
+                    }
                     that.localStoragexx.store(that.key_localstorage_token, user.token);
+                    that.localStoragexx.store(that.key_localstorage_user, request._body);
                     return resolve(user);
                 })
                 .catch((request) => {
@@ -154,14 +174,19 @@ export class ApiExternalServer {
                     if(user.linkedinaccount && user.linkedinaccount.length > 0){
                         this.sendLinkedin(user.linkedinaccount)
                     }
+
                     if(user.twitterpage && user.twitterpage.length > 0){
-                        this.sendTweeter(user.twitterpage)
+                        this.sendTwitter(user.twitterpage)
                     }
                     if(user.homepage && user.homepage.length > 0){
                         this.sendHomepage(user.homepage)
                     }
+
+                    if(user.lastname && user.lastname.length > 0){
+                        this.sendLastname(user.lastname)
+                    }
                     this.sendLoginStatus(true)
-                    //that.localStoragexx.store(that.key_localstorage_token, user.token);
+                    that.localStoragexx.store(that.key_localstorage_user, request._body);
                     return resolve(user);
                 })
                 .catch((request) => {
@@ -217,6 +242,11 @@ export class ApiExternalServer {
     logoutUser(){
         this.localStoragexx.clear(this.key_localstorage_token)
         this.localStoragexx.clear(this.key_localstorage_username)
+        this.localStoragexx.clear(this.key_localstorage_user)
+    }
+
+    getToken(){
+        return this.localStoragexx.retrieve(this.key_localstorage_token)
     }
 
     /**
@@ -225,6 +255,13 @@ export class ApiExternalServer {
      */
     sendLoginStatus(status: boolean) {
         this.subjectLogin.next(status);
+    }
+    /**
+     * Send boolean status to all subscribers
+     * @param status
+     */
+    sendLoginStatus2(status: boolean): void {
+        this.sendLoginStatus(status)
     }
 
     /**
@@ -317,7 +354,7 @@ export class ApiExternalServer {
      * Send to all subscribers Twitter status
      * @param message
      */
-    sendTweeter(Twitter: string) {
+    sendTwitter(Twitter: string) {
         this.subjectTwitter.next(Twitter);
     }
 
@@ -380,6 +417,29 @@ export class ApiExternalServer {
      */
     getHomepage(): Observable<any> {
         return this.subjectHomepage.asObservable();
+    }
+
+    /**
+     * Send to all subscribers Lastname status
+     * @param message
+     */
+    sendLastname(Lastname: string) {
+        this.subjectLastname.next(Lastname);
+    }
+
+    /**
+     * Clear the Lastname status
+     */
+    clearLastname() {
+        this.subjectLastname.next();
+    }
+
+    /**
+     * Retrieve the Lastname status
+     * @returns {Observable<any>}
+     */
+    getLastname(): Observable<any> {
+        return this.subjectLastname.asObservable();
     }
 
 

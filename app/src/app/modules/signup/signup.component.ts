@@ -33,10 +33,16 @@ export class SignupComponent implements OnInit {
 		const that = this
 	    this.apiExternalServer.signup(email, password, confirmPassword)
 	        .then(() => {
-	            this.snackBar.open("Signing up was successful.", "", {
+	            this.snackBar.open("The account creation request has been accepted by our server.", "", {
 	                duration: 2000,
 	            });
-	            that.router.navigate(['/login'])
+
+	            this.snackBar.open("Please check your email to validate your account.", "", {
+	                duration: 2000,
+	            });
+
+	            let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
+            	window.location.replace(urlHost+'#/login');
 	          
 	        })
 	        .catch((err) => {

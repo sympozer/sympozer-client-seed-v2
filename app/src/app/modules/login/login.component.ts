@@ -5,6 +5,9 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {MdSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
+import {Encoder} from "../../lib/encoder";
+import {LocalStorageService} from 'ng2-webstorage';
+const sha1 = require('sha-1')
 
 @Component({
     selector: 'login',
@@ -18,17 +21,24 @@ export class LoginComponent implements OnInit {
     title: string = "Login";
     username: string = "User"
     toggleLogin = true
-    private key_localstorage_username = "username_external_ressource_sympozer";
+    private key_localstorage_user = "user_external_ressource_sympozer";
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
                 public snackBar: MdSnackBar,
                 private voteService: VoteService,
-                private DaoService: LocalDAOService) {
+                private DaoService: LocalDAOService,
+                private encoder: Encoder,
+                private localStoragexx: LocalStorageService) {
     }
 
     ngOnInit() {
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
+        let user = this.localStoragexx.retrieve(this.key_localstorage_user)
+        if(user !== null){
+            let urlHost = window.location.protocol+'//'+window.location.host
+            window.location.replace(urlHost+'/#/home');
+        }
     }
 
     /**
@@ -42,7 +52,6 @@ export class LoginComponent implements OnInit {
                 this.snackBar.open("Login successful.", "", {
                     duration: 2000,
                 });
-                window.history.back()
                 //window.location.href = 'http://www.google.com';
                 this.voteService.votedPublications()
                     .then(()=>{
@@ -55,9 +64,42 @@ export class LoginComponent implements OnInit {
                         });
                     })
 
-                 console.log(user)
-                 
-                })
+            
+            /**
+             * Retrieve the author by the publication
+             */
+            const that = this
+            let emailSha1 = sha1('mailto:'+email)
+            let query = {'key': emailSha1};
+            this.DaoService.query("getPersonBySha", query, (results) => {
+                
+                if (results) {
+                    const nodeIdPerson = results['?id'];
+                    const nodeLabel = results['?label'];
+
+                    if (!nodeIdPerson || !nodeLabel) {
+                        return false;
+                    }
+
+                    let idPerson = nodeIdPerson.value;
+                    const label = nodeLabel.value;
+
+                    if (!idPerson || !label) {
+                        return false;
+                    }
+                    let username = label.split(' ')
+                    this.snackBar.open("You are recognized as " + label + ".", "", {
+	                    duration: 2000,
+	                });
+                    if(username[0] && username[0].length > 0){
+                        this.update(user, username[0], username[1])
+                    }
+                }
+            });
+
+            window.history.back()
+            
+            })
             .catch((err) => {
                 this.snackBar.open(err, "", {
                     duration: 2000,
@@ -73,6 +115,30 @@ export class LoginComponent implements OnInit {
     sendAuthorizationStatus(status : boolean): void {
         // send status to subscribers via observable subject
         this.apiExternalServer.sendAuthorizationVoteStatus(status);
+    }
+
+    /**
+     * Send boolean firstname to all subscribers
+     * @param firstname
+     */
+    sendFirstname(firstname: string): void {
+        this.apiExternalServer.sendUsername(firstname)
+    }
+
+    update(user, firstname, lastname){
+    	console.log(user)
+        if(user && user.firstname !== null){
+        	if(user.firstname !== firstname){
+        		user.firstname = firstname
+	            user.lastname = lastname
+	            this.apiExternalServer.update(user)
+	                .then(()=>{
+	                })
+	                .catch((err)=>{
+	                    console.log(err)
+	                })
+        	}
+        }
     }
 
     

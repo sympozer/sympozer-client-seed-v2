@@ -4,7 +4,7 @@
       <h4>Sign In</h4>
     </div>
     <div class="inscription-form">
-      <h5> Login with your account </h5>
+      
       <form>
         <md-input-container>
           <input #email mdInput type="email" placeholder="Email">
@@ -17,7 +17,7 @@
         <div class="inscription-footer">
           <button md-button color="primary" (click)="login(email.value, password.value)">Login</button>
           <div class="sign-up">
-            <span>Don’t have an account yet? </span>
+            <p>Don’t have an account yet? </p>
             <a [routerLink]="['/signup/']">Sign up</a>
           </div>
         </div>
