@@ -254,7 +254,6 @@ export class LocalDAOService {
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getPersonBySha":
-                    console.log(data.key)
                     query =
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                         "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +

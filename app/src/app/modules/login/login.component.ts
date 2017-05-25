@@ -5,6 +5,8 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {MdSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
+import {Encoder} from "../../lib/encoder";
+var sha1 = require('../../services/sha1')
 
 @Component({
     selector: 'login',
@@ -23,7 +25,8 @@ export class LoginComponent implements OnInit {
                 private apiExternalServer: ApiExternalServer,
                 public snackBar: MdSnackBar,
                 private voteService: VoteService,
-                private DaoService: LocalDAOService) {
+                private DaoService: LocalDAOService,
+                private encoder: Encoder) {
     }
 
     ngOnInit() {
@@ -56,7 +59,38 @@ export class LoginComponent implements OnInit {
                     })
 
                  console.log(user)
-                 
+                
+            /**
+             * Retrieve the author by the publication
+             */
+            const that = this
+            let emailSha1 = sha1.hash(email)
+            let query = {'key': emailSha1};
+            this.DaoService.query("getPersonBySha", query, (results) => {
+                
+                if (results) {
+                    const nodeIdPerson = results['?id'];
+                    const nodeLabel = results['?label'];
+
+                    if (!nodeIdPerson || !nodeLabel) {
+                        return false;
+                    }
+
+                    let idPerson = nodeIdPerson.value;
+                    const label = nodeLabel.value;
+
+                    if (!idPerson || !label) {
+                        return false;
+                    }
+                    console.log("You are " + label)
+                    idPerson = that.encoder.encode(idPerson);
+                    if (!idPerson) {
+                        return false;
+                    }
+
+                   
+                }
+            });
                 })
             .catch((err) => {
                 this.snackBar.open(err, "", {

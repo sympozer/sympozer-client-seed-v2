@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import {ApiExternalServer} from '../../services/ApiExternalServer';
 
 
 @Component({
@@ -9,16 +7,13 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
-	logSubscription: Subscription;
-	hasLogged: any
-    constructor(private apiExternalServer: ApiExternalServer) {
-    	this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
-            this.hasLogged = status; 
-        });
+	
+    constructor() {
+    	
     }
 
     ngOnInit(): void {
-    	console.log(this.hasLogged)
+    	
     }
 
 
