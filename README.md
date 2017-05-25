@@ -8,7 +8,7 @@ In 2017, the app architecture has been completely refactored:
   * The conference dataset now follows the <a href="http://www.scholarlydata.org/">ScholarlyData</a> ontology and has been issued using <a href="https://github.com/anuzzolese/cLODg2">cLODg</a> (conference Linked Open Data generator) V2.
   * It fully runs on the client side, and relies on the <a href="https://angular.io/">Angular 2</a> JavaScript framework, using Web components and other advances. The design layer uses <a href="https://material.angular.io/">Angular Material</a>.
   * Users can create their account, enrich their personal information and participate in the votes
-  * Admins can get usage data through the Piwik system
+  * Admins can get usage stats through the Piwik system
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.15.
 
