@@ -2,7 +2,7 @@
   <div class="login-wrapper">
     <md-card class="inscription-card">
       <div class="header">
-        <h4>Edit your account</h4>
+        <h4>Enrich your profile</h4>
       </div>
       <div class="inscription-form">
 
@@ -13,6 +13,11 @@
             <input [(ngModel)]="user.firstname" mdInput type="text" name="user.firstname" placeholder="First name">
           </md-input-container>
 
+          <md-icon><i class="fa fa-twitter"></i></md-icon>
+          <md-input-container>
+            <input [(ngModel)]="user.twitterpage" mdInput type="text" name="user.twitterpage" placeholder="Twitter Account">
+          </md-input-container>
+
           <md-input-container>
             <input [(ngModel)]="user.homepage" mdInput type="text" name="user.homepage" placeholder="Home Page">
           </md-input-container>
@@ -20,11 +25,7 @@
           <md-input-container>
             <input [(ngModel)]="user.photoUrl" mdInput type="text" name="user.photoUrl" placeholder="Photo Link">
           </md-input-container>
-
-          <md-icon><i class="fa fa-twitter"></i></md-icon>
-          <md-input-container>
-            <input [(ngModel)]="user.twitterpage" mdInput type="text" name="user.twitterpage" placeholder="Twitter Account">
-          </md-input-container>
+          
           <md-icon><i class="fa fa-linkedin"></i></md-icon>
           <md-input-container>
             <input [(ngModel)]="user.linkedinaccount" mdInput type="text" name="user.linkedinaccount" placeholder="Linkedin Account">
