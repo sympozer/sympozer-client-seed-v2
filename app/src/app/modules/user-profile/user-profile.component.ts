@@ -30,8 +30,8 @@ export class UserProfileComponent implements OnInit {
           console.log(status)
           this.hasLogged = status;
           if(!this.hasLogged){
-            let urlHost = window.location.protocol+'//'+window.location.host
-            window.location.replace(urlHost+'/#/home');
+            let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
+            window.location.replace(urlHost+'#/home');
           }
           console.log(status)
           

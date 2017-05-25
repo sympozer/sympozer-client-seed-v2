@@ -88,7 +88,9 @@ export class LoginComponent implements OnInit {
                         return false;
                     }
                     let username = label.split(' ')
-
+                    this.snackBar.open("You are recognized as " + label + ".", "", {
+	                    duration: 2000,
+	                });
                     if(username[0] && username[0].length > 0){
                         this.update(user, username[0], username[1])
                     }

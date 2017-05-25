@@ -4,16 +4,16 @@
     <img class="avatar" *ngIf="!photoUrl || photoUrl.length <= 0" src="./img/placeholder.jpg"/>
     <div class="info">
       <div class="name"> {{person.name}}</div>
-      <div class="link-info twitter" *ngIf="twitterUrl && twitterUrl.length > 0">
-        <a target="_blank" href="https://twitter.com/{{twitterUrl}}">
-          <md-icon><i class="fa fa-twitter"></i></md-icon>
-          <span>@{{twitterUrl}}</span>
-        </a>
-      </div>
       <div class="link-info twitter" *ngIf="homepage && homepage.length > 0">
         <a target="_blanck" href="{{homepage}}">
           <md-icon><i class="fa fa-globe"></i></md-icon>
           <span>Homepage</span>
+        </a>
+      </div>
+      <div class="link-info twitter" *ngIf="twitterUrl && twitterUrl.length > 0">
+        <a target="_blank" href="https://twitter.com/{{twitterUrl}}">
+          <md-icon><i class="fa fa-twitter"></i></md-icon>
+          <span>@{{twitterUrl}}</span>
         </a>
       </div>
       <div class="link-info linkedin" *ngIf="linkedInUrl && linkedInUrl.length > 0">
