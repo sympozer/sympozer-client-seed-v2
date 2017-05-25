@@ -50,6 +50,7 @@ export class ApiExternalServer {
 
             let bodyRequest = {
                 token :  token,
+                firstname: user.firstname,
                 homepage: user.homepage,
                 photoUrl : user.photoUrl,
                 twitterpage: user.twitterpage,
@@ -241,6 +242,7 @@ export class ApiExternalServer {
     logoutUser(){
         this.localStoragexx.clear(this.key_localstorage_token)
         this.localStoragexx.clear(this.key_localstorage_username)
+        this.localStoragexx.clear(this.key_localstorage_user)
     }
 
     /**

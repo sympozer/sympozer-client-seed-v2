@@ -6,6 +6,9 @@ import {MdSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
+import {LocalStorageService} from 'ng2-webstorage';
+
+
 var sha1 = require('../../services/sha1')
 
 @Component({
@@ -20,18 +23,24 @@ export class LoginComponent implements OnInit {
     title: string = "Login";
     username: string = "User"
     toggleLogin = true
-    private key_localstorage_username = "username_external_ressource_sympozer";
+    private key_localstorage_user = "user_external_ressource_sympozer";
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
                 public snackBar: MdSnackBar,
                 private voteService: VoteService,
                 private DaoService: LocalDAOService,
-                private encoder: Encoder) {
+                private encoder: Encoder,
+                private localStoragexx: LocalStorageService) {
     }
 
     ngOnInit() {
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
+        let user = this.localStoragexx.retrieve(this.key_localstorage_user)
+        if(user !== null){
+            let urlHost = window.location.protocol+'//'+window.location.host
+            window.location.replace(urlHost+'/#/home');
+        }
     }
 
     /**
@@ -45,7 +54,6 @@ export class LoginComponent implements OnInit {
                 this.snackBar.open("Login successful.", "", {
                     duration: 2000,
                 });
-                window.history.back()
                 //window.location.href = 'http://www.google.com';
                 this.voteService.votedPublications()
                     .then(()=>{
@@ -58,6 +66,7 @@ export class LoginComponent implements OnInit {
                         });
                     })
 
+                window.history.back()
                  console.log(user)
                 
             /**
