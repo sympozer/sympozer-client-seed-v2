@@ -36,7 +36,8 @@ export class SignupComponent implements OnInit {
 	            this.snackBar.open("Signing up was successful.", "", {
 	                duration: 2000,
 	            });
-	            that.router.navigate(['/login'])
+	            let urlHost = window.location.protocol+'//'+window.location.host
+            	window.location.replace(urlHost+'/#/login');
 	          
 	        })
 	        .catch((err) => {

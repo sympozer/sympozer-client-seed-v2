@@ -5,9 +5,14 @@
         <h4>Edit your account</h4>
       </div>
       <div class="inscription-form">
-      <h5>{{user.firstname}} {{user.lastname}}</h5>
+
+      <h5><span *ngIf="user.firstname != null">{{user.firstname}}</span><span *ngIf="user.lastname != null">{{user.lastname}}</span></h5>
 
         <form>
+          <md-input-container>
+            <input [(ngModel)]="user.firstname" mdInput type="text" name="user.firstname" placeholder="First name">
+          </md-input-container>
+
           <md-input-container>
             <input [(ngModel)]="user.homepage" mdInput type="text" name="user.homepage" placeholder="Home Page">
           </md-input-container>
