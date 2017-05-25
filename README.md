@@ -5,7 +5,7 @@ Sympozer is a full client side mashup Web application that allows browsing and e
 In 2017, the app architecture has been completely refactored:
 
   * Its core engine is based on RDF data (instead of JSON), internally served using the <a href="https://github.com/linkeddata/rdflib.js/">rdflib.js</a> library. Feel free to open the console and watch the app sending SPARQL requests to the store.
-  * The conference dataset now follows the <a href="https://scholarlydata.org/">ScholarlyData</a> ontology and has been issued using <a href="https://github.com/anuzzolese/cLODg2">cLODg</a> (conference Linked Open Data generator) V2.
+  * The conference dataset now follows the <a href="http://www.scholarlydata.org/">ScholarlyData</a> ontology and has been issued using <a href="https://github.com/anuzzolese/cLODg2">cLODg</a> (conference Linked Open Data generator) V2.
   * It fully runs on the client side, and relies on the <a href="https://angular.io/">Angular 2</a> JavaScript framework, using Web components and other advances. The design layer uses <a href="https://material.angular.io/">Angular Material</a>.
   * Users can create their account, enrich their personal information and participate in the votes
   * Admins can get usage data through the Piwik system
