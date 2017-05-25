@@ -7,9 +7,10 @@ import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {LocalStorageService} from 'ng2-webstorage';
+//import {Sha1} from '../../services/sha1'
 
 
-var sha1 = require('../../services/sha1')
+//var sha1 = require('../../services/sha1')
 
 @Component({
     selector: 'login',
@@ -73,7 +74,7 @@ export class LoginComponent implements OnInit {
              * Retrieve the author by the publication
              */
             const that = this
-            let emailSha1 = sha1.hash(email)
+            let emailSha1 = 'cb6e61ece04f3d3a91c1ed15388beacd6fa1affa'
             let query = {'key': emailSha1};
             this.DaoService.query("getPersonBySha", query, (results) => {
                 
