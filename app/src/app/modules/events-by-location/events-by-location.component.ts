@@ -74,7 +74,8 @@ export class EventsByLocationComponent implements OnInit {
                                     that.eventsLocation.sort((a, b) => {
 										const momentA = moment(a.dateForSort);
 										const momentB = moment(b.dateForSort);
-										return momentA.isAfter(momentB) ? 1 : (momentA.isBefore(momentB) ? -1 : (a.label > b.label ? 1 : -1));
+										return momentA.isSameOrAfter(momentB) ? 1 : -1;
+//                                        return a.label > b.label ? 1 : -1;
                                     });
                                 }
                             }
