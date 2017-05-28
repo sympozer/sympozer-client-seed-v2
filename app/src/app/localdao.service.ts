@@ -701,7 +701,7 @@ export class LocalDAOService {
                                 const endDate = moment(nodeEndDate.value);
 
                                 //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
-                                if (dateStart.isAfter(startDate) && dateEnd.isAfter(endDate)) {
+                                if (startDate.isAfter(dateStart) && dateEnd.isAfter(endDate)) {
                                     results['?type'] = {value: type};
                                     console.log(results);
                                     callback(results);
