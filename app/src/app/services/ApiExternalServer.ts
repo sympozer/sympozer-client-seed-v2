@@ -243,6 +243,7 @@ export class ApiExternalServer {
         this.localStoragexx.clear(this.key_localstorage_token)
         this.localStoragexx.clear(this.key_localstorage_username)
         this.localStoragexx.clear(this.key_localstorage_user)
+        this.localStoragexx.clear(this.key_localstorage_avatar)
     }
 
     getToken(){

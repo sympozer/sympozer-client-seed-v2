@@ -5,6 +5,8 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {MdSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
+import {LocalStorageService} from 'ng2-webstorage';
+
 
 @Component({
   selector: 'signup',
@@ -13,13 +15,22 @@ import {LocalDAOService} from "../../localdao.service";
 })
 export class SignupComponent implements OnInit {
 
-  constructor(private router: Router,
+
+	private key_localstorage_user = "user_external_ressource_sympozer"
+
+  	constructor(private router: Router,
 	            private apiExternalServer: ApiExternalServer,
 	            public snackBar: MdSnackBar,
 	            private voteService: VoteService,
-	            private DaoService: LocalDAOService) { }
+	            private DaoService: LocalDAOService,
+	            private localStoragexx: LocalStorageService) { }
 
 	ngOnInit() {
+		let user = this.localStoragexx.retrieve(this.key_localstorage_user)
+        if(user !== null){
+        	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
+            window.location.replace(urlHost+'#/home');
+        }
 	
 	}
 
@@ -33,12 +44,13 @@ export class SignupComponent implements OnInit {
 		const that = this
 	    this.apiExternalServer.signup(email, password, confirmPassword)
 	        .then(() => {
-	            this.snackBar.open("The account creation request has been accepted by our server.", "", {
-	                duration: 2000,
+	            
+	        	this.snackBar.open("Please check your email to validate your account.", "", {
+	                duration: 7000,
 	            });
 
-	            this.snackBar.open("Please check your email to validate your account.", "", {
-	                duration: 2000,
+	            this.snackBar.open("The account creation request has been accepted by our server.", "", {
+	                duration: 4000,
 	            });
 
 	            let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname

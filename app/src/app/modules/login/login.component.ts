@@ -12,9 +12,7 @@ const sha1 = require('sha-1')
 @Component({
     selector: 'login',
     templateUrl: 'login.component.html',
-    styleUrls: ['./login.component.scss'],
-    animations: [routerTransition()],
-    host: {'[@routerTransition]': ''}
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
@@ -36,8 +34,9 @@ export class LoginComponent implements OnInit {
             document.getElementById("page-title-p").innerHTML = this.title;
         let user = this.localStoragexx.retrieve(this.key_localstorage_user)
         if(user !== null){
-            let urlHost = window.location.protocol+'//'+window.location.host
-            window.location.replace(urlHost+'/#/home');
+        	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
+            window.location.replace(urlHost+'#/home');
+            
         }
     }
 

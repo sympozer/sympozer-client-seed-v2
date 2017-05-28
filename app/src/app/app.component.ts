@@ -9,7 +9,6 @@ import {routerTransition} from './app.router.animation';
 import {LocalStorageService} from 'ng2-webstorage';
 import {ApiExternalServer} from './services/ApiExternalServer';
 
-import { Angulartics2Piwik } from 'angulartics2';
 import {Subscription} from 'rxjs/Subscription';
 import {ToolsService} from './services/tools.service';
 import {VoteService} from './services/vote.service'
@@ -34,7 +33,6 @@ export class AppComponent implements OnInit {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
-                private angulartics2Piwik: Angulartics2Piwik,
                 private toolService: ToolsService,
                 private voteService: VoteService,
                 public snackBar: MdSnackBar) {

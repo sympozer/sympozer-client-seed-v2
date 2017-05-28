@@ -122,8 +122,8 @@ const routes: Routes = [];
         MaterialModule,
         MdGridListModule,
         ShareButtonsModule.forRoot(),
-        Ng2Webstorage,
-        Angulartics2Module.forRoot([ Angulartics2Piwik ]),
+        Ng2Webstorage
+        //Angulartics2Module.forRoot([ Angulartics2Piwik ]),
     ],
     providers: [
         DataLoaderService,
