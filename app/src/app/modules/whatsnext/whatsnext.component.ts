@@ -78,11 +78,11 @@ export class WhatsNextComponent implements OnInit {
                                     type: type,
                                 });
 
-                                /*that.schedules.sort((a, b) => {
+                                that.schedules.sort((a, b) => {
                                  const momentA = moment(a.dateForSort);
                                  const momentB = moment(b.dateForSort);
                                  return momentA.isSameOrAfter(momentB) ? 1 : -1;
-                                 });*/
+                                });
                             }
                         }
                     }
