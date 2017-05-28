@@ -1,4 +1,14 @@
-# Sympozer
+# Sympozer front-end app V2
+
+Sympozer is a full client side mashup Web application that allows browsing and enriching conference data. Learn more about Sympozer at http://sympozer.liris.cnrs.fr/ .
+
+In 2017, the app architecture has been completely refactored:
+
+  * The conference dataset now follows the <a href="http://www.scholarlydata.org/">ScholarlyData</a> ontology and has been issued using <a href="https://github.com/anuzzolese/cLODg2">cLODg</a> (conference Linked Open Data generator) V2.
+  * Its core engine is based on RDF data (instead of JSON), internally served using the <a href="https://github.com/linkeddata/rdflib.js/">rdflib.js</a> library and queried in SPARQL.
+  * It fully runs on the client side, and relies on the <a href="https://angular.io/">Angular 2</a> JavaScript framework, using Web components and other advances. The design layer uses <a href="https://material.angular.io/">Angular Material</a>.
+  * Users can create their account, enrich their personal information and participate in the votes
+  * Admins can get usage stats through the Piwik system
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.15.
 
@@ -19,9 +29,9 @@ then run :
 
 `ng serve`
 
-## Hack XMLHttpRequest
+## Hack broken dependency
 
-Browse to `node_modules\xmlhttprequest\lib\XMLHttpRequest.js ` and comment the following lines:
+There is a missing dependency in the XMLHttpRequest module, which is itself a dependency of other modules. To solve that, browse to `node_modules/xmlhttprequest/lib/XMLHttpRequest.js` and comment the following lines:
 
 `Line 15- var spawn = require("child_process").spawn; `
 
@@ -38,7 +48,9 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` option for a production build and `-bh` to set up the base hash that will be included in the index.html file (see examples in `app/package.json` file).
+
+In case you define commands in the `app/package.json`, run them with `npm run <commandName>`.
 
 ## Running unit tests
 
