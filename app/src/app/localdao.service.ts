@@ -18,7 +18,6 @@ const $rdf = require('rdflib');
 
 @Injectable()
 export class LocalDAOService {
-    //private conferenceURL = 'https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2016/data_ESWC2016.json';
     private useJsonld = true;
     private localstorage_jsonld = 'dataset-sympozer';
     private store;
@@ -700,8 +699,7 @@ export class LocalDAOService {
                                 const startDate = moment(nodeStartDate.value);
                                 const endDate = moment(nodeEndDate.value);
 
-                                //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
-                                if (dateStart.isAfter(startDate) && dateEnd.isAfter(endDate)) {
+                                if (dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)) {
                                     results['?type'] = {value: type};
                                     console.log(results);
                                     callback(results);
