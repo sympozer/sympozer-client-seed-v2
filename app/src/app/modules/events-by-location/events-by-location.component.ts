@@ -72,7 +72,9 @@ export class EventsByLocationComponent implements OnInit {
                                     });
 
                                     that.eventsLocation.sort((a, b) => {
-                                        return a.label > b.label ? 1 : -1;
+										const momentA = moment(a.dateForSort);
+										const momentB = moment(b.dateForSort);
+										return momentA.isAfter(momentB) ? 1 : (momentA.isBefore(momentB) ? -1 : (a.label > b.label ? 1 : -1));
                                     });
                                 }
                             }
