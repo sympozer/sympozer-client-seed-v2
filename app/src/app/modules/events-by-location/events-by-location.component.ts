@@ -69,15 +69,22 @@ export class EventsByLocationComponent implements OnInit {
                                         label: label,
                                         startDate: momentStartDate.format('LLLL'),
                                         duration: strDuration,
+                                        dateForSort: momentStartDate.format(),
                                     });
 
                                     that.eventsLocation.sort((a, b) => {
-										return a.startsAt.isAfter(b.startsAt) ? 1 : -1;
+                                        const momentA = moment(a.dateForSort);
+                                        const momentB = moment(b.dateForSort);
+                                        return momentA.isSameOrAfter(momentB) ? 1 : -1;
+                                    });
+
+                                    /*that.eventsLocation.sort((a, b) => {
+                                        return a.startsAt.isAfter(b.startsAt) ? 1 : -1;
 //										const momentA = moment(a.dateForSort);
 //										const momentB = moment(b.dateForSort);
 //										return momentA.isSameOrAfter(momentB) ? 1 : -1;
 //                                        return a.label > b.label ? 1 : -1;
-                                    });
+                                    });*/
                                 }
                             }
                         }
