@@ -11,6 +11,7 @@ import {routerTransition} from '../../app.router.animation';
 import {Subscription} from 'rxjs/Subscription';
 import * as moment from 'moment';
 import {TimeManager} from "../../services/timeManager.service";
+var ICS = require('ics');
 
 @Component({
     selector: 'app-publication',
@@ -312,4 +313,33 @@ export class PublicationComponent implements OnInit {
             }
         }
     };
+
+    /**
+     * Constructs a realistic ICS description of the talk, that can be imported in a calendar
+     */
+    createICS = () => {
+        var ics = new ICS();
+        const that = this
+
+        let calendar = ics.buildEvent({
+            uid: '', // (optional)
+            start: that.talk.startsAt,
+            end: that.talk.endsAt,
+            title: that.talk.label,
+            description: that.talk.description,
+            location: that.talk.location, //
+            url: that.publicationId,
+            status: 'confirmed',
+            geo: {lat: 45.515113, lon: 13.571873,},
+            attendees: [
+                //{ name: 'Adam Gibbons', email: 'adam@example.com' }
+            ],
+            categories: ['Talk'],
+            alarms: [
+                {action: 'DISPLAY', trigger: '-PT24H', description: 'Reminder', repeat: true, duration: 'PT15M'},
+                {action: 'AUDIO', trigger: '-PT30M'}
+            ]
+        });
+        window.open("data:text/calendar;charset=utf8," + encodeURIComponent(calendar));
+    }
 }
