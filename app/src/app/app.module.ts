@@ -2,12 +2,12 @@ import {Routes, RouterModule} from "@angular/router";
 import {AppComponent} from "./app.component";
 import {PersonComponent} from "./modules/person/person.component";
 import {BrowserModule} from "@angular/platform-browser";
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {routing} from "./app.routing";
 import {MaterialModule, MdGridListModule} from "@angular/material";
-import 'hammerjs';
+import "hammerjs";
 import {NgModule} from "@angular/core";
 import {HomeComponent} from "./modules/home/home.component";
 import {AboutComponent} from "./modules/about/about.component";
@@ -33,37 +33,36 @@ import {EventByCategoryComponent} from "./modules/event-by-category/event-by-cat
 import {EventsByLocationComponent} from "./modules/events-by-location/events-by-location.component";
 import {EventComponent} from "./modules/event/event.component";
 import {ExternPublicationComponent} from "./modules/extern-publication/externpublication.component";
-import {AutocompleteComponent} from './modules/autocomplete/autocomplete.component';
-import {ToolsComponent} from './modules/tools/tools.component';
+import {AutocompleteComponent} from "./modules/autocomplete/autocomplete.component";
+import {ToolsComponent} from "./modules/tools/tools.component";
 import {EventsByDate} from "./modules/events-by-date/events-by-date";
-import {Share} from './modules/share-button/share-button.component';
-import {LoginComponent} from './modules/login/login.component';
-import {ScrollLoader} from './modules/scroll-loader/scroll-loader.component';
-import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
+import {Share} from "./modules/share-button/share-button.component";
+import {LoginComponent} from "./modules/login/login.component";
+import {ScrollLoader} from "./modules/scroll-loader/scroll-loader.component";
+import {PublicationsByKeywords} from "./modules/publications-by-keywords/publications-by-keywords.component";
 import {KeysPipe} from "./keys.pipe";
 import {DataLoaderService} from "./data-loader.service";
 import {DBLPDataLoaderService} from "./dblpdata-loader.service";
 import {LocalDAOService} from "./localdao.service";
 import {eventHelper} from "./eventHelper";
-import {Encoder} from  './lib/encoder';
-import {Ng2Webstorage} from 'ng2-webstorage';
+import {Encoder} from "./lib/encoder";
+import {Ng2Webstorage} from "ng2-webstorage";
 import {GithubService} from "./services/github.service";
-import {HylarManager} from './services/hylar.service';
-import {ManagerRequest} from './services/ManagerRequest';
-import {ApiExternalServer} from './services/ApiExternalServer';
-import {RessourceDataset} from './services/RessourceDataset';
-import {PersonService} from './modules/person/person.service';
-import {TimeManager} from './services/timeManager.service';
-import {ShareButtonsModule} from 'ng2-sharebuttons';
-import {VoteComponent} from './modules/vote/vote.component';
-import {ConferenceComponent} from './modules/conference/conference.component';
-import {VoteService} from './services/vote.service';
-import {routerTransition} from './app.router.animation';
-import { Angulartics2Module, Angulartics2Piwik } from 'angulartics2';
-import {ToolsService} from './services/tools.service';
-import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
-import { SignupComponent } from './modules/signup/signup.component';
-import { UserProfileComponent } from './modules/user-profile/user-profile.component';
+import {HylarManager} from "./services/hylar.service";
+import {ManagerRequest} from "./services/ManagerRequest";
+import {ApiExternalServer} from "./services/ApiExternalServer";
+import {RessourceDataset} from "./services/RessourceDataset";
+import {PersonService} from "./modules/person/person.service";
+import {TimeManager} from "./services/timeManager.service";
+import {ShareButtonsModule} from "ng2-sharebuttons";
+import {VoteComponent} from "./modules/vote/vote.component";
+import {ConferenceComponent} from "./modules/conference/conference.component";
+import {VoteService} from "./services/vote.service";
+import {Angulartics2Module, Angulartics2Piwik} from "angulartics2";
+import {ToolsService} from "./services/tools.service";
+import {PublicationsByKeyword} from "./modules/publications-by-keyword/publications-by-keyword.component";
+import {SignupComponent} from "./modules/signup/signup.component";
+import {UserProfileComponent} from "./modules/user-profile/user-profile.component";
 
 
 const routes: Routes = [];
@@ -122,8 +121,8 @@ const routes: Routes = [];
         MaterialModule,
         MdGridListModule,
         ShareButtonsModule.forRoot(),
-        Ng2Webstorage
-        //Angulartics2Module.forRoot([ Angulartics2Piwik ]),
+        Ng2Webstorage,
+        Angulartics2Module.forRoot([Angulartics2Piwik]),
     ],
     providers: [
         DataLoaderService,

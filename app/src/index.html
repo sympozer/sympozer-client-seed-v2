@@ -1,44 +1,94 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Sympozer</title>
-  <base href="/">
+    <meta charset="utf-8">
+    <title>Sympozer</title>
+    <base href="/">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="manifest" href="./assets/manifest.json">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="./assets/manifest.json">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
 <app-root></app-root>
 
 <div class="loading-screen">
-  <div class="loading-wrapper">
-    <img src="./img/logo_eswc2017.png">
-    <div class="showbox">
-      <div class="loader">
-        <svg class="circular" viewBox="25 25 50 50">
-          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-        </svg>
-      </div>
+    <div class="loading-wrapper">
+        <img src="./img/logo_eswc2017.png">
+        <div class="showbox">
+            <div class="loader">
+                <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+                </svg>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script src="./assets/webworker/manager-web-worker.js"></script>
 <script src="./assets/rdfstore.js"></script>
-<!-- <script type="text/javascript">
-  var _paq = _paq || [];
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="//dsi-guest-28.univ-lyon1.fr/piwik/";
-    _paq.push(['setTrackerUrl', u+'piwik.php']);
-    _paq.push(['setSiteId', '2']);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-  })();
-</script> -->
+<!-- Piwik -->
+<script type="text/javascript">
+
+var boolOnline = false;
+
+ var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        boolOnline = true;
+    }
+  };
+  xhttp.open("GET", "http://dsi-guest-28.univ-lyon1.fr/piwik/piwik.php", true);
+  xhttp.send();
+console.log('boolOnline : ' + boolOnline);
+ 
+
+    var _paq = _paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    // _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function () {
+        var u = "//dsi-guest-28.univ-lyon1.fr/piwik/";
+        _paq.push(['setTrackerUrl', u + 'piwik.php']);
+        _paq.push(['setSiteId', '2']);
+        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'piwik.js';
+        s.parentNode.insertBefore(g, s);
+        window.setInterval(function () {
+            var strRequestsJson = localStorage.getItem('piwik');
+            if (strRequestsJson) {
+                try {
+                    var arrRequests = JSON.parse(strRequestsJson);
+                    arrRequests = JSON.parse(arrRequests);
+                } catch (e) {
+                }
+            } else {
+                var arrRequests = [];
+            }
+       
+		console.log(boolOnline); 
+	    if (arrRequests.constructor === Array) {
+
+                for (var i = 0; i < arrRequests.length; i++) {
+			if(boolOnline){
+                    		_paq.push(['trackPageView', arrRequests[i]]);
+                    		console.log('sent 1 request');
+			}
+                }
+            } else {
+                console.log(arrRequests);
+            }
+            arrRequests = [];
+            localStorage.setItem('piwik', JSON.stringify(arrRequests));
+        }, 10000);
+    })();
+
+</script>
+<!-- End Piwik Code -->
 </body>
 </html>

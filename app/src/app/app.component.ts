@@ -1,17 +1,14 @@
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
-
-import {Component, OnInit, HostListener} from '@angular/core';
-import {LocalDAOService} from  './localdao.service';
-import {Router, NavigationEnd, ActivatedRoute} from '@angular/router';
-import {routerTransition} from './app.router.animation';
-import {LocalStorageService} from 'ng2-webstorage';
-import {ApiExternalServer} from './services/ApiExternalServer';
-
-import {Subscription} from 'rxjs/Subscription';
-import {ToolsService} from './services/tools.service';
-import {VoteService} from './services/vote.service'
+import "rxjs/add/operator/filter";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/mergeMap";
+import {Component, OnInit, HostListener} from "@angular/core";
+import {LocalDAOService} from "./localdao.service";
+import {Router, NavigationEnd, ActivatedRoute, NavigationStart} from "@angular/router";
+import {LocalStorageService} from "ng2-webstorage";
+import {ApiExternalServer} from "./services/ApiExternalServer";
+import {Subscription} from "rxjs/Subscription";
+import {ToolsService} from "./services/tools.service";
+import {VoteService} from "./services/vote.service";
 import {MdSnackBar} from "@angular/material";
 const screenfull = require('screenfull');
 
@@ -37,9 +34,29 @@ export class AppComponent implements OnInit {
                 private voteService: VoteService,
                 public snackBar: MdSnackBar) {
 
-                  this.subscription = this.toolService.getFullScreenStatus().subscribe(status => { 
-            this.fullscreen = status; 
+        this.subscription = this.toolService.getFullScreenStatus().subscribe(status => {
+            this.fullscreen = status;
         });
+
+        router.events.filter(event => event instanceof NavigationStart)
+            .subscribe((event) => {
+                let arrayRequest;
+                let storage = localStorage.getItem("piwik");
+
+                if (storage) {
+                    try {
+                        arrayRequest = JSON.parse(storage);
+                    } catch (e) {
+                        arrayRequest = [];
+                    }
+                }
+
+                arrayRequest.push(document.location.hash);
+                localStorage.setItem('piwik', JSON.stringify(arrayRequest));
+
+
+            });
+
     }
 
 
@@ -71,17 +88,17 @@ export class AppComponent implements OnInit {
         }
 
         this.DaoService.loadDataset()
-            .then(()=>{
+            .then(()=> {
 
             })
-            .catch((err)=>{
+            .catch((err)=> {
                 this.snackBar.open("A network error occured. Please try again later.", "", {
                     duration: 2000,
                 });
             });
 
         let token = this.localStoragexx.retrieve(this.key_localstorage_token)
-        if(token && token.length > 0)
+        if (token && token.length > 0)
             this.apiExternalServer.loginWithToken(token)
         else
             this.apiExternalServer.sendLoginStatus(false)
@@ -98,17 +115,17 @@ export class AppComponent implements OnInit {
                 window.scrollTo(0, 1);
             });
         this.iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        if(window.history.length > 1)
+        if (window.history.length > 1)
             this.backHistory = true
         this.fullscreen = screenfull.isFullscreen;
 
         setInterval(() => {
-            if(this.localStoragexx.retrieve("token_external_ressource_sympozer"))
-              this.voteService.votedPublications()
+            if (this.localStoragexx.retrieve("token_external_ressource_sympozer"))
+                this.voteService.votedPublications()
         }, 300000)
     }
 
-    goBack(){
+    goBack() {
         window.history.back()
     }
 
