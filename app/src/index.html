@@ -32,6 +32,8 @@
 <!-- Piwik -->
 <script type="text/javascript">
 
+
+// Verification que piwik est bien en ligne
 var boolOnline = false;
 
  var xhttp = new XMLHttpRequest();
@@ -44,6 +46,8 @@ var boolOnline = false;
   xhttp.send();
 console.log('boolOnline : ' + boolOnline);
  
+// Fonction permettant l'envoi des donnes a piwik
+function sendDataToPiwik(){
 
     var _paq = _paq || [];
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
@@ -85,8 +89,18 @@ console.log('boolOnline : ' + boolOnline);
             }
             arrRequests = [];
             localStorage.setItem('piwik', JSON.stringify(arrRequests));
-        }, 10000);
-    })();
+	})();
+}
+
+    // On envoi les requetes de piwik toutes les 10min
+    window.setInterval(function () {
+	sendDataToPiwik();
+    }, 10000*60);
+
+    // Si on ferme le navigateur on envoi les requetes à piwik
+    window.onbeforeunload = function () {
+	sendDataToPiwik();
+    }
 
 </script>
 <!-- End Piwik Code -->
