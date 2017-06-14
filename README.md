@@ -39,8 +39,44 @@ There is a missing dependency in the XMLHttpRequest module, which is itself a de
 
 `Line 509- syncProc.stdin.end();`
 
+## Server management
+
+The server is built using Docker containers : 
+
+- One reverse nginx proxy
+Back : 
+- One MongoDB database (sympozer-back-mongo)
+- One application (sympozer-back-node)
+External : 
+- Two applications (login, external => sympozer-ext-node)
+- One MongoDB database  (sympozer-ext-mongo)
+
+Configuration files are located here : `/usr/local/etc/`
+
+All code repositories are here : `/usr/local/src/`
+
+All the commands to build up the whole infrastructure are located in : `/usr/local/bin/`
+
+There is no dockerfile.
+
+## Renewal of https certs
+
+We installed cert-bot which enabled us to create ssl certificates.
+
+Install procedure : https://certbot.eff.org/
+
+Then you have to run this command every 3 months : 
+
+`certbot renew --renew-hook /path/to/renew-hook-script`
+
+Why do you need to do it every 3 months : 
+
+We still don't have any Dockerfile to build all the containers from the ground up, they are still managed by bash files in `/usr/local/bin/`.
+
+An improvement would be creating dockerfiles for each container, installing the cert-bot and then running the renewal inside using cron.
+
 ## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will reload automatically if you change any of the source files.
 
 ## Code scaffolding
 
@@ -50,7 +86,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` option for a production build and `-bh` to set up the base hash that will be included in the index.html file (see examples in `app/package.json` file).
 
-In case you define commands in the `app/package.json`, run them with `npm run <commandName>`.
+In case you define commands in the `app/package.json`, run them using `npm run <commandName>`.
 
 ## Running unit tests
 
@@ -67,4 +103,4 @@ Run `ng github-pages:deploy` to deploy to Github Pages.
 
 ## Further help
 
-To get more help on the `angular-cli` use `ng --help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To get some more help on the `angular-cli` use `ng --help` or check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
