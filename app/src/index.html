@@ -52,8 +52,8 @@ function sendDataToPiwik(){
     var _paq = _paq || [];
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     // _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
     (function () {
+        _paq.push(['enableLinkTracking']);
         var u = "//dsi-guest-28.univ-lyon1.fr/piwik/";
         _paq.push(['setTrackerUrl', u + 'piwik.php']);
         _paq.push(['setSiteId', '2']);
@@ -63,17 +63,18 @@ function sendDataToPiwik(){
         g.defer = true;
         g.src = u + 'piwik.js';
         s.parentNode.insertBefore(g, s);
-        window.setInterval(function () {
-            var strRequestsJson = localStorage.getItem('piwik');
-            if (strRequestsJson) {
-                try {
-                    var arrRequests = JSON.parse(strRequestsJson);
-                    arrRequests = JSON.parse(arrRequests);
-                } catch (e) {
-                }
-            } else {
-                var arrRequests = [];
+    })();
+
+        var strRequestsJson = localStorage.getItem('piwik');
+        if (strRequestsJson) {
+            try {
+                var arrRequests = JSON.parse(strRequestsJson);
+                arrRequests = JSON.parse(arrRequests);
+            } catch (e) {
             }
+        } else {
+            var arrRequests = [];
+        }
        
 		console.log(boolOnline); 
 	    if (arrRequests.constructor === Array) {
@@ -89,17 +90,17 @@ function sendDataToPiwik(){
             }
             arrRequests = [];
             localStorage.setItem('piwik', JSON.stringify(arrRequests));
-	})();
-}
+ }
+
 
     // On envoi les requetes de piwik toutes les 10min
     window.setInterval(function () {
-	sendDataToPiwik();
+	   sendDataToPiwik();
     }, 10000*60);
 
     // Si on ferme le navigateur on envoi les requetes à piwik
     window.onbeforeunload = function () {
-	sendDataToPiwik();
+	   sendDataToPiwik();
     }
 
 </script>
