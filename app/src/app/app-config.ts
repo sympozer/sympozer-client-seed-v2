@@ -24,7 +24,7 @@ export var Config = {
         "name": "The Web Conference 2018",
         "hashtag": "#TheWebConf @TheWebConf",
         "acronym": "WWW2018",
-        "logoUri": "data/images/logo_eswc2017.png",
+        "logoUri": "data/images/TheWebConference2018-logo.png",
         "website": "https://www2018.thewebconf.org/",
         "baseUri": "http://data.semanticweb.org/conference/eswc/2017",
         "updateUri": "https://raw.githubusercontent.com/sympozer/datasets/master/WWW2018/conference.ttl",
