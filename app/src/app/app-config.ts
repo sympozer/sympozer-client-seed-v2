@@ -21,11 +21,11 @@ export var Config = {
         "storage": "on"
     },
     conference: {
-        "name": "14th ESWC2017",
-        "hashtag": "#ESWC2017 @eswc_conf",
-        "acronym": "ESWC2017",
+        "name": "The Web Conference 2018",
+        "hashtag": "#TheWebConf @TheWebConf",
+        "acronym": "WWW2018",
         "logoUri": "data/images/logo_eswc2017.png",
-        "website": "http://2017.eswc-conferences.org/",
+        "website": "https://www2018.thewebconf.org/",
         "baseUri": "http://data.semanticweb.org/conference/eswc/2017",
         "updateUri": "https://raw.githubusercontent.com/sympozer/datasets/master/WWW2018/conference.ttl",
         "lang": "EN",
