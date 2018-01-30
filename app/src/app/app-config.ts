@@ -1,14 +1,14 @@
 export var Config = {
     app: {
         "appLogo": "Sympozer_logo.png",
-        //              "conferenceEventCategory": "http:\/\/data.semanticweb.		org\/conference\/eswc\/2017\/category\/conference-event",
-        "presentationEventCategory": "http:\/\/data.semanticweb.org\/conference\/eswc\/2017\/category\/presentation-event",
-        "sessionEventCategory": "http:\/\/data.semanticweb.org\/conference\/eswc\/2017\/category\/session-event",
+        //              "conferenceEventCategory": "http:\/\/data.semanticweb.		org\/conference\/www\/2018\/category\/conference-event",
+        "presentationEventCategory": "http:\/\/data.semanticweb.org\/conference\/www\/2018\/category\/presentation-event",
+        "sessionEventCategory": "http:\/\/data.semanticweb.org\/conference\/www\/2018\/category\/session-event",
         styleMatching: {
             "http://data.semanticweb.org/ns/swc/ontology#PosterEvent": "poster",
             "http://data.semanticweb.org/ns/swc/ontology#SessionEvent": "session",
             //                    "http://data.semanticweb.org/ns/swc/ontology#SessionEvent": "research",
-            //                    "http://data.semanticweb.org/conference/eswc/2017/category/in-use-event": "inUse",
+            //                    "http://data.semanticweb.org/conference/www/2018/category/in-use-event": "inUse",
             "http://data.semanticweb.org/ns/swc/ontology#DemoEvent": "demo",
             "http://data.semanticweb.org/ns/swc/ontology#WorkshopEvent": "workshop",
             "http://data.semanticweb.org/ns/swc/ontology#TutorialEvent": "tutorial",
@@ -26,7 +26,7 @@ export var Config = {
         "acronym": "WWW2018",
         "logoUri": "data/images/TheWebConference2018-logo.png",
         "website": "https://www2018.thewebconf.org/",
-        "baseUri": "http://data.semanticweb.org/conference/eswc/2017",
+        "baseUri": "http://data.semanticweb.org/conference/www/2018",
         "updateUri": "https://raw.githubusercontent.com/sympozer/datasets/master/WWW2018/conference.ttl",
         "lang": "EN",
         "momentLang": "EN_us",

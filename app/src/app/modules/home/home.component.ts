@@ -15,7 +15,7 @@ import '../../../assets/twitter.js';
     host: {'[@routerTransition]': ''}
 })
 export class HomeComponent implements OnInit {
-    title: string = "ESWC 2017";
+    title: string = "The Web Conference 2018";
 
     constructor(private router: Router,
                 private localdao: LocalDAOService,

@@ -1,6 +1,6 @@
 {
   "short_name": "Sympozer",
-  "name": "Sympozer ESWC 2017",
+  "name": "Sympozer WWW 2018",
   "icons": [
     {
       "src": "../img/TheWebConference2018-logo.png",
@@ -8,7 +8,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/eswc2017_test/",
+  "start_url": "/www2018_test/",
   "display": "fullscreen",
   "orientation": "landscape"
 }
