@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class BookmarkComponent implements OnInit {
   private interested;
   private going;
+  
   constructor() { 
     this.interested=0;
     this.going=0;
