@@ -32,12 +32,17 @@ import {SignupComponent} from './modules/signup/signup.component';
 import {ConferenceComponent} from './modules/conference/conference.component';
 import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
 import {UserProfileComponent} from './modules/user-profile/user-profile.component';
+import { Component } from '@angular/core/src/metadata/directives';
+import { BookmarkComponent } from './modules/bookmark/bookmark.component';
 
 const appRoutes: Routes = [
     {
         path: '',
         redirectTo: '/home',
         pathMatch: 'full'
+    },{
+        path:'bookmark',
+        component: BookmarkComponent
     },
     {
         path: 'home',
