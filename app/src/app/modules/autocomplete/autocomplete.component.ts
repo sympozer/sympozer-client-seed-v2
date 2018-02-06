@@ -62,7 +62,7 @@ export class AutocompleteComponent implements OnInit {
         let itemCloneName;
         for (var key in this.items) {
             itemName = this.items[key][this.seachFor.toString()];
-            match = itemName.toUpperCase().match(term.toUpperCase());
+            match = itemName.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase().match(term.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
             if (match) {
                 isMatch = true;
                 this.hasItem = true;
