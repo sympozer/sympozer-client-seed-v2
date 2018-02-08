@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
         this.subscription = this.toolService.getFullScreenStatus().subscribe(status => {
             this.fullscreen = status;
         });
-
+/*
         router.events.filter(event => event instanceof NavigationStart)
             .subscribe((event) => {
                 let arrayRequest;
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
 
 
             });
-
+*/
     }
 
 
