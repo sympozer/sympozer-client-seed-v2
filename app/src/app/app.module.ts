@@ -64,7 +64,7 @@ import { PublicationsByKeyword } from "./modules/publications-by-keyword/publica
 import { SignupComponent } from "./modules/signup/signup.component";
 import { UserProfileComponent } from "./modules/user-profile/user-profile.component";
 import { BookmarkComponent } from './modules/bookmark/bookmark.component';
-
+import { BookmarkService } from './services/bookmark.service';
 
 const routes: Routes = [];
 
@@ -140,7 +140,8 @@ const routes: Routes = [];
         ApiExternalServer,
         VoteService,
         ToolsService,
-        TimeManager
+        TimeManager,
+        BookmarkService
     ],
     bootstrap: [AppComponent]
 })

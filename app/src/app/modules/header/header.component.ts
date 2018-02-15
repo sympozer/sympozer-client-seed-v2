@@ -14,8 +14,8 @@ export class HeaderComponent {
   avatarSubscription: Subscription;
   @Input() sidenav;
   hasLogged : any;
-  public username: any
-  public avatar: any
+  public username: any;
+  public avatar: any;
   private key_localstorage_username = "username_external_ressource_sympozer";
   private key_localstorage_avatar = "avatar_external_ressource_sympozer";
 
