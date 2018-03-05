@@ -64,7 +64,6 @@ import {PublicationsByKeyword} from "./modules/publications-by-keyword/publicati
 import {SignupComponent} from "./modules/signup/signup.component";
 import {UserProfileComponent} from "./modules/user-profile/user-profile.component";
 
-
 const routes: Routes = [];
 
 @NgModule({
