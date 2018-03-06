@@ -7,13 +7,15 @@ import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {LocalStorageService} from 'ng2-webstorage';
+import {LoginService} from './login.service';
 
 const sha1 = require('sha-1')
 
 @Component({
     selector: 'login',
     templateUrl: 'login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
+    providers: [LoginService]
 })
 export class LoginComponent implements OnInit {
 
@@ -28,7 +30,8 @@ export class LoginComponent implements OnInit {
                 private voteService: VoteService,
                 private DaoService: LocalDAOService,
                 private encoder: Encoder,
-                private localStoragexx: LocalStorageService) {
+                private localStoragexx: LocalStorageService,
+                private apiLogin : LoginService) {
     }
 
     ngOnInit() {
@@ -47,6 +50,13 @@ export class LoginComponent implements OnInit {
      * @param email
      * @param password
      */
+
+    login(email, password) {
+        console.log(email);
+        console.log(password);
+        this.apiLogin.authentification(email,password);
+    }
+    /*
     login(email, password) {
         this.apiExternalServer.login(email, password)
             .then((user) => {
@@ -66,9 +76,9 @@ export class LoginComponent implements OnInit {
                     })
 
 
-                /**
-                 * Retrieve the author by the publication
-                 */
+
+                Retrieve the author by the publication
+
                 const that = this
                 let emailSha1 = sha1('mailto:' + email)
                 let query = {'key': emailSha1};
@@ -107,6 +117,7 @@ export class LoginComponent implements OnInit {
                 });
             });
     }
+    */
 
     sendLoginStatus(status: boolean): void {
         // send status to subscribers via observable subject
