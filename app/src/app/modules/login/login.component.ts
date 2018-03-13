@@ -20,8 +20,8 @@ const sha1 = require('sha-1')
 export class LoginComponent implements OnInit {
 
     title: string = "Login";
-    username: string = "User"
-    toggleLogin = true
+    username: string = "User";
+    toggleLogin = true;
     private key_localstorage_user = "user_external_ressource_sympozer";
 
     constructor(private router: Router,
@@ -52,9 +52,12 @@ export class LoginComponent implements OnInit {
      */
 
     login(email, password) {
-        console.log(email);
-        console.log(password);
-        this.apiLogin.authentification(email,password);
+
+        let message:any;
+        this.apiLogin.authentification(email,password).subscribe( data => {
+            message = data;
+            console.log(message);
+        });
     }
     /*
     login(email, password) {
