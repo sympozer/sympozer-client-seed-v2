@@ -14,15 +14,20 @@ export class LoginService {
 
         let headers = new Headers();
         headers.set('Accept', 'application/json');
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
+        headers.append('Content-Type', ' multipart/form-data');
+        /*
         let formData = new FormData();
         formData.append("email",email);
         formData.append("password",password);
-        console.log(formData);
+        */
+
+        let data = {
+            "email" : email,
+            "password" : password
+        };
 
         return this.http
-            .post( this.loginModuleUrl + "/api/v1/auth", formData, {headers:headers})
+            .post( this.loginModuleUrl + "/api/v1/auth", JSON.stringify(data), {headers:headers})
             .map((response: Response) =>{
                 return response;
             })
