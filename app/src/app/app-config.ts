@@ -74,6 +74,9 @@ export var Config = {
             "commands": "TwitterWidgetCommandStore"
         }
     },
+    apiLogin: {
+        url: "https://login.sympozer.com"
+    },
     externalServer: {
         url: "https://sympozer.com/external"
     },
