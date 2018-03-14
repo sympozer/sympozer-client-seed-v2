@@ -16,15 +16,22 @@ export class LoginService {
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-        let formData = new FormData();
-        formData.append("email",email);
-        formData.append("password",password);
-        console.log(formData);
+        let data = "email=" + email + "&" + "password=" + password;  
 
         return this.http
-            .post( this.loginModuleUrl + "/api/v1/auth", formData, {headers:headers})
-            .map((response: Response) =>{
-                return response;
-            })
+            .post( this.loginModuleUrl + "/api/v1/auth", data, {headers:headers})
+            .map((response : Response) => response.json())
+                
+                /*
+                return res.json().results.map(item => {
+                    return {
+                        "success" : item.success,
+                        "message" : item.message,
+                        "token" : item.token
+                    }
+                }
+                );
+                */
+            
     }
 }

@@ -53,11 +53,27 @@ export class LoginComponent implements OnInit {
 
     login(email, password) {
 
-        let message:any;
-        this.apiLogin.authentification(email,password).subscribe( data => {
-            message = data;
-            console.log(message);
-        });
+        let message = { 
+            "success": "",
+            "message": "",
+            "token": ""
+        } ;
+        this.apiLogin.authentification(email,password).subscribe( 
+          
+            response => {
+                message = response;
+                console.log("string"); 
+                console.log(message);                
+            },
+            err => { 
+                console.log("errrr"); 
+                console.log(err); },
+            function() { 
+                console.log("string2"); 
+                console.log(message); }
+            
+        );
+       
     }
     /*
     login(email, password) {
