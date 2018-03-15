@@ -36,6 +36,8 @@
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "ics": "^1.5.0",
+    "jsonwebtoken": "^8.1.0",
+    "jwt-decode": "^2.2.0",
     "moment": "^2.15.2",
     "ng2-sharebuttons": "^2.1.2",
     "ng2-tweet": "^0.0.16",

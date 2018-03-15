@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Config} from "../../app-config";
 import {Router} from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
@@ -9,7 +10,8 @@ import {Encoder} from "../../lib/encoder";
 import {LocalStorageService} from 'ng2-webstorage';
 import {LoginService} from './login.service';
 
-const sha1 = require('sha-1')
+const sha1 = require('sha-1');
+const jwtDecode = require('jwt-decode');
 
 @Component({
     selector: 'login',
@@ -37,9 +39,9 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
-        let user = this.localStoragexx.retrieve(this.key_localstorage_user)
+        let user = this.localStoragexx.retrieve(this.key_localstorage_user);
         if (user !== null) {
-            let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname
+            let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
             window.location.replace(urlHost + '#/home');
 
         }
@@ -54,19 +56,17 @@ export class LoginComponent implements OnInit {
     login(email, password) {
 
         let message ;
-        this.apiLogin.authentification(email,password).subscribe( 
-          
+        this.apiLogin.authentification(email,password).subscribe(
             response => {
-                message = response._body;
+                message = response;
             },
             err => { 
-                console.log("Erreur");
-                console.log(err);
+                console.log("Error");
                 },
             function() {
-                console.log(message);
+                let decoded = jwtDecode(message.token);
+                console.log(decoded);
             }
-
         );
        
     }

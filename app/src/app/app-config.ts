@@ -77,6 +77,9 @@ export var Config = {
     apiLogin: {
         url: "https://login.sympozer.com"
     },
+
+    jwt_key : 'testsympozerlogin',
+
     externalServer: {
         url: "https://sympozer.com/external"
     },

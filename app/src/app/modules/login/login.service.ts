@@ -19,7 +19,7 @@ export class LoginService {
 
         let result = this.http
             .post( Config.apiLogin.url + "/api/v1/auth", data, {headers:headers})
-            .map(res => res)
+            .map(res => res.json())
             .catch(this.handleError);
 
         return result;
