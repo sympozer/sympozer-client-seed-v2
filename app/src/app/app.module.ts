@@ -65,6 +65,8 @@ import { SignupComponent } from "./modules/signup/signup.component";
 import { UserProfileComponent } from "./modules/user-profile/user-profile.component";
 import { BookmarkComponent } from './modules/bookmark/bookmark.component';
 import { BookmarkService } from './services/bookmark.service';
+import { AppointmentComponent } from './modules/appointment/appointment.component';
+import { AppointmentService } from "./services/appointment.service";
 
 const routes: Routes = [];
 
@@ -111,6 +113,7 @@ const routes: Routes = [];
         SignupComponent,
         UserProfileComponent,
         BookmarkComponent,
+        AppointmentComponent,
     ],
     imports: [
         BrowserModule,
@@ -141,7 +144,8 @@ const routes: Routes = [];
         VoteService,
         ToolsService,
         TimeManager,
-        BookmarkService
+        BookmarkService,
+        AppointmentService
     ],
     bootstrap: [AppComponent]
 })
