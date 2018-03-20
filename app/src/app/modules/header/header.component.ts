@@ -21,8 +21,9 @@ export class HeaderComponent {
 
   constructor(private apiExternalServer: ApiExternalServer,
               private localStoragexx: LocalStorageService) {
+
   		this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
-            this.hasLogged = status; 
+            this.hasLogged = status;
         });
 
       this.userSubscription = this.apiExternalServer.getUsername().subscribe(firstname => {
@@ -35,7 +36,7 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void{
-  	this.hasLogged = this.apiExternalServer.checkUserLogin()
+  	this.hasLogged = this.apiExternalServer.checkUserLogin();
     if(this.username == undefined || this.username === ""){
       this.apiExternalServer.sendUsername(this.localStoragexx.retrieve(this.key_localstorage_username))
       console.log(this.username)

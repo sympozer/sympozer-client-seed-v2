@@ -35,14 +35,6 @@
                     <md-icon class="fa-icon"><i class="fa fa-sign-in" aria-hidden="true"></i></md-icon>
                     <span>Sign up</span>
                 </button>
-                <button [routerLink]="['/profile/']" md-menu-item>
-                    <md-icon>account_circle</md-icon>
-                    <span>{{username}}</span>
-                </button>
-                <button (click)="logout()" md-menu-item>
-                    <md-icon class="fa-icon"><i class="fa fa-sign-out" aria-hidden="true"></i></md-icon>
-                    <span>Logout</span>
-                </button>
             </div>
             <div *ngIf="hasLogged">
                 <button [routerLink]="['/profile/']" md-menu-item>

@@ -9,6 +9,7 @@ import {ManagerRequest} from "./ManagerRequest";
 import {Config} from "../app-config";
 import {LocalStorageService} from 'ng2-webstorage';
 
+const jwtDecode = require('jwt-decode');
 
 @Injectable()
 export class ApiExternalServer {
@@ -22,7 +23,7 @@ export class ApiExternalServer {
     private subjectHomepage = new Subject<any>();
 
     private key_localstorage_token = "token_external_ressource_sympozer";
-    private key_localstorage_user = "user_external_ressource_sympozer"
+    private key_localstorage_user = "user_external_ressource_sympozer";
     private key_localstorage_username = "username_external_ressource_sympozer";
     private key_localstorage_avatar = "avatar_external_ressource_sympozer";
 
@@ -41,7 +42,7 @@ export class ApiExternalServer {
 
     update(user){
         return new Promise((resolve, reject) => {
-            let token = this.localStoragexx.retrieve(this.key_localstorage_token)
+            let token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
                 return reject('You are not logged in.');
             }
@@ -55,9 +56,9 @@ export class ApiExternalServer {
                 photoUrl : user.photoUrl,
                 twitterpage: user.twitterpage,
                 linkedinaccount: user.linkedinaccount
-            }
+            };
 
-            that.managerRequest.post_safe(Config.externalServer.url + '/api/ressource/person', bodyRequest)
+            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/user/updateProfile/' , bodyRequest)
                 .then((request) => {
                     const user = JSON.parse(request._body);
                     if(request.status === 403){
@@ -75,7 +76,7 @@ export class ApiExternalServer {
                         this.sendUsername(user.firstname)
                     }
                     if(user.photoUrl && user.photoUrl.length > 0){
-                        this.sendAvatar(user.photoUrl)
+                        this.sendAvatar(user.photoUrl);
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
                     that.localStoragexx.store(that.key_localstorage_user, request._body);
@@ -103,7 +104,7 @@ export class ApiExternalServer {
                 email : email,
                 password: password 
             };
-            that.managerRequest.post_safe(Config.externalServer.url + '/api/login', bodyRequest)
+            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
                 .then((request) => {
                     const user = JSON.parse(request._body);
                     if(request.status === 403){
@@ -115,12 +116,13 @@ export class ApiExternalServer {
                     if (!user || !user.token) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
+                    console.log("Username : "+ user.firstname);
                     if(user.firstname && user.firstname.length > 0){
-                        this.sendUsername(user.firstname)
+                        this.sendUsername(user.firstname);
                         that.localStoragexx.store(that.key_localstorage_username, user.firstname);
                     }
                     if(user.photoUrl && user.photoUrl.length > 0){
-                        this.sendAvatar(user.photoUrl)
+                        this.sendAvatar(user.photoUrl);
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
                     if(user.linkedinaccount && user.linkedinaccount.length > 0){
@@ -163,11 +165,11 @@ export class ApiExternalServer {
                         return reject("A network error has occured. Please try again later.");
                     }
                     if(user.firstname && user.firstname.length > 0){
-                        this.sendUsername(user.firstname)
+                        this.sendUsername(user.firstname);
                         that.localStoragexx.store(that.key_localstorage_username, user.firstname);
                     }
                     if(user.photoUrl && user.photoUrl.length > 0){
-                        this.sendAvatar(user.photoUrl)
+                        this.sendAvatar(user.photoUrl);
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
 
@@ -195,12 +197,19 @@ export class ApiExternalServer {
         });
     };
 
-    signup(email, password, confirmPassWord){
+    signup(email, firstname, lastname, password, confirmPassWord){
         return new Promise((resolve, reject) => {
             if (!email || email.length === 0) {
                 return reject('Invalid email address.');
             }
 
+            if (!firstname || firstname.length === 0) {
+                return reject('Invalid firstname');
+            }
+
+            if (!lastname || lastname.length === 0) {
+                return reject('Invalid lastname');
+            }
             if (!password || password.length === 0) {
                 return reject('Invalid password');
             }
@@ -217,11 +226,13 @@ export class ApiExternalServer {
 
             let bodyRequest = {
                 email: email,
+                firstname: firstname,
+                lastname: lastname,
                 password: password,
                 confirmPassword: password
             }
 
-            that.managerRequest.post_safe(Config.externalServer.url + '/api/register',bodyRequest)
+            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/register',bodyRequest)
                 .then((request) => {
                     const user = JSON.parse(request._body);
                     if(request.status === 403){
@@ -240,7 +251,7 @@ export class ApiExternalServer {
     }
 
     logoutUser(){
-        this.localStoragexx.clear(this.key_localstorage_token)
+        this.localStoragexx.clear(this.key_localstorage_token);
         this.localStoragexx.clear(this.key_localstorage_username)
         this.localStoragexx.clear(this.key_localstorage_user)
         this.localStoragexx.clear(this.key_localstorage_avatar)
@@ -251,7 +262,7 @@ export class ApiExternalServer {
     }
 
     /**
-     * Send to all subscribers Login status
+     * Send to all subscribers Login Login status
      * @param message
      */
     sendLoginStatus(status: boolean) {

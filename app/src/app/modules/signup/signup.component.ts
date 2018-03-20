@@ -45,8 +45,9 @@ export class SignupComponent implements OnInit {
 	 * @param password
 	 * @param confirm password
 	 */
+
 	signup(email, firstname, lastname, password, confirmPassword){
-		
+		/*
 		let result;
 		if(password == confirmPassword)
 		{
@@ -90,9 +91,9 @@ export class SignupComponent implements OnInit {
 		
 
 
-		/*
-		const that = this
-	    this.apiExternalServer.signup(email, password, confirmPassword)
+		*/
+		const that = this;
+	    this.apiExternalServer.signup(email, firstname, lastname, password, confirmPassword)
 	        .then(() => {
 	            
 	        	this.snackBar.open("Please check your email to validate your account.", "", {
@@ -112,7 +113,7 @@ export class SignupComponent implements OnInit {
 	                duration: 2000,
 	            });
 			});
-			*/
+
 	}
 
 }

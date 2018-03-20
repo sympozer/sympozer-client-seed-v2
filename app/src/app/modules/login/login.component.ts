@@ -24,7 +24,9 @@ export class LoginComponent implements OnInit {
     title: string = "Login";
     username: string = "User";
     toggleLogin = true;
+    private key_localstorage_token = "token_external_ressource_sympozer";
     private key_localstorage_user = "user_external_ressource_sympozer";
+
 
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
@@ -52,7 +54,7 @@ export class LoginComponent implements OnInit {
      * @param email
      * @param password
      */
-
+    /*
     login(email, password) {
 
         let userResult;
@@ -67,6 +69,7 @@ export class LoginComponent implements OnInit {
                 });
                 },
             () => {
+                this.localStoragexx.store(this.key_localstorage_token,userResult.token);
                 let decoded = jwtDecode(userResult.token);
                 console.log(decoded);
                 let userInfo;
@@ -90,8 +93,8 @@ export class LoginComponent implements OnInit {
             }
         );
     }
+    */
 
-    /*
     login(email, password) {
         this.apiExternalServer.login(email, password)
             .then((user) => {
@@ -112,10 +115,10 @@ export class LoginComponent implements OnInit {
 
 
 
-                Retrieve the author by the publication
+                //Retrieve the author by the publication
 
-                const that = this
-                let emailSha1 = sha1('mailto:' + email)
+                const that = this;
+                let emailSha1 = sha1('mailto:' + email);
                 let query = {'key': emailSha1};
                 this.DaoService.query("getPersonBySha", query, (results) => {
 
@@ -152,7 +155,7 @@ export class LoginComponent implements OnInit {
                 });
             });
     }
-    */
+
 
     sendLoginStatus(status: boolean): void {
         // send status to subscribers via observable subject
