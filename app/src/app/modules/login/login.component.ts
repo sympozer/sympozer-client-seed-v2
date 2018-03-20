@@ -62,7 +62,9 @@ export class LoginComponent implements OnInit {
             },
             err => { 
                 console.log(err);
-
+                this.snackBar.open("Wrong Username or Password", "", {
+                    duration: 2000,
+                });
                 },
             () => {
                 let decoded = jwtDecode(userResult.token);
