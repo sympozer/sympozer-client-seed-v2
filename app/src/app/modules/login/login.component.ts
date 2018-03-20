@@ -55,21 +55,40 @@ export class LoginComponent implements OnInit {
 
     login(email, password) {
 
-        let message ;
+        let userResult;
         this.apiLogin.authentification(email,password).subscribe(
             response => {
-                message = response;
+                userResult = response;
             },
             err => { 
-                console.log("Error");
+                console.log(err);
+
                 },
-            function() {
-                let decoded = jwtDecode(message.token);
+            () => {
+                let decoded = jwtDecode(userResult.token);
                 console.log(decoded);
+                let userInfo;
+                this.apiLogin.getUser(decoded.id).subscribe(
+                    response => {
+                        userInfo = response;
+                    },
+                    err => {
+                        console.log("Error");
+                        console.log(err);
+                    },
+                    () =>  {
+                        console.log(userInfo);
+                        this.localStoragexx.store(this.key_localstorage_user,userInfo);
+                        this.snackBar.open("Login successful.", "", {
+                            duration: 2000,
+                        });
+                        window.history.back();
+                    }
+                );
             }
         );
-       
     }
+
     /*
     login(email, password) {
         this.apiExternalServer.login(email, password)

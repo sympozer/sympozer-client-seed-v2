@@ -17,13 +17,21 @@ export class LoginService {
 
         let data = "email=" + email + "&" + "password=" + password;  
 
-        let result = this.http
+        return this.http
             .post( Config.apiLogin.url + "/api/v1/auth", data, {headers:headers})
             .map(res => res.json())
             .catch(this.handleError);
+    }
 
-        return result;
+    getUser(id: string):Observable<any>{
 
+        let headers = new Headers();
+        headers.set('Accept', 'application/json');
+
+        return this.http
+            .get( Config.apiLogin.url + "/api/v1/user/" + id, {headers:headers})
+            .map(res => res.json())
+            .catch(this.handleError);
     }
 
     private handleError(error: Response) {
