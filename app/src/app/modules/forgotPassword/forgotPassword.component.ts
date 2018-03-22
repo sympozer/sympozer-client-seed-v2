@@ -42,38 +42,15 @@ export class ForgotPasswordComponent implements OnInit {
 	 * @param email
 	 */
 	forgotPassword(email){
-		/*
-		let result;
-		this.ForgotPasswordService.forgotPassword(email).subscribe(
-
-			response => {
-				result = response;
-			},
-
-			err => { 
-				console.log(err);
-				this.snackBar.open("This email is invalid", "", {
-					duration: 7000,
-				});
-			},
-
-			() => { 
-				this.snackBar.open("An email has been sent to your email. Please follow the instruction in the email to reset your password", "", {
+		
+		this.apiExternalServer.forgotPassword(email)
+            .then(() => {
+                this.snackBar.open("A mail has been sent to your email. Please follow the instruction in the email to reset your password", "", {
 					duration: 3000,
 				});
 				this.snackBar.open("Please follow the instruction in the email to reset your password", "", {
 					duration: 3000,
 				});
-				let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
-            	window.location.replace(urlHost+'#/login');
-			}
-			)
-		*/
-		this.apiExternalServer.updatePassword(email)
-            .then(() => {
-                this.snackBar.open("An email has been sent to your email. Please follow the instruction in the email to reset your password", "", {
-                    duration: 7000,
-                });
                 let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
                 window.location.replace(urlHost+'#/login');
             })

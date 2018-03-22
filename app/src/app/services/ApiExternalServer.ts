@@ -341,7 +341,7 @@ export class ApiExternalServer {
         });
     };
 
-    updatePassword = (email) => {
+    forgotPassword = (email) => {
         return new Promise((resolve, reject) => {
             if (!email || email.length === 0) {
                 return reject('Invalid email address.');
@@ -354,6 +354,33 @@ export class ApiExternalServer {
             };
 
             that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/forgotpassword', bodyRequest)
+                .then((request) => {
+                    const resultPromise = JSON.parse(request._body);
+                    if (request.status === 400) {
+                        return reject(resultPromise.message)
+                    }
+                    return resolve(true);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        })
+    };
+
+    changePassword = (id, currentPassword, newPassword) => {
+        return new Promise((resolve, reject) => {
+            if (!currentPassword || currentPassword.length === 0 || !newPassword || newPassword.length === 0 ) {
+                return reject('Invalid password.');
+            }
+
+            const that = this;
+
+            let bodyRequest = {
+                currentPassword: currentPassword,
+                newPassword: newPassword
+            };
+
+            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/updatePassword/' + id, bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request._body);
                     if (request.status === 400) {

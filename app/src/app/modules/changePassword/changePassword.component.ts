@@ -17,7 +17,8 @@ import {ChangePasswordService} from './changePassword.service';
 
 export class ChangePasswordComponent implements OnInit {
 
-    private key_localstorage_user = "user_external_ressource_sympozer"
+	private key_localstorage_user = "user_external_ressource_sympozer";
+	private key_localstorage_id = 'id_external_ressource_sympozer';
 
     constructor(private router: Router,
         private apiExternalServer: ApiExternalServer,
@@ -29,11 +30,12 @@ export class ChangePasswordComponent implements OnInit {
         }
 
     ngOnInit() {
-		let user = this.localStoragexx.retrieve(this.key_localstorage_user)
-        if(user !== null){
-        	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
-            window.location.replace(urlHost+'#/home');
-        }
+		let user = this.localStoragexx.retrieve(this.key_localstorage_user);
+		
+        //if(user !== null){
+        //	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
+        //    window.location.replace(urlHost+'#/home');
+        //}
 	
     }
     
@@ -42,28 +44,21 @@ export class ChangePasswordComponent implements OnInit {
 	 * @param newPassword
 	 */
 	changePassword(currentPassword, newPassword){
-		
-		let result;
-		this.ChangePasswordService.changePassword(currentPassword, newPassword).subscribe(
 
-			response => {
-				result = response;
-			},
-
-			err => { 
-				console.log(err);
-				
-			},
-
-			() => { 
-				this.snackBar.open("You have successfully updated your password.", "", {
-					duration: 7000,
+		let id = this.localStoragexx.retrieve(this.key_localstorage_id);
+		this.apiExternalServer.changePassword(id,currentPassword, newPassword)
+            .then(() => {
+                this.snackBar.open("You have successfully updated your password.", "", {
+					duration: 3000,
 				});
-				let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
-            	window.location.replace(urlHost+'#/login');
-			}
-			)
+                let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
+                window.location.replace(urlHost+'#/login');
+            })
+            .catch((err) => {
+                this.snackBar.open(err, "", {
+                    duration: 3000,
+                });
+            });
     }
-
 }
 
