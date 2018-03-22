@@ -17,7 +17,8 @@ import {ChangePasswordService} from './changePassword.service';
 
 export class ChangePasswordComponent implements OnInit {
 
-    private key_localstorage_user = "user_external_ressource_sympozer"
+	private key_localstorage_user = "user_external_ressource_sympozer";
+	private key_localstorage_id = 'id_external_ressource_sympozer';
 
     constructor(private router: Router,
         private apiExternalServer: ApiExternalServer,
@@ -30,7 +31,7 @@ export class ChangePasswordComponent implements OnInit {
 
     ngOnInit() {
 		let user = this.localStoragexx.retrieve(this.key_localstorage_user);
-		//let id = 
+		
         //if(user !== null){
         //	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
         //    window.location.replace(urlHost+'#/home');
@@ -42,8 +43,9 @@ export class ChangePasswordComponent implements OnInit {
 	 * @param currentPassword
 	 * @param newPassword
 	 */
-	changePassword(id,currentPassword, newPassword){
+	changePassword(currentPassword, newPassword){
 
+		let id = this.localStoragexx.retrieve(this.key_localstorage_id);
 		this.apiExternalServer.changePassword(id,currentPassword, newPassword)
             .then(() => {
                 this.snackBar.open("You have successfully updated your password.", "", {
