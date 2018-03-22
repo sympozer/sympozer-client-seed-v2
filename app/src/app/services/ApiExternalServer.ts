@@ -113,11 +113,11 @@ export class ApiExternalServer {
     login = (email, password) => {
         return new Promise((resolve, reject) => {
             if (!email || email.length === 0) {
-                return reject('Votre email n\'est pas valide');
+                return reject('Email not valid');
             }
 
             if (!password || password.length === 0) {
-                return reject('Votre password n\'est pas valide');
+                return reject('Password not valid');
             }
 
             const that = this;
@@ -233,7 +233,7 @@ export class ApiExternalServer {
         });
     };
 
-    signup(email, firstname, lastname, password, confirmPassWord) {
+    signup = (email, firstname, lastname, password, confirmPassWord) => {
         return new Promise((resolve, reject) => {
             if (!email || email.length === 0) {
                 return reject('Invalid email address.');
@@ -266,31 +266,61 @@ export class ApiExternalServer {
                 lastname: lastname,
                 password: password,
                 confirmPassword: password
-            }
+            };
 
             that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/register', bodyRequest)
                 .then((request) => {
-                    const user = JSON.parse(request._body);
+                    const resultPromise = JSON.parse(request._body);
+                    /*
                     if (request.status === 403) {
                         return reject('Invalid email or password.')
                     }
                     if (request.status === 404) {
                         return reject('A network error has occured. Please try again later.');
                     }
-
+                    */
+                    if(request.status === 400){
+                        return reject(resultPromise.message)
+                    }
                     return resolve(true);
                 })
                 .catch((request) => {
                     return reject(request);
                 });
         });
-    }
+    };
+
+    updatePassword = (email) => {
+        return new Promise((resolve, reject) => {
+            if (!email || email.length === 0) {
+                return reject('Invalid email address.');
+            }
+
+            const that = this;
+
+            let bodyRequest = {
+                email: email,
+            };
+
+            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/forgotpassword', bodyRequest)
+                .then((request) => {
+                    const resultPromise = JSON.parse(request._body);
+                    if (request.status === 400) {
+                        return reject(resultPromise.message)
+                    }
+                    return resolve(true);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        })
+    };
 
     logoutUser() {
         this.localStoragexx.clear(this.key_localstorage_token);
-        this.localStoragexx.clear(this.key_localstorage_username)
-        this.localStoragexx.clear(this.key_localstorage_user)
-        this.localStoragexx.clear(this.key_localstorage_avatar)
+        //this.localStoragexx.clear(this.key_localstorage_username);
+        this.localStoragexx.clear(this.key_localstorage_user);
+        //this.localStoragexx.clear(this.key_localstorage_avatar);
     }
 
     getToken() {
