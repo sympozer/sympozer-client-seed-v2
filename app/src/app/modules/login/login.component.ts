@@ -107,11 +107,11 @@ export class LoginComponent implements OnInit {
                         this.sendLoginStatus(true)
                     })
                     .catch((err) => {
-                        console.log(err)
+                        console.log(err);
                         this.snackBar.open("A network error occured. Please try again later.", "", {
                             duration: 2000,
                         });
-                    })
+                    });
 
 
 

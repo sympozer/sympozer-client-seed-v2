@@ -1,12 +1,12 @@
 /**
  * Created by pierremarsot on 27/02/2017.
  */
-import {Injectable} from "@angular/core";
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
-import {Http} from "@angular/http";
-import {ManagerRequest} from "./ManagerRequest";
-import {Config} from "../app-config";
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Subject} from 'rxjs/Subject';
+import {Http} from '@angular/http';
+import {ManagerRequest} from './ManagerRequest';
+import {Config} from '../app-config';
 import {LocalStorageService} from 'ng2-webstorage';
 
 const jwtDecode = require('jwt-decode');
@@ -21,11 +21,13 @@ export class ApiExternalServer {
     private subjectTwitter = new Subject<any>();
     private subjectLinkedin = new Subject<any>();
     private subjectHomepage = new Subject<any>();
+    private subjectGoogle = new Subject<any>();
+    private subjectFacebook = new Subject<any>();
 
-    private key_localstorage_token = "token_external_ressource_sympozer";
-    private key_localstorage_user = "user_external_ressource_sympozer";
-    private key_localstorage_username = "username_external_ressource_sympozer";
-    private key_localstorage_avatar = "avatar_external_ressource_sympozer";
+    private key_localstorage_token = 'token_external_ressource_sympozer';
+    private key_localstorage_user = 'user_external_ressource_sympozer';
+    private key_localstorage_username = 'username_external_ressource_sympozer';
+    private key_localstorage_avatar = 'avatar_external_ressource_sympozer';
 
     constructor(private http: Http,
                 private managerRequest: ManagerRequest,
@@ -33,14 +35,14 @@ export class ApiExternalServer {
 
     }
 
-    checkUserLogin(){
+    checkUserLogin() {
         let token = this.localStoragexx.retrieve(this.key_localstorage_token)
-        if(token && token.length > 0)
+        if (token && token.length > 0)
             return true;
         return false;
     }
 
-    update(user){
+    update(user) {
         return new Promise((resolve, reject) => {
             let token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
@@ -50,32 +52,32 @@ export class ApiExternalServer {
             const that = this;
 
             let bodyRequest = {
-                token :  token,
+                token: token,
                 firstname: user.firstname,
                 homepage: user.homepage,
-                photoUrl : user.photoUrl,
+                photoUrl: user.photoUrl,
                 twitterpage: user.twitterpage,
                 linkedinaccount: user.linkedinaccount
             };
 
-            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/user/updateProfile/' , bodyRequest)
+            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
                 .then((request) => {
                     const user = JSON.parse(request._body);
-                    if(request.status === 403){
-                        return reject("Couldn\'t update.");
+                    if (request.status === 403) {
+                        return reject('Couldn\'t update.');
                     }
-                    if(request.status === 404){
-                        return reject("A network error has occured. Please try again later.");
+                    if (request.status === 404) {
+                        return reject('A network error has occured. Please try again later.');
                     }
 
-                    if(user.error){
+                    if (user.error) {
                         return reject(user.error);
                     }
 
-                    if(user.firstname && user.firstname.length > 0){
+                    if (user.firstname && user.firstname.length > 0) {
                         this.sendUsername(user.firstname)
                     }
-                    if(user.photoUrl && user.photoUrl.length > 0){
+                    if (user.photoUrl && user.photoUrl.length > 0) {
                         this.sendAvatar(user.photoUrl);
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
@@ -88,59 +90,93 @@ export class ApiExternalServer {
         });
     }
 
+    getUser = (id) => {
+        return new Promise((resolve, reject) => {
+
+            if (!id || id.length === 0) {
+                return reject('ID isn\'t valid');
+            }
+
+            const that = this;
+
+            that.managerRequest.get_safe(Config.apiLogin.url + '/api/v1/user/' + id)
+                .then((request) => {
+                    return resolve(request);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+
+        })
+    };
+
     login = (email, password) => {
         return new Promise((resolve, reject) => {
             if (!email || email.length === 0) {
-                return reject('Votre email n\'est pas valide');
+                return reject('Email not valid');
             }
 
             if (!password || password.length === 0) {
-                return reject('Votre password n\'est pas valide');
+                return reject('Password not valid');
             }
 
             const that = this;
 
             let bodyRequest = {
-                email : email,
-                password: password 
+                email: email,
+                password: password
             };
             that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
                 .then((request) => {
-                    const user = JSON.parse(request._body);
-                    if(request.status === 403){
-                        return reject("Invalid username or password")
-                    }
-                    if(request.status === 404){
-                        return reject("A network error has occured. Please try again later.");
-                    }
-                    if (!user || !user.token) {
+                    //console.log(request);
+                    const resultPromise = JSON.parse(request._body);
+                    let decoded = jwtDecode(resultPromise.token);
+                    if (!resultPromise|| !decoded) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
-                    console.log("Username : "+ user.firstname);
-                    if(user.firstname && user.firstname.length > 0){
-                        this.sendUsername(user.firstname);
-                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
+                    if(request.status === 401 || request.status === 404){
+                        return reject(resultPromise.message)
                     }
+                    this.getUser(decoded.id)
+                        .then((userPromise : any) => {
+                            const userResult = JSON.parse(userPromise._body);
+                            const user = userResult.user;
+                            console.log(user);
+                            if (!user) {
+                                return reject('Error while retrieving your data. Please try again later.');
+                            }
+                            if(user.firstname && user.firstname.length > 0){
+                                this.sendUsername(user.firstname);
+                                that.localStoragexx.store(that.key_localstorage_username, user.firstname);
+                            }
+                            if(user.linkedin && user.linkedin.length > 0){
+                                this.sendLinkedin(user.linkedin)
+                            }
+                            if(user.twitter && user.twitter.length > 0){
+                                this.sendTwitter(user.twitter)
+                            }
+                            if(user.facebook && user.facebook.length > 0){
+                                this.sendFacebook(user.facebook)
+                            }
+                            if(user.google && user.google.length > 0){
+                                this.sendGoogle(user.google)
+                            }
+                            if(user.lastname && user.lastname.length > 0){
+                                this.sendLastname(user.lastname)
+                            }
+                            that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
+                            that.localStoragexx.store(that.key_localstorage_user, user);
+                            return resolve(user);
+                        })
+                    /*
                     if(user.photoUrl && user.photoUrl.length > 0){
                         this.sendAvatar(user.photoUrl);
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
-                    if(user.linkedinaccount && user.linkedinaccount.length > 0){
-                        this.sendLinkedin(user.linkedinaccount)
-                    }
-                    if(user.twitterpage && user.twitterpage.length > 0){
-                        this.sendTwitter(user.twitterpage)
-                    }
                     if(user.homepage && user.homepage.length > 0){
                         this.sendHomepage(user.homepage)
                     }
-
-                    if(user.lastname && user.lastname.length > 0){
-                        this.sendLastname(user.lastname)
-                    }
-                    that.localStoragexx.store(that.key_localstorage_token, user.token);
-                    that.localStoragexx.store(that.key_localstorage_user, request._body);
-                    return resolve(user);
+                    */
                 })
                 .catch((request) => {
                     return reject(request);
@@ -154,40 +190,40 @@ export class ApiExternalServer {
                 return reject('An error occured. Please re-login.');
             }
             const that = this;
-            
-            that.managerRequest.get_safe(Config.externalServer.url + '/api/user?token='+token)
+
+            that.managerRequest.get_safe(Config.externalServer.url + '/api/user?token=' + token)
                 .then((request) => {
                     const user = JSON.parse(request._body);
-                    if(request.status === 403){
-                        return reject("Invalid username or password")
+                    if (request.status === 403) {
+                        return reject('Invalid username or password')
                     }
-                    if(request.status === 404){
-                        return reject("A network error has occured. Please try again later.");
+                    if (request.status === 404) {
+                        return reject('A network error has occured. Please try again later.');
                     }
-                    if(user.firstname && user.firstname.length > 0){
+                    if (user.firstname && user.firstname.length > 0) {
                         this.sendUsername(user.firstname);
                         that.localStoragexx.store(that.key_localstorage_username, user.firstname);
                     }
-                    if(user.photoUrl && user.photoUrl.length > 0){
+                    if (user.photoUrl && user.photoUrl.length > 0) {
                         this.sendAvatar(user.photoUrl);
                         that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
                     }
 
-                    if(user.linkedinaccount && user.linkedinaccount.length > 0){
+                    if (user.linkedinaccount && user.linkedinaccount.length > 0) {
                         this.sendLinkedin(user.linkedinaccount)
                     }
 
-                    if(user.twitterpage && user.twitterpage.length > 0){
+                    if (user.twitterpage && user.twitterpage.length > 0) {
                         this.sendTwitter(user.twitterpage)
                     }
-                    if(user.homepage && user.homepage.length > 0){
+                    if (user.homepage && user.homepage.length > 0) {
                         this.sendHomepage(user.homepage)
                     }
 
-                    if(user.lastname && user.lastname.length > 0){
+                    if (user.lastname && user.lastname.length > 0) {
                         this.sendLastname(user.lastname)
                     }
-                    this.sendLoginStatus(true)
+                    this.sendLoginStatus(true);
                     that.localStoragexx.store(that.key_localstorage_user, request._body);
                     return resolve(user);
                 })
@@ -197,7 +233,7 @@ export class ApiExternalServer {
         });
     };
 
-    signup(email, firstname, lastname, password, confirmPassWord){
+    signup = (email, firstname, lastname, password, confirmPassWord) => {
         return new Promise((resolve, reject) => {
             if (!email || email.length === 0) {
                 return reject('Invalid email address.');
@@ -218,7 +254,7 @@ export class ApiExternalServer {
                 return reject('Invalid password');
             }
 
-            if(password !== confirmPassWord){
+            if (password !== confirmPassWord) {
                 return reject('Passwords don\'t match.');
             }
 
@@ -230,34 +266,64 @@ export class ApiExternalServer {
                 lastname: lastname,
                 password: password,
                 confirmPassword: password
-            }
+            };
 
-            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/register',bodyRequest)
+            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/register', bodyRequest)
                 .then((request) => {
-                    const user = JSON.parse(request._body);
-                    if(request.status === 403){
-                        return reject("Invalid email or password.")
+                    const resultPromise = JSON.parse(request._body);
+                    /*
+                    if (request.status === 403) {
+                        return reject('Invalid email or password.')
                     }
-                    if(request.status === 404){
-                        return reject("A network error has occured. Please try again later.");
+                    if (request.status === 404) {
+                        return reject('A network error has occured. Please try again later.');
                     }
-
+                    */
+                    if(request.status === 400){
+                        return reject(resultPromise.message)
+                    }
                     return resolve(true);
                 })
                 .catch((request) => {
                     return reject(request);
                 });
         });
-    }
+    };
 
-    logoutUser(){
+    updatePassword = (email) => {
+        return new Promise((resolve, reject) => {
+            if (!email || email.length === 0) {
+                return reject('Invalid email address.');
+            }
+
+            const that = this;
+
+            let bodyRequest = {
+                email: email,
+            };
+
+            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/forgotpassword', bodyRequest)
+                .then((request) => {
+                    const resultPromise = JSON.parse(request._body);
+                    if (request.status === 400) {
+                        return reject(resultPromise.message)
+                    }
+                    return resolve(true);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        })
+    };
+
+    logoutUser() {
         this.localStoragexx.clear(this.key_localstorage_token);
-        this.localStoragexx.clear(this.key_localstorage_username)
-        this.localStoragexx.clear(this.key_localstorage_user)
-        this.localStoragexx.clear(this.key_localstorage_avatar)
+        //this.localStoragexx.clear(this.key_localstorage_username);
+        this.localStoragexx.clear(this.key_localstorage_user);
+        //this.localStoragexx.clear(this.key_localstorage_avatar);
     }
 
-    getToken(){
+    getToken() {
         return this.localStoragexx.retrieve(this.key_localstorage_token)
     }
 
@@ -268,6 +334,7 @@ export class ApiExternalServer {
     sendLoginStatus(status: boolean) {
         this.subjectLogin.next(status);
     }
+
     /**
      * Send boolean status to all subscribers
      * @param status
@@ -327,7 +394,7 @@ export class ApiExternalServer {
      * Clear the Username status
      */
     clearUsername() {
-        this.subjectUsername.next("User");
+        this.subjectUsername.next('User');
     }
 
     /**
@@ -454,5 +521,50 @@ export class ApiExternalServer {
         return this.subjectLastname.asObservable();
     }
 
+    /**
+     * Send to all subscribers Google status
+     * @param message
+     */
+    sendGoogle(google: string) {
+        this.subjectGoogle.next(google);
+    }
+
+    /**
+     * Clear the Google status
+     */
+    clearGoogle() {
+        this.subjectGoogle.next();
+    }
+
+    /**
+     * Retrieve the Google status
+     * @returns {Observable<any>}
+     */
+    getGoogle(): Observable<any> {
+        return this.subjectGoogle.asObservable();
+    }
+
+    /**
+     * Send to all subscribers Google status
+     * @param message
+     */
+    sendFacebook(facebook: string) {
+        this.subjectFacebook.next(facebook);
+    }
+
+    /**
+     * Clear the Google status
+     */
+    clearFacebook() {
+        this.subjectFacebook.next();
+    }
+
+    /**
+     * Retrieve the Google status
+     * @returns {Observable<any>}
+     */
+    getFacebook(): Observable<any> {
+        return this.subjectFacebook.asObservable();
+    }
 
 }

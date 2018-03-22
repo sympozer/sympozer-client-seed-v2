@@ -17,7 +17,7 @@ import {ForgotPasswordService} from './forgotPassword.service';
 
 export class ForgotPasswordComponent implements OnInit {
 
-    private key_localstorage_user = "user_external_ressource_sympozer"
+    private key_localstorage_user = "user_external_ressource_sympozer";
 
     constructor(private router: Router,
         private apiExternalServer: ApiExternalServer,
@@ -29,7 +29,7 @@ export class ForgotPasswordComponent implements OnInit {
         }
 
     ngOnInit() {
-		let user = this.localStoragexx.retrieve(this.key_localstorage_user)
+		let user = this.localStoragexx.retrieve(this.key_localstorage_user);
         if(user !== null){
         	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
             window.location.replace(urlHost+'#/home');
@@ -42,7 +42,7 @@ export class ForgotPasswordComponent implements OnInit {
 	 * @param email
 	 */
 	forgotPassword(email){
-		
+		/*
 		let result;
 		this.ForgotPasswordService.forgotPassword(email).subscribe(
 
@@ -64,10 +64,24 @@ export class ForgotPasswordComponent implements OnInit {
 				this.snackBar.open("Please follow the instruction in the email to reset your password", "", {
 					duration: 3000,
 				});
-				let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
+				let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
             	window.location.replace(urlHost+'#/login');
 			}
 			)
+		*/
+		this.apiExternalServer.updatePassword(email)
+            .then(() => {
+                this.snackBar.open("An email has been sent to your email. Please follow the instruction in the email to reset your password", "", {
+                    duration: 7000,
+                });
+                let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
+                window.location.replace(urlHost+'#/login');
+            })
+            .catch((err) => {
+                this.snackBar.open(err, "", {
+                    duration: 3000,
+                });
+            });
     }
 
 }
