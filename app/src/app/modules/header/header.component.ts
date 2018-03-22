@@ -60,7 +60,7 @@ export class HeaderComponent {
         this.apiExternalServer.sendUsername('User');
         this.apiExternalServer.sendAvatar(null);
         this.snackBar.open('Logout successful', '', {
-            duration: 2000,
+            duration: 5000,
         });
     }
 
