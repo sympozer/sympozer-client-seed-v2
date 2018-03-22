@@ -39,14 +39,15 @@ export class UserProfileComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
+        /*
         console.log(this.user);
         if (this.user) {
-            this.user = JSON.parse(this.user);
             console.log(this.user)
         }
         console.log(this.hasLogged)
-
+        */
     }
 
     update(user) {
