@@ -65,6 +65,7 @@ import {SignupComponent} from "./modules/signup/signup.component";
 import {UserProfileComponent} from "./modules/user-profile/user-profile.component";
 import {ForgotPasswordComponent} from "./modules/forgotPassword/forgotPassword.component";
 import {ActivationMailComponent} from "./modules/activationMail/activationMail.component";
+import {ChangePasswordComponent} from "./modules/changePassword/changePassword.component";
 
 const routes: Routes = [];
 
@@ -111,7 +112,8 @@ const routes: Routes = [];
         SignupComponent,
         UserProfileComponent,
         ForgotPasswordComponent,
-        ActivationMailComponent
+        ActivationMailComponent,
+        ChangePasswordComponent
     ],
     imports: [
         BrowserModule,

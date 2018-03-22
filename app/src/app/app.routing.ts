@@ -34,6 +34,7 @@ import {PublicationsByKeyword} from './modules/publications-by-keyword/publicati
 import {UserProfileComponent} from './modules/user-profile/user-profile.component';
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import { ActivationMailComponent } from './modules/activationMail/activationMail.component';
+import { ChangePasswordComponent } from './modules/changePassword/changePassword.component';
 
 const appRoutes: Routes = [
     {
@@ -156,6 +157,10 @@ const appRoutes: Routes = [
     {
         path: 'resend',
         component: ActivationMailComponent
+    },
+    {
+        path: 'changePassword',
+        component: ChangePasswordComponent
     },
     {
         path: 'profile',

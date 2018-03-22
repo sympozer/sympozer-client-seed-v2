@@ -6,16 +6,16 @@ import {MdSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {LocalStorageService} from 'ng2-webstorage';
-import {ForgotPasswordService} from './forgotPassword.service';
+import {ChangePasswordService} from './changePassword.service';
 
 @Component({
-    selector: 'forgotPassword',
-    templateUrl: './forgotPassword.component.html',
-    styleUrls: ['./forgotPassword.component.scss'],
-    providers: [ForgotPasswordService]
+    selector: 'changePassword',
+    templateUrl: './changePassword.component.html',
+    styleUrls: ['./changePassword.component.scss'],
+    providers: [ChangePasswordService]
 })
 
-export class ForgotPasswordComponent implements OnInit {
+export class ChangePasswordComponent implements OnInit {
 
     private key_localstorage_user = "user_external_ressource_sympozer"
 
@@ -24,7 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
         public snackBar: MdSnackBar,
         private DaoService: LocalDAOService,
         private localStoragexx: LocalStorageService,
-        private ForgotPasswordService : ForgotPasswordService ) {
+        private ChangePasswordService : ChangePasswordService ) {
 
         }
 
@@ -38,13 +38,13 @@ export class ForgotPasswordComponent implements OnInit {
     }
     
     /**
-	 *
-	 * @param email
+	 * @param currentPassword
+	 * @param newPassword
 	 */
-	forgotPassword(email){
+	changePassword(currentPassword, newPassword){
 		
 		let result;
-		this.ForgotPasswordService.forgotPassword(email).subscribe(
+		this.ChangePasswordService.changePassword(currentPassword, newPassword).subscribe(
 
 			response => {
 				result = response;
@@ -52,17 +52,12 @@ export class ForgotPasswordComponent implements OnInit {
 
 			err => { 
 				console.log(err);
-				this.snackBar.open("This email is invalid", "", {
-					duration: 7000,
-				});
+				
 			},
 
 			() => { 
-				this.snackBar.open("An email has been sent to your email. Please follow the instruction in the email to reset your password", "", {
-					duration: 3000,
-				});
-				this.snackBar.open("Please follow the instruction in the email to reset your password", "", {
-					duration: 3000,
+				this.snackBar.open("You have successfully updated your password.", "", {
+					duration: 7000,
 				});
 				let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
             	window.location.replace(urlHost+'#/login');
