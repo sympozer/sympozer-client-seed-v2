@@ -29,11 +29,12 @@ export class ChangePasswordComponent implements OnInit {
         }
 
     ngOnInit() {
-		let user = this.localStoragexx.retrieve(this.key_localstorage_user)
-        if(user !== null){
-        	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
-            window.location.replace(urlHost+'#/home');
-        }
+		let user = this.localStoragexx.retrieve(this.key_localstorage_user);
+		//let id = 
+        //if(user !== null){
+        //	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
+        //    window.location.replace(urlHost+'#/home');
+        //}
 	
     }
     
@@ -41,29 +42,21 @@ export class ChangePasswordComponent implements OnInit {
 	 * @param currentPassword
 	 * @param newPassword
 	 */
-	changePassword(currentPassword, newPassword){
-		
-		let result;
-		this.ChangePasswordService.changePassword(currentPassword, newPassword).subscribe(
+	changePassword(id,currentPassword, newPassword){
 
-			response => {
-				result = response;
-			},
-
-			err => { 
-				console.log(err);
-				
-			},
-
-			() => { 
-				this.snackBar.open("You have successfully updated your password.", "", {
-					duration: 7000,
+		this.apiExternalServer.changePassword(id,currentPassword, newPassword)
+            .then(() => {
+                this.snackBar.open("You have successfully updated your password.", "", {
+					duration: 3000,
 				});
-				let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
-            	window.location.replace(urlHost+'#/login');
-			}
-			)
+                let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
+                window.location.replace(urlHost+'#/login');
+            })
+            .catch((err) => {
+                this.snackBar.open(err, "", {
+                    duration: 3000,
+                });
+            });
     }
-
 }
 
