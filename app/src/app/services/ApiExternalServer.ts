@@ -26,6 +26,7 @@ export class ApiExternalServer {
 
     private key_localstorage_token = 'token_external_ressource_sympozer';
     private key_localstorage_user = 'user_external_ressource_sympozer';
+    private key_localstorage_id = 'id_external_ressource_sympozer';
     private key_localstorage_username = 'username_external_ressource_sympozer';
     private key_localstorage_avatar = 'avatar_external_ressource_sympozer';
 
@@ -128,7 +129,6 @@ export class ApiExternalServer {
             };
             that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
                 .then((request) => {
-                    //console.log(request);
                     const resultPromise = JSON.parse(request._body);
                     let decoded = jwtDecode(resultPromise.token);
                     if (!resultPromise|| !decoded) {
@@ -141,7 +141,6 @@ export class ApiExternalServer {
                         .then((userPromise : any) => {
                             const userResult = JSON.parse(userPromise._body);
                             const user = userResult.user;
-                            console.log(user);
                             if (!user) {
                                 return reject('Error while retrieving your data. Please try again later.');
                             }
@@ -166,6 +165,9 @@ export class ApiExternalServer {
                             }
                             that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
                             that.localStoragexx.store(that.key_localstorage_user, user);
+
+                            console.log("Id : " + decoded.id);
+                            that.localStoragexx.store(that.key_localstorage_id, decoded.id);
                             return resolve(user);
                         })
                     /*
@@ -345,8 +347,9 @@ export class ApiExternalServer {
 
     logoutUser() {
         this.localStoragexx.clear(this.key_localstorage_token);
-        //this.localStoragexx.clear(this.key_localstorage_username);
+        this.localStoragexx.clear(this.key_localstorage_username);
         this.localStoragexx.clear(this.key_localstorage_user);
+        this.localStoragexx.clear(this.key_localstorage_id);
         //this.localStoragexx.clear(this.key_localstorage_avatar);
     }
 
