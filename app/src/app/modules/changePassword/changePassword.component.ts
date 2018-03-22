@@ -43,10 +43,11 @@ export class ChangePasswordComponent implements OnInit {
 	 * @param currentPassword
 	 * @param newPassword
 	 */
-	changePassword(currentPassword, newPassword){
+	changePassword(currentPassword, newPassword, confirmPassword){
 
 		let id = this.localStoragexx.retrieve(this.key_localstorage_id);
-		this.apiExternalServer.changePassword(id,currentPassword, newPassword)
+		
+		this.apiExternalServer.changePassword(id, currentPassword, newPassword, confirmPassword)
             .then(() => {
                 this.snackBar.open("You have successfully updated your password.", "", {
 					duration: 3000,

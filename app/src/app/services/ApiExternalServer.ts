@@ -318,17 +318,21 @@ export class ApiExternalServer {
         })
     };
 
-    changePassword = (id, currentPassword, newPassword) => {
+    changePassword = (id, currentPassword, newPassword, confirmPassWord) => {
         return new Promise((resolve, reject) => {
-            if (!currentPassword || currentPassword.length === 0 || !newPassword || newPassword.length === 0 ) {
+            if (!currentPassword || currentPassword.length === 0 || !newPassword || newPassword.length === 0 || !confirmPassWord || confirmPassWord.length === 0 ) {
                 return reject('Invalid password.');
+            }
+
+            if (newPassword != confirmPassWord) {
+                return reject('The new and confirm password must be the same.');
             }
 
             const that = this;
 
             let bodyRequest = {
                 currentPassword: currentPassword,
-                newPassword: newPassword
+                newPassword: newPassword,
             };
 
             that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/updatePassword/' + id, bodyRequest)
