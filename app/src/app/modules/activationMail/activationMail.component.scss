@@ -1,6 +1,6 @@
 @import "../../globals";
 
-.forgotPassword-wrapper {
+.resend-wrapper {
   position: relative;
   display: flex;
   align-items: center;
@@ -31,7 +31,7 @@
     }
   }
 
-  .forgotPassword-form {
+  .resend-form {
     margin: 20px 0 0;
     padding: 0 10px;
 
@@ -45,7 +45,7 @@
       width: 100%;
     }
 
-    .forgotPassword-footer {
+    .resend-footer {
       text-align: center;
       padding: 10px 0;
 

@@ -64,6 +64,7 @@ import {PublicationsByKeyword} from "./modules/publications-by-keyword/publicati
 import {SignupComponent} from "./modules/signup/signup.component";
 import {UserProfileComponent} from "./modules/user-profile/user-profile.component";
 import {ForgotPasswordComponent} from "./modules/forgotPassword/forgotPassword.component";
+import {ActivationMailComponent} from "./modules/activationMail/activationMail.component";
 
 const routes: Routes = [];
 
@@ -109,7 +110,8 @@ const routes: Routes = [];
         PublicationsByKeyword,
         SignupComponent,
         UserProfileComponent,
-        ForgotPasswordComponent
+        ForgotPasswordComponent,
+        ActivationMailComponent
     ],
     imports: [
         BrowserModule,
