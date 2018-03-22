@@ -49,7 +49,7 @@ export class SignupComponent implements OnInit {
 	signup(email, firstname, lastname, password, confirmPassword){
 		/*
 		let result;
-		if(password == confirmPassword)
+		if ((password == confirmPassword) && (password.length >= 8))
 		{
 			this.signUpService.register(email, firstname, lastname, password).subscribe(
 
@@ -82,12 +82,13 @@ export class SignupComponent implements OnInit {
 				duration: 4000
 			});
 		}
-		else
+		else if (password.length < 8)
 		{
 			this.snackBar.open("Your password must be longer than 8 characters. ", "", {
 				duration: 4000
 			});
 		}
+
 		
 
 
@@ -115,5 +116,4 @@ export class SignupComponent implements OnInit {
 			});
 
 	}
-
 }

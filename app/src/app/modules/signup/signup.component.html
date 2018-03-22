@@ -22,7 +22,7 @@
             <input #password mdInput type="password" placeholder="Password">
           </md-input-container>
 
-          <p><small>The password must have at least 8 characters.</small> </p>
+          <small>The password must have at least 8 characters.</small>
 
           <md-input-container>
             <input #confirmPassword mdInput type="password" placeholder="Confirm password">
@@ -33,6 +33,7 @@
             <div class="sign-up">
               <p>Already have an account?</p>
               <a [routerLink]="['/login/']">Log in</a>
+              
             </div>
           </div>
         </form>
