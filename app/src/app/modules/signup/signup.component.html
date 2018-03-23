@@ -1,7 +1,7 @@
 <div class="login-wrapper">
   <md-card class="inscription-card">
   	<div class="header">
-      <h4>Sign Up</h4>
+      <h4>Register</h4>
     </div>
     <div class="inscription-form">
         <h5>Sign up with your account</h5>
@@ -11,18 +11,29 @@
           </md-input-container>
 
           <md-input-container>
+            <input #firstname mdInput type="firstname" placeholder="First Name">
+          </md-input-container>
+
+          <md-input-container>
+            <input #lastname mdInput type="lastname" placeholder="Last Name">
+          </md-input-container>
+
+          <md-input-container>
             <input #password mdInput type="password" placeholder="Password">
           </md-input-container>
+
+          <small>The password must have at least 8 characters.</small>
 
           <md-input-container>
             <input #confirmPassword mdInput type="password" placeholder="Confirm password">
           </md-input-container>
 
           <div class="inscription-footer">
-            <button md-button color="primary" (click)="signup(email.value, password.value, confirmPassword.value)">Sign up</button>
+            <button md-button color="primary" (click)="signup(email.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Register</button>
             <div class="sign-up">
               <p>Already have an account?</p>
               <a [routerLink]="['/login/']">Log in</a>
+              
             </div>
           </div>
         </form>

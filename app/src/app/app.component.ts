@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
         this.subscription = this.toolService.getFullScreenStatus().subscribe(status => {
             this.fullscreen = status;
         });
-
+/*
         router.events.filter(event => event instanceof NavigationStart)
             .subscribe((event) => {
                 let arrayRequest;
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
 
 
             });
-
+*/
     }
 
 
@@ -105,9 +105,9 @@ export class AppComponent implements OnInit {
                 });
             });
 
-        let token = this.localStoragexx.retrieve(this.key_localstorage_token)
+        let token = this.localStoragexx.retrieve(this.key_localstorage_token);
         if (token && token.length > 0)
-            this.apiExternalServer.loginWithToken(token)
+            this.apiExternalServer.loginWithToken(token);
         else
             this.apiExternalServer.sendLoginStatus(false)
         this.router.events
