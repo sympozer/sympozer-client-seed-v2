@@ -61,7 +61,7 @@ export class ApiExternalServer {
                 linkedinaccount: user.linkedinaccount
             };
 
-            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
+            that.managerRequest.post_safe(Config.externalServer.url + '/api/ressource/person', bodyRequest)
                 .then((request) => {
                     const user = JSON.parse(request._body);
                     if (request.status === 403) {
