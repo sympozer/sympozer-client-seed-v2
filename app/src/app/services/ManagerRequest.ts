@@ -2,8 +2,8 @@
  * Created by pierremarsot on 23/01/2017.
  */
 
-import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {Injectable} from "@angular/core";
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Injectable } from "@angular/core";
 
 @Injectable()
 export class ManagerRequest {

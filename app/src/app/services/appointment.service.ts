@@ -6,6 +6,8 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 @Injectable()
 export class AppointmentService {
 
+  notiCount:any;
+
   constructor(private managerRequest: ManagerRequest,
     private http: Http) {
 
@@ -39,6 +41,20 @@ export class AppointmentService {
       //   });
       console.log("setAppoint.service.ts")
       that.http.post("http://localhost:8080/Symposer_Serveur/Appointment",bodyRequest)
+        .toPromise()
+        .then((respone)=>{
+          console.log(respone);
+        });
+    });
+  }
+
+  fakelogin(id){
+    return new Promise((resolve, reject) => {
+      console.log("Logging...");
+      const that = this;
+
+      console.log("setAppoint.service.ts")
+      that.http.get("http://localhost:8080/Symposer_Serveur/FakeLogin?username="+id)
         .toPromise()
         .then((respone)=>{
           console.log(respone);

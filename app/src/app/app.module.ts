@@ -63,10 +63,9 @@ import { ToolsService } from "./services/tools.service";
 import { PublicationsByKeyword } from "./modules/publications-by-keyword/publications-by-keyword.component";
 import { SignupComponent } from "./modules/signup/signup.component";
 import { UserProfileComponent } from "./modules/user-profile/user-profile.component";
-import { BookmarkComponent } from './modules/bookmark/bookmark.component';
-import { BookmarkService } from './services/bookmark.service';
 import { AppointmentComponent } from './modules/appointment/appointment.component';
 import { AppointmentService } from "./services/appointment.service";
+import { NotificationComponent } from './modules/notification/notification.component';
 
 const routes: Routes = [];
 
@@ -112,8 +111,8 @@ const routes: Routes = [];
         PublicationsByKeyword,
         SignupComponent,
         UserProfileComponent,
-        BookmarkComponent,
         AppointmentComponent,
+        NotificationComponent,
     ],
     imports: [
         BrowserModule,
@@ -144,7 +143,6 @@ const routes: Routes = [];
         VoteService,
         ToolsService,
         TimeManager,
-        BookmarkService,
         AppointmentService
     ],
     bootstrap: [AppComponent]

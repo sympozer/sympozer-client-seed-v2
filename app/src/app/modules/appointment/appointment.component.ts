@@ -19,6 +19,7 @@ export class AppointmentComponent implements OnInit {
   subscription: Subscription;
   hasLoged: any;
   hasSetAppoint: any;
+  haveNoti: any;
 
   constructor(private localStoragexx: LocalStorageService,
     private apiExternalServer: ApiExternalServer,
@@ -32,7 +33,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hasSetAppoint=false;
+    this.hasSetAppoint = false;
   }
 
   makeAppointment() {
@@ -50,9 +51,15 @@ export class AppointmentComponent implements OnInit {
         }
 
       });
-    
-      // just to test the display
-    that.hasSetAppoint=true;
+
+    // just to test the display
+    //that.hasSetAppoint=true;
+  }
+
+  fakelogin() {
+    console.log("FakeLogging in as author1");
+    const that = this;
+    that.haveNoti = this.appointService.fakelogin("author1");
   }
 
 }

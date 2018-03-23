@@ -2,7 +2,13 @@
   <button md-raised-button color="primary" (click)="makeAppointment()" [disabled]="hasSetAppoint">
     <md-icon md-list-avatar>date_range</md-icon>Make an appointment
   </button>
+  <button md-raised-button color="primary" (click)="fakelogin()" [disabled]="hasSetAppoint">
+      Login as author 1
+    </button>
   <div *ngIf="hasSetAppoint">
     You have set an appointment already
+  </div>
+  <div *ngIf="haveNoti">
+    You have 1 notification from.....
   </div>
 </div>
