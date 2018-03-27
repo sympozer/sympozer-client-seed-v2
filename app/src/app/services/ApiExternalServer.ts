@@ -196,42 +196,57 @@ export class ApiExternalServer {
             }
 
             const that = this;
-            let decoded = jwtDecode(token);
-            this.getUser(decoded.id)
-                .then((userPromise : any) => {
-                    const userResult = JSON.parse(userPromise._body);
-                    const user = userResult.user;
-                    if (!user) {
-                        return reject('Error while retrieving your data. Please try again later.');
-                    }
-                    if(user.firstname && user.firstname.length > 0){
-                        this.sendUsername(user.firstname);
-                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
-                    }
-                    if(user.linkedin && user.linkedin.length > 0){
-                        this.sendLinkedin(user.linkedin)
-                    }
-                    if(user.twitter && user.twitter.length > 0){
-                        this.sendTwitter(user.twitter)
-                    }
-                    if(user.facebook && user.facebook.length > 0){
-                        this.sendFacebook(user.facebook)
-                    }
-                    if(user.google && user.google.length > 0){
-                        this.sendGoogle(user.google)
-                    }
-                    if(user.lastname && user.lastname.length > 0){
-                        this.sendLastname(user.lastname)
-                    }
-                    this.sendLoginStatus(true);
-                    that.localStoragexx.store(that.key_localstorage_user, user);
 
-                    console.log("Id : " + decoded.id);
-                    that.localStoragexx.store(that.key_localstorage_id, decoded.id);
-                    return resolve(user);
-                })
-                .catch((request) => {
-                    return reject(request);
+            let bodyRequest = {
+                token: token,
+            };
+
+            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/auth/validateToken', bodyRequest)
+                .then((request) => {
+
+                    let decoded = jwtDecode(token);
+                    const resultPromise = JSON.parse(request._body);
+
+                    if(request.status === 400){
+                        return reject(resultPromise.message)
+                    }
+
+                    this.getUser(decoded.id)
+                        .then((userPromise : any) => {
+                            const userResult = JSON.parse(userPromise._body);
+                            const user = userResult.user;
+                            if (!user) {
+                                return reject('Error while retrieving your data. Please try again later.');
+                            }
+                            if(user.firstname && user.firstname.length > 0){
+                                this.sendUsername(user.firstname);
+                                that.localStoragexx.store(that.key_localstorage_username, user.firstname);
+                            }
+                            if(user.linkedin && user.linkedin.length > 0){
+                                this.sendLinkedin(user.linkedin)
+                            }
+                            if(user.twitter && user.twitter.length > 0){
+                                this.sendTwitter(user.twitter)
+                            }
+                            if(user.facebook && user.facebook.length > 0){
+                                this.sendFacebook(user.facebook)
+                            }
+                            if(user.google && user.google.length > 0){
+                                this.sendGoogle(user.google)
+                            }
+                            if(user.lastname && user.lastname.length > 0){
+                                this.sendLastname(user.lastname)
+                            }
+                            this.sendLoginStatus(true);
+                            that.localStoragexx.store(that.key_localstorage_user, user);
+
+                            console.log("Id : " + decoded.id);
+                            that.localStoragexx.store(that.key_localstorage_id, decoded.id);
+                            return resolve(user);
+                        })
+                        .catch((request) => {
+                            return reject(request);
+                        });
                 });
         });
         /*
