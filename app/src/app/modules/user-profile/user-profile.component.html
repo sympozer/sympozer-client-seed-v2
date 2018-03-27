@@ -8,49 +8,33 @@
 
       <h5><span *ngIf="user.firstname != null">{{user.firstname}}</span><span> </span><span *ngIf="user.lastname != null">{{user.lastname}}</span></h5>
 
-        <form>
+      <form>
+        <md-input-container>
+          <input [(ngModel)]="user.firstname" mdInput type="text" name="user.firstname" placeholder="First name">
+        </md-input-container>
 
-          <md-input-container>
-            <input [(ngModel)]="user.email" mdInput type="text" name="user.email" placeholder="Email">
-          </md-input-container>
+        <md-icon><i class="fa fa-twitter"></i></md-icon>
+        <md-input-container>
+          <input [(ngModel)]="user.twitterpage" mdInput type="text" name="user.twitterpage" placeholder="Twitter Account">
+        </md-input-container>
 
-          <md-input-container>
-            <input [(ngModel)]="user.firstname" mdInput type="text" name="user.firstname" placeholder="First name">
-          </md-input-container>
+        <md-input-container>
+          <input [(ngModel)]="user.homepage" mdInput type="text" name="user.homepage" placeholder="Home Page">
+        </md-input-container>
 
-          <md-input-container>
-            <input [(ngModel)]="user.lastname" mdInput type="text" name="user.lastname" placeholder="Last name">
-          </md-input-container>
+        <md-input-container>
+          <input [(ngModel)]="user.photoUrl" mdInput type="text" name="user.photoUrl" placeholder="Photo Link">
+        </md-input-container>
+        
+        <md-icon><i class="fa fa-linkedin"></i></md-icon>
+        <md-input-container>
+          <input [(ngModel)]="user.linkedinaccount" mdInput type="text" name="user.linkedinaccount" placeholder="Linkedin Account">
+        </md-input-container>
 
-
-          
-          <!--
-          <md-icon><i class="fa fa-twitter"></i></md-icon>
-          <md-input-container>
-            <input [(ngModel)]="user.twitterpage" mdInput type="text" name="user.twitterpage" placeholder="Twitter Account">
-          </md-input-container>
-
-          <md-input-container>
-            <input [(ngModel)]="user.homepage" mdInput type="text" name="user.homepage" placeholder="Home Page">
-          </md-input-container>
-
-          <md-input-container>
-            <input [(ngModel)]="user.photoUrl" mdInput type="text" name="user.photoUrl" placeholder="Photo Link">
-          </md-input-container>
-          
-          <md-icon><i class="fa fa-linkedin"></i></md-icon>
-          <md-input-container>
-            <input [(ngModel)]="user.linkedinaccount" mdInput type="text" name="user.linkedinaccount" placeholder="Linkedin Account">
-          </md-input-container>
-
-        -->
-          <div class="inscription-footer">
-            <button md-button color="primary" (click)="update(user)">Update</button>
-            <div class="sign-up">
-                <p><a [routerLink]="['/changePassword/']">Change password</a></p>
-            </div>
-          </div>
-        </form>
+        <div class="inscription-footer">
+          <button md-button color="primary" (click)="update(user)">Update</button>
+        </div>
+      </form>
       </div>
       
     </md-card>
