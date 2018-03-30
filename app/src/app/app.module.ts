@@ -64,6 +64,9 @@ import {PublicationsByKeyword} from "./modules/publications-by-keyword/publicati
 import {SignupComponent} from "./modules/signup/signup.component";
 import {UserProfileComponent} from "./modules/user-profile/user-profile.component";
 import {QrcodeComponent} from "./modules/qrcode/qrcode.component";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { NgxQRCodeModule } from 'ngx-qrcode3';
 
 
 const routes: Routes = [];
@@ -125,6 +128,8 @@ const routes: Routes = [];
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
         Angulartics2Module.forRoot([Angulartics2Piwik]),
+        BrowserModule,
+        NgxQRCodeModule
     ],
     providers: [
         DataLoaderService,
