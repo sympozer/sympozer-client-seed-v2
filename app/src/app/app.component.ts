@@ -8,7 +8,6 @@ import {LocalStorageService} from "ng2-webstorage";
 import {ApiExternalServer} from "./services/ApiExternalServer";
 import {Subscription} from "rxjs/Subscription";
 import {ToolsService} from "./services/tools.service";
-import {VoteService} from "./services/vote.service";
 import {MdSnackBar} from "@angular/material";
 const screenfull = require('screenfull');
 
@@ -31,7 +30,6 @@ export class AppComponent implements OnInit {
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
                 private toolService: ToolsService,
-                private voteService: VoteService,
                 public snackBar: MdSnackBar) {
 
         this.subscription = this.toolService.getFullScreenStatus().subscribe(status => {
@@ -129,7 +127,7 @@ export class AppComponent implements OnInit {
 
         setInterval(() => {
             if (this.localStoragexx.retrieve("token_external_ressource_sympozer"))
-                this.voteService.votedPublications()
+                console.log("hi");
         }, 300000)
     }
 

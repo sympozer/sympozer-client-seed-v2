@@ -9,7 +9,6 @@ import {routerTransition} from '../../app.router.animation';
 import {ManagerRequest} from "../../services/ManagerRequest";
 import {Config} from '../../app-config';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {VoteService} from '../../services/vote.service'
 
 @Component({
     selector: 'app-person',
@@ -41,7 +40,7 @@ export class PersonComponent implements OnInit {
                 private dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: ManagerRequest,
                 private apiExternalServer: ApiExternalServer,
-                private voteService: VoteService) {
+                ) {
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
         this.mutex_box = new Mutex();

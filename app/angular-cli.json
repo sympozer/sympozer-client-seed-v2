@@ -23,8 +23,7 @@
       ],
       "assets": [
         "assets",
-        "img",
-        "favicon.ico"
+        "img"
       ],
       "scripts": [
         "../node_modules/zone.js/dist/zone.js",

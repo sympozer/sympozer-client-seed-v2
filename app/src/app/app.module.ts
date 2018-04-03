@@ -54,13 +54,10 @@ import {RessourceDataset} from "./services/RessourceDataset";
 import {PersonService} from "./modules/person/person.service";
 import {TimeManager} from "./services/timeManager.service";
 import {ShareButtonsModule} from "ng2-sharebuttons";
-import {VoteComponent} from "./modules/vote/vote.component";
 import {ConferenceComponent} from "./modules/conference/conference.component";
-import {VoteService} from "./services/vote.service";
 import {Angulartics2Module, Angulartics2Piwik} from "angulartics2";
 import {ToolsService} from "./services/tools.service";
 import {PublicationsByKeyword} from "./modules/publications-by-keyword/publications-by-keyword.component";
-import {UserProfileComponent} from "./modules/user-profile/user-profile.component";
 
 const routes: Routes = [];
 
@@ -99,11 +96,9 @@ const routes: Routes = [];
         EventsByDate,
         Share,
         ScrollLoader,
-        VoteComponent,
         PublicationsByKeywords,
         ConferenceComponent,
-        PublicationsByKeyword,
-        UserProfileComponent
+        PublicationsByKeyword
     ],
     imports: [
         BrowserModule,
@@ -131,7 +126,6 @@ const routes: Routes = [];
         PersonService,
         RessourceDataset,
         ApiExternalServer,
-        VoteService,
         ToolsService,
         TimeManager
     ],
