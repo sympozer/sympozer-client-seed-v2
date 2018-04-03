@@ -23,45 +23,15 @@ export class HeaderComponent {
     constructor(private apiExternalServer: ApiExternalServer,
                 private localStoragexx: LocalStorageService,
                 public snackBar: MdSnackBar) {
-
-        this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
-            this.hasLogged = status;
-        });
-
-        this.userSubscription = this.apiExternalServer.getUsername().subscribe(firstname => {
-            this.username = firstname;
-        });
-
-        this.avatarSubscription = this.apiExternalServer.getAvatar().subscribe(avatar => {
-            this.avatar = avatar;
-        });
     }
 
     ngOnInit(): void {
-        this.hasLogged = this.apiExternalServer.checkUserLogin();
-        if (this.username == undefined || this.username === '') {
-            this.apiExternalServer.sendUsername(this.localStoragexx.retrieve(this.key_localstorage_username))
-            console.log(this.username);
-            if (this.username == undefined || this.username === '') {
-                console.log(this.username);
-                this.username = 'User';
-                console.log(this.username)
-            }
-        }
-        if (this.avatar == undefined || this.avatar === '') {
-            this.apiExternalServer.sendAvatar(this.localStoragexx.retrieve(this.key_localstorage_avatar))
-        }
-        console.log(this.avatar)
+        
+        //console.log(this.avatar)
     }
 
     logout = () => {
-        this.apiExternalServer.logoutUser();
-        this.apiExternalServer.sendLoginStatus(false);
-        this.apiExternalServer.sendUsername('User');
-        this.apiExternalServer.sendAvatar(null);
-        this.snackBar.open('Logout successful', '', {
-            duration: 5000,
-        });
+        
     }
 
 
