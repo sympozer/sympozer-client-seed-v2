@@ -31,10 +31,6 @@
                     <md-icon class="fa-icon"><i class="fa fa-sign-in" aria-hidden="true"></i></md-icon>
                     <span>Login</span>
                 </button>
-                <button [routerLink]="['/signup/']" md-menu-item>
-                    <md-icon class="fa-icon"><i class="fa fa-sign-in" aria-hidden="true"></i></md-icon>
-                    <span>Sign up</span>
-                </button>
             </div>
             <div *ngIf="hasLogged">
                 <button [routerLink]="['/profile/']" md-menu-item>
