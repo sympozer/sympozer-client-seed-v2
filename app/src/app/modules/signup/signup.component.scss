@@ -9,8 +9,9 @@
 }
 
 .inscription-card {
-  width: 33.33%;
+  //width: 33.33%;
   min-width: 280px;
+  
 
   .header {
     color: white;
@@ -18,8 +19,8 @@
     width: 100%;
     padding: 20px 0;
     box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
-    argin-right: 20px;
-    margin-top: -60px;
+    margin-right: 20px;
+    //margin-top: -60px;
     border-radius: 3px;
 
     h4 {
@@ -62,6 +63,7 @@
 
       button {
         font-size: 20px;
+        background: linear-gradient(60deg, #ab47bc, #7b1fa2);
       }
 
       .sign-up {

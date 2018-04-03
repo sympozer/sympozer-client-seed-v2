@@ -74,11 +74,17 @@ export var Config = {
             "commands": "TwitterWidgetCommandStore"
         }
     },
+    apiLogin: {
+        url: "https://login.sympozer.com"
+    },
+
+    jwt_key : 'testsympozerlogin',
+
     externalServer: {
         url: "https://sympozer.com/external"
     },
     vote :{
         url: 'https://sympozer.com/external/',
-        tracks: ['https://w3id.org/scholarlydata/track/eswc-2017-demo', 'https://w3id.org/scholarlydata/track/eswc-2017-poster']
+        tracks: ['https://w3id.org/scholarlydata/track/www-2018-demo', 'https://w3id.org/scholarlydata/track/www-2018-poster']
     }
 };

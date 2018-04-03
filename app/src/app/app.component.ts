@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
         this.subscription = this.toolService.getFullScreenStatus().subscribe(status => {
             this.fullscreen = status;
         });
-
+/*
         router.events.filter(event => event instanceof NavigationStart)
             .subscribe((event) => {
                 let arrayRequest;
@@ -56,11 +56,16 @@ export class AppComponent implements OnInit {
 
 
             });
-
+*/
     }
 
 
     ngOnInit(): void {
+
+        let html = document.documentElement;
+        let htmlLogo = html.getElementsByClassName("logo");
+        let i;
+
         let storage = this.localStoragexx.retrieve("zoomLevel");
         if (storage) {
             document.documentElement.style.fontSize = storage + "%";
@@ -84,6 +89,9 @@ export class AppComponent implements OnInit {
             let html = document.documentElement;
             if (!html.classList.contains("dark")) {
                 html.classList.add('dark');
+                for (i = 0; i < htmlLogo.length ; i++){
+                    htmlLogo[i].querySelectorAll('img')[0].src = "./img/TheWebConference2018-logo-dark.png";
+                }
             }
         }
 

@@ -5,7 +5,7 @@ import {Conference} from "./model/conference";
 
 @Injectable()
 export class DataLoaderService {
-    private conferenceURL = 'https://raw.githubusercontent.com/sympozer/datasets/master/ESWC2016/data_ESWC2016.json';
+    private conferenceURL = 'https://raw.githubusercontent.com/sympozer/datasets/master/WWW2018/conference.ttl';
 
     constructor(private http:Http) {
     }

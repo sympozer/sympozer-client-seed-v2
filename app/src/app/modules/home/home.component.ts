@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         if (document.getElementById("page-title-p"))
-            document.getElementById("page-title-p").innerHTML = this.title;
+                document.getElementById("page-title-p").innerHTML = this.title;
         let storage = this.localStoragexx.retrieve("darkTheme");
         let twiiterTag = document.getElementById("twitter");
         if (storage) {

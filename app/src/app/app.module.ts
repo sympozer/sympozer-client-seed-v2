@@ -68,7 +68,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgxQRCodeModule } from 'ngx-qrcode3';
 
-
 const routes: Routes = [];
 
 @NgModule({

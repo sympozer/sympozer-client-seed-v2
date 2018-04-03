@@ -191,14 +191,22 @@ export class ToolsComponent implements OnInit {
         this.darkTheme = !this.darkTheme;
         this.localStoragexx.store("darkTheme", this.darkTheme);
         let html = document.documentElement;
+        let htmlLogo = html.getElementsByClassName("logo");
+        let i;
         if (this.darkTheme) {
             if (!html.classList.contains("dark")) {
                 html.classList.add('dark');
+            }
+            for (i = 0; i < htmlLogo.length ; i++){
+                htmlLogo[i].querySelectorAll('img')[0].src = "./img/TheWebConference2018-logo-dark.png";
             }
         }
         else {
             if (html.classList.contains("dark")) {
                 html.classList.remove('dark');
+            }
+            for (i = 0; i < htmlLogo.length ; i++){
+                htmlLogo[i].querySelectorAll('img')[0].src = "./img/TheWebConference2018-logo.png";
             }
         }
     }
