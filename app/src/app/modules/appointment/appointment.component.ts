@@ -15,11 +15,15 @@ export class AppointmentComponent implements OnInit {
   //Input from Publication
   @Input('idTrack') idTrack: Object;
   @Input('idPublication') idPublication: Object;
+  @Input('authors') authors: Array<String>;
 
   subscription: Subscription;
   hasLoged: any;
   hasSetAppoint: any;
   haveNoti: any;
+  user: any;
+
+  private key_localstorage_user = 'user_external_ressource_sympozer';
 
   constructor(private localStoragexx: LocalStorageService,
     private apiExternalServer: ApiExternalServer,
@@ -34,12 +38,15 @@ export class AppointmentComponent implements OnInit {
 
   ngOnInit() {
     this.hasSetAppoint = false;
+    this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
   }
 
   makeAppointment() {
     console.log("Hello world");
+    console.log(this.authors);
+    console.log(this.user);
     const that = this;
-    this.appointService.setAppointment(this.idPublication, "Admin")
+    this.appointService.setAppointment(this.idPublication, this.user.email,this.authors)
       .then(() => {
         console.log("Vote successful");
         that.hasSetAppoint = true;
@@ -54,6 +61,11 @@ export class AppointmentComponent implements OnInit {
 
     // just to test the display
     //that.hasSetAppoint=true;
+  }
+
+  addUser(){
+    const that = this;
+    that.appointService.addUser();
   }
 
   fakelogin() {
