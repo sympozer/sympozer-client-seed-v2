@@ -1,7 +1,7 @@
 <div class="login-wrapper">
   <md-card class="inscription-card">
   	<div class="header">
-      <h4>Register</h4>
+      <h4>Sign Up</h4>
     </div>
     <div class="inscription-form">
         <h5>Sign up with your account</h5>
@@ -29,10 +29,11 @@
           </md-input-container>
 
           <div class="inscription-footer">
-            <button md-button color="primary" (click)="signup(email.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Register</button>
+            <button md-button color="primary" (click)="signup(email.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Sign up</button>
             <div class="sign-up">
-              <p>Already have an account?</p>
-              <a [routerLink]="['/login/']">Log in</a>
+              <br>
+              <p>Already have an account ?
+              <a [routerLink]="['/login/']">Log in</a> </p>
               
             </div>
           </div>
