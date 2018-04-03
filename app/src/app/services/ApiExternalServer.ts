@@ -61,7 +61,7 @@ export class ApiExternalServer {
                 linkedinaccount: user.linkedinaccount
             };
 
-            that.managerRequest.post_safe(Config.apiLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
+            that.managerRequest.post_safe(Config.externalServer.url + '/api/ressource/person', bodyRequest)
                 .then((request) => {
                     const user = JSON.parse(request._body);
                     if (request.status === 403) {
@@ -186,102 +186,6 @@ export class ApiExternalServer {
                     return reject(request);
                 });
         });
-    };
-
-    loginWithToken = (token) => {
-        return new Promise((resolve, reject) => {
-
-            if (!token || token.length === 0) {
-                return reject('An error occured. Please re-login.');
-            }
-
-            const that = this;
-            let decoded = jwtDecode(token);
-            this.getUser(decoded.id)
-                .then((userPromise : any) => {
-                    const userResult = JSON.parse(userPromise._body);
-                    const user = userResult.user;
-                    if (!user) {
-                        return reject('Error while retrieving your data. Please try again later.');
-                    }
-                    if(user.firstname && user.firstname.length > 0){
-                        this.sendUsername(user.firstname);
-                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
-                    }
-                    if(user.linkedin && user.linkedin.length > 0){
-                        this.sendLinkedin(user.linkedin)
-                    }
-                    if(user.twitter && user.twitter.length > 0){
-                        this.sendTwitter(user.twitter)
-                    }
-                    if(user.facebook && user.facebook.length > 0){
-                        this.sendFacebook(user.facebook)
-                    }
-                    if(user.google && user.google.length > 0){
-                        this.sendGoogle(user.google)
-                    }
-                    if(user.lastname && user.lastname.length > 0){
-                        this.sendLastname(user.lastname)
-                    }
-                    this.sendLoginStatus(true);
-                    that.localStoragexx.store(that.key_localstorage_user, user);
-
-                    console.log("Id : " + decoded.id);
-                    that.localStoragexx.store(that.key_localstorage_id, decoded.id);
-                    return resolve(user);
-                })
-                .catch((request) => {
-                    return reject(request);
-                });
-        });
-        /*
-        return new Promise((resolve, reject) => {
-            if (!token || token.length === 0) {
-                return reject('An error occured. Please re-login.');
-            }
-            const that = this;
-
-            that.managerRequest.get_safe(Config.externalServer.url + '/api/user?token=' + token)
-                .then((request) => {
-                    const user = JSON.parse(request._body);
-                    if (request.status === 403) {
-                        return reject('Invalid username or password')
-                    }
-                    if (request.status === 404) {
-                        return reject('A network error has occured. Please try again later.');
-                    }
-                    if (user.firstname && user.firstname.length > 0) {
-                        this.sendUsername(user.firstname);
-                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
-                    }
-                    if (user.photoUrl && user.photoUrl.length > 0) {
-                        this.sendAvatar(user.photoUrl);
-                        that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
-                    }
-
-                    if (user.linkedinaccount && user.linkedinaccount.length > 0) {
-                        this.sendLinkedin(user.linkedinaccount)
-                    }
-
-                    if (user.twitterpage && user.twitterpage.length > 0) {
-                        this.sendTwitter(user.twitterpage)
-                    }
-                    if (user.homepage && user.homepage.length > 0) {
-                        this.sendHomepage(user.homepage)
-                    }
-
-                    if (user.lastname && user.lastname.length > 0) {
-                        this.sendLastname(user.lastname)
-                    }
-                    this.sendLoginStatus(true);
-                    that.localStoragexx.store(that.key_localstorage_user, request._body);
-                    return resolve(user);
-                })
-                .catch((request) => {
-                    return reject(request);
-                });
-        });
-        */
     };
 
     signup = (email, firstname, lastname, password, confirmPassWord) => {

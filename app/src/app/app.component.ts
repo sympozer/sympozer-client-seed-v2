@@ -105,6 +105,7 @@ export class AppComponent implements OnInit {
                 });
             });
 
+        /*
         let token = this.localStoragexx.retrieve(this.key_localstorage_token);
         if (token && token.length > 0)
             this.apiExternalServer.loginWithToken(token);
@@ -131,6 +132,7 @@ export class AppComponent implements OnInit {
             if (this.localStoragexx.retrieve("token_external_ressource_sympozer"))
                 this.voteService.votedPublications()
         }, 300000)
+        */
     }
 
     goBack() {
