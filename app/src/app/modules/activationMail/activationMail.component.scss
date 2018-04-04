@@ -1,57 +1,37 @@
 @import "../../globals";
 
-p {
-  text-align: center;
-}
-
-small {
-  text-align: center;
-}
-
-.login-wrapper {
+.resend-wrapper {
   position: relative;
-  //height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  margin-top: 8%;
+  margin-bottom: 80px;
+  min-width: 280px;
 }
 
 .inscription-card {
-  //width: 33.33%;
   min-width: 280px;
-  
 
   .header {
     color: white;
-    background: linear-gradient(#e58307, #FF5722);
+    background: linear-gradient(60deg, #ab47bc, #7b1fa2);
     width: 100%;
     padding: 20px 0;
     box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
     margin-right: 20px;
-    //margin-top: -60px;
     border-radius: 3px;
 
     h4 {
       text-align: center;
     }
 
-    .social {
-      margin-top: 15px;
-      text-align: center;
-
-      a {
-        color: #FFFFFF;
-        margin-left: 5px;
-        margin-right: 5px;
-        font-size: 18px;
-        padding: 10px 10px;
-        line-height: 1em;
-        text-decoration: none;
-      }
+    
     }
   }
 
-  .inscription-form {
+  .resend-form {
     margin: 20px 0 0;
     padding: 0 10px;
 
@@ -65,23 +45,16 @@ small {
       width: 100%;
     }
 
-    .inscription-footer {
+    .resend-footer {
       text-align: center;
       padding: 10px 0;
 
       button {
+        background: linear-gradient(60deg, #ab47bc, #7b1fa2);
         font-size: 20px;
-        background: linear-gradient(#e58307, #FF5722);
         color: white;
       }
 
-      .sign-up {
-        margin-top: 5px;
-
-        a {
-          font-weight: normal;
-        }
-      }
+      
     }
   }
-}

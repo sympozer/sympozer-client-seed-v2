@@ -4,32 +4,21 @@ import {Observable} from 'rxjs/Observable';
 import {Config} from "../../app-config";
 
 @Injectable()
-export class LoginService {
+export class ChangePasswordService {
 
     constructor(private http: Http) {
     }
 
-    authentification(email: string, password:string):Observable<any>{
-
+    changePassword(currentPassword:string, newPassword: string):Observable<any>{
+        
         let headers = new Headers();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-        let data = "email=" + email + "&" + "password=" + password;  
+        let data = "currentPassword=" + currentPassword + "&" + "newPassword=" + newPassword;
 
         return this.http
-            .post( Config.apiLogin.url + "/api/v1/auth", data, {headers:headers})
-            .map(res => res.json())
-            .catch(this.handleError);
-    }
-
-    getUser(id: string):Observable<any>{
-
-        let headers = new Headers();
-        headers.set('Accept', 'application/json');
-
-        return this.http
-            .get( Config.apiLogin.url + "/api/v1/user/" + id, {headers:headers})
+            .post( Config.apiLogin.url + "/api/v1/updatePassword", data, {headers:headers})
             .map(res => res.json())
             .catch(this.handleError);
     }

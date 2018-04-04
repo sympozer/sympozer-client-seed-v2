@@ -32,6 +32,9 @@ import {SignupComponent} from './modules/signup/signup.component';
 import {ConferenceComponent} from './modules/conference/conference.component';
 import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
 import {UserProfileComponent} from './modules/user-profile/user-profile.component';
+import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
+import { ActivationMailComponent } from './modules/activationMail/activationMail.component';
+import { ChangePasswordComponent } from './modules/changePassword/changePassword.component';
 
 const appRoutes: Routes = [
     {
@@ -146,6 +149,18 @@ const appRoutes: Routes = [
     {
         path: 'signup',
         component: SignupComponent
+    },
+    {
+        path: 'forgotPassword',
+        component: ForgotPasswordComponent
+    },
+    {
+        path: 'resend',
+        component: ActivationMailComponent
+    },
+    {
+        path: 'changePassword',
+        component: ChangePasswordComponent
     },
     {
         path: 'profile',

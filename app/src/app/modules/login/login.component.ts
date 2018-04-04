@@ -24,7 +24,9 @@ export class LoginComponent implements OnInit {
     title: string = "Login";
     username: string = "User";
     toggleLogin = true;
+    private key_localstorage_token = "token_external_ressource_sympozer";
     private key_localstorage_user = "user_external_ressource_sympozer";
+
 
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
@@ -52,25 +54,47 @@ export class LoginComponent implements OnInit {
      * @param email
      * @param password
      */
-
+    /*
     login(email, password) {
 
-        let message ;
+        let userResult;
         this.apiLogin.authentification(email,password).subscribe(
             response => {
-                message = response;
+                userResult = response;
             },
             err => { 
-                console.log("Error");
+                console.log(err);
+                this.snackBar.open("Wrong Username or Password", "", {
+                    duration: 2000,
+                });
                 },
-            function() {
-                let decoded = jwtDecode(message.token);
+            () => {
+                this.localStoragexx.store(this.key_localstorage_token,userResult.token);
+                let decoded = jwtDecode(userResult.token);
                 console.log(decoded);
+                let userInfo;
+                this.apiLogin.getUser(decoded.id).subscribe(
+                    response => {
+                        userInfo = response;
+                    },
+                    err => {
+                        console.log("Error");
+                        console.log(err);
+                    },
+                    () =>  {
+                        console.log(userInfo);
+                        this.localStoragexx.store(this.key_localstorage_user,userInfo);
+                        this.snackBar.open("Login successful.", "", {
+                            duration: 2000,
+                        });
+                        window.history.back();
+                    }
+                );
             }
         );
-       
     }
-    /*
+    */
+
     login(email, password) {
         this.apiExternalServer.login(email, password)
             .then((user) => {
@@ -83,18 +107,18 @@ export class LoginComponent implements OnInit {
                         this.sendLoginStatus(true)
                     })
                     .catch((err) => {
-                        console.log(err)
+                        console.log(err);
                         this.snackBar.open("A network error occured. Please try again later.", "", {
                             duration: 2000,
                         });
-                    })
+                    });
 
 
 
-                Retrieve the author by the publication
+                //Retrieve the author by the publication
 
-                const that = this
-                let emailSha1 = sha1('mailto:' + email)
+                const that = this;
+                let emailSha1 = sha1('mailto:' + email);
                 let query = {'key': emailSha1};
                 this.DaoService.query("getPersonBySha", query, (results) => {
 
@@ -131,7 +155,7 @@ export class LoginComponent implements OnInit {
                 });
             });
     }
-    */
+
 
     sendLoginStatus(status: boolean): void {
         // send status to subscribers via observable subject
