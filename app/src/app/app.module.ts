@@ -64,9 +64,7 @@ import {PublicationsByKeyword} from "./modules/publications-by-keyword/publicati
 import {SignupComponent} from "./modules/signup/signup.component";
 import {UserProfileComponent} from "./modules/user-profile/user-profile.component";
 import {QrcodeComponent} from "./modules/qrcode/qrcode.component";
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { NgxQRCodeModule } from 'ngx-qrcode3';
+import {NgxQRCodeModule } from 'ngx-qrcode3';
 import {ForgotPasswordComponent} from "./modules/forgotPassword/forgotPassword.component";
 import {ActivationMailComponent} from "./modules/activationMail/activationMail.component";
 import {ChangePasswordComponent} from "./modules/changePassword/changePassword.component";
@@ -116,7 +114,7 @@ const routes: Routes = [];
         PublicationsByKeyword,
         SignupComponent,
         UserProfileComponent,
-        QrcodeComponent
+        QrcodeComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
         ChangePasswordComponent

@@ -43,6 +43,7 @@
     "ng2-tweet": "^0.0.16",
     "ng2-webstorage": "^1.4.1",
     "ngtweet": "^1.0.0",
+    "ngx-qrcode3": "^0.3.0",
     "octonode": "^0.7.9",
     "rdflib": "^0.14.1",
     "rdfstore": "^0.9.17",
