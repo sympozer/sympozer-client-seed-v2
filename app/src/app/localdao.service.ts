@@ -116,7 +116,13 @@ export class LocalDAOService {
                         if (response && response._body) {
                             console.log(this.conferenceURL);
                             that.saveDataset(response._body);
+                            console.log("AvantLocalStorage");
+                            this.localStoragexx.clear(that.localstorage_jsonld);
+                            console.log("Clear");
+                            console.log(that.localStoragexx.retrieve(that.localstorage_jsonld));
+                            console.log(that.localstorage_jsonld);
                             that.localStoragexx.store(that.localstorage_jsonld, response._body);
+                            console.log("Done");
                             return resolve(true);
                         }
 

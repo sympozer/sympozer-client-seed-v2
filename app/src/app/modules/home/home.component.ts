@@ -5,7 +5,7 @@ import {LocalDAOService} from '../../localdao.service';
 import {window} from "rxjs/operator/window";
 import {WindowReference} from '../../window-reference';
 import {LocalStorageService} from 'ng2-webstorage';
-import '../../../assets/twitter.js';
+import '../../../assets/widgets.js';
 
 @Component({
     selector: 'home',

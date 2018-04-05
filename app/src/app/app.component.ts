@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
 
             })
             .catch((err)=> {
-                this.snackBar.open("A network error occured. Please try again later.", "", {
+                this.snackBar.open("Data couldn't be loaded", "", {
                     duration: 2000,
                 });
             });
