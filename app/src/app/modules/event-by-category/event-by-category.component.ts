@@ -32,7 +32,7 @@ export class EventByCategoryComponent implements OnInit {
             if (document.getElementById("page-title-p"))
                 document.getElementById("page-title-p").innerHTML = that.trackName;
             let query = {'key': this.encoder.decode(params['id'])};
-            this.DaoService.query('getEventByTrack', query, (results) => {
+            this.DaoService.query('getEventsByTrack', query, (results) => {
                 if (results) {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
