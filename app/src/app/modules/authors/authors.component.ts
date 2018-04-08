@@ -31,14 +31,15 @@ export class AuthorsComponent implements OnInit {
         this.DaoService.query("getAllAuthors", null, (results) => {
             if (results) {
                 const nodeIdPerson = results['?idPerson'];
-                const nodeName = results['?name'];
+                const nodeGivenName = results['?givenName'];
+                const nodeFamilyName = results['?familyName'];
 
-                if (!nodeIdPerson || !nodeName) {
+                if (!nodeIdPerson || !nodeGivenName || !nodeFamilyName) {
                     return false;
                 }
 
                 let idBase = nodeIdPerson.value;
-                const name = nodeName.value;
+                const name = nodeFamilyName.value + ', ' + nodeGivenName.value;
 
                 if (!idBase || !name) {
                     return false;

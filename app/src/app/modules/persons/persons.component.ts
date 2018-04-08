@@ -42,14 +42,15 @@ export class PersonsComponent implements OnInit {
         that.DaoService.query("getAllPersons", null, (results) => {
             if (results) {
                 const nodeId = results['?id'];
-                const nodeName = results['?label'];
+                const nodeGivenName = results['?givenName'];
+                const nodeFamilyName = results['?familyName'];
 
-                if (!nodeId || !nodeName) {
+                if (!nodeId || !nodeGivenName || !nodeFamilyName) {
                     return false;
                 }
 
                 let id = nodeId.value;
-                const name = nodeName.value;
+                const name = nodeFamilyName.value + ', ' + nodeGivenName.value;
 
                 if (!id || !name) {
                     return false;

@@ -272,13 +272,14 @@ export class LocalDAOService {
                 case "getPersonLink":
                     return this.personLinkMap[data.key];
                 case "getAllPersons":
-                    query = "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                    query = "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
-                        "SELECT DISTINCT ?label ?id \n" +
+                        "SELECT DISTINCT * \n" +
                         "WHERE {\n" +
-                        " ?id a person:Person . \n" +
-                        " ?id schema:label ?label . \n" +
+                        " ?id a sd:Person . \n" +
+                        " ?id sd:givenName ?givenName . \n" +
+                        " ?id sd:familyName ?familyName . \n" +
                         " ?id foaf:mbox_sha1sum ?box . \n" +
                         "}";
                     that.launchQuerySparql(query, callback);
@@ -286,17 +287,17 @@ export class LocalDAOService {
                 //return this.personLinkMap;
                 case "getAllAuthors":
                     query =
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
-                        "SELECT DISTINCT ?idPerson ?name \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX dc: <http://purl.org/dc/elements/1.1/> \n" +
+                        "SELECT DISTINCT * \n" +
                         "WHERE {\n" +
-                        " ?proceeding a scholary:InProceedings . \n" +
-                        " ?idPerson a scholary:Person . \n" +
-                        " ?proceeding purl:creator ?idPerson . \n" +
-                        " ?idPerson schema:label ?name . \n" +
-                        "} GROUP BY ?idPerson";
-
+                        " ?proceeding a sd:InProceedings . \n" +
+                        " ?proceeding dc:creator ?idPerson . \n" +
+                        " ?idPerson a sd:Person . \n" +
+                        " ?idPerson sd:givenName ?givenName . \n" +
+                        " ?idPerson sd:familyName ?familyName . \n" +
+                        "}";
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getPersonsByRole":
