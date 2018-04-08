@@ -280,7 +280,7 @@ export class LocalDAOService {
                         " ?id a person:Person . \n" +
                         " ?id schema:label ?label . \n" +
                         " ?id foaf:mbox_sha1sum ?box . \n" +
-                        "} LIMIT 10";
+                        "}";
                     that.launchQuerySparql(query, callback);
                     break;
                 //return this.personLinkMap;
