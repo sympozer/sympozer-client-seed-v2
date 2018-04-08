@@ -4,7 +4,7 @@
       <h4>Sign In</h4>
     </div>
     <div class="inscription-form">
-      
+      <br>
       <form>
         <md-input-container>
           <input #email mdInput type="email" placeholder="Email">
@@ -17,12 +17,12 @@
         <div class="inscription-footer">
           <button md-button (click)="login(email.value, password.value)">Login</button>
           <div class="sign-up">
-            <p>Don’t have an account yet? </p>
-            <a [routerLink]="['/signup/']">Sign up</a>
-            <p>Forgot your password ? </p>
-            <a [routerLink]="['/forgotPassword/']">Forgot your password</a>
-            <p>Didn't receive an activation email ? </p>
-            <a [routerLink]="['/resend/']">Resend activation mail</a>
+            <br>
+            <p>Don’t have an account yet ? 
+            <a [routerLink]="['/signup/']">Sign up</a> </p>
+            <p>Forgot your password ? <a [routerLink]="['/forgotPassword/']" id="link" >Click here</a> </p>
+            <p>Didn't receive an activation email ? 
+            <a [routerLink]="['/resend/']">Resend activation mail</a> </p>
           </div>
         </div>
         <div class="btn-social-network">

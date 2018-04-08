@@ -115,7 +115,7 @@ export class ToolsComponent implements OnInit {
                 });
             }
             else {
-                this.snackBar.open("Reset failed please retry", "", {
+                this.snackBar.open("Dataset failed please retry", "", {
                     duration: 2000,
                 });
             }
