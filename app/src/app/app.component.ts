@@ -97,7 +97,7 @@ export class AppComponent implements OnInit {
             })
             .catch((err)=> {
                 this.snackBar.open("Data couldn't be loaded", "", {
-                    duration: 2000,
+                    duration: 3000,
                 });
             });
 

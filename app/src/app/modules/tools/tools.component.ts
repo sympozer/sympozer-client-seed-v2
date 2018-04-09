@@ -83,7 +83,7 @@ export class ToolsComponent implements OnInit {
     /**
      * Load the application dataset
      */
-    loadDataset() {
+        loadDataset() {
         this.loading = true;
 
         setTimeout(() => {
