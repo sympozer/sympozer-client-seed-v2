@@ -45,10 +45,15 @@ export class PersonByRoleComponent implements OnInit {
                 if (results) {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
+                    const nodeGivenName = results['?givenName'];
+                    const nodeFamilyName = results['?familyName'];
 
                     if (nodeId && nodeLabel) {
                         const id = nodeId.value;
                         const label = nodeLabel.value;
+                        const sortName = (nodeGivenName && nodeFamilyName)
+                                       ? nodeFamilyName.value + ', ' + nodeGivenName.value
+                                       : label;
 
                         if (id && label) {
                             const idEncoded = that.encoder.encode(id);
@@ -64,10 +69,11 @@ export class PersonByRoleComponent implements OnInit {
                             that.persons.push({
                                 id: idEncoded,
                                 label: label,
+                                sortName: sortName,
                             });
 
                             that.persons.sort((a, b) => {
-                                return a.label > b.label ? 1 : -1;
+                                return a.sortName > b.sortName ? 1 : -1;
                             });
                         }
                     }
@@ -76,4 +82,3 @@ export class PersonByRoleComponent implements OnInit {
         });
     }
 }
-

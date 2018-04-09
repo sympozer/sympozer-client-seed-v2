@@ -29,7 +29,6 @@ export class PublicationComponent implements OnInit {
     public publicationId;
     public trackId;
     public eventType;
-    public talk: any;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
@@ -129,18 +128,16 @@ export class PublicationComponent implements OnInit {
                 if (results) {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
-                    const nodeType = results['?type'];
 
-                    if (nodeId && nodeLabel && nodeType) {
+                    if (nodeId && nodeLabel) {
                         let idBase = nodeId.value;
                         const label = nodeLabel.value;
-                        let type = nodeType.value;
 
                         if (idBase && label) {
                             const id = that.encoder.encode(idBase);
                             if (id) {
 
-                                const find = that.events.find((e) => {
+                               const find = that.events.find((e) => {
                                     return e.id === id;
                                 });
 
@@ -148,21 +145,19 @@ export class PublicationComponent implements OnInit {
                                     return false;
                                 }
 
+                                let event = {
+                                    id: id,
+                                    label: label,
+                                };
+
                                 //On va chercher les infos du Talk
                                 that.DaoService.query("getTalkById", {key: idBase}, (results) => {
-                                    console.log('results talk : ', results);
                                     if (results) {
-                                        const nodeLabel = results['?label'];
-                                        const nodeDescription = results['?description'];
-                                        const nodeEndDate = results['?endDate'];
                                         const nodeStartDate = results['?startDate'];
-                                        const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
-                                        const nodeIsSubEventOf = results['?isSubEventOf'];
+                                        const nodeEndDate = results['?endDate'];
                                         const nodeLocation = results['?location'];
 
-                                        if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate) {
-                                            const label = nodeLabel.value;
-                                            const description = nodeDescription.value;
+                                        if (nodeEndDate && nodeStartDate) {
                                             let endDate = nodeEndDate.value;
                                             let startDate = nodeStartDate.value;
 
@@ -171,29 +166,24 @@ export class PublicationComponent implements OnInit {
                                                 location = nodeLocation.value;
                                             }
 
-                                            if (label && description && endDate && startDate) {
-                                                startDate = moment(startDate);
-                                                endDate = moment(endDate);
+                                            if (endDate && startDate) {
+                                                const startsAt = moment(startDate);
+                                                const endsAt = moment(endDate);
 
-                                                const strDuration = TimeManager.startAndEndTimeToString(startDate, endDate);
+                                                const strDuration = TimeManager.startAndEndTimeToString(startsAt, endsAt);
 
-                                                that.talk = {
-                                                    label: label,
-                                                    description: description,
-                                                    startsAt: startDate.format('LLLL'),
-                                                    endsAt: endDate.format('LLLL'),
-                                                    duration: strDuration,
-                                                    location: location,
-                                                };
+                                                event['startsAt'] = startsAt.format('LLLL');
+                                                event['endsAt'] = endsAt.format('LLLL');
+                                                event['duration'] = strDuration;
+                                                event['startDate'] = startDate;
+                                                event['endDate'] = endDate;
+                                                event['locationId'] = location;
+                                                event['locationLabel'] = location;
                                             }
                                         }
                                     }
                                 });
-                                that.events = that.events.concat({
-                                    id: id,
-                                    label: label,
-                                    //type: type,
-                                });
+                                that.events = that.events.concat(event);
 
                                 that.events.sort((a, b) => {
                                     return a.label > b.label ? 1 : -1;
@@ -208,10 +198,9 @@ export class PublicationComponent implements OnInit {
              * Retrive track from the publication
              */
             that.DaoService.query("getPublicationTrack", query, (results) => {
-                console.log(results);
                 if (results) {
                     const nodeLabel = results['?label'];
-                    const nodeId = results['?isSubEventOf'];
+                    const nodeId = results['?track'];
 
                     if (nodeLabel && nodeId) {
                         const label = nodeLabel.value;
@@ -319,15 +308,16 @@ export class PublicationComponent implements OnInit {
      */
     createICS = () => {
         var ics = new ICS();
-        const that = this
+        const that = this;
+        const talk = that.events[0];
 
         let calendar = ics.buildEvent({
             uid: '', // (optional)
-            start: that.talk.startsAt,
-            end: that.talk.endsAt,
-            title: that.talk.label,
-            description: that.talk.description,
-            location: that.talk.location, //
+            start: talk.startDate,
+            end: talk.endDate,
+            title: talk.label,
+            description: talk.description,
+            location: talk.location, //
             url: that.publicationId,
             status: 'confirmed',
             geo: {lat: 45.515113, lon: 13.571873,},
