@@ -8,6 +8,7 @@
     "buildprod": "ng build --prod --aot --bh /www2018/",
     "buildtest": "ng build --prod --aot --bh /www2018_test/",
     "buildbeta": "ng build --prod --aot --bh /www2018_beta/",
+    "buildvote": "ng build --prod --aot --bh /www2018_vote/",
     "buildpac": "ng build --prod --aot --bh /www2018_pac/",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
