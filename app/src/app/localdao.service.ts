@@ -304,14 +304,16 @@ export class LocalDAOService {
                     break;
                 case "getPersonsByRole":
                     query =
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "SELECT DISTINCT ?id ?label \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT * \n" +
                         "WHERE {\n" +
-                        " ?id a scholary:Person . \n" +
-                        " ?id schema:label ?label . \n" +
-                        " ?id scholary:holdsRole ?idHoldRole . \n" +
-                        " ?idHoldRole scholary:withRole <" + data.key + "> . \n" +
+                        " ?id a sd:Person . \n" +
+                        " ?id rdfs:label ?label . \n" +
+                        " OPTIONAL { ?id sd:givenName ?givenName . } \n" +
+                        " OPTIONAL { ?id sd:familyName ?familyName . } \n" +
+                        " ?id sd:holdsRole ?idHoldRole . \n" +
+                        " ?idHoldRole sd:withRole <" + data.key + "> . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
