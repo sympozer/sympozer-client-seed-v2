@@ -28,9 +28,7 @@ export class AppComponent implements OnInit {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
-                public snackBar: MdSnackBar) {
-
-        }
+                public snackBar: MdSnackBar) {}
 /*
         router.events.filter(event => event instanceof NavigationStart)
             .subscribe((event) => {
@@ -51,7 +49,6 @@ export class AppComponent implements OnInit {
 
             });
 */
-    
 
     ngOnInit(): void {
 
@@ -98,6 +95,7 @@ export class AppComponent implements OnInit {
                 });
             });
 
+        /*
         let token = this.localStoragexx.retrieve(this.key_localstorage_token);
         if (token && token.length > 0)
             this.apiExternalServer.loginWithToken(token);
@@ -124,6 +122,7 @@ export class AppComponent implements OnInit {
             if (this.localStoragexx.retrieve("token_external_ressource_sympozer"))
                 console.log("hi");
         }, 300000)
+        */
     }
 
     goBack() {

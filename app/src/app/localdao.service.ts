@@ -116,7 +116,13 @@ export class LocalDAOService {
                         if (response && response._body) {
                             console.log(this.conferenceURL);
                             that.saveDataset(response._body);
+                            console.log("AvantLocalStorage");
+                            this.localStoragexx.clear(that.localstorage_jsonld);
+                            console.log("Clear");
+                            console.log(that.localStoragexx.retrieve(that.localstorage_jsonld));
+                            console.log(that.localstorage_jsonld);
                             that.localStoragexx.store(that.localstorage_jsonld, response._body);
+                            console.log("Done");
                             return resolve(true);
                         }
 
@@ -211,7 +217,9 @@ export class LocalDAOService {
     launchQuerySparql = (query, callback) => {
         const that = this;
         const querySparql = that.$rdf.SPARQLToQuery(query, false, that.store);
-
+        if (querySparql.pat.statements.length == 0) {
+            console.log("SPARQL query with 0 statements??\n" + query);
+        }
         that.store.query(querySparql, callback);
     };
 
@@ -247,7 +255,7 @@ export class LocalDAOService {
                         "WHERE {\n" +
                         " <" + data.key + "> a person:Person . \n" +
                         " <" + data.key + "> schema:label ?label . \n" +
-                        " <" + data.key + "> foaf:mbox_sha1sum ?box . \n" +
+                        " OPTIONAL { <" + data.key + "> foaf:mbox_sha1sum ?box . } \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
@@ -270,44 +278,48 @@ export class LocalDAOService {
                 case "getPersonLink":
                     return this.personLinkMap[data.key];
                 case "getAllPersons":
-                    query = "PREFIX person: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                    query = "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
-                        "SELECT DISTINCT ?label ?id \n" +
+                        "SELECT DISTINCT * \n" +
                         "WHERE {\n" +
-                        " ?id a person:Person . \n" +
-                        " ?id schema:label ?label . \n" +
-                        " ?id foaf:mbox_sha1sum ?box . \n" +
-                        "} LIMIT 10";
-                    console.log(query);
+                        " ?id a sd:Person . \n" +
+                        " ?id rdfs:label ?fullName . \n" +
+                        " OPTIONAL { ?id sd:givenName ?givenName . } \n" +
+                        " OPTIONAL { ?id sd:familyName ?familyName . } \n" +
+                        //" OPTIONAL { ?id foaf:mbox_sha1sum ?box . } \n" +
+                        "}";
                     that.launchQuerySparql(query, callback);
                     break;
                 //return this.personLinkMap;
                 case "getAllAuthors":
                     query =
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
-                        "SELECT DISTINCT ?idPerson ?name \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX dc: <http://purl.org/dc/elements/1.1/> \n" +
+                        "SELECT DISTINCT * \n" +
                         "WHERE {\n" +
-                        " ?proceeding a scholary:InProceedings . \n" +
-                        " ?idPerson a scholary:Person . \n" +
-                        " ?proceeding purl:creator ?idPerson . \n" +
-                        " ?idPerson schema:label ?name . \n" +
-                        "} GROUP BY ?idPerson";
-
+                        " ?proceeding a sd:InProceedings . \n" +
+                        " ?proceeding dc:creator ?idPerson . \n" +
+                        " ?idPerson a sd:Person . \n" +
+                        " ?idPerson rdfs:label ?fullName . \n" +
+                        " OPTIONAL { ?idPerson sd:givenName ?givenName . } \n" +
+                        " OPTIONAL { ?idPerson sd:familyName ?familyName . } \n" +
+                        "}";
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getPersonsByRole":
                     query =
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "SELECT DISTINCT ?id ?label \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT * \n" +
                         "WHERE {\n" +
-                        " ?id a scholary:Person . \n" +
-                        " ?id schema:label ?label . \n" +
-                        " ?id scholary:holdsRole ?idHoldRole . \n" +
-                        " ?idHoldRole scholary:withRole <" + data.key + "> . \n" +
+                        " ?id a sd:Person . \n" +
+                        " ?id rdfs:label ?label . \n" +
+                        " OPTIONAL { ?id sd:givenName ?givenName . } \n" +
+                        " OPTIONAL { ?id sd:familyName ?familyName . } \n" +
+                        " ?id sd:holdsRole ?idHoldRole . \n" +
+                        " ?idHoldRole sd:withRole <" + data.key + "> . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
@@ -408,15 +420,12 @@ export class LocalDAOService {
                     console.log(data.key);
                     query =
                         "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "SELECT DISTINCT ?isSubEventOf ?label \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "SELECT DISTINCT ?track ?label \n" +
                         "WHERE {\n" +
-                        " <" + data.key + "> a scholary:InProceedings . \n" +
-                        " <" + data.key + "> scholary:relatesToEvent ?relatesToEvent . \n" +
-                        " ?relatesToEvent scholary:isSubEventOf ?isSubEventOf . \n" +
-                        " ?isSubEventOf a scholary:Track . \n" +
-                        " ?isSubEventOf schema:label ?label . \n" +
+                        " <" + data.key + "> sd:relatesToTrack ?track . \n" +
+                        " ?track rdfs:label ?label . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
@@ -495,17 +504,15 @@ export class LocalDAOService {
                 case "getPublicationLinkByTrack":
                     query =
                         "PREFIX purl: <http://purl.org/dc/elements/1.1/> \n" +
-                        "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                         "SELECT DISTINCT ?id ?label \n" +
                         "WHERE {\n" +
-                        " ?id a scholary:InProceedings . \n" +
-                        " ?id schema:label ?label . \n" +
-                        " ?id scholary:relatesToEvent ?talk . \n" +
-                        " ?talk a scholary:Talk . \n" +
-                        " ?talk scholary:isSubEventOf <" + data.key + "> . \n" +
-                        " <" + data.key + "> a scholary:Track . \n" +
+                        " ?id a sd:InProceedings . \n" +
+                        " ?id rdfs:label ?label . \n" +
+                        " ?id sd:relatesToTrack <" + data.key + "> . \n" +
                         "}";
+                    console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getAllPublications":
@@ -584,17 +591,14 @@ export class LocalDAOService {
                     break;
 
                 case "getTalkById":
-                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?isEventRelatedTo ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type ?location \n" +
+                    query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT * \n" +
                         "WHERE {\n" +
-                        " <" + data.key + "> a scholary:Talk . \n" +
-                        " <" + data.key + "> schema:label ?label . \n" +
-                        " <" + data.key + "> scholary:description ?description . \n" +
-                        " <" + data.key + "> scholary:endDate ?endDate . \n" +
-                        " <" + data.key + "> scholary:startDate ?startDate . \n" +
-                        " <" + data.key + "> scholary:isSubEventOf ?isSubEventOf . \n" +
-                        " <" + data.key + "> scholary:isEventRelatedTo ?isEventRelatedTo . \n" +
+                        " <" + data.key + "> rdfs:label ?label . \n" +
+                        " <" + data.key + "> sd:endDate ?endDate . \n" +
+                        " <" + data.key + "> sd:startDate ?startDate . \n" +
+                        " <" + data.key + "> sd:isEventRelatedTo ?isEventRelatedTo . \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
@@ -624,21 +628,16 @@ export class LocalDAOService {
                     break;
                 case "getLocation":
                     return this.eventLinkMapByLocation[data.key];
-                case "getEventByTrack":
-                    const localTypeEventByTrack = ["Workshop", "Tutorial", "Session", "Panel"];
-                    for (const type of localTypeEventByTrack) {
-                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                            "SELECT DISTINCT ?label ?id ?type \n" +
-                            "WHERE {\n" +
-                            " ?id a scholary:" + type + " . \n" +
-                            " ?id schema:label ?label . \n" +
-                            " ?id a ?type . \n" +
-                            " ?id scholary:isSubEventOf <" + data.key + "> . \n" +
-                            "}";
-
-                        that.launchQuerySparql(query, callback);
-                    }
+                case "getEventsByTrack":
+                    query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?label ?id \n" +
+                        "WHERE {\n" +
+                        " ?id a sd:OrganisedEvent . \n" +
+                        " ?id rdfs:label ?label . \n" +
+                        " ?id sd:relatesToTrack <" + data.key + "> . \n" +
+                        "}";
+                    that.launchQuerySparql(query, callback);
                     break;
                 case "getPublicationsByEvent":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
@@ -801,14 +800,12 @@ export class LocalDAOService {
                     }
                     break;
                 case "getEventFromPublication":
-                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?id ?label ?type \n" +
+                    query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label \n" +
                         "WHERE {\n" +
-                        " <" + data.key + "> a scholary:InProceedings . \n" +
-                        " <" + data.key + "> scholary:relatesToEvent ?id . \n" +
-                        " ?id schema:label ?label . \n" +
-                        " ?id a ?type . \n" +
+                        " <" + data.key + "> sd:relatesToEvent ?id . \n" +
+                        " ?id rdfs:label ?label . \n" +
                         "}";
                     that.launchQuerySparql(query, callback);
                     break;
