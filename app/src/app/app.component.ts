@@ -32,11 +32,7 @@ export class AppComponent implements OnInit {
                 private localStoragexx: LocalStorageService,
                 private toolService: ToolsService,
                 private voteService: VoteService,
-                public snackBar: MdSnackBar) {
-
-        this.subscription = this.toolService.getFullScreenStatus().subscribe(status => {
-            this.fullscreen = status;
-        });
+                public snackBar: MdSnackBar) {}
 /*
         router.events.filter(event => event instanceof NavigationStart)
             .subscribe((event) => {
@@ -57,7 +53,7 @@ export class AppComponent implements OnInit {
 
             });
 */
-    }
+
 
 
     ngOnInit(): void {
