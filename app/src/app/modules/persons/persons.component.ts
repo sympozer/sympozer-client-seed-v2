@@ -46,13 +46,15 @@ export class PersonsComponent implements OnInit {
                 const nodeGivenName = results['?givenName'];
                 const nodeFamilyName = results['?familyName'];
 
-                if (!nodeId || !nodeFullName || !nodeGivenName || !nodeFamilyName) {
+                if (!nodeId || !nodeFullName) {
                     return false;
                 }
 
                 let id = nodeId.value;
                 const name = nodeFullName.value;
-                const sortName = nodeFamilyName.value + ', ' + nodeGivenName.value;
+                const sortName = (nodeGivenName && nodeFamilyName)
+                               ? nodeFamilyName.value + ', ' + nodeGivenName.value
+                               : nodeFullName;
 
                 if (!id || !name) {
                     return false;

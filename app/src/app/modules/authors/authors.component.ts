@@ -35,13 +35,15 @@ export class AuthorsComponent implements OnInit {
                 const nodeGivenName = results['?givenName'];
                 const nodeFamilyName = results['?familyName'];
 
-                if (!nodeIdPerson || !nodeFullName || !nodeGivenName || !nodeFamilyName) {
+                if (!nodeIdPerson || !nodeFullName) {
                     return false;
                 }
 
                 let idBase = nodeIdPerson.value;
                 const name = nodeFullName.value;
-                const sortName = nodeFamilyName.value + ', ' + nodeGivenName.value;
+                const sortName = (nodeGivenName && nodeFamilyName)
+                               ? nodeFamilyName.value + ', ' + nodeGivenName.value
+                               : nodeFullName;
 
                 if (!idBase || !name) {
                     return false;
