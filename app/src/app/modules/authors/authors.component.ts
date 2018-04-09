@@ -31,14 +31,19 @@ export class AuthorsComponent implements OnInit {
         this.DaoService.query("getAllAuthors", null, (results) => {
             if (results) {
                 const nodeIdPerson = results['?idPerson'];
-                const nodeName = results['?name'];
+                const nodeFullName = results['?fullName'];
+                const nodeGivenName = results['?givenName'];
+                const nodeFamilyName = results['?familyName'];
 
-                if (!nodeIdPerson || !nodeName) {
+                if (!nodeIdPerson || !nodeFullName) {
                     return false;
                 }
 
                 let idBase = nodeIdPerson.value;
-                const name = nodeName.value;
+                const name = nodeFullName.value;
+                const sortName = (nodeGivenName && nodeFamilyName)
+                               ? nodeFamilyName.value + ', ' + nodeGivenName.value
+                               : nodeFullName;
 
                 if (!idBase || !name) {
                     return false;
@@ -52,6 +57,7 @@ export class AuthorsComponent implements OnInit {
                 let person = {
                     id: id,
                     name: name,
+                    sortName: sortName,
                     publications: [],
                 };
 
@@ -90,7 +96,7 @@ export class AuthorsComponent implements OnInit {
                 that.authors = that.authors.concat(person);
 
                 that.authors.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
+                  return a.sortName > b.sortName ? 1 : -1;
                 });
             }
         });
