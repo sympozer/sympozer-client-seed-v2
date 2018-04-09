@@ -34,7 +34,6 @@ import {EventsByLocationComponent} from "./modules/events-by-location/events-by-
 import {EventComponent} from "./modules/event/event.component";
 import {ExternPublicationComponent} from "./modules/extern-publication/externpublication.component";
 import {AutocompleteComponent} from "./modules/autocomplete/autocomplete.component";
-import {ToolsComponent} from "./modules/tools/tools.component";
 import {EventsByDate} from "./modules/events-by-date/events-by-date";
 import {Share} from "./modules/share-button/share-button.component";
 import {ScrollLoader} from "./modules/scroll-loader/scroll-loader.component";
@@ -56,7 +55,6 @@ import {TimeManager} from "./services/timeManager.service";
 import {ShareButtonsModule} from "ng2-sharebuttons";
 import {ConferenceComponent} from "./modules/conference/conference.component";
 import {Angulartics2Module, Angulartics2Piwik} from "angulartics2";
-import {ToolsService} from "./services/tools.service";
 import {PublicationsByKeyword} from "./modules/publications-by-keyword/publications-by-keyword.component";
 
 const routes: Routes = [];
@@ -90,9 +88,7 @@ const routes: Routes = [];
         EventByCategoryComponent,
         ExternPublicationComponent,
         AutocompleteComponent,
-        ToolsComponent,
         KeysPipe,
-        ToolsComponent,
         EventsByDate,
         Share,
         ScrollLoader,
@@ -126,7 +122,6 @@ const routes: Routes = [];
         PersonService,
         RessourceDataset,
         ApiExternalServer,
-        ToolsService,
         TimeManager
     ],
     bootstrap: [AppComponent]

@@ -7,7 +7,6 @@ import {Router, NavigationEnd, ActivatedRoute, NavigationStart} from "@angular/r
 import {LocalStorageService} from "ng2-webstorage";
 import {ApiExternalServer} from "./services/ApiExternalServer";
 import {Subscription} from "rxjs/Subscription";
-import {ToolsService} from "./services/tools.service";
 import {MdSnackBar} from "@angular/material";
 const screenfull = require('screenfull');
 
@@ -29,12 +28,9 @@ export class AppComponent implements OnInit {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
-                private toolService: ToolsService,
                 public snackBar: MdSnackBar) {
 
-        this.subscription = this.toolService.getFullScreenStatus().subscribe(status => {
-            this.fullscreen = status;
-        });
+        }
 /*
         router.events.filter(event => event instanceof NavigationStart)
             .subscribe((event) => {
@@ -55,8 +51,7 @@ export class AppComponent implements OnInit {
 
             });
 */
-    }
-
+    
 
     ngOnInit(): void {
 

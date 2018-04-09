@@ -8,28 +8,6 @@
         </p> -->
     </div>
     <div class="menu-btn">
-
-        <button md-icon-button [mdMenuTriggerFor]="menu" class="avatar-open">
-            <div class="avatar-wrapper">
-                <div *ngIf="!hasLogged || (hasLogged && avatar == null)">
-                    <img class="avatar" src="./img/placeholder.jpg"/>
-                </div>
-                <div *ngIf="hasLogged && avatar != null">
-                    <img class="avatar" src={{avatar}}/>
-                </div>
-                <md-icon>arrow_drop_down</md-icon>
-            </div>
-        </button>
-
-        <md-menu [overlapTrigger]="false" xPosition="before" yPosition="below" #menu="mdMenu" class="account-menu">
-            <div *ngIf="!hasLogged">
-                <button md-menu-item disabled>
-                    <md-icon>account_circle</md-icon>
-                    <span>Guest</span>
-                </button>
-            </div>
-        </md-menu>
-
         <button md-icon-button class="menu-button-open" (click)="sidenav.open()">
             <md-icon>menu</md-icon>
         </button>
