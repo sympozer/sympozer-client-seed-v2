@@ -249,7 +249,7 @@ export class LocalDAOService {
                         "WHERE {\n" +
                         " <" + data.key + "> a person:Person . \n" +
                         " <" + data.key + "> schema:label ?label . \n" +
-                        " <" + data.key + "> foaf:mbox_sha1sum ?box . \n" +
+                        " OPTIONAL { <" + data.key + "> foaf:mbox_sha1sum ?box . } \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
@@ -281,7 +281,7 @@ export class LocalDAOService {
                         " ?id rdfs:label ?fullName . \n" +
                         " OPTIONAL { ?id sd:givenName ?givenName . } \n" +
                         " OPTIONAL { ?id sd:familyName ?familyName . } \n" +
-                        " ?id foaf:mbox_sha1sum ?box . \n" +
+                        //" OPTIONAL { ?id foaf:mbox_sha1sum ?box . } \n" +
                         "}";
                     that.launchQuerySparql(query, callback);
                     break;
