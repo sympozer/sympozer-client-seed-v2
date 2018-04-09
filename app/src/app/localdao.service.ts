@@ -278,6 +278,7 @@ export class LocalDAOService {
                         "SELECT DISTINCT * \n" +
                         "WHERE {\n" +
                         " ?id a sd:Person . \n" +
+                        " ?id rdfs:label ?fullName . \n" +
                         " ?id sd:givenName ?givenName . \n" +
                         " ?id sd:familyName ?familyName . \n" +
                         " ?id foaf:mbox_sha1sum ?box . \n" +
@@ -295,6 +296,7 @@ export class LocalDAOService {
                         " ?proceeding a sd:InProceedings . \n" +
                         " ?proceeding dc:creator ?idPerson . \n" +
                         " ?idPerson a sd:Person . \n" +
+                        " ?idPerson rdfs:label ?fullName . \n" +
                         " ?idPerson sd:givenName ?givenName . \n" +
                         " ?idPerson sd:familyName ?familyName . \n" +
                         "}";

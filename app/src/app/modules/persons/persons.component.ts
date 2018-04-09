@@ -42,15 +42,17 @@ export class PersonsComponent implements OnInit {
         that.DaoService.query("getAllPersons", null, (results) => {
             if (results) {
                 const nodeId = results['?id'];
+                const nodeFullName = results['?fullName'];
                 const nodeGivenName = results['?givenName'];
                 const nodeFamilyName = results['?familyName'];
 
-                if (!nodeId || !nodeGivenName || !nodeFamilyName) {
+                if (!nodeId || !nodeFullName || !nodeGivenName || !nodeFamilyName) {
                     return false;
                 }
 
                 let id = nodeId.value;
-                const name = nodeFamilyName.value + ', ' + nodeGivenName.value;
+                const name = nodeFullName.value;
+                const sortName = nodeFamilyName.value + ', ' + nodeGivenName.value;
 
                 if (!id || !name) {
                     return false;
@@ -69,12 +71,13 @@ export class PersonsComponent implements OnInit {
                 const person = {
                     id: id,
                     name: name,
+                    sortName: sortName,
                 };
 
                 that.persons = that.persons.concat(person);
 
                 that.persons.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
+                    return a.sortName > b.sortName ? 1 : -1;
                 });
             }
         });
