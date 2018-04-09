@@ -9,7 +9,6 @@ import {Dataset} from  './dataset';
 import {eventHelper} from  './eventHelper';
 import {Encoder} from  './lib/encoder';
 import {DataLoaderService} from "./data-loader.service";
-import {LocalStorageService} from 'ng2-webstorage';
 import {ManagerRequest} from "./services/ManagerRequest";
 import {DOCUMENT} from '@angular/platform-browser';
 
@@ -66,7 +65,6 @@ export class LocalDAOService {
                 private ev: eventHelper,
                 private encoder: Encoder,
                 private dataloader: DataLoaderService,
-                private localStoragexx: LocalStorageService,
                 private managerRequest: ManagerRequest,
                 @Inject(DOCUMENT) private document: any) {
         const domain = this.document.location.hostname;
@@ -82,6 +80,7 @@ export class LocalDAOService {
     }
 
     resetDataset() {
+        /*
         try {
             const that = this;
 
@@ -97,15 +96,13 @@ export class LocalDAOService {
         catch (err) {
             return false;
         }
+        */
     }
 
     loadDataset(): Promise<boolean> {
 
         const that = this;
         return new Promise((resolve, reject) => {
-            //On récup le dataset jsonld en local storage
-            console.log(that.localstorage_jsonld);
-            let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
 
             //Si on l'a pas, on le télécharge
             // if (!storage) {
@@ -114,15 +111,7 @@ export class LocalDAOService {
                 .then((response) => {
                     try {
                         if (response && response._body) {
-                            console.log(this.conferenceURL);
                             that.saveDataset(response._body);
-                            console.log("AvantLocalStorage");
-                            this.localStoragexx.clear(that.localstorage_jsonld);
-                            console.log("Clear");
-                            console.log(that.localStoragexx.retrieve(that.localstorage_jsonld));
-                            console.log(that.localstorage_jsonld);
-                            that.localStoragexx.store(that.localstorage_jsonld, response._body);
-                            console.log("Done");
                             return resolve(true);
                         }
 

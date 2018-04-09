@@ -28,6 +28,8 @@ export var Config = {
         "website": "https://www2018.thewebconf.org/",
         "baseUri": "http://data.semanticweb.org/conference/www/2018",
         "updateUri": "https://raw.githubusercontent.com/sympozer/datasets/master/WWW2018/conference.ttl",
+        "updatePubliUri": "https://raw.githubusercontent.com/sympozer/datasets/master/WWW2018/publications.ttl",
+        "updateSessUri": "https://raw.githubusercontent.com/sympozer/datasets/master/WWW2018/sessions.ttl",
         "lang": "EN",
         "momentLang": "EN_us",
         "storage": "on",
