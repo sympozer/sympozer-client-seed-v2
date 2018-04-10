@@ -17,11 +17,9 @@ const $rdf = require('rdflib');
 
 @Injectable()
 export class LocalDAOService {
-    private useJsonld = true;
     private localstorage_jsonld = 'dataset-sympozer';
-    private store;
-    private $rdf;
-    private conferenceURL;
+    private $rdf = $rdf;
+    private store = $rdf.graph();
     private localData;
 
     private conference: Conference = new Conference();
@@ -71,12 +69,6 @@ export class LocalDAOService {
         if (domain) {
             this.localstorage_jsonld += "-" + domain;
         }
-
-        this.conferenceURL = this.useJsonld
-            ? Config.conference.updateUri//'http://serenitecoex.com/dataset-conf.jsonld'
-            : 'http://dev.sympozer.com/conference/www2012/file-handle/writer/json';
-
-        this.$rdf = $rdf;
     }
 
     resetDataset() {
@@ -99,19 +91,19 @@ export class LocalDAOService {
         */
     }
 
-    loadDataset(): Promise<boolean> {
+    loadDataset(uri: string): Promise<boolean> {
 
         const that = this;
         return new Promise((resolve, reject) => {
 
             //Si on l'a pas, on le télécharge
             // if (!storage) {
-            console.log('loading graph jsonld ...');
-            this.managerRequest.get_safe(this.conferenceURL)
+            console.log('loading graph...');
+            this.managerRequest.get_safe(uri)
                 .then((response) => {
                     try {
                         if (response && response._body) {
-                            that.saveDataset(response._body);
+                            that.saveDataset(response._body, uri);
                             return resolve(true);
                         }
 
@@ -138,15 +130,14 @@ export class LocalDAOService {
         });
     }
 
-    saveDataset(dataset: string) {
+    saveDataset(dataset: string, uri: string) {
         const that = this;
         const mimeType = 'text/turtle';
-        const store = that.$rdf.graph();
+
 
         try {
-            that.$rdf.parse(dataset, store, this.conferenceURL, mimeType);
-            that.store = store;
-            that.store.fetcher = null;
+            that.$rdf.parse(dataset, that.store, uri, mimeType);
+            //that.store.fetcher = null;
 
             //We if we have query waiting
             for (const qw of that.queryWaiting) {
@@ -161,9 +152,9 @@ export class LocalDAOService {
         }
     }
 
-    getData(): Promise<Conference> {
+    getData(uri: string): Promise<Conference> {
         // Vérifier la différence de version du fichier entre le local et le distant, et enregistrer en local si besoin (nouvelle version)
-        return this.http.get(this.conferenceURL)
+        return this.http.get(uri)
             .toPromise()
             .then(LocalDAOService.extractData)
             .catch(this.handleError)
@@ -217,7 +208,7 @@ export class LocalDAOService {
         const that = this;
         const types = ["Panel", "Session", 'Talk', 'Tutorial', 'Workshop', 'Track', 'Conference'];
         const noAcademicEventTypes = ["Meal", "SocialEvent", "Break"];
-        if (that.useJsonld && that.store && callback) {
+        if (that.store && callback) {
             let query;
             switch (command) {
                 case "getMemberPersonByOrganisation":

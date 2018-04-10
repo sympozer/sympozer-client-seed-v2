@@ -6,6 +6,8 @@ import {routerTransition} from "../../app.router.animation";
 import {LocalDAOService} from "../../localdao.service";
 import {LocalStorageService} from 'ng2-webstorage';
 import {ToolsService} from '../../services/tools.service';
+import {Config} from "../../app-config";
+
 const screenfull = require('screenfull');
 
 @Component({
@@ -87,7 +89,7 @@ export class ToolsComponent implements OnInit {
         this.loading = true;
 
         setTimeout(() => {
-            this.localdao.loadDataset().then(() => {
+            this.localdao.loadDataset(Config.conference.updateSessUri).then(() => {
                 this.snackBar.open("Dataset properly loaded", "", {
                     duration: 2000,
                 });
