@@ -54,6 +54,15 @@
           <span class="event-info"><md-icon>schedule</md-icon> {{talk.startsAt}} </span>
           <span class="event-info"><md-icon>hourglass_empty</md-icon> {{talk.duration}} </span>
           <span class="event-info"><md-icon>update</md-icon> {{talk.endsAt}} </span>
+          <span *ngIf="talk.location" class="event-info" >
+            <a [routerLink]="['/events-by-location/'+talk.location]"><md-icon>place</md-icon> {{talk.location}}</a>
+            <!-- we may use locationId in the future
+            <a [routerLink]="['/location/'+talk.location+'/'+talk.locationId]"><md-icon>place</md-icon> {{talk.label}}</a>
+            -->
+          </span>
+          <span *ngIf="talk.session" class="event-info">
+            <a [routerLink]="['/event/'+talk.session+'/'+talk.sessionId]"><md-icon>event</md-icon> {{talk.session}}</a>
+          </span>
         </div>
       </div>
     </md-card>

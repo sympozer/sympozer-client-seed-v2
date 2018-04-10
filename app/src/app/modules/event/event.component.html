@@ -34,7 +34,7 @@
       <md-icon md-list-avatar>place</md-icon>
       <a [routerLink]="['/events-by-location/'+event.location]">{{event.location}}</a>
       <!-- in future versions, should be we use locationId as well?
-      <a [routerLink]="['/events-by-location/'+event.location+'/'+event.locationId]">{{event.location}}</a>
+      <a [routerLink]="['/location/'+event.location+'/'+event.locationId]">{{event.location}}</a>
       -->
     </md-card>
   </div>

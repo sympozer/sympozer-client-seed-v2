@@ -572,7 +572,6 @@ export class LocalDAOService {
                         " OPTIONAL { <" + data.key + "> sd:hasSubEvent ?hasSubEvent . } \n" +
                         "}";
 
-                    console.log("===", query);
                     that.launchQuerySparql(query, callback);
                     break;
 
@@ -815,12 +814,18 @@ export class LocalDAOService {
                     });
                     break;
                 case "getEventFromPublication":
-                    query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                    query = "PREFIX foo: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?id ?label \n" +
+                        "SELECT DISTINCT * \n" +
                         "WHERE {\n" +
                         " <" + data.key + "> sd:relatesToEvent ?id . \n" +
                         " ?id rdfs:label ?label . \n" +
+                        " ?id sd:startDate ?startDate . \n" +
+                        " ?id sd:endDate ?endDate . \n" +
+                        " ?id sd:isSubEventOf ?sessionId . \n" +
+                        " ?sessionId rdfs:label ?sessionLabel . \n" +
+                        " ?sessionId sd:hasSite ?locationId . \n" +
+                        " ?locationId rdfs:label ?locationLabel . \n" +
                         "}";
                     that.launchQuerySparql(query, callback);
                     break;

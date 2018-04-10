@@ -127,13 +127,24 @@ export class PublicationComponent implements OnInit {
             that.DaoService.query("getEventFromPublication", query, (results) => {
                 if (results) {
                     const nodeId = results['?id'];
-                    const nodeLabel = results['?label'];
 
-                    if (nodeId && nodeLabel) {
+                    if (nodeId) {
                         let idBase = nodeId.value;
-                        const label = nodeLabel.value;
 
-                        if (idBase && label) {
+                        if (idBase) {
+
+                            const label = results['?label'].value;
+                            const startDate = results['?startDate'].value;
+                            const endDate = results['?endDate'].value;
+                            const sessionId = results['?sessionId'].value;
+                            const sessionLabel = results['?sessionLabel'].value;
+                            const locationId = results['?locationId'].value;
+                            const locationLabel = results['?locationLabel'].value;
+
+                            const startsAt = moment(startDate);
+                            const endsAt = moment(endDate);
+                            const strDuration = TimeManager.startAndEndTimeToString(startsAt, endsAt);
+
                             const id = that.encoder.encode(idBase);
                             if (id) {
 
@@ -148,41 +159,17 @@ export class PublicationComponent implements OnInit {
                                 let event = {
                                     id: id,
                                     label: label,
+                                    startDate: startDate,
+                                    endDate: endDate,
+                                    startsAt: startsAt,
+                                    duration: strDuration,
+                                    endsAt: endsAt,
+                                    location: locationLabel,
+                                    locationId: locationId,
+                                    session: sessionLabel,
+                                    sessionId: sessionId,
                                 };
 
-                                //On va chercher les infos du Talk
-                                that.DaoService.query("getTalkById", {key: idBase}, (results) => {
-                                    if (results) {
-                                        const nodeStartDate = results['?startDate'];
-                                        const nodeEndDate = results['?endDate'];
-                                        const nodeLocation = results['?location'];
-
-                                        if (nodeEndDate && nodeStartDate) {
-                                            let endDate = nodeEndDate.value;
-                                            let startDate = nodeStartDate.value;
-
-                                            let location = null;
-                                            if (nodeLocation) {
-                                                location = nodeLocation.value;
-                                            }
-
-                                            if (endDate && startDate) {
-                                                const startsAt = moment(startDate);
-                                                const endsAt = moment(endDate);
-
-                                                const strDuration = TimeManager.startAndEndTimeToString(startsAt, endsAt);
-
-                                                event['startsAt'] = startsAt.format('LLLL');
-                                                event['endsAt'] = endsAt.format('LLLL');
-                                                event['duration'] = strDuration;
-                                                event['startDate'] = startDate;
-                                                event['endDate'] = endDate;
-                                                event['locationId'] = location;
-                                                event['locationLabel'] = location;
-                                            }
-                                        }
-                                    }
-                                });
                                 that.events = that.events.concat(event);
 
                                 that.events.sort((a, b) => {
