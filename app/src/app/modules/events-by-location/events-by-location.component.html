@@ -9,8 +9,9 @@
     <md-icon md-list-avatar>event</md-icon>
     <a [routerLink]="['/event/'+event.label+'/'+event.id]">
       <span class="event">{{event.label}}</span>
-      <span class="event-info"><b> Starts at : </b> {{event.startDate}} </span>
-      <span class="event-info"><b> Duration : </b>{{event.duration}} </span>
+      <span class="event-info"><md-icon>schedule</md-icon> {{event.startDate}} </span>
+      <span class="event-info"><md-icon>hourglass_empty</md-icon> {{event.duration}} </span>
+      <span class="event-info"><md-icon>update</md-icon> {{event.endDate}} </span>
     </a>
   </md-card>
 </div>
