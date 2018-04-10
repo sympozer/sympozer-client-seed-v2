@@ -167,7 +167,7 @@ export class PublicationComponent implements OnInit {
                                     location: locationLabel,
                                     locationId: locationId,
                                     session: sessionLabel,
-                                    sessionId: sessionId,
+                                    sessionId: this.encoder.encode(sessionId)
                                 };
 
                                 that.events = that.events.concat(event);
