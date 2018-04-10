@@ -17,11 +17,17 @@ export class QrcodeComponent {
     ngOnInit() {
         let user = this.localStoragexx.retrieve(this.key_localstorage_user);
         let id = this.localStoragexx.retrieve(this.id_localstorage_user);
-        console.log(user.firstname);
+        //si la personne est dans le dataset
+        /*if( ){
+            console.log("in dataset");
+            this.qrValue = 'https://sympozer.liris.cnrs.fr/www2018/#/person/' + user.name + '/' + id;
+        //si participant
+        }else{
+            console.log("participant");
+            this.qrValue = 'https://sympozer.liris.cnrs.fr/www2018/#/person/' + user.name + '/' + user.email;
+
+        }*/
+
         this.qrValue = 'https://sympozer.liris.cnrs.fr/www2018/#/person/' + user.name + '/' + id;
     }
-
-    //value: string = 'https://sympozer.liris.cnrs.fr/www2018/#/person/' + this.user.firstname + '/' + this.key_localstorage_user;
-
-    //value: string = 'https://sympozer.liris.cnrs.fr/www2018/#/'
 }
