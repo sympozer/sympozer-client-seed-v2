@@ -454,7 +454,8 @@ html.dark {
   }
 
   md-sidenav-container {
-    background: $dark-theme-bg !important;
+    background-color: $dark-theme-bg !important;
+    background-image: url("./img/panorama-dark.png") !important;
   }
 
   .mat-sidenav.mat-sidenav-push {
