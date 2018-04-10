@@ -68,6 +68,7 @@ import {NgxQRCodeModule } from 'ngx-qrcode3';
 import {ForgotPasswordComponent} from "./modules/forgotPassword/forgotPassword.component";
 import {ActivationMailComponent} from "./modules/activationMail/activationMail.component";
 import {ChangePasswordComponent} from "./modules/changePassword/changePassword.component";
+import {UserInfoComponent} from "./modules/user-info/user-info.component";
 
 
 const routes: Routes = [];
@@ -117,7 +118,8 @@ const routes: Routes = [];
         QrcodeComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
-        ChangePasswordComponent
+        ChangePasswordComponent,
+        UserInfoComponent
     ],
     imports: [
         BrowserModule,

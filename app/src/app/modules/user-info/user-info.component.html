@@ -1,0 +1,17 @@
+<div class="component-wrapper">
+    <div class="login-wrapper">
+        <md-card class="inscription-card">
+            <div class="header">
+                <h4>User Information</h4>
+            </div>
+            <div class="information">
+                <h5>Prénom : <span *ngIf="user.firstname != null">{{user.firstname}}</span></h5>
+                <h5>Nom : <span *ngIf="user.lastname != null">{{user.lastname}}</span></h5>
+            </div>
+            <div class="qr-code">
+                <!--Qr Code-->
+                <app-qrcode></app-qrcode>
+            </div>
+        </md-card>
+    </div>
+</div>

@@ -11,7 +11,6 @@ export class QrcodeComponent {
     private id_localstorage_user = "id_external_ressource_sympozer";
     qrValue;
 
-
     constructor(private localStoragexx: LocalStorageService) {
     }
 
@@ -19,7 +18,7 @@ export class QrcodeComponent {
         let user = this.localStoragexx.retrieve(this.key_localstorage_user);
         let id = this.localStoragexx.retrieve(this.id_localstorage_user);
         console.log(user.firstname);
-        this.qrValue = 'https://sympozer.liris.cnrs.fr/www2018/#/person/' + user.firstname + '/' + id;
+        this.qrValue = 'https://sympozer.liris.cnrs.fr/www2018/#/person/' + user.name + '/' + id;
     }
 
     //value: string = 'https://sympozer.liris.cnrs.fr/www2018/#/person/' + this.user.firstname + '/' + this.key_localstorage_user;
