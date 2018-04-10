@@ -697,16 +697,14 @@ export class LocalDAOService {
                     }
                     break;
                 case "getDayPerDay":
-                    for (const type of types) {
-                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                            "SELECT DISTINCT ?id ?startDate \n" +
-                            "WHERE {\n" +
-                            " ?id a scholary:" + type + " . \n" +
-                            " ?id scholary:startDate ?startDate . \n" +
-                            "}";
-                        that.launchQuerySparql(query, callback);
-                    }
+                    query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?startDate \n" +
+                        "WHERE {\n" +
+                        " ?id a sd:Session . \n" +
+                        " ?id sd:startDate ?startDate . \n" +
+                        "}";
+                    that.launchQuerySparql(query, callback);
                     break;
 
                 case "getIsSubEvent":
@@ -756,37 +754,49 @@ export class LocalDAOService {
                     }
                     break;
                 case "getEventByDateDayPerDay":
-                    const localTypesDayPerDay = ["Workshop", "Tutorial", "Session", "Panel"];
                     const originStartDateDayPerDay = moment(data.startDate);
                     const originEndDateDayPerDay = moment(data.endDate);
+                    const abstractTypes = new Set([
+                       "https://w3id.org/scholarlydata/ontology/conference-ontology.owl#OrganisedEvent",
+                       "https://w3id.org/scholarlydata/ontology/conference-ontology.owl#AcademicEvent",
+                       "https://w3id.org/scholarlydata/ontology/conference-ontology.owl#NonAcademicEvent",
+                    ]);
 
-                    const allTypesEventByDateDayPerDay = localTypesDayPerDay.concat(noAcademicEventTypes);
-                    for (const type of allTypesEventByDateDayPerDay) {
-                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                            "SELECT DISTINCT ?id ?label ?startDate ?endDate ?type \n" +
-                            "WHERE {\n" +
-                            " ?id a scholary:" + type + " . \n" +
-                            " ?id schema:label ?label . \n" +
-                            " ?id scholary:startDate ?startDate . \n" +
-                            " ?id scholary:endDate ?endDate . \n" +
-                            "}";
-                        that.launchQuerySparql(query, (results) => {
-                            const nodeStartDate = results['?startDate'];
-                            const nodeEndDate = results['?endDate'];
+                    query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label ?startDate ?endDate ?type \n" +
+                        "WHERE {\n" +
+                        " ?id a ?type . \n" +
+                        " ?id rdfs:label ?label . \n" +
+                        " ?id sd:startDate ?startDate . \n" +
+                        " ?id sd:endDate ?endDate . \n" +
+                        " ?id sd:isSubEventOf ?conf . \n" +
+                        " ?conf a sd:Conference . \n" +
+                        "}";
+                    let seen = new Set();
+                    that.launchQuerySparql(query, (results) => {
+                        const nodeId = results['?id'];
+                        const nodeStartDate = results['?startDate'];
+                        const nodeEndDate = results['?endDate'];
+                        const nodeType = results['?type']
 
-                            if (nodeStartDate && nodeEndDate) {
-                                const startDate = moment(nodeStartDate.value);
-                                const endDate = moment(nodeEndDate.value);
+                        if (nodeId && nodeStartDate && nodeEndDate && nodeType) {
+                            if (seen.has(nodeId.value) || abstractTypes.has(nodeType.value)) {
+                              // skip events we have already seen,
+                              // and those with an abstract type
+                              // (wait for the result with a more concrete type)
+                              return
+                            };
+                            seen.add(nodeId.value);
+                            const startDate = moment(nodeStartDate.value);
+                            const endDate = moment(nodeEndDate.value);
 
-                                //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
-                                if (startDate.isSameOrAfter(originStartDateDayPerDay) && endDate.isSameOrBefore(originEndDateDayPerDay)) {
-                                    results['?type'] = {value: type};
-                                    callback(results);
-                                }
+                            //if(dateStart.isBefore(startDate) && dateEnd.isAfter(endDate)){
+                            if (startDate.isSameOrAfter(originStartDateDayPerDay) && endDate.isSameOrBefore(originEndDateDayPerDay)) {
+                                callback(results);
                             }
-                        });
-                    }
+                        }
+                    });
                     break;
                 case "getEventFromPublication":
                     query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
