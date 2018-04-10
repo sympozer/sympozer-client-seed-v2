@@ -563,11 +563,16 @@ export class LocalDAOService {
                         " <" + data.key + "> sd:startDate ?startDate . \n" +
                         " <" + data.key + "> sd:isSubEventOf ?isSubEventOf . \n" +
                         " OPTIONAL { <" + data.key + "> foaf:homepage ?homepage . } \n" +
-                        " OPTIONAL { <" + data.key + "> sd:location ?location . } \n" +
+                        " OPTIONAL { <" + data.key + "> sd:hasSite ?locId1 . " +
+                                    "?locId1 rdfs:label ?location1 . } \n" +
+                        " OPTIONAL { <" + data.key + "> sd:hasSuperEvent ?super . "+
+                                    "?super sd:hasSite ?locId2 . " +
+                                    "?locId2 rdfs:label ?location2 . } \n" +
                         " OPTIONAL { <" + data.key + "> sd:isEventRelatedTo ?isEventRelatedTo . } \n" +
                         " OPTIONAL { <" + data.key + "> sd:hasSubEvent ?hasSubEvent . } \n" +
                         "}";
 
+                    console.log("===", query);
                     that.launchQuerySparql(query, callback);
                     break;
 

@@ -31,8 +31,11 @@
   <h2>Location</h2>
   <div class="action-links list-items">
     <md-card>
-      <md-icon md-list-avatar>access_time</md-icon>
+      <md-icon md-list-avatar>place</md-icon>
       <a [routerLink]="['/events-by-location/'+event.location]">{{event.location}}</a>
+      <!-- in future versions, should be we use locationId as well?
+      <a [routerLink]="['/events-by-location/'+event.location+'/'+event.locationId]">{{event.location}}</a>
+      -->
     </md-card>
   </div>
 </div>
@@ -51,17 +54,17 @@
   <h2>Tracks</h2>
   <div class="action-links list-items" *ngFor="let track of event.tracks">
     <md-card>
-      <md-icon md-list-avatar>place</md-icon>
+      <md-icon md-list-avatar>info</md-icon>
       <a [routerLink]="['/event-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
     </md-card>
   </div>
 </div>
 
 <div *ngIf="hasSubEvent && hasSubEvent.length > 0">
-  <h2>Talks</h2>
+  <h2>Program</h2>
   <div class="action-links list-items" *ngFor="let hasSubEv of hasSubEvent">
     <md-card>
-      <md-icon md-list-avatar>place</md-icon>
+      <md-icon md-list-avatar>event</md-icon>
       <a [routerLink]="['/publication/'+hasSubEv.label+'/'+hasSubEv.id]">{{hasSubEv.label}}</a>
     </md-card>
   </div>
@@ -71,7 +74,7 @@
   <h2>Super events</h2>
   <div class="action-links list-items" *ngFor="let subEvent of subEventOf">
     <md-card>
-      <md-icon md-list-avatar>place</md-icon>
+      <md-icon md-list-avatar>event</md-icon>
       <a *ngIf="!subEvent.isConference" [routerLink]="['/event-by-category/'+subEvent.label+'/'+subEvent.id]">{{subEvent.label}}</a>
       <a *ngIf="subEvent.isConference" [routerLink]="['/conference/'+subEvent.id]">{{subEvent.label}}</a>
     </md-card>
