@@ -7,6 +7,9 @@
   <h2>Description</h2>
   <md-card class="info-text">
     <p>{{event.description}}</p>
+    <p *ngIf="event.homepage !== null">
+        <a href="{{event.homepage}}">{{event.homepage}}</a>
+    </p>
   </md-card>
 </div>
 

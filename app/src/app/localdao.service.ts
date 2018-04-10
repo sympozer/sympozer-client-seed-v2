@@ -551,19 +551,21 @@ export class LocalDAOService {
                     }
                     break;
                 case "getEventById":
-                    query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                    query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
                         "SELECT DISTINCT ?label ?description ?endDate ?startDate ?isSubEventOf ?isEventRelatedTo ?hasSubEvent ?type ?location \n" +
                         "WHERE {\n" +
                         " <" + data.key + "> a ?type . \n" +
-                        " <" + data.key + "> schema:label ?label . \n" +
-                        " <" + data.key + "> scholary:description ?description . \n" +
-                        " <" + data.key + "> scholary:endDate ?endDate . \n" +
-                        " <" + data.key + "> scholary:startDate ?startDate . \n" +
-                        " <" + data.key + "> scholary:isSubEventOf ?isSubEventOf . \n" +
-                        " OPTIONAL { <" + data.key + "> scholary:location ?location . } \n" +
-                        " OPTIONAL { <" + data.key + "> scholary:isEventRelatedTo ?isEventRelatedTo . } \n" +
-                        " OPTIONAL { <" + data.key + "> scholary:hasSubEvent ?hasSubEvent . } \n" +
+                        " <" + data.key + "> rdfs:label ?label . \n" +
+                        " <" + data.key + "> sd:description ?description . \n" +
+                        " <" + data.key + "> sd:endDate ?endDate . \n" +
+                        " <" + data.key + "> sd:startDate ?startDate . \n" +
+                        " <" + data.key + "> sd:isSubEventOf ?isSubEventOf . \n" +
+                        " OPTIONAL { <" + data.key + "> foaf:homepage ?homepage . } \n" +
+                        " OPTIONAL { <" + data.key + "> sd:location ?location . } \n" +
+                        " OPTIONAL { <" + data.key + "> sd:isEventRelatedTo ?isEventRelatedTo . } \n" +
+                        " OPTIONAL { <" + data.key + "> sd:hasSubEvent ?hasSubEvent . } \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);

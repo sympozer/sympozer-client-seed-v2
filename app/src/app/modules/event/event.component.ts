@@ -61,6 +61,7 @@ export class EventComponent implements OnInit {
                     const nodeHasSubEvent = results['?hasSubEvent'];
                     const nodeIsSubEventOf = results['?isSubEventOf'];
                     const nodeType = results['?type'];
+                    const nodeHomepage = results['?homepage'];
                     const nodeLocation = results['?location'];
 
                     if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate && nodeType) {
@@ -70,10 +71,8 @@ export class EventComponent implements OnInit {
                         let startDate = nodeStartDate.value;
                         let type = nodeType.value;
 
-                        let location = null;
-                        if (nodeLocation) {
-                            location = nodeLocation.value;
-                        }
+                        let homepage = nodeHomepage ? nodeHomepage.value : null;
+                        let location = nodeLocation ? nodeLocation.value : null;
 
                         if (label && description && endDate && startDate && type) {
                             startDate = moment(startDate);
@@ -92,6 +91,7 @@ export class EventComponent implements OnInit {
                                 startsAt: startDate.format('LLLL'),
                                 endsAt: endDate.format('LLLL'),
                                 duration: strDuration,
+                                homepage: homepage,
                                 location: location,
                                 publications: [],
                                 tracks: [],
