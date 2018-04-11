@@ -98,7 +98,6 @@ export class LocalDAOService {
 
             //Si on l'a pas, on le télécharge
             // if (!storage) {
-            console.log('loading graph...');
             this.managerRequest.get_safe(uri)
                 .then((response) => {
                     try {
@@ -148,7 +147,6 @@ export class LocalDAOService {
             return true;
         }
         catch (e) {
-            console.log(e);
             return false;
         }
     }
@@ -171,7 +169,6 @@ export class LocalDAOService {
     }
 
     private handleError(error: any): Promise<any> {
-        console.error('An error occurred', error); // for demo purposes only
         return Promise.reject(error.message || error);
     }
 
@@ -199,7 +196,6 @@ export class LocalDAOService {
         const that = this;
         const querySparql = that.$rdf.SPARQLToQuery(query, false, that.store);
         if (querySparql.pat.statements.length == 0) {
-            console.log("SPARQL query with 0 statements??\n" + query);
         }
         that.store.query(querySparql, callback);
     };
@@ -403,7 +399,6 @@ export class LocalDAOService {
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getPublicationTrack":
-                    console.log(data.key);
                     query =
                         "PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n" +
                         "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
@@ -498,7 +493,6 @@ export class LocalDAOService {
                         " ?id rdfs:label ?label . \n" +
                         " ?id sd:relatesToTrack <" + data.key + "> . \n" +
                         "}";
-                    console.log(query);
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getAllPublications":
@@ -666,7 +660,6 @@ export class LocalDAOService {
                     that.launchQuerySparql(query, callback);
                     break;
                 case "getConferenceSchedule":
-                    console.log(this.confScheduleList);
                     return this.confScheduleList;
                 //Only need the event URIs, as the ICS will be calculated in the model callback
                 case "getConferenceScheduleIcs":
@@ -865,13 +858,15 @@ export class LocalDAOService {
                     const allTypesEventByLocation = localTypesEventByLocation.concat(noAcademicEventTypes);
                     for (const type of allTypesEventByLocation) {
                         query = "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
+                            "PREFIX scholar: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                             "SELECT DISTINCT ?label ?id ?startDate ?endDate \n" +
                             "WHERE {\n" +
-                            " ?bb a OrganisedEvent . \n" +
-                            " ?aa rdfs:label ?label . \n" +
-                            " ?aa rdfs:hasSite ?id . \n" +
-                            " ?aa rdfs:startDate ?startDate . \n" +
-                            " ?aa rdfs:endDate ?endDate . \n" +
+                            " ?id ?p scholar:"+ type + ". \n" +
+                            " ?id rdfs:label ?label . \n" +
+                            " ?id scholar:hasSite ?idName . \n" +
+                            " ?idName rdfs:label \""+ data.key +"\" . \n" +
+                            " ?id scholar:startDate ?startDate . \n" +
+                            " ?id scholar:endDate ?endDate . \n" +
                             "}";
 
                         that.launchQuerySparql(query, callback);
