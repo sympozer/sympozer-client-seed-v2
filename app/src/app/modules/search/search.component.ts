@@ -21,10 +21,10 @@ export class SearchComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            console.log(this.route); // snapshot -> _urlSegment -> segments (0, 1, etc.)
+            //console.log(this.route); // snapshot -> _urlSegment -> segments (0, 1, etc.)
             let id = params['id'];
             this.testId = id;
-            if (this.testId == 'organization' || this.testId == 'event')
+            if (this.testId == 'event')
                 this.title = "Find an " + this.testId;
             else
                 this.title = "Find a " + this.testId;
@@ -32,5 +32,4 @@ export class SearchComponent implements OnInit {
                 document.getElementById("page-title-p").innerHTML = this.title;
         });
     }
-
 }
