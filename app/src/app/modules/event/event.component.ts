@@ -151,44 +151,39 @@ export class EventComponent implements OnInit {
                                 const hasSubEvent = nodeHasSubEvent.value;
 
                                 if(hasSubEvent){
-                                    that.DaoService.query("getTalkById", {key: hasSubEvent}, (results) => {
-                                        if(results){
-                                            const nodeLabel = results['?label'];
-                                            const nodeIsEventRelatedTo = results['?isEventRelatedTo'];
+                                    const nodeLabel = results['?subEventLabel'];
 
-                                            if(nodeLabel && nodeIsEventRelatedTo){
-                                                const label = nodeLabel.value;
-                                                const isEventRelatedTo = nodeIsEventRelatedTo.value;
-                                                if(label){
-                                                    that.mutex
-                                                        .acquire()
-                                                        .then(function (release) {
-                                                            //On regade si on l'a déjà
-                                                            const find = that.hasSubEvent.find((subOf) => {
-                                                                return subOf.idCompare === hasSubEvent;
-                                                            });
+                                    if(nodeLabel){
+                                        const label = nodeLabel.value;
+                                        if(label){
+                                            that.mutex
+                                                .acquire()
+                                                .then(function (release) {
+                                                    //On regade si on l'a déjà
+                                                    const find = that.hasSubEvent.find((subOf) => {
+                                                        return subOf.idCompare === hasSubEvent;
+                                                    });
 
-                                                            if (!find) {
-                                                                const idEncode = that.encoder.encode(hasSubEvent);
-                                                                const isEventRelatedToEncoded = that.encoder.encode(isEventRelatedTo);
+                                                    if (!find) {
+                                                        const idEncode = that.encoder.encode(hasSubEvent);
+                                                        const hasSubEventEncoded = that.encoder.encode(hasSubEvent);
 
-                                                                that.hasSubEvent = that.hasSubEvent.concat({
-                                                                    id: isEventRelatedToEncoded,
-                                                                    label: label,
-                                                                    idCompare: hasSubEvent,
-                                                                });
-
-                                                                that.hasSubEvent.sort((a, b) => {
-                                                                    return a.label > b.label ? 1 : -1;
-                                                                });
-                                                            }
-
-                                                            release();
+                                                        that.hasSubEvent = that.hasSubEvent.concat({
+                                                            id: hasSubEventEncoded,
+                                                            label: label,
+                                                            idCompare: hasSubEvent,
+                                                            sortKey: [results['?subEventStart'].value, label],
                                                         });
-                                                }
-                                            }
+
+                                                        that.hasSubEvent.sort((a, b) => {
+                                                            return a.sortKey > b.sortKey ? 1 : -1;
+                                                        });
+                                                    }
+
+                                                    release();
+                                                });
                                         }
-                                    });
+                                    }
                                 }
                             }
 

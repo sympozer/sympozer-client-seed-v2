@@ -561,7 +561,9 @@ export class LocalDAOService {
                                     "?super sd:hasSite ?locId2 . " +
                                     "?locId2 rdfs:label ?location2 . } \n" +
                         " OPTIONAL { <" + data.key + "> sd:isEventRelatedTo ?isEventRelatedTo . } \n" +
-                        " OPTIONAL { <" + data.key + "> sd:hasSubEvent ?hasSubEvent . } \n" +
+                        " OPTIONAL { <" + data.key + "> sd:hasSubEvent ?hasSubEvent . " +
+                                    "?hasSubEvent rdfs:label ?subEventLabel . " +
+                                    "?hasSubEvent sd:startDate ?subEventStart . } \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
@@ -582,6 +584,7 @@ export class LocalDAOService {
                     that.launchQuerySparql(query, callback);
                     break;
 
+                /* not used anymore
                 case "getTalkById":
                     query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
@@ -595,6 +598,7 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
+                */
                 case "getTrackByEvent":
                     query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
