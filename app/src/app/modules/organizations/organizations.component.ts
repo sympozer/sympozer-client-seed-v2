@@ -33,9 +33,11 @@ export class OrganizationsComponent implements OnInit {
                 if (nodeId && nodeLabel) {
                     const id = nodeId.value;
                     const label = nodeLabel.value;
+                    
 
                     if (id && label) {
                         const idEncoded = that.encoder.encode(id);
+                        const labelEncoded = this.encoder.encode(label);
 
                         const find = that.organizations.find((o) => {
                             return o.id === idEncoded;
@@ -47,7 +49,7 @@ export class OrganizationsComponent implements OnInit {
 
                         that.organizations = that.organizations.concat({
                             id: idEncoded,
-                            label: label,
+                            label: label,//labelEncoded,
                         });
 
                         that.organizations.sort((a, b) => {
