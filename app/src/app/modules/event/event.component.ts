@@ -152,9 +152,12 @@ export class EventComponent implements OnInit {
 
                                 if(hasSubEvent){
                                     const nodeLabel = results['?subEventLabel'];
+                                    const nodePaper = results['?paper'];
 
                                     if(nodeLabel){
                                         const label = nodeLabel.value;
+                                        const paper = nodePaper ? nodePaper.value : null;
+
                                         if(label){
                                             that.mutex
                                                 .acquire()
@@ -165,11 +168,11 @@ export class EventComponent implements OnInit {
                                                     });
 
                                                     if (!find) {
-                                                        const idEncode = that.encoder.encode(hasSubEvent);
-                                                        const hasSubEventEncoded = that.encoder.encode(hasSubEvent);
+                                                        const idEncode = that.encoder.encode(paper || hasSubEvent);
 
                                                         that.hasSubEvent = that.hasSubEvent.concat({
-                                                            id: hasSubEventEncoded,
+                                                            id: idEncode,
+                                                            paper: paper,
                                                             label: label,
                                                             idCompare: hasSubEvent,
                                                             sortKey: [results['?subEventStart'].value, label],

@@ -557,7 +557,8 @@ export class LocalDAOService {
                         " OPTIONAL { <" + data.key + "> sd:isEventRelatedTo ?isEventRelatedTo . } \n" +
                         " OPTIONAL { <" + data.key + "> sd:hasSubEvent ?hasSubEvent . " +
                                     "?hasSubEvent rdfs:label ?subEventLabel . " +
-                                    "?hasSubEvent sd:startDate ?subEventStart . } \n" +
+                                    "?hasSubEvent sd:startDate ?subEventStart . " +
+                                    "OPTIONAL { ?hasSubEvent sd:isEventRelatedTo ?paper . } } \n" +
                         "}";
 
                     that.launchQuerySparql(query, callback);
