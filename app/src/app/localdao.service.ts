@@ -851,9 +851,10 @@ export class LocalDAOService {
                 case "getAllLocations":
                     query =
                         "PREFIX sch: <http://schema.org/> \n" +
+                        "PREFIX scholar: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
                         "SELECT DISTINCT ?id ?location \n" +
                         "WHERE {\n" +
-                        " ?id a sch:MeetingRoom . \n" +
+                        " ?id ?o scholar:Site . \n" +
                         " ?id rdfs:label ?location . \n" +
                         "}";
 
@@ -863,15 +864,14 @@ export class LocalDAOService {
                     const localTypesEventByLocation = ["Workshop", "Tutorial", "Session", "Panel"];
                     const allTypesEventByLocation = localTypesEventByLocation.concat(noAcademicEventTypes);
                     for (const type of allTypesEventByLocation) {
-                        query = "PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                            "PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        query = "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
                             "SELECT DISTINCT ?label ?id ?startDate ?endDate \n" +
                             "WHERE {\n" +
-                            " ?id a scholary:" + type + " . \n" +
-                            " ?id schema:label ?label . \n" +
-                            " ?id scholary:location \"" + data.key + "\" . \n" +
-                            " ?id scholary:startDate ?startDate . \n" +
-                            " ?id scholary:endDate ?endDate . \n" +
+                            " ?bb a OrganisedEvent . \n" +
+                            " ?aa rdfs:label ?label . \n" +
+                            " ?aa rdfs:hasSite ?id . \n" +
+                            " ?aa rdfs:startDate ?startDate . \n" +
+                            " ?aa rdfs:endDate ?endDate . \n" +
                             "}";
 
                         that.launchQuerySparql(query, callback);
