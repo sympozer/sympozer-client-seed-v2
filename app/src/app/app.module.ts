@@ -66,7 +66,6 @@ import {UserProfileComponent} from "./modules/user-profile/user-profile.componen
 import {ForgotPasswordComponent} from "./modules/forgotPassword/forgotPassword.component";
 import {ActivationMailComponent} from "./modules/activationMail/activationMail.component";
 import {ChangePasswordComponent} from "./modules/changePassword/changePassword.component";
-import {NotificationComponent} from "./modules/notification/notification.component";
 import {AppointmentComponent} from "./modules/appointment/appointment.component";
 import {AppointmentService} from "./services/appointment.service";
 
@@ -115,7 +114,6 @@ const routes: Routes = [];
         SignupComponent,
         UserProfileComponent,
         AppointmentComponent,
-        NotificationComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
         ChangePasswordComponent

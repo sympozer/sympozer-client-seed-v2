@@ -1,22 +1,22 @@
-import {Component, OnInit} from "@angular/core";
-import {Router, ActivatedRoute, Params} from "@angular/router";
-import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
-import {LocalDAOService} from "../../localdao.service";
-import {Encoder} from "../../lib/encoder";
-import {PersonService} from "./person.service";
-import {Mutex} from 'async-mutex';
-import {routerTransition} from '../../app.router.animation';
-import {ManagerRequest} from "../../services/ManagerRequest";
-import {Config} from '../../app-config';
-import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {VoteService} from '../../services/vote.service'
+import { Component, OnInit } from "@angular/core";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+import { DBLPDataLoaderService } from "../../dblpdata-loader.service";
+import { LocalDAOService } from "../../localdao.service";
+import { Encoder } from "../../lib/encoder";
+import { PersonService } from "./person.service";
+import { Mutex } from 'async-mutex';
+import { routerTransition } from '../../app.router.animation';
+import { ManagerRequest } from "../../services/ManagerRequest";
+import { Config } from '../../app-config';
+import { ApiExternalServer } from '../../services/ApiExternalServer';
+import { VoteService } from '../../services/vote.service'
 
 @Component({
     selector: 'app-person',
     templateUrl: 'person.component.html',
     styleUrls: ['person.component.scss'],
     animations: [routerTransition()],
-    host: {'[@routerTransition]': ''}
+    host: { '[@routerTransition]': '' }
 })
 export class PersonComponent implements OnInit {
     public externPublications = [];
@@ -30,18 +30,20 @@ export class PersonComponent implements OnInit {
     public roles = [];
     public orgas = [];
     public publiConf = [];
+    public PersonId;
     private mutex: any;
     private mutex_box: any;
 
+
     constructor(private router: Router,
-                private route: ActivatedRoute,
-                private DaoService: LocalDAOService,
-                private personService: PersonService,
-                private encoder: Encoder,
-                private dBPLDataLoaderService: DBLPDataLoaderService,
-                private managerRequest: ManagerRequest,
-                private apiExternalServer: ApiExternalServer,
-                private voteService: VoteService) {
+        private route: ActivatedRoute,
+        private DaoService: LocalDAOService,
+        private personService: PersonService,
+        private encoder: Encoder,
+        private dBPLDataLoaderService: DBLPDataLoaderService,
+        private managerRequest: ManagerRequest,
+        private apiExternalServer: ApiExternalServer,
+        private voteService: VoteService) {
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
         this.mutex_box = new Mutex();
@@ -56,13 +58,13 @@ export class PersonComponent implements OnInit {
             if (!id || !name) {
                 return false;
             }
-
+            this.PersonId = id;
             if (document.getElementById("page-title-p"))
                 document.getElementById("page-title-p").innerHTML = name;
 
             that.getPublication(name);
 
-            let query = {'key': this.encoder.decode(id)};
+            let query = { 'key': this.encoder.decode(id) };
             this.DaoService.query("getPerson", query, (results) => {
                 console.log(results);
                 that.mutex
@@ -106,8 +108,8 @@ export class PersonComponent implements OnInit {
                                                 if (user) {
                                                     let twitterpage = user.twitterpage;
 
-                                                    if(twitterpage && twitterpage.length > 0){
-                                                        if(twitterpage.includes('@')){
+                                                    if (twitterpage && twitterpage.length > 0) {
+                                                        if (twitterpage.includes('@')) {
                                                             twitterpage = twitterpage.replace('@', '');
                                                         }
                                                     }

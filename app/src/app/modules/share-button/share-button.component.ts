@@ -18,6 +18,5 @@ export class Share {
 
     setRoute() {
         this.url = window.location.href;
-
     }
 }

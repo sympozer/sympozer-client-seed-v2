@@ -6,7 +6,7 @@ import { LocalStorageService } from 'ng2-webstorage';
 import { AppointmentService } from "../../services/appointment.service";
 
 @Component({
-  selector: 'app-appointment',
+  selector: 'appointment',
   templateUrl: './appointment.component.html',
   styleUrls: ['./appointment.component.scss']
 })
@@ -15,10 +15,14 @@ export class AppointmentComponent implements OnInit {
   //Input from Publication
   @Input('idTrack') idTrack: Object;
   @Input('idPublication') idPublication: Object;
-  @Input('authors') authors: Array<String>;
+  @Input('authors') receivers: Array<String>;
+  //Input from person
+  @Input('idPerson') idPerson: String;
+  //Input from organization
+  @Input('membersOrg') membersOrg: Array<String>;
 
   subscription: Subscription;
-  hasLoged: any;
+  hasLogged: any;
   hasSetAppoint: any;
   haveNoti: any;
   user: any;
@@ -27,52 +31,47 @@ export class AppointmentComponent implements OnInit {
 
   constructor(private localStoragexx: LocalStorageService,
     private apiExternalServer: ApiExternalServer,
-    private appointService: AppointmentService
-  ) {
-    // this is for the Authenfication??  
+    private appointService: AppointmentService) {
     this.subscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
-      console.log("Status:" + status);
-      this.hasLoged = status;
+      this.hasLogged = status;
     });
   }
 
   ngOnInit() {
     this.hasSetAppoint = false;
     this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
+    this.hasLogged = this.apiExternalServer.checkUserLogin();
   }
 
   makeAppointment() {
-    console.log("Hello world");
-    console.log(this.authors);
-    console.log(this.user);
-    const that = this;
-    this.appointService.setAppointment(this.idPublication, this.user.email,this.authors)
-      .then(() => {
-        console.log("Vote successful");
-        that.hasSetAppoint = true;
-      })
-      .catch((err) => {
-        console.log(err)
-        if (err === 403) {
-          that.hasSetAppoint = true;
-        }
-
-      });
-
-    // just to test the display
-    //that.hasSetAppoint=true;
+    // set appointment
+    // for publication
+    if (this.idPublication != null && this.idTrack != null) {
+      this.appointService.setAppointment(this.idPublication, this.user.email, this.receivers)
+        .then(() => {
+          alert("Set appointment successfully");
+        })
+        .catch((err) => {
+          console.log(err)
+          if (err === 500) {
+            alert("Server Error");
+          }
+        });
+    } else if (this.idPerson != null) {
+      // put idPerson into an array<string>
+      this.appointService.setAppointment(null, this.user.email, [this.idPerson])
+        .then(() => {
+          alert("Set appointment successfully");
+        })
+        .catch((err) => {
+          console.log(err)
+          if (err === 500) {
+            alert("Server Error");
+          }
+        });
+    } else if (this.membersOrg != null) {
+      console.log(this.membersOrg);
+    }
   }
-
-  addUser(){
-    const that = this;
-    that.appointService.addUser();
-  }
-
-  fakelogin() {
-    console.log("FakeLogging in as author1");
-    const that = this;
-    that.haveNoti = this.appointService.fakelogin("author1");
-  }
-
 }
 
