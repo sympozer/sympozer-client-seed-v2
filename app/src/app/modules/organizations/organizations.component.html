@@ -7,7 +7,7 @@
     <div class="action-links list-items" *ngFor="let organization of tabOrgas">
       <md-card>
         <md-icon md-list-avatar>account_balance</md-icon>
-        <a [routerLink]="['/organization/'+organization.label+'/'+organization.id]">{{organization.label}}</a>
+        <a [routerLink]="['/organization/'+organization.labelEncoded+'/'+organization.id]">{{organization.label}}</a>
       </md-card>
     </div>
   </div>
