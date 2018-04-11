@@ -69,6 +69,7 @@ export class EventsByLocationComponent implements OnInit {
                                         label: label,
                                         startDate: momentStartDate.format('LLLL'),
                                         duration: strDuration,
+                                        endDate: momentEndDate.format('LLLL'),
                                         dateForSort: momentStartDate.format(),
                                     });
 
