@@ -78,6 +78,7 @@ export class EventsByDate implements OnInit {
                                                 label: label,
                                                 startDate: momentStartDate.format('LLLL'),
                                                 duration: strDuration,
+                                                endDate: momentEndDate.format('LLLL'),
                                                 dateForSort: momentStartDate.format(),
                                                 type: type,
                                                 compare: momentStartDate,

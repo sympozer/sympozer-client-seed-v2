@@ -37,19 +37,24 @@ export class PersonsComponent implements OnInit {
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
+        let alreadyInserted = new Set([]);
 
         that.DaoService.query("getAllPersons", null, (results) => {
             if (results) {
                 const nodeId = results['?id'];
-                const nodeName = results['?label'];
-                const nodeBox = results['?box'];
+                const nodeFullName = results['?fullName'];
+                const nodeGivenName = results['?givenName'];
+                const nodeFamilyName = results['?familyName'];
 
-                if (!nodeId || !nodeName) {
+                if (!nodeId || !nodeFullName) {
                     return false;
                 }
 
                 let id = nodeId.value;
-                const name = nodeName.value;
+                const name = nodeFullName.value;
+                const sortName = (nodeGivenName && nodeFamilyName)
+                               ? nodeFamilyName.value + ', ' + nodeGivenName.value
+                               : nodeFullName;
 
                 if (!id || !name) {
                     return false;
@@ -60,23 +65,21 @@ export class PersonsComponent implements OnInit {
                     return false;
                 }
 
-                const find = that.persons.find((p) => {
-                   return p.id === id;
-                });
-
-                if(find){
+                if(alreadyInserted.has(id)){
                     return false;
                 }
+                alreadyInserted.add(id);
 
                 const person = {
                     id: id,
                     name: name,
+                    sortName: sortName,
                 };
 
                 that.persons = that.persons.concat(person);
 
                 that.persons.sort((a, b) => {
-                    return a.name > b.name ? 1 : -1;
+                    return a.sortName > b.sortName ? 1 : -1;
                 });
             }
         });

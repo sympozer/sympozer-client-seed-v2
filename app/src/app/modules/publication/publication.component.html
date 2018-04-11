@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <!-- Homeoage -->
+  <!-- Homepage -->
 
   <h2 *ngIf="(authors | json) != '{}'">Authors</h2>
   <div class="action-links list-items" *ngFor="let author of authors">
@@ -43,22 +43,32 @@
     </md-card>
   </div>-->
 
-  <div *ngIf="talk !== undefined">
-    <h2>Presented in</h2>
-    <div class="action-links list-items multiple-lines">
-      <md-card class="info-text">
-        <div class="wrapper">
-          <div class="other-links">
+  <h2>Presented at</h2>
+  <div *ngFor="let talk of events" class="action-links list-items multiple-lines multiple-links">
+    <md-card class="info-text">
+      <div class="wrapper">
+        <div class="other-links">
+          <!-- usually redundant with paper title
             <span class="event-info"> {{talk.label}} </span>
-            <span class="event-info"><md-icon>schedule</md-icon> {{talk.startsAt}} </span>
-            <span class="event-info"><md-icon>access_time</md-icon> {{talk.endsAt}} </span>
-            <span class="event-info"><md-icon>hourglass_empty</md-icon> {{talk.duration}} </span>
-          </div>
+          -->
+          <span class="event-info"><md-icon>schedule</md-icon> {{talk.startsAt}} </span>
+          <span class="event-info"><md-icon>hourglass_empty</md-icon> {{talk.duration}} </span>
+          <span class="event-info"><md-icon>update</md-icon> {{talk.endsAt}} </span>
+
+            <a *ngIf="talk.location" class="event-info" [routerLink]="['/events-by-location/'+talk.location]">
+              <md-icon>place</md-icon>
+              {{talk.location}}</a>
+            <!-- we may use locationId in the future
+            <a [routerLink]="['/location/'+talk.location+'/'+talk.locationId]"><md-icon>place</md-icon> {{talk.label}}</a>
+            -->
+            <a *ngIf="talk.session" class="event-info" [routerLink]="['/event/'+talk.session+'/'+talk.sessionId]">
+              <md-icon>event</md-icon>
+              {{talk.session}}</a>
         </div>
-      </md-card>
-    </div>
-    <button md-raised-button color="primary" (click)="createICS()">Add to calendar</button>
+      </div>
+    </md-card>
   </div>
+  <button md-raised-button color="primary" (click)="createICS()">Add to calendar</button>
 
   <div *ngIf="track !== {}">
     <h2>Track</h2>

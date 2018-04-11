@@ -10,8 +10,9 @@ import {Subscription} from "rxjs/Subscription";
 import {ToolsService} from "./services/tools.service";
 import {VoteService} from "./services/vote.service";
 import {MdSnackBar} from "@angular/material";
-const screenfull = require('screenfull');
+import {Config} from "./app-config";
 
+const screenfull = require('screenfull');
 
 @Component({
     selector: 'app-root',
@@ -32,11 +33,7 @@ export class AppComponent implements OnInit {
                 private localStoragexx: LocalStorageService,
                 private toolService: ToolsService,
                 private voteService: VoteService,
-                public snackBar: MdSnackBar) {
-
-        this.subscription = this.toolService.getFullScreenStatus().subscribe(status => {
-            this.fullscreen = status;
-        });
+                public snackBar: MdSnackBar) { }
 /*
         router.events.filter(event => event instanceof NavigationStart)
             .subscribe((event) => {
@@ -57,7 +54,7 @@ export class AppComponent implements OnInit {
 
             });
 */
-    }
+
 
 
     ngOnInit(): void {
@@ -95,13 +92,25 @@ export class AppComponent implements OnInit {
             }
         }
 
-        this.DaoService.loadDataset()
+        //Loading the "main" dataset (with papers, persons, organizations...)
+        this.DaoService.loadDataset(Config.conference.updatePubliUri)
             .then(()=> {
 
             })
             .catch((err)=> {
-                this.snackBar.open("A network error occured. Please try again later.", "", {
-                    duration: 2000,
+                this.snackBar.open("Data couldn't be loaded", "", {
+                    duration: 3000,
+                });
+            });
+
+        //Loading the "small" dataset (with sessions and events)
+        this.DaoService.loadDataset(Config.conference.updateSessUri)
+            .then(()=> {
+
+            })
+            .catch((err)=> {
+                this.snackBar.open("Data couldn't be loaded", "", {
+                    duration: 3000,
                 });
             });
 
