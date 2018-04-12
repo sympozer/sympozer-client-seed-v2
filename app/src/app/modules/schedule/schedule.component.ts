@@ -48,7 +48,7 @@ export class ScheduleComponent implements OnInit {
                             console.log(beginStartDate.format(), beginStartDate.format('LL'));
                             that.dayPerDay = that.dayPerDay.concat({
                                 date: beginStartDate.format(),
-                                showDate: beginStartDate.format('LL'),
+                                showDate: beginStartDate.format('dddd LL'),
                                 compare: startDate,
                             });
 

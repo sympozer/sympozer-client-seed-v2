@@ -1,16 +1,16 @@
-import "rxjs/add/operator/filter";
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/mergeMap";
-import {Component, OnInit, HostListener} from "@angular/core";
-import {LocalDAOService} from "./localdao.service";
-import {Router, NavigationEnd, ActivatedRoute, NavigationStart} from "@angular/router";
-import {LocalStorageService} from "ng2-webstorage";
-import {ApiExternalServer} from "./services/ApiExternalServer";
-import {Subscription} from "rxjs/Subscription";
-import {ToolsService} from "./services/tools.service";
-import {VoteService} from "./services/vote.service";
-import {MdSnackBar} from "@angular/material";
-import {Config} from "./app-config";
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import {Component, OnInit, HostListener} from '@angular/core';
+import {LocalDAOService} from './localdao.service';
+import {Router, ActivatedRoute} from '@angular/router';
+import {LocalStorageService} from 'ng2-webstorage';
+import {ApiExternalServer} from './services/ApiExternalServer';
+// import {Subscription} from 'rxjs/Subscription';
+// import {ToolsService} from './services/tools.service';
+// import {VoteService} from './services/vote.service';
+import {MdSnackBar} from '@angular/material';
+import {Config} from './app-config';
 
 const screenfull = require('screenfull');
 
@@ -23,16 +23,16 @@ export class AppComponent implements OnInit {
     public backHistory;
     public iOS;
     public fullscreen: any;
-    subscription: Subscription;
-    private key_localstorage_token = "token_external_ressource_sympozer";
+//    subscription: Subscription;
+//    private key_localstorage_token = 'token_external_ressource_sympozer';
 
     constructor(private DaoService: LocalDAOService,
                 private apiExternalServer: ApiExternalServer,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService,
-                private toolService: ToolsService,
-                private voteService: VoteService,
+//                private toolService: ToolsService,
+//                private voteService: VoteService,
                 public snackBar: MdSnackBar) { }
 /*
         router.events.filter(event => event instanceof NavigationStart)
@@ -59,57 +59,55 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
 
-        let html = document.documentElement;
-        let htmlLogo = html.getElementsByClassName("logo");
+        const html = document.documentElement;
+        const htmlLogo = html.getElementsByClassName('logo');
         let i;
 
-        let storage = this.localStoragexx.retrieve("zoomLevel");
+        let storage = this.localStoragexx.retrieve('zoomLevel');
         if (storage) {
-            document.documentElement.style.fontSize = storage + "%";
+            document.documentElement.style.fontSize = storage + '%';
         } else {
-            let fontSize: number = 100;
-            this.localStoragexx.store("zoomLevel", fontSize);
+            const fontSize = 100;
+            this.localStoragexx.store('zoomLevel', fontSize);
         }
 
-        storage = this.localStoragexx.retrieve("material");
-        if (storage != null && storage == false) {
-            let html = document.documentElement;
-            if (!html.classList.contains("no-material")) {
+        storage = this.localStoragexx.retrieve('material');
+        if (storage != null && storage === false) {
+            if (!html.classList.contains('no-material')) {
                 html.classList.add('no-material');
             }
         } else {
-            this.localStoragexx.store("material", true);
+            this.localStoragexx.store('material', true);
         }
 
-        storage = this.localStoragexx.retrieve("darkTheme");
+        storage = this.localStoragexx.retrieve('darkTheme');
         if (storage) {
-            let html = document.documentElement;
-            if (!html.classList.contains("dark")) {
+            if (!html.classList.contains('dark')) {
                 html.classList.add('dark');
-                for (i = 0; i < htmlLogo.length ; i++){
-                    htmlLogo[i].querySelectorAll('img')[0].src = "./img/TheWebConference2018-logo-dark.png";
+                for (i = 0; i < htmlLogo.length ; i++) {
+                    htmlLogo[i].querySelectorAll('img')[0].src = './img/TheWebConference2018-logo-dark.png';
                 }
             }
         }
 
-        //Loading the "main" dataset (with papers, persons, organizations...)
+        // Loading the "main" dataset (with papers, persons, organizations...)
         this.DaoService.loadDataset(Config.conference.updatePubliUri)
-            .then(()=> {
+            .then(() => {
 
             })
-            .catch((err)=> {
-                this.snackBar.open("Data couldn't be loaded", "", {
+            .catch(() => {
+                this.snackBar.open('Dataset at ' + Config.conference.updatePubliUri + ' couldn\'t be loaded.', '', {
                     duration: 3000,
                 });
             });
 
-        //Loading the "small" dataset (with sessions and events)
+        // Loading the "small" dataset (with sessions and events)
         this.DaoService.loadDataset(Config.conference.updateSessUri)
-            .then(()=> {
+            .then(() => {
 
             })
-            .catch((err)=> {
-                this.snackBar.open("Data couldn't be loaded", "", {
+            .catch(() => {
+                this.snackBar.open('Dataset at ' + Config.conference.updateSessUri + ' couldn\'t be loaded.', '', {
                     duration: 3000,
                 });
             });
@@ -145,22 +143,22 @@ export class AppComponent implements OnInit {
     }
 
     goBack() {
-        window.history.back()
+        window.history.back();
     }
 
-    @HostListener("document:webkitfullscreenchange") updateFullScreen() {
+    @HostListener('document:webkitfullscreenchange') updateFullScreen() {
         this.fullscreen = screenfull.isFullscreen;
     }
 
-    @HostListener("document:mozfullscreenchange") updateFullScreenMoz() {
+    @HostListener('document:mozfullscreenchange') updateFullScreenMoz() {
         this.fullscreen = screenfull.isFullscreen;
     }
 
-    @HostListener("document:msfullscreenchange") updateFullScreenIE() {
+    @HostListener('document:msfullscreenchange') updateFullScreenIE() {
         this.fullscreen = screenfull.isFullscreen;
     }
 
-    @HostListener("document:webkitfullscreenchange") updateFullScreenOther() {
+    @HostListener('document:webkitfullscreenchange') updateFullScreenOther() {
         this.fullscreen = screenfull.isFullscreen;
     }
 

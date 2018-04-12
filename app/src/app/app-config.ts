@@ -18,7 +18,8 @@ export var Config = {
         "whatsNextDelay": {"hours": 2} //MomentJS notation
     },
     preferences: {
-        "storage": "on"
+        "storage": "on",
+        "whatsNextDuration": 1
     },
     conference: {
         "name": "The Web Conference 2018",
