@@ -272,7 +272,7 @@ export class PublicationComponent implements OnInit {
                                                         label: label
                                                     });
 
-                                                    that.DaoService.query("getNextAuthorLinkPublication", {key: idAuhtorList}, (results) => {
+                                                    that.DaoService.query('getNextAuthorLinkPublication', {key: idAuhtorList}, (results) => {
                                                         if(results){
                                                             that.authorlistitem(results);
                                                         }
@@ -294,11 +294,11 @@ export class PublicationComponent implements OnInit {
      * Constructs a realistic ICS description of the talk, that can be imported in a calendar
      */
     createICS = () => {
-        var ics = new ICS();
+        const ics = new ICS();
         const that = this;
         const talk = that.events[0];
 
-        let calendar = ics.buildEvent({
+        const calendar = ics.buildEvent({
             uid: '', // (optional)
             start: talk.startDate,
             end: talk.endDate,
@@ -309,7 +309,7 @@ export class PublicationComponent implements OnInit {
             status: 'confirmed',
             geo: {lat: 45.515113, lon: 13.571873,},
             attendees: [
-                //{ name: 'Adam Gibbons', email: 'adam@example.com' }
+                // { name: 'Adam Gibbons', email: 'adam@example.com' }
             ],
             categories: ['Talk'],
             alarms: [
@@ -317,6 +317,6 @@ export class PublicationComponent implements OnInit {
                 {action: 'AUDIO', trigger: '-PT30M'}
             ]
         });
-        window.open("data:text/calendar;charset=utf8," + encodeURIComponent(calendar));
+        window.open('data:text/calendar;charset=utf8,' + encodeURIComponent(calendar));
     }
 }

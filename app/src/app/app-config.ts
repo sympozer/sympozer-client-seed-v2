@@ -23,7 +23,7 @@ export var Config = {
     },
     conference: {
         "name": "The Web Conference 2018",
-        "hashtag": "#TheWebConf @TheWebConf",
+        'hashtag': 'WWW2018 @TheWebConf',
         "acronym": "WWW2018",
         "logoUri": "data/images/TheWebConference2018-logo.png",
         "website": "https://www2018.thewebconf.org/",

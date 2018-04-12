@@ -4,9 +4,9 @@ import {Conference} from './model/conference';
 import 'rxjs/add/operator/toPromise';
 import * as moment from 'moment';
 
-import {Config} from  './app-config';
-import {eventHelper} from  './eventHelper';
-import {Encoder} from  './lib/encoder';
+import {Config} from './app-config';
+import {eventHelper} from './eventHelper';
+import {Encoder} from './lib/encoder';
 import {DataLoaderService} from './data-loader.service';
 import {ManagerRequest} from './services/ManagerRequest';
 import {DOCUMENT} from '@angular/platform-browser';
