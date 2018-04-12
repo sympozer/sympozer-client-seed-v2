@@ -41,17 +41,13 @@ export class HeaderComponent {
         this.hasLogged = this.apiExternalServer.checkUserLogin();
         if (this.username == undefined || this.username === '') {
             this.apiExternalServer.sendUsername(this.localStoragexx.retrieve(this.key_localstorage_username))
-            console.log(this.username);
             if (this.username == undefined || this.username === '') {
-                console.log(this.username);
                 this.username = 'User';
-                console.log(this.username)
             }
         }
         if (this.avatar == undefined || this.avatar === '') {
             this.apiExternalServer.sendAvatar(this.localStoragexx.retrieve(this.key_localstorage_avatar))
         }
-        console.log(this.avatar)
     }
 
     logout = () => {

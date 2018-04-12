@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit {
             console.log(this.route); // snapshot -> _urlSegment -> segments (0, 1, etc.)
             let id = params['id'];
             this.testId = id;
-            if (this.testId == 'organization' || this.testId == 'event')
+            if (this.testId == 'event')
                 this.title = "Find an " + this.testId;
             else
                 this.title = "Find a " + this.testId;

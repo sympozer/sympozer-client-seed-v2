@@ -33,6 +33,24 @@ export class EventsByLocationComponent implements OnInit {
             that.nameLocation = name;
 
             that.DaoService.query("getEventByLocation", query, (results) => {
+
+/*
+                if(results)
+                {
+                    const nodeId = results['?id'];
+
+                    if(nodeId){
+                        let id = nodeId.value;
+                    }
+
+                    if(id)
+                    {
+
+                    }
+
+                }
+  */
+
                 if (results) {
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
@@ -69,6 +87,7 @@ export class EventsByLocationComponent implements OnInit {
                                         label: label,
                                         startDate: momentStartDate.format('LLLL'),
                                         duration: strDuration,
+                                        endDate: momentEndDate.format('LLLL'),
                                         dateForSort: momentStartDate.format(),
                                     });
 

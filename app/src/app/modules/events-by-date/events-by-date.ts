@@ -78,20 +78,20 @@ export class EventsByDate implements OnInit {
                                                 label: label,
                                                 startDate: momentStartDate.format('LLLL'),
                                                 duration: strDuration,
+                                                endDate: momentEndDate.format('LLLL'),
                                                 dateForSort: momentStartDate.format(),
                                                 type: type,
-                                                compare: momentStartDate,
+                                                compare: [momentStartDate, label],
                                             });
 
-                                            /*that.schedules.sort((a, b) => {
-                                             const momentA = moment(a.dateForSort);
-                                             const momentB = moment(b.dateForSort);
-                                             return momentA.isSameOrAfter(momentB) ? 1 : -1;
-                                             });*/
-
                                             that.schedules.sort((a, b) => {
-                                                return a.compare.isAfter(b.compare) ? 1 : -1;
-                                                //return a.compare > b.beginStartDate ? 1 : -1;
+                                                if (a.compare < b.compare) {
+                                                  return -1
+                                                } else if (a.compare > b.compare) {
+                                                  return 1
+                                                } else {
+                                                  return 0;
+                                                }
                                             });
                                         }
                                     }

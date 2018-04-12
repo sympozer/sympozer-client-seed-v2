@@ -26,6 +26,7 @@ import {CategoriesForPublicationsComponent} from "./modules/caterogies-for-publi
 import {PersonByRoleComponent} from "./modules/person-by-role/person-by-role.component";
 import {HeaderComponent} from "./modules/header/header.component";
 import {WhatsNextComponent} from "./modules/whatsnext/whatsnext.component";
+import {WhatsNowComponent} from "./modules/whatsnow/whatsnow.component";
 import {EventsComponent} from "./modules/events/events.component";
 import {CategoriesComponent} from "./modules/categories/categories.component";
 import {LocationsComponent} from "./modules/locations/locations.component";
@@ -94,6 +95,7 @@ const routes: Routes = [];
         PersonByRoleComponent,
         HeaderComponent,
         WhatsNextComponent,
+        WhatsNowComponent,
         EventsComponent,
         CategoriesComponent,
         LocationsComponent,
