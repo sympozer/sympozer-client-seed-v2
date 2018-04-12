@@ -75,14 +75,18 @@ export class WhatsNextComponent implements OnInit {
                                     startDate: momentStartDate.format('LLLL'),
                                     duration: strDuration,
                                     endDate: momentEndDate.format('LLLL'),
-                                    dateForSort: momentStartDate.format(),
+                                    sortKey: [momentStartDate, label],
                                     type: type,
                                 });
 
                                 that.schedules.sort((a, b) => {
-                                 const momentA = moment(a.dateForSort);
-                                 const momentB = moment(b.dateForSort);
-                                 return momentA.isSameOrAfter(momentB) ? 1 : -1;
+                                  if (a.sortKey < b.sortKey) {
+                                      return -1;
+                                  } else if (a.sortKey > b.sortKey) {
+                                      return 1;
+                                  } else {
+                                      return 0;
+                                  }
                                 });
                             }
                         }
