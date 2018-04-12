@@ -28,7 +28,7 @@ export class PersonsComponent implements OnInit {
                 private dataLoaderService: DataLoaderService,
                 private DaoService: LocalDAOService,
                 private encoder: Encoder,
-                private  dBPLDataLoaderService: DBLPDataLoaderService,
+                private dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: ManagerRequest) {
         this.persons = [];
     }
@@ -54,7 +54,6 @@ export class PersonsComponent implements OnInit {
                 if (!id || !name) {
                     return false;
                 }
-
                 id = that.encoder.encode(id);
                 if (!id) {
                     return false;
