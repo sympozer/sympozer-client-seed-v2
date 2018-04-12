@@ -17,6 +17,7 @@ import {CategoriesForPublicationsComponent} from "./modules/caterogies-for-publi
 import {PersonByRoleComponent} from "./modules/person-by-role/person-by-role.component";
 import {OrganizationComponent} from "./modules/organization/organization.component";
 import {WhatsNextComponent} from "./modules/whatsnext/whatsnext.component";
+import {WhatsNowComponent} from "./modules/whatsnow/whatsnow.component";
 import {EventsComponent} from "./modules/events/events.component";
 import {CategoriesComponent} from "./modules/categories/categories.component";
 import {LocationsComponent} from "./modules/locations/locations.component";
@@ -117,6 +118,10 @@ const appRoutes: Routes = [
     {
         path: 'whatsnext',
         component: WhatsNextComponent
+    },
+    {
+        path: 'whatsnow',
+        component: WhatsNowComponent
     },
     {
         path: 'events',
