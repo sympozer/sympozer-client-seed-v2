@@ -29,10 +29,11 @@ export class QrcodeComponent {
 
             if (results) {
                 const nodeId = results['?id'];
-                const nodeName = results['?label'];
+                const nodeFullName = results['?fullName'];
+                console.log(nodeFullName);
                 const name = user.firstname + ' ' + user.lastname;
                 //user in dataset
-                if (nodeName.value === name){
+                if (nodeFullName.value === name){
                     this.tmp = true;
                     let id1 = that.encoder.encode(nodeId.value);
                     let id = that.encoder.encode(id1);
