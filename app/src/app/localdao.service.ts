@@ -705,6 +705,40 @@ export class LocalDAOService {
                         }
                     });
                     break;
+                case "getWhatsNow":
+                    const now = moment();
+                    //const now = moment("2018-04-25T14:30:00+02:00") // DEBUG
+                    let seenWhatsNow = new Set();
+
+                    query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
+                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
+                        "SELECT DISTINCT ?id ?label ?startDate ?endDate ?type \n" +
+                        "WHERE {\n" +
+                        " ?id a ?type . \n" +
+                        " ?id rdfs:label ?label . \n" +
+                        " ?id sd:startDate ?startDate . \n" +
+                        " ?id sd:endDate ?endDate . \n" +
+                        " ?id sd:isSubEventOf ?conf . \n" +
+                        " ?conf a sd:Conference . \n" +
+                        "}";
+                    that.launchQuerySparql(query, (results) => {
+                        const id = results['?id'].value;
+                        const type = results['?type'].value;
+                        if (seenWhatsNow.has(id) || abstractTypes.has(type)) {
+                          // skip events we have already seen,
+                          // and those with an abstract type
+                          // (wait for the result with a more concrete type)
+                          return
+                        }
+                        seenWhatsNow.add(id);
+                        const startDate = moment(results['?startDate'].value);
+                        const endDate = moment(results['?endDate'].value);
+
+                        if (startDate <= now && now <= endDate) {
+                            callback(results);
+                        }
+                    });
+                    break;
                 case "getDayPerDay":
                     query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
                         "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
