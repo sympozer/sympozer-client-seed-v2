@@ -104,6 +104,7 @@ export class LocalDAOService {
               to = setTimeout(() => console.log(count), 100);
           });
         }
+        window['RDF'] = this.store;
     }
 
     resetDataset() {
@@ -172,6 +173,7 @@ export class LocalDAOService {
         try {
             that.$rdf.parse(dataset, that.store, uri, mimeType);
             that.store.fetcher = null;
+            console.log(that.store.statements.length, "triples in store");
 
             // We if we have query waiting
             for (const qw of that.queryWaiting) {
@@ -180,6 +182,7 @@ export class LocalDAOService {
 
             return true;
         } catch (e) {
+            console.log(e);
             return false;
         }
     }
@@ -226,7 +229,8 @@ export class LocalDAOService {
     }
 
     launchQuerySparql = (query, callback) => {
-        console.log("===", "LAST_QUERY:\n", query); window['LAST_QUERY'] = query;
+        console.log("LAST_QUERY =\n", query);
+        window['LAST_QUERY'] = query;
         const that = this;
         const querySparql = that.$rdf.SPARQLToQuery(query, false, that.store);
         if (querySparql.pat.statements.length === 0) {
