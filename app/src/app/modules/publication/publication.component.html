@@ -64,11 +64,13 @@
             <a *ngIf="talk.session" class="event-info" [routerLink]="['/event/'+talk.session+'/'+talk.sessionId]">
               <md-icon>event</md-icon>
               {{talk.session}}</a>
+              <br>
+              <br>
+          <button md-raised-button color="primary" (click)="createICS()">Add to calendar</button>
         </div>
       </div>
     </md-card>
   </div>
-  <button md-raised-button color="primary" (click)="createICS()">Add to calendar</button>
 
   <div *ngIf="track !== {}">
     <h2>Track</h2>

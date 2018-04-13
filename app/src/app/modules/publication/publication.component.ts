@@ -115,7 +115,9 @@ export class PublicationComponent implements OnInit {
              }
              });*/
 
-            this.DaoService.query("getFirstAuthorLinkPublication", query, (results) => {
+            this.DaoService.query("getAuthorLinkPublication", query, (results) => {
+                console.log("results");
+                console.log(results);
                 if (results) {
                     that.authorlistitem(results);
                 }
@@ -307,7 +309,7 @@ export class PublicationComponent implements OnInit {
             location: talk.location, //
             url: that.publicationId,
             status: 'confirmed',
-            geo: {lat: 45.515113, lon: 13.571873,},
+            geo: {lat: 45.764043, lon: 4.835658999999964,}, //Lyon coordinates
             attendees: [
                 // { name: 'Adam Gibbons', email: 'adam@example.com' }
             ],
