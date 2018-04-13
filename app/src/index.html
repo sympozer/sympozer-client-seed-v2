@@ -7,7 +7,23 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="manifest" href="./assets/manifest.json">
-    <link rel="icon" href="www2018_new_ico-150x150.png" sizes="32x32">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="img/favicon_pwa/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="img/favicon_pwa/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/favicon_pwa/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/favicon_pwa/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/favicon_pwa/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/favicon_pwa/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/favicon_pwa/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/favicon_pwa/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon_pwa/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="img/favicon_pwa/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon_pwa/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="img/favicon_pwa/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon_pwa/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#f48c5b">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
@@ -27,6 +43,21 @@
     </div>
 </div>
 
+
+<script type="text/javascript">
+    if (navigator.serviceWorker.controller) {
+        console.log('[PWA Builder] active service worker found, no need to register')
+    } else {
+        navigator.serviceWorker.register('/WWW2018_pwa/service-worker.js', {
+            scope: '/WWW2018_pwa/'
+        }).then(function(reg) {
+            console.log('Service worker has been registered for scope:'+ reg.scope);
+        }).catch(function(err) {
+            console.log('failed to register to a service worker '+ err.scope);
+        })
+        ;
+    }
+</script>
 <!-- Piwik -->
 <script type="text/javascript">
 // Verifying piwik server is online
@@ -87,12 +118,14 @@ function sendDataToPiwik(){
             arrRequests = [];
             localStorage.setItem('piwik', JSON.stringify(arrRequests));
  }
-    // Send each 10 min
+
+
+    // On envoi les requetes de piwik toutes les 10min
     window.setInterval(function () {
 	   sendDataToPiwik();
     }, 10000*60);
 
-    // Send requests before closing browser
+    // Si on ferme le navigateur on envoi les requetes à piwik
     window.onbeforeunload = function () {
 	   sendDataToPiwik();
     }
