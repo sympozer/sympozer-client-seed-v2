@@ -25,7 +25,7 @@
         "assets",
         "img",
         "favicon.ico",
-        "manifest.json"
+		"manifest.json"
       ],
       "scripts": [
         "../node_modules/zone.js/dist/zone.js",
