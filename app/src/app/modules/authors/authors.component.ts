@@ -28,77 +28,40 @@ export class AuthorsComponent implements OnInit {
         const that = this;
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
-        this.DaoService.query("getAllAuthors", null, (results) => {
-            if (results) {
-                const nodeIdPerson = results['?idPerson'];
-                const nodeFullName = results['?fullName'];
-                const nodeGivenName = results['?givenName'];
-                const nodeFamilyName = results['?familyName'];
-
-                if (!nodeIdPerson || !nodeFullName) {
-                    return false;
-                }
-
-                let idBase = nodeIdPerson.value;
-                const name = nodeFullName.value;
+        let authorMap = new Map();
+        this.DaoService.query("getAllAuthors", null, (result) => {
+            if (!result) return;
+            const idPerson = result['?idPerson'].value;
+            let author = authorMap.get(idPerson);
+            if (author === undefined) {
+                const fullName = result['?fullName'].value;
+                const nodeGivenName = result['?givenName'];
+                const nodeFamilyName = result['?familyName'];
                 const sortName = (nodeGivenName && nodeFamilyName)
                                ? nodeFamilyName.value + ', ' + nodeGivenName.value
-                               : nodeFullName;
-
-                if (!idBase || !name) {
-                    return false;
-                }
-
-                const id = that.encoder.encode(idBase);
-                if (!id) {
-                    return false;
-                }
-
-                let person = {
-                    id: id,
-                    name: name,
+                               : fullName;
+                const encodedId = that.encoder.encode(idPerson);
+                author = {
+                    id: encodedId,
+                    name: fullName,
                     sortName: sortName,
                     publications: [],
                 };
-
-                const find = that.authors.find((a) => {
-                   return a.id === id;
-                });
-
-                if(find){
-                    return false;
-                }
-
-                that.DaoService.query("getPublicationLink", {key: idBase}, (results) => {
-                    const nodeLabel = results['?label'];
-                    const nodeId = results['?id'];
-
-                    if(nodeLabel && nodeId)
-                    {
-                        const label = nodeLabel.value;
-                        let id = nodeId.value;
-
-                        if(label && id)
-                        {
-                            id = this.encoder.encode(id);
-                            if(!id){
-                                return false;
-                            }
-
-                            person.publications = person.publications.concat({
-                                label: label,
-                                id: id,
-                            });
-                        }
-                    }
-                });
-
-                that.authors = that.authors.concat(person);
-
+                authorMap.set(idPerson, author);
+                that.authors = that.authors.concat(author);
                 that.authors.sort((a, b) => {
                   return a.sortName > b.sortName ? 1 : -1;
                 });
             }
+            const idPubli = that.encoder.encode(result['?idPubli'].value);
+            const title = result['?title'].value;
+            author.publications = author.publications.concat({
+              id: idPubli,
+              label: title,
+            });
+            author.publications.sort((a,b) => {
+              return a.label < b.label ? 1 : -1;
+            });
         });
     }
 }

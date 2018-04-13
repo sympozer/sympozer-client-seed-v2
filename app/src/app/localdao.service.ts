@@ -65,6 +65,46 @@ export class LocalDAOService {
         if (domain) {
             this.localstorage_jsonld += '-' + domain;
         }
+        window['query'] = (sparql, limit, filter) => {
+            sparql = 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX : <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#>'
+                + sparql;
+            if (typeof(limit) === 'function' && filter === undefined) {
+                filter = limit;
+                limit = undefined;
+            }
+            if (limit === undefined) {
+                limit = 10;
+                console.log("query: default limit of 10 applied");
+            }
+            if (filter === undefined) {
+                filter = (x => x);
+            }
+            let count = 0;
+            this.launchQuerySparql(sparql, (result) => {
+                count += 1;
+                if (count <= limit) {
+                  result = filter(result);
+                  if (result !== undefined) {
+                    console.log(result);
+                  }
+                }
+            });
+        }
+        window['queryCount'] = (sparql, filter) => {
+          sparql = 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX : <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#>'
+              + sparql;
+          if (filter === undefined) {
+              filter = (x => x);
+          }
+          let count = 0;
+          let to = setTimeout(() => console.log(count), 500);
+          this.launchQuerySparql(sparql, (result) => {
+              clearTimeout(to);
+              count += 1;
+              to = setTimeout(() => console.log(count), 100);
+          });
+        }
+        window['RDF'] = this.store;
     }
 
     resetDataset() {
@@ -133,6 +173,7 @@ export class LocalDAOService {
         try {
             that.$rdf.parse(dataset, that.store, uri, mimeType);
             that.store.fetcher = null;
+            console.log(that.store.statements.length, "triples in store");
 
             // We if we have query waiting
             for (const qw of that.queryWaiting) {
@@ -141,6 +182,7 @@ export class LocalDAOService {
 
             return true;
         } catch (e) {
+            console.log(e);
             return false;
         }
     }
@@ -187,6 +229,8 @@ export class LocalDAOService {
     }
 
     launchQuerySparql = (query, callback) => {
+        console.log("LAST_QUERY =\n", query);
+        window['LAST_QUERY'] = query;
         const that = this;
         const querySparql = that.$rdf.SPARQLToQuery(query, false, that.store);
         if (querySparql.pat.statements.length === 0) {
@@ -275,9 +319,10 @@ export class LocalDAOService {
                         'PREFIX dc: <http://purl.org/dc/elements/1.1/> \n' +
                         'SELECT DISTINCT * \n' +
                         'WHERE {\n' +
-                        ' ?proceeding a sd:InProceedings . \n' +
-                        ' ?proceeding dc:creator ?idPerson . \n' +
-                        ' ?idPerson a sd:Person . \n' +
+                        //' ?idPubli a sd:InProceedings . \n' +
+                        ' ?idPubli dc:creator ?idPerson . \n' +
+                        ' ?idPubli rdfs:label ?title . \n' +
+                        //' ?idPerson a sd:Person . \n' +
                         ' ?idPerson rdfs:label ?fullName . \n' +
                         ' OPTIONAL { ?idPerson sd:givenName ?givenName . } \n' +
                         ' OPTIONAL { ?idPerson sd:familyName ?familyName . } \n' +
@@ -499,7 +544,6 @@ export class LocalDAOService {
                         ' ?id a scholary:InProceedings . \n' +
                         ' ?id schema:label ?label . \n' +
                         '}';
-
                     that.launchQuerySparql(query, callback);
                     break;
                 case 'getEvent':

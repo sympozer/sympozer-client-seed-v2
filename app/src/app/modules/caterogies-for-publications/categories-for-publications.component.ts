@@ -25,7 +25,6 @@ export class CategoriesForPublicationsComponent implements OnInit {
             document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
         this.DaoService.query("getAllCategoriesForPublications", null, (results) => {
-            console.log(results);
             if (results) {
                 const nodeId = results['?id'];
                 const nodeLabel = results['?label'];
