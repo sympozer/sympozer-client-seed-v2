@@ -114,7 +114,6 @@ export class PublicationComponent implements OnInit {
              });
              }
              });*/
-            console.log("Query Author");
             this.DaoService.query("getAuthorLinkPublication", query, (results) => {
                 if (results) {
                     that.authorlistitem(results);
@@ -264,13 +263,11 @@ export class PublicationComponent implements OnInit {
                 return false;
             }
 
-            console.log(idPerson + " " + label);
             that.authors.push({
                 id: idPerson,
                 label: label,
             });
         }
-        console.log(that.authors);
     };
     /*
     authorlistitem = (stream) => {
@@ -333,10 +330,10 @@ export class PublicationComponent implements OnInit {
     /**
      * Constructs a realistic ICS description of the talk, that can be imported in a calendar
      */
-    createICS = () => {
+    createICS = (i : number) => {
         const ics = new ICS();
         const that = this;
-        const talk = that.events[0];
+        const talk = that.events[i];
 
         const calendar = ics.buildEvent({
             uid: '', // (optional)
@@ -357,6 +354,8 @@ export class PublicationComponent implements OnInit {
                 {action: 'AUDIO', trigger: '-PT30M'}
             ]
         });
+
         window.open('data:text/calendar;charset=utf8,' + encodeURIComponent(calendar));
+
     }
 }
