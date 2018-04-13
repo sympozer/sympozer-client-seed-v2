@@ -114,13 +114,12 @@ export class PublicationComponent implements OnInit {
              });
              }
              });*/
-
+            console.log("Query Author");
             this.DaoService.query("getAuthorLinkPublication", query, (results) => {
-                console.log("results");
-                console.log(results);
                 if (results) {
                     that.authorlistitem(results);
                 }
+
             });
 
             /**
@@ -235,6 +234,45 @@ export class PublicationComponent implements OnInit {
         });
     }
 
+    authorlistitem = (results) => {
+        const that = this;
+        if (results) {
+            const nodeIdPerson = results['?idPerson'];
+            const nodeLabel = results['?label'];
+
+            if (!nodeIdPerson || !nodeLabel) {
+                return false;
+            }
+
+            let idPerson = nodeIdPerson.value;
+            const label = nodeLabel.value;
+
+            if (!idPerson || !label) {
+                return false;
+            }
+
+            idPerson = that.encoder.encode(idPerson);
+            if (!idPerson) {
+                return false;
+            }
+
+            const find = that.authors.find((a) => {
+                return a.id === idPerson;
+            });
+
+            if (find) {
+                return false;
+            }
+
+            console.log(idPerson + " " + label);
+            that.authors.push({
+                id: idPerson,
+                label: label,
+            });
+        }
+        console.log(that.authors);
+    };
+    /*
     authorlistitem = (stream) => {
         const that = this;
         if (stream) {
@@ -244,6 +282,7 @@ export class PublicationComponent implements OnInit {
                 let idAuhtorList = nodeIdAuhtorList.value;
 
                 if (idAuhtorList) {
+                    console.log("Get id by Person");
                     that.DaoService.query("getIdPersonByAuthorListItem", {key: idAuhtorList}, (results) => {
                         if (results) {
                             const nodeIdPerson = results['?id'];
@@ -253,6 +292,7 @@ export class PublicationComponent implements OnInit {
 
                                 if (idPerson) {
                                     const idPersonEncoded = that.encoder.encode(idPerson);
+                                    console.log("Get Person");
                                     that.DaoService.query("getPerson", {key: idPerson}, (results) => {
                                         if (results) {
                                             const nodeLabel = results['?label'];
@@ -269,15 +309,12 @@ export class PublicationComponent implements OnInit {
                                                         return false;
                                                     }
 
+                                                    console.log("Données User");
+                                                    console.log(idPersonEncoded);
+                                                    console.log(label);
                                                     that.authors = that.authors.concat({
                                                         id: idPersonEncoded,
                                                         label: label
-                                                    });
-
-                                                    that.DaoService.query('getNextAuthorLinkPublication', {key: idAuhtorList}, (results) => {
-                                                        if(results){
-                                                            that.authorlistitem(results);
-                                                        }
                                                     });
                                                 }
                                             }
@@ -291,6 +328,7 @@ export class PublicationComponent implements OnInit {
             }
         }
     };
+    */
 
     /**
      * Constructs a realistic ICS description of the talk, that can be imported in a calendar
