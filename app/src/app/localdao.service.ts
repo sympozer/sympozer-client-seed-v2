@@ -319,9 +319,10 @@ export class LocalDAOService {
                         'PREFIX dc: <http://purl.org/dc/elements/1.1/> \n' +
                         'SELECT DISTINCT * \n' +
                         'WHERE {\n' +
-                        ' ?proceeding a sd:InProceedings . \n' +
-                        ' ?proceeding dc:creator ?idPerson . \n' +
-                        ' ?idPerson a sd:Person . \n' +
+                        //' ?idPubli a sd:InProceedings . \n' +
+                        ' ?idPubli dc:creator ?idPerson . \n' +
+                        ' ?idPubli rdfs:label ?title . \n' +
+                        //' ?idPerson a sd:Person . \n' +
                         ' ?idPerson rdfs:label ?fullName . \n' +
                         ' OPTIONAL { ?idPerson sd:givenName ?givenName . } \n' +
                         ' OPTIONAL { ?idPerson sd:familyName ?familyName . } \n' +
