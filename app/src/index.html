@@ -4,10 +4,25 @@
     <meta charset="utf-8">
     <title>Sympozer</title>
     <base href="/">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="manifest" href="./assets/manifest.json">
-    <link rel="icon" href="www2018_new_ico-150x150.png" sizes="32x32">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="img/favicon_pwa/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="img/favicon_pwa/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/favicon_pwa/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="img/favicon_pwa/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="img/favicon_pwa/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="img/favicon_pwa/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="img/favicon_pwa/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="img/favicon_pwa/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon_pwa/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="img/favicon_pwa/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon_pwa/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="img/favicon_pwa/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon_pwa/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#f48c5b">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
@@ -16,7 +31,7 @@
 
 <div class="loading-screen">
     <div class="loading-wrapper">
-        <img style="max-width: 100%;" src="./img/TheWebConference2018-logo.png">
+        <img src="./img/TheWebConference2018-logo.png">
         <div class="showbox">
             <div class="loader">
                 <svg class="circular" viewBox="25 25 50 50">
@@ -27,81 +42,98 @@
     </div>
 </div>
 
+
 <script src="./assets/webworker/manager-web-worker.js"></script>
+<script src="./assets/rdfstore.js"></script>
+
+<script type="text/javascript">
+    if (navigator.serviceWorker.controller) {
+        console.log('[PWA Builder] active service worker found, no need to register')
+    } else {
+        navigator.serviceWorker.register('/WWW2018_pwa/service-worker.js', {
+            scope: '/WWW2018_pwa/'
+        }).then(function(reg) {
+            console.log('Service worker has been registered for scope:'+ reg.scope);
+        }).catch(function(err) {
+            console.log('failed to register to a service worker '+ err.scope);
+        })
+        ;
+    }
+</script>
 <!-- Piwik -->
 <script type="text/javascript">
 
 
-// Verification que piwik est bien en ligne
-/*
-var boolOnline = false;
+    // Verification que piwik est bien en ligne
+    /*
+    var boolOnline = false;
 
- var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        boolOnline = true;
-    }
-  };
-  xhttp.open("GET", "http://dsi-guest-28.univ-lyon1.fr/piwik/piwik.php", true);
-  xhttp.send();
-console.log('boolOnline : ' + boolOnline);
- 
-// Fonction permettant l'envoi des donnes a piwik
-function sendDataToPiwik(){
-
-    var _paq = _paq || [];
-    // _paq.push(['trackPageView']);
-    (function () {
-        _paq.push(['enableLinkTracking']);
-        var u = "//dsi-guest-28.univ-lyon1.fr/piwik/";
-        _paq.push(['setTrackerUrl', u + 'piwik.php']);
-        _paq.push(['setSiteId', '2']);
-        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-        g.type = 'text/javascript';
-        g.async = true;
-        g.defer = true;
-        g.src = u + 'piwik.js';
-        s.parentNode.insertBefore(g, s);
-    })();
-
-        var strRequestsJson = localStorage.getItem('piwik');
-        if (strRequestsJson) {
-            try {
-                var arrRequests = JSON.parse(strRequestsJson);
-                arrRequests = JSON.parse(arrRequests);
-            } catch (e) {
-            }
-        } else {
-            var arrRequests = [];
+     var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            boolOnline = true;
         }
-       
-		console.log(boolOnline); 
-	    if (arrRequests.constructor === Array) {
+      };
+      xhttp.open("GET", "http://dsi-guest-28.univ-lyon1.fr/piwik/piwik.php", true);
+      xhttp.send();
+    console.log('boolOnline : ' + boolOnline);
 
-                for (var i = 0; i < arrRequests.length; i++) {
-			if(boolOnline){
-                    		_paq.push(['trackPageView', arrRequests[i]]);
-                    		console.log('sent 1 request');
-			}
+    // Fonction permettant l'envoi des donnes a piwik
+    function sendDataToPiwik(){
+
+        var _paq = _paq || [];
+        // _paq.push(['trackPageView']);
+        (function () {
+            _paq.push(['enableLinkTracking']);
+            var u = "//dsi-guest-28.univ-lyon1.fr/piwik/";
+            _paq.push(['setTrackerUrl', u + 'piwik.php']);
+            _paq.push(['setSiteId', '2']);
+            var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+            g.type = 'text/javascript';
+            g.async = true;
+            g.defer = true;
+            g.src = u + 'piwik.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+
+            var strRequestsJson = localStorage.getItem('piwik');
+            if (strRequestsJson) {
+                try {
+                    var arrRequests = JSON.parse(strRequestsJson);
+                    arrRequests = JSON.parse(arrRequests);
+                } catch (e) {
                 }
             } else {
-                console.log(arrRequests);
+                var arrRequests = [];
             }
-            arrRequests = [];
-            localStorage.setItem('piwik', JSON.stringify(arrRequests));
- }
+
+            console.log(boolOnline);
+            if (arrRequests.constructor === Array) {
+
+                    for (var i = 0; i < arrRequests.length; i++) {
+                if(boolOnline){
+                                _paq.push(['trackPageView', arrRequests[i]]);
+                                console.log('sent 1 request');
+                }
+                    }
+                } else {
+                    console.log(arrRequests);
+                }
+                arrRequests = [];
+                localStorage.setItem('piwik', JSON.stringify(arrRequests));
+     }
 
 
-    // On envoi les requetes de piwik toutes les 10min
-    window.setInterval(function () {
-	   sendDataToPiwik();
-    }, 10000*60);
+        // On envoi les requetes de piwik toutes les 10min
+        window.setInterval(function () {
+           sendDataToPiwik();
+        }, 10000*60);
 
-    // Si on ferme le navigateur on envoi les requetes à piwik
-    window.onbeforeunload = function () {
-	   sendDataToPiwik();
-    }
-*/
+        // Si on ferme le navigateur on envoi les requetes à piwik
+        window.onbeforeunload = function () {
+           sendDataToPiwik();
+        }
+    */
 </script>
 <!-- End Piwik Code -->
 </body>
