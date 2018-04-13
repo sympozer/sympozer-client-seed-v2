@@ -23,7 +23,7 @@ export var Config = {
     },
     conference: {
         "name": "The Web Conference 2018",
-        'hashtag': 'WWW2018 @TheWebConf',
+        "hashtag": "#TheWebConf @TheWebConf",
         "acronym": "WWW2018",
         "logoUri": "data/images/TheWebConference2018-logo.png",
         "website": "https://www2018.thewebconf.org/",
@@ -87,7 +87,7 @@ export var Config = {
         url: "https://sympozer.com/external"
     },
     vote :{
-        url: 'https://sympozer.com/external/',
-        tracks: ['https://w3id.org/scholarlydata/track/www-2018-demo', 'https://w3id.org/scholarlydata/track/www-2018-poster']
+        url: 'http://localhost:3000',
+        tracks: ['https://w3id.org/scholarlydata/track/www-demo-2018', 'https://w3id.org/scholarlydata/track/www-2018-poster']
     }
 };

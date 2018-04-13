@@ -14,12 +14,12 @@
     "test": "ng test",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor",
-    "pwa": "ng build --prod && sw-precache --root=dist --config=precache-sw.js"
+	"pwa": "ng build --prod && sw-precache --root=dist --config=precache-sw.js"
+
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^4.1.0",
-    "@angular/cdk": "^2.0.0-beta.12",
     "@angular/common": "^4.1.0",
     "@angular/compiler": "^4.1.0",
     "@angular/compiler-cli": "^4.1.0",
@@ -31,7 +31,8 @@
     "@angular/platform-browser-dynamic": "^4.1.0",
     "@angular/platform-server": "^4.1.0",
     "@angular/router": "^4.1.0",
-    "ajv": "^5.0.4-beta.3",
+    "ajv": "^5.5.2",
+    "ajv-keywords": "^2.1.1",
     "angulartics2": "^2.0.0",
     "async-mutex": "^0.1.1",
     "awesome-typescript-loader": "^3.0.0-beta.10",
@@ -47,14 +48,13 @@
     "ng2-webstorage": "^1.4.1",
     "octonode": "^0.7.9",
     "rdflib": "^0.14.1",
-    "rdfstore": "^0.9.17",
-    "rxjs": "^5.0.0-rc.4",
+    "rxjs": "^5.5.10",
     "screenfull": "^3.2.0",
     "sha-1": "^0.1.1",
     "ts-helpers": "^1.1.1",
     "typescript": "~2.1.0",
     "web-animations-js": "^2.2.2",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@angular/cli": "^1.6.6",
@@ -71,7 +71,6 @@
     "karma-coverage-istanbul-reporter": "0.2.0",
     "karma-jasmine": "^1.0.2",
     "protractor": "5.1.2",
-    "sw-precache-webpack-plugin": "^0.11.5",
     "ts-node": "~2.0.0",
     "tslint": "4.5.1",
     "typescript": "~2.1.0",
