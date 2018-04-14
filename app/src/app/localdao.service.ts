@@ -182,7 +182,7 @@ export class LocalDAOService {
 
             return true;
         } catch (e) {
-            console.log(e);
+            console.error(e);
             return false;
         }
     }
@@ -234,6 +234,7 @@ export class LocalDAOService {
         const that = this;
         const querySparql = that.$rdf.SPARQLToQuery(query, false, that.store);
         if (querySparql.pat.statements.length === 0) {
+            console.warn("The SPARQL is probably wrong (0 statements parsed)");
         }
         that.store.query(querySparql, callback);
     }
@@ -248,6 +249,7 @@ export class LocalDAOService {
            'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#NonAcademicEvent',
         ]);
         const noAcademicEventTypes = ['Meal', 'SocialEvent', 'Break'];
+
         if (that.store && callback) {
             let query;
             switch (command) {
