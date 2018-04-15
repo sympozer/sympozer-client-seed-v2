@@ -20,7 +20,7 @@ export class eventHelper {
   }
 
   sortMap(unsortedEventMap) {
-        //get the unsorted array of formatted dates
+        //get_json the unsorted array of formatted dates
         let dateKeys = Object.getOwnPropertyNames(unsortedEventMap);
 
         //Sort this array
