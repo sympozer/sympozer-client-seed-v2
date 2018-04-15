@@ -4,13 +4,13 @@ import {Injectable} from '@angular/core';
 import {Config} from '../app-config';
 import {RequestManager} from './request-manager.service';
 import {LocalStorageService} from 'ng2-webstorage';
-import {Encoder} from '../lib/encoder';
+import {Encoder} from "../lib/encoder";
 
 @Injectable()
 export class VoteService {
 
-  private key_localstorage_token = 'token_external_ressource_sympozer';
-  private key_localstorage_vote = 'hasVoted';
+  private key_localstorage_token = "token_external_ressource_sympozer";
+  private key_localstorage_vote = "hasVoted"
 
   constructor(private http: Http,
               private managerRequest: RequestManager,
@@ -25,14 +25,14 @@ export class VoteService {
    * @returns {boolean}
    */
   isTrackVotable = (trackName) => {
-    for (let i = 0; i < Config.vote.tracks.length; i++) {
-      const uri = Config.vote.tracks[i];
-      if (uri === trackName) {
+    for(var i = 0; i < Config.vote.tracks.length; i++) {
+      let uri = Config.vote.tracks[i]
+      if(uri === trackName)
         return true;
-      }
     }
     return false;
   }
+
 
   /**
    * Vote to the track
@@ -41,7 +41,7 @@ export class VoteService {
    */
   vote = (id_track, id_publi) => {
     return new Promise((resolve, reject) => {
-      console.log('vote called');
+      console.log("vote called")
       if (!id_publi || id_publi.length === 0) {
         return reject('Erreur lors de la récupération de l\'identifiant de la ressource');
       }
@@ -55,15 +55,19 @@ export class VoteService {
       if (!token || token.length === 0) {
         return reject('Vous devez vous connectez avant de pouvoir voter');
       }
-      const bodyRequest = {
-        id_track: id_track,
-        id_ressource: id_publi,
-        token: token
-      };
+        let bodyRequest = {
+            "token": token,
+            "id_publication": id_publi,
+            "id_track": id_track
+        }
+        let headers = new Headers({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'origin': '*',
 
-      const headers = new Headers({ 'Content-Type': 'application/json' });
-      const options = new RequestOptions({ headers: headers });
-      that.managerRequest.post(Config.externalServer.url + '/api/vote', bodyRequest)
+        });
+        let options = new RequestOptions({ headers: headers });
+        that.managerRequest.post(Config.vote.url + '/api/vote',bodyRequest,options)
           .then((response) => {
             if (response && response.text()) {
               console.log(response);
