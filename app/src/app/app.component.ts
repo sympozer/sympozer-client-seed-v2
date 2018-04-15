@@ -9,8 +9,6 @@ import {ApiExternalServer} from './services/ApiExternalServer';
 // import {Subscription} from 'rxjs/Subscription';
 // import {ToolsService} from './services/tools.service';
 // import {VoteService} from './services/vote.service';
-import {MdSnackBar} from '@angular/material';
-import {Config} from './app-config';
 
 const screenfull = require('screenfull');
 
@@ -30,10 +28,10 @@ export class AppComponent implements OnInit {
                 private apiExternalServer: ApiExternalServer,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
-                private localStoragexx: LocalStorageService,
+                private localStoragexx: LocalStorageService
 //                private toolService: ToolsService,
 //                private voteService: VoteService,
-                public snackBar: MdSnackBar) { }
+                ) { }
 /*
         router.events.filter(event => event instanceof NavigationStart)
             .subscribe((event) => {
@@ -55,9 +53,8 @@ export class AppComponent implements OnInit {
             });
 */
 
-
-
     ngOnInit(): void {
+        this.DaoService.initDatasets().then(() => console.log('All datasets initialized.'));
 
         const html = document.documentElement;
         const htmlLogo = html.getElementsByClassName('logo');
@@ -90,29 +87,8 @@ export class AppComponent implements OnInit {
             }
         }
 
-        // Loading the "main" dataset (with papers, persons, organizations...)
-        this.DaoService.loadDataset(Config.conference.updatePubliUri)
-            .then(() => {
-
-            })
-            .catch(() => {
-                this.snackBar.open('Dataset at ' + Config.conference.updatePubliUri + ' couldn\'t be loaded.', '', {
-                    duration: 3000,
-                });
-            });
-
-        // Loading the "small" dataset (with sessions and events)
-        this.DaoService.loadDataset(Config.conference.updateSessUri)
-            .then(() => {
-
-            })
-            .catch(() => {
-                this.snackBar.open('Dataset at ' + Config.conference.updateSessUri + ' couldn\'t be loaded.', '', {
-                    duration: 3000,
-                });
-            });
-
-        /*
+        // TODO Trier ce qui suit...
+/*
         let token = this.localStoragexx.retrieve(this.key_localstorage_token);
         if (token && token.length > 0)
             this.apiExternalServer.loginWithToken(token);
@@ -139,7 +115,7 @@ export class AppComponent implements OnInit {
             if (this.localStoragexx.retrieve("token_external_ressource_sympozer"))
                 this.voteService.votedPublications()
         }, 300000)
-        */
+*/
     }
 
     goBack() {
@@ -161,6 +137,4 @@ export class AppComponent implements OnInit {
     @HostListener('document:webkitfullscreenchange') updateFullScreenOther() {
         this.fullscreen = screenfull.isFullscreen;
     }
-
-
 }

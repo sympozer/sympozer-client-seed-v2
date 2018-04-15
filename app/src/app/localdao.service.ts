@@ -1,18 +1,15 @@
-import {Inject, Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {Conference} from './model/conference';
-import 'rxjs/add/operator/toPromise';
+import {DoCheck, Inject, Injectable} from '@angular/core';
+import {Http} from '@angular/http';
+// import 'rxjs/add/operator/toPromise';
 import * as moment from 'moment';
 
 import {Config} from './app-config';
-import {eventHelper} from './eventHelper';
-import {Encoder} from './lib/encoder';
-import {DataLoaderService} from './data-loader.service';
-import {ManagerRequest} from './services/ManagerRequest';
+import {RequestManager} from './services/request-manager.service';
 import {DOCUMENT} from '@angular/platform-browser';
+import {MdSnackBar} from '@angular/material';
+
 
 const $rdf = require('rdflib');
-
 
 @Injectable()
 export class LocalDAOService {
@@ -53,20 +50,21 @@ export class LocalDAOService {
     // Locations
     private locationLinkMap = {};
 
+    // To store queries until all datasets are parsed
     private queryWaiting = [];
+    private ready = false;
 
-    constructor(private http: Http,
-                private ev: eventHelper,
-                private encoder: Encoder,
-                private dataloader: DataLoaderService,
-                private managerRequest: ManagerRequest,
+    constructor(private requestManager: RequestManager,
+                public snackBar: MdSnackBar,
                 @Inject(DOCUMENT) private document: any) {
+
         const domain = this.document.location.hostname;
         if (domain) {
             this.localstorage_jsonld += '-' + domain;
         }
         window['query'] = (sparql, limit, filter) => {
-            sparql = 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX : <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#>'
+            sparql = 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> '
+                + 'PREFIX : <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#>'
                 + sparql;
             if (typeof(limit) === 'function' && filter === undefined) {
                 filter = limit;
@@ -74,7 +72,7 @@ export class LocalDAOService {
             }
             if (limit === undefined) {
                 limit = 10;
-                console.log("query: default limit of 10 applied");
+                console.log('query: default limit of 10 applied');
             }
             if (filter === undefined) {
                 filter = (x => x);
@@ -85,60 +83,88 @@ export class LocalDAOService {
                 if (count <= limit) {
                   result = filter(result);
                   if (result !== undefined) {
-                    console.log(result);
+//                    console.log(result);
                   }
                 }
             });
-        }
+        };
         window['queryCount'] = (sparql, filter) => {
-          sparql = 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX : <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#>'
+          sparql = 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> '
+            + 'PREFIX : <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#>'
               + sparql;
           if (filter === undefined) {
               filter = (x => x);
           }
           let count = 0;
+          // TODO find out why this timeout...
           let to = setTimeout(() => console.log(count), 500);
           this.launchQuerySparql(sparql, (result) => {
               clearTimeout(to);
               count += 1;
               to = setTimeout(() => console.log(count), 100);
           });
-        }
+        };
         window['RDF'] = this.store;
     }
 
-    resetDataset() {
-        /*
-        try {
-            const that = this;
+    // Launched in the main component's constructor
+    async initDatasets() {
+        const that = this;
+        const toBeParsed = new Array();
+        // let dataset: string;
+        for (const name in Config.conference.datasets) {
+            const dataset = Config.conference.datasets[name];
+//            console.log('Loading ' + dataset);
+            try {
+                const stream = await this.loadDatasetSynchronously(dataset);
+                if (stream) {
+                    toBeParsed.push(new Promise ((resolve, reject) => {
+                        that.parseDataset(stream, dataset, resolve, reject);
+                    }));
+                } else {
+                    throw new Error ('Invalid content for dataset at ' + dataset);
+                }
+            } catch (error) {
+                this.snackBar.open(error.message, '', {duration: 3000, });
+            }
 
-            //On récup le dataset jsonld en local storage
-            //that.localStoragexx.clear(this.localstorage_jsonld);
+        }
+        Promise.all(toBeParsed).then(() => {
+            console.log('Local DAO ready.');
+            that.ready = true;
+            // Process waiting queries
+            for (const qw of that.queryWaiting) {
+                that.query(qw.command, qw.data, qw.callback);
+            }
+        });
+    }
+
+    // TODO upgrade
+    resetDataset() {
+        try {
+/*
+            const that = this;
             let storage = that.localStoragexx.retrieve(that.localstorage_jsonld);
             if (!storage) {
                 return false;
             }
-
             return that.saveDataset(storage);
-        }
-        catch (err) {
+*/
+            return false;
+        } catch (err) {
             return false;
         }
-        */
     }
 
-    loadDataset(uri: string): Promise<boolean> {
-
+    public loadDataset(uri: string) {
         const that = this;
         return new Promise((resolve, reject) => {
 
-            // Si on l'a pas, on le télécharge
-            // if (!storage) {
-            this.managerRequest.get_safe(uri)
+            this.requestManager.get(uri)
                 .then((response) => {
                     try {
-                        if (response && response._body) {
-                            that.saveDataset(response._body, uri);
+                        if (response && response) {
+                            that.saveDataset(response, uri);
                             return resolve(true);
                         }
 
@@ -164,46 +190,31 @@ export class LocalDAOService {
         });
     }
 
-    saveDataset(dataset: string, uri: string) {
+    // Removing asynchronous aspects in the loading process so that the app doesn't start while datasets are not loaded
+    private async loadDatasetSynchronously(uri: string) {
+        return await this.requestManager.getResponseText(uri);
+    }
+
+    // Utility function to be used without callbacks
+    private saveDataset(dataset, uri: string) {
+        this.parseDataset(dataset, uri, () => console.log('Dataset at ' + uri + ' parsed.'), err => { throw err; });
+    }
+
+    // Does the parsing in the end
+    private parseDataset(dataset, uri: string, resolve, reject) {
         const that = this;
         // TODO move to config
         const mimeType = 'text/turtle';
 
-
         try {
-            that.$rdf.parse(dataset, that.store, uri, mimeType);
-            that.store.fetcher = null;
-            console.log(that.store.statements.length, "triples in store");
-
-            // We if we have query waiting
-            for (const qw of that.queryWaiting) {
-                that.query(qw.command, qw.data, qw.callback);
-            }
-
-            return true;
+            that.$rdf.parse(dataset, that.store, uri, mimeType, resolve);
+            console.log('Parsed ' + that.store.statements.length + ' triples in store');
         } catch (e) {
-            console.error(e);
-            return false;
+            reject(e);
         }
     }
 
-    getData(uri: string): Promise<Conference> {
-        // Vérifier la différence de version du fichier entre le local et le distant, et enregistrer en local si besoin (nouvelle version)
-        return this.http.get(uri)
-            .toPromise()
-            .then(LocalDAOService.extractData)
-            .catch(this.handleError);
-    };
-
-    private static extractData(res: Response) {
-        // Server should wrap the data inside `data` property !!!!!!
-        const body = res.json();
-        // Enregistrer dans le localStorage
-        localStorage.setItem('dataset', body || {});
-        return body || {};
-        // return body.data || {}
-    }
-
+/*
     private handleError(error: any): Promise<any> {
         return Promise.reject(error.message || error);
     }
@@ -227,9 +238,10 @@ export class LocalDAOService {
         }
         return null;
     }
+*/
 
-    launchQuerySparql = (query, callback) => {
-        console.log("LAST_QUERY =\n", query);
+    private launchQuerySparql (query, callback) {
+        console.log('LAST_QUERY =\n', query);
         window['LAST_QUERY'] = query;
         const that = this;
         const querySparql = that.$rdf.SPARQLToQuery(query, false, that.store);
@@ -249,8 +261,7 @@ export class LocalDAOService {
            'https://w3id.org/scholarlydata/ontology/conference-ontology.owl#NonAcademicEvent',
         ]);
         const noAcademicEventTypes = ['Meal', 'SocialEvent', 'Break'];
-
-        if (that.store && callback) {
+        if (that.ready && callback) {
             let query;
             switch (command) {
                 case 'getMemberPersonByOrganisation':
@@ -321,10 +332,10 @@ export class LocalDAOService {
                         'PREFIX dc: <http://purl.org/dc/elements/1.1/> \n' +
                         'SELECT DISTINCT * \n' +
                         'WHERE {\n' +
-                        //' ?idPubli a sd:InProceedings . \n' +
+                        // ' ?idPubli a sd:InProceedings . \n' +
                         ' ?idPubli dc:creator ?idPerson . \n' +
                         ' ?idPubli rdfs:label ?title . \n' +
-                        //' ?idPerson a sd:Person . \n' +
+                        // ' ?idPerson a sd:Person . \n' +
                         ' ?idPerson rdfs:label ?fullName . \n' +
                         ' OPTIONAL { ?idPerson sd:givenName ?givenName . } \n' +
                         ' OPTIONAL { ?idPerson sd:familyName ?familyName . } \n' +
@@ -744,22 +755,22 @@ export class LocalDAOService {
                         }
                     });
                     break;
-                case "getWhatsNow":
+                case 'getWhatsNow':
                     const now2 = moment();
-                    //const now = moment("2018-04-25T14:30:00+02:00") // DEBUG
-                    let seenWhatsNow = new Set();
+                    // const now = moment("2018-04-25T14:30:00+02:00") // DEBUG
+                    const seenWhatsNow = new Set();
 
-                    query = "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n" +
-                        "PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n" +
-                        "SELECT DISTINCT ?id ?label ?startDate ?endDate ?type \n" +
-                        "WHERE {\n" +
-                        " ?id a ?type . \n" +
-                        " ?id rdfs:label ?label . \n" +
-                        " ?id sd:startDate ?startDate . \n" +
-                        " ?id sd:endDate ?endDate . \n" +
-                        " ?id sd:isSubEventOf ?conf . \n" +
-                        " ?conf a sd:Conference . \n" +
-                        "}";
+                    query = 'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
+                        'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
+                        'SELECT DISTINCT ?id ?label ?startDate ?endDate ?type \n' +
+                        'WHERE {\n' +
+                        ' ?id a ?type . \n' +
+                        ' ?id rdfs:label ?label . \n' +
+                        ' ?id sd:startDate ?startDate . \n' +
+                        ' ?id sd:endDate ?endDate . \n' +
+                        ' ?id sd:isSubEventOf ?conf . \n' +
+                        ' ?conf a sd:Conference . \n' +
+                        '}';
                     that.launchQuerySparql(query, (results) => {
                         const id = results['?id'].value;
                         const type = results['?type'].value;
@@ -767,7 +778,7 @@ export class LocalDAOService {
                           // skip events we have already seen,
                           // and those with an abstract type
                           // (wait for the result with a more concrete type)
-                          return
+                          return;
                         }
                         seenWhatsNow.add(id);
                         const startDate = moment(results['?startDate'].value);

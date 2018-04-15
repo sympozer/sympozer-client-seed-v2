@@ -2,8 +2,8 @@
  * Created by pierremarsot on 23/01/2017.
  */
 import {Http} from '@angular/http';
-import {Injectable} from "@angular/core";
-import {ManagerRequest} from './ManagerRequest';
+import {Injectable} from '@angular/core';
+import {RequestManager} from './request-manager.service';
 import {UUID} from 'angular2-uuid';
 
 import '../../assets/webworker/manager-web-worker.js';
@@ -12,13 +12,13 @@ declare var FrontRunner: any;
 @Injectable()
 export class HylarManager {
 
-    private urlJsonLd = 'http://sympozer.liris.cnrs.fr/hylar/ontology/export.json';//'http://dev.sympozer.com/conference/www2012/file-handle/writer/jsonld';
+    private urlJsonLd = 'http://sympozer.liris.cnrs.fr/hylar/ontology/export.json'; // 'http://dev.sympozer.com/conference/www2012/file-handle/writer/jsonld';
     private url_server = 'http://sympozer.liris.cnrs.fr/hylar/ontology/export.json';
     private tasks: any;
     private worker: any;
     private callback_classify: any;
 
-    constructor(private http: Http, private managerRequest: ManagerRequest) {
+    constructor(private http: Http, private managerRequest: RequestManager) {
         this.worker = FrontRunner('./assets/webworker/WebWorkerHylar.js');
         this.registerEvents();
         this.tasks = [];
@@ -26,9 +26,9 @@ export class HylarManager {
 
     private registerEvents = () => {
         const that = this;
-        this.worker.on("classify", function (data) {
+        this.worker.on('classify', function (data) {
             switch (typeof data) {
-                case "boolean":
+                case 'boolean':
                     that.callback_classify = null;
                     break;
                 default:
@@ -75,8 +75,8 @@ export class HylarManager {
             }
 
             return task.callback(data);
-        })
-    };
+        });
+    }
 
     private findTask = (uuid) => {
         if (!uuid || uuid.length === 0) {
@@ -98,47 +98,47 @@ export class HylarManager {
         }
 
         return null;
-    };
+    }
 
     importData = (callback) => {
         console.log('import data');
         const that = this;
-        this.managerRequest.get(this.url_server)
+        this.managerRequest.get_json(this.url_server)
             .then((json) => {
 
-                //On génére un uuid
-                let uuid = UUID.UUID();
+                // On génère un uuid
+                const uuid = UUID.UUID();
 
-                //On save le callback
+                // On save le callback
                 that.tasks.push({
                     uuid: uuid,
                     callback: callback,
                 });
 
-                //On demande au worker d'hylar de faire la classification
-                that.worker.send("import", {
+                // On demande au worker d'hylar de faire la classification
+                that.worker.send('import', {
                     data: json,
                     uuid: uuid,
                 });
             });
-    };
+    }
 
     classify = (callback) => {
         const that = this;
-        this.managerRequest.get(this.urlJsonLd)
+        this.managerRequest.get_json(this.urlJsonLd)
             .then((json) => {
-                //On demande au worker d'hylar de faire la classification
-                console.log(json);
+                // On demande au worker d'hylar de faire la classification
+                // console.log(json);
 
                 that.callback_classify = callback;
 
-                that.worker.send("classify", {
+                that.worker.send('classify', {
                     ontologyTxt: json,
-                    mimeType: "application/ld+json",
+                    mimeType: 'application/ld+json',
                     keepOldValues: false,
                 });
             });
-    };
+    }
 
     query = (query, callback) => {
         try {
@@ -150,7 +150,7 @@ export class HylarManager {
                 return callback(null);
             }
 
-            let uuid = UUID.UUID();
+            const uuid = UUID.UUID();
 
             this.tasks.push({
                 uuid: uuid,
@@ -163,9 +163,8 @@ export class HylarManager {
             });
 
             return true;
-        }
-        catch (e) {
+        } catch (e) {
             return false;
         }
-    };
+    }
 }
