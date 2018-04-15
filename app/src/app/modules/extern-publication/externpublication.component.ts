@@ -1,10 +1,8 @@
-import {forEach} from "@angular/router/src/utils/collection";
-import {Component, OnInit} from "@angular/core";
-import {Conference} from "../../model/conference";
-import {Router, ActivatedRoute, Params} from "@angular/router";
-import {DataLoaderService} from "../../data-loader.service";
-import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
-import {Encoder} from "../../lib/encoder";
+
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute, Params} from '@angular/router';
+import {DBLPDataLoaderService} from '../../dblpdata-loader.service';
+import {Encoder} from '../../lib/encoder';
 import {routerTransition} from '../../app.router.animation';
 
 @Component({
@@ -27,7 +25,7 @@ export class ExternPublicationComponent implements OnInit {
     ngOnInit() {
 
         this.route.params.forEach((params: Params) => {
-            let id = this.encoder.decodeForURI(params['id']);
+            const id = this.encoder.decodeForURI(params['id']);
             this.publication['id'] = id;
             this.getPublicationExternInfo(this.publication);
             this.getPublicationExternAuthors(this.publication);
@@ -44,28 +42,28 @@ export class ExternPublicationComponent implements OnInit {
         this.dBPLDataLoaderService.getExternPublicationAuthors(publication.id).then(response => {
                 console.log(response);
                 publication.authors = [];
-                if (response.results) {
-                    for (let result of response.results.bindings) {
-                        result.authorUri.value = this.encoder.encodeForURI(result.authorUri.value)
+                if (response && response.results) {
+                    for (const result of response.results.bindings) {
+                        result.authorUri.value = this.encoder.encodeForURI(result.authorUri.value);
                         publication.authors.push(result);
                     }
                 }
                 console.log(publication);
             }
         );
-    };
+    }
 
     getPublicationExternInfo = (publication: any) => {
         this.dBPLDataLoaderService.getExternPublicationInfo(publication.id).then((response => {
             console.log(`Got Publication ${publication.id} info: `);
             console.log(response);
             publication.informations = [];
-            if (response.results) {
-                for (let result of response.results.bindings) {
+            if (response && response.results) {
+                for (const result of response.results.bindings) {
                     publication.informations.push(result);
                 }
             }
 
-        }))
+        }));
     }
 }
