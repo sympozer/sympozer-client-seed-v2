@@ -218,9 +218,15 @@ export class PublicationComponent implements OnInit {
 
                     if (nodeKeywords) {
                         const keyword = nodeKeywords.value;
+                        const keywordEncoded = this.encoder.encode(keyword);
+
+                        const k = {
+                            keyword : keyword,
+                            keywordEncoded : keywordEncoded,
+                        }
 
                         if (keyword && keyword.length > 0) {
-                            that.keywords.push(keyword);
+                            that.keywords.push(k);
                         }
                     }
                 }

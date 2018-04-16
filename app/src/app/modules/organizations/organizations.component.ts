@@ -49,7 +49,7 @@ export class OrganizationsComponent implements OnInit {
 
                         that.organizations = that.organizations.concat({
                             id: idEncoded,
-                            label: label,//labelEncoded,
+                            label: label,
                         });
 
                         that.organizations.sort((a, b) => {
