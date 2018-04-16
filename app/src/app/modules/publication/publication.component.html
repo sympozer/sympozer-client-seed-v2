@@ -16,8 +16,8 @@
       <md-card class="info-text keywords">
         <md-chip-list>
           <md-chip color="primary" selected="true" *ngFor="let keyword of keywords">
-                    <span class="span-link" [routerLink]="['/publications-by-keyword/'+keyword]">
-                    {{keyword}}
+                    <span class="span-link" [routerLink]="['/publications-by-keyword/'+keyword.keywordEncoded]">
+                    {{keyword.keyword}}
                     </span>
           </md-chip>
         </md-chip-list>

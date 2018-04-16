@@ -19,6 +19,7 @@ export class PublicationsByKeywords implements OnInit {
     title: string = "Keywords";
     public keywords;
     public publications;
+    public tab : Array<Object> = new Array();
 
     constructor(private router: Router, private route: ActivatedRoute,
                 private DaoService: LocalDAOService, private encoder: Encoder) {
@@ -34,13 +35,32 @@ export class PublicationsByKeywords implements OnInit {
 
                 if(nodeKeyword){
                     const value = nodeKeyword.value;
+                    const valueEncoded = this.encoder.encode(value);
+                    const val = {
+                        value : value,
+                        valueEncoded : valueEncoded,
+                    };
 
                     if(value && value.length > 0){
                         if(!that.keywords.has(value)){
-                            that.keywords.add(value);
+                            that.keywords.add(val);
 
-                            const array = Array.from(that.keywords).sort();
+
+                            const array = Array.from(that.keywords).sort(function(a:any, b:any){
+                                
+                                /*
+                                let nameA=a.value.toLowerCase(), nameB=b.value.toLowerCase();
+                                if (nameA < nameB) //sort string ascending
+                                 return -1;
+                                if (nameA > nameB)
+                                 return 1;
+                                return 0; //default return value (no sorting)
+                                */
+                               return (a.value).localeCompare(b.value);
+                            });
                             that.keywords = new Set(array);
+
+                            
                         }
                     }
                 }
@@ -64,10 +84,12 @@ export class PublicationsByKeywords implements OnInit {
 
                    if(id && label){
                        id = that.encoder.encode(id);
+                       const labelEncoded = this.encoder.encode(label);
                        if(id){
                            that.publications.push({
                                id: id,
                                label: label,
+                               labelEncoded : labelEncoded,
                            });
 
                            that.publications.sort((a, b) => {
