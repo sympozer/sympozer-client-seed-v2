@@ -700,15 +700,31 @@ export class LocalDAOService {
                     return this.categoryLinkMap[data.key];
                 case 'getAllCategories':
                     return this.categoryLinkMap;
+                case 'getAllCategoriesForEvents':
+                    query =
+                        'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
+                        'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
+                        'SELECT DISTINCT * \n' +
+                        'WHERE {\n' +
+                        ' ?super sd:hasSubTrack ?sub . \n' +
+                        ' ?sub rdfs:label ?subL . \n' +
+                        ' ?super rdfs:label ?superL . \n' +
+                        ' ?idEvent sd:relatesToTrack ?sub . \n' +
+                        ' ?idEvent a sd:OrganisedEvent . \n' +
+                        '}';
+
+                    that.launchQuerySparql(query, callback);
+                    break;
                 case 'getAllCategoriesForPublications':
                     query =
                         'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
                         'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
-                        'SELECT DISTINCT ?id ?label \n' +
+                        'SELECT DISTINCT * \n' +
                         'WHERE {\n' +
-                        ' ?id a sd:Track . \n' +
-                        ' ?id rdfs:label ?label . \n' +
-                        ' ?idPubli sd:relatesToTrack ?id . \n' +
+                        ' ?super sd:hasSubTrack ?sub . \n' +
+                        ' ?sub rdfs:label ?subL . \n' +
+                        ' ?super rdfs:label ?superL . \n' +
+                        ' ?idPubli sd:relatesToTrack ?sub . \n' +
                         ' ?idPubli a sd:InProceedings . \n' +
                         '}';
 
