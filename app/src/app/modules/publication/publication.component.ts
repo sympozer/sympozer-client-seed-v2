@@ -268,6 +268,7 @@ export class PublicationComponent implements OnInit {
                 label: label,
             });
         }
+        console.log(that.authors);
     };
     /*
     authorlistitem = (stream) => {

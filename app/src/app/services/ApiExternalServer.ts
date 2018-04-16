@@ -4,7 +4,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
-import {Http} from '@angular/http';
+import {Http, Headers, RequestOptions} from '@angular/http';
 import {RequestManager} from './request-manager.service';
 import {Config} from '../app-config';
 import {LocalStorageService} from 'ng2-webstorage';
@@ -109,7 +109,7 @@ export class ApiExternalServer {
                     return reject(request);
                 });
         });
-    }
+    };
 
     login = (email, password) => {
         return new Promise((resolve, reject) => {
@@ -124,9 +124,12 @@ export class ApiExternalServer {
             const that = this;
 
             const bodyRequest = {
-                email: email,
-                password: password
+                "email": email,
+                "password": password
             };
+
+            const headers = new Headers({ 'Content-Type': 'application/json'});
+            const options = new RequestOptions({ headers: headers });
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
@@ -139,7 +142,7 @@ export class ApiExternalServer {
                     }
                     this.getUser(decoded.id)
                         .then((userPromise: any) => {
-                            const userResult = JSON.parse(userPromise._body);
+                            const userResult = JSON.parse(userPromise);
                             const user = userResult.user;
                             if (!user) {
                                 return reject('Error while retrieving your data. Please try again later.');
@@ -168,7 +171,6 @@ export class ApiExternalServer {
                             that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
                             that.localStoragexx.store(that.key_localstorage_user, user);
 
-                            console.log('Id : ' + decoded.id);
                             that.localStoragexx.store(that.key_localstorage_id, decoded.id);
                             return resolve(user);
                         });

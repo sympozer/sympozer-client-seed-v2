@@ -8,7 +8,6 @@ import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {LocalStorageService} from 'ng2-webstorage';
-import {LoginService} from './login.service';
 
 const sha1 = require('sha-1');
 const jwtDecode = require('jwt-decode');
@@ -17,7 +16,7 @@ const jwtDecode = require('jwt-decode');
     selector: 'login',
     templateUrl: 'login.component.html',
     styleUrls: ['./login.component.scss'],
-    providers: [LoginService]
+    providers: []
 })
 export class LoginComponent implements OnInit {
 
@@ -34,8 +33,7 @@ export class LoginComponent implements OnInit {
                 private voteService: VoteService,
                 private DaoService: LocalDAOService,
                 private encoder: Encoder,
-                private localStoragexx: LocalStorageService,
-                private apiLogin : LoginService) {
+                private localStoragexx: LocalStorageService) {
     }
 
     ngOnInit() {
@@ -102,6 +100,7 @@ export class LoginComponent implements OnInit {
                     duration: 2000,
                 });
                 //window.location.href = 'http://www.google.com';
+                /*
                 this.voteService.votedPublications()
                     .then(() => {
                         this.sendLoginStatus(true)
@@ -112,7 +111,7 @@ export class LoginComponent implements OnInit {
                             duration: 2000,
                         });
                     });
-
+                */
 
 
                 //Retrieve the author by the publication
@@ -120,7 +119,7 @@ export class LoginComponent implements OnInit {
                 const that = this;
                 let emailSha1 = sha1('mailto:' + email);
                 let query = {'key': emailSha1};
-                this.DaoService.query("getPersonBySha", query, (results) => {
+                that.DaoService.query("getPersonBySha", query, (results) => {
 
                     if (results) {
                         const nodeIdPerson = results['?id'];
@@ -136,12 +135,12 @@ export class LoginComponent implements OnInit {
                         if (!idPerson || !label) {
                             return false;
                         }
-                        let username = label.split(' ')
-                        this.snackBar.open("You are recognized as " + label + ".", "", {
+                        let username = label.split(' ');
+                        that.snackBar.open("You are recognized as " + label + ".", "", {
                             duration: 2000,
                         });
                         if (username[0] && username[0].length > 0) {
-                            this.update(user, username[0], username[1])
+                            that.update(user, username[0], username[1])
                         }
                     }
                 });
