@@ -81,6 +81,7 @@ export class EventComponent implements OnInit {
                             endDate = moment(endDate);
 
                             const strDuration = TimeManager.startAndEndTimeToString(startDate, endDate);
+                            const strDate = TimeManager.dateDisplay(startDate, endDate);
 
                             //On récup le type dans l'URI
                             type = that.ressourceDataset.extractType(type, label);
@@ -92,6 +93,7 @@ export class EventComponent implements OnInit {
                                 description: description,
                                 startsAt: startDate.format('LLLL'),
                                 endsAt: endDate.format('LLLL'),
+                                dateVal : strDate,
                                 duration: strDuration,
                                 homepage: homepage,
                                 location: location,
@@ -100,6 +102,8 @@ export class EventComponent implements OnInit {
                                 tracks: [],
                                 type: typeIsIntoLabel ? null : type,
                             };
+
+
                             if (document.getElementById("page-title-p"))
                                 document.getElementById("page-title-p").innerHTML = label;
                             //On regarde si il y a des sub event of

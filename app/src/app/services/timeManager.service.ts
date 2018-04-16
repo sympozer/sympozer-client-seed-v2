@@ -37,4 +37,11 @@ export class TimeManager {
 
         return strDuration;
     }
+
+    static dateDisplay(startDate, endDate){
+
+        let dateDisp = "";
+
+        return dateDisp + startDate.format("hh:mm a") + " - " + endDate.format("hh:mm a") + ", " +startDate.format("dddd, MMMM D, YYYY") ;
+    }
 }
