@@ -556,4 +556,37 @@ export class ApiExternalServer {
         return this.subjectFacebook.asObservable();
     }
 
+    
+    authGoogleService() {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const headers = new Headers({ 'Content-Type': 'application/json'});
+            const options = new RequestOptions({ headers: headers });
+
+            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/google')
+                .then((request) => {
+                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log(request);
+                    return resolve(request);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    authLinkedinService(){
+
+    }
+
+    authTwitterService() {
+
+    }
+
+    authFacebookService(){
+
+    }
+
 }
