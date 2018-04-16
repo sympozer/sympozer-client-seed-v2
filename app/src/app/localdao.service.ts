@@ -702,12 +702,14 @@ export class LocalDAOService {
                     return this.categoryLinkMap;
                 case 'getAllCategoriesForPublications':
                     query =
-                        'PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n' +
-                        'PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
+                        'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
+                        'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
                         'SELECT DISTINCT ?id ?label \n' +
                         'WHERE {\n' +
-                        ' ?id a scholary:Track . \n' +
-                        ' ?id schema:label ?label . \n' +
+                        ' ?id a sd:Track . \n' +
+                        ' ?id rdfs:label ?label . \n' +
+                        ' ?idPubli sd:relatesToTrack ?id . \n' +
+                        ' ?idPubli a sd:InProceedings . \n' +
                         '}';
 
                     that.launchQuerySparql(query, callback);

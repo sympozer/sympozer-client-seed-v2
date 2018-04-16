@@ -24,6 +24,7 @@ export class CategoriesForPublicationsComponent implements OnInit {
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
+        let seen = new Set();
         this.DaoService.query("getAllCategoriesForPublications", null, (results) => {
             if (results) {
                 const nodeId = results['?id'];
@@ -45,13 +46,10 @@ export class CategoriesForPublicationsComponent implements OnInit {
                     return false;
                 }
 
-                const find = that.tracks.find((t) => {
-                   return t.id === id;
-                });
-
-                if(find){
+                if (seen.has(id)) {
                     return false;
                 }
+                seen.add(id);
 
                 that.tracks = that.tracks.concat({
                     id: id,
