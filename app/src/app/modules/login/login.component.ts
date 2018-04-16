@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
     toggleLogin = true;
     private key_localstorage_token = "token_external_ressource_sympozer";
     private key_localstorage_user = "user_external_ressource_sympozer";
+    online : any ;
 
 
     constructor(private router: Router,
@@ -36,9 +37,14 @@ export class LoginComponent implements OnInit {
                 private encoder: Encoder,
                 private localStoragexx: LocalStorageService,
                 private apiLogin : LoginService) {
+        this.online = navigator.onLine;
     }
-
-    ngOnInit() {
+    ngOnInit(): void {
+        window.addEventListener('online',  this.updateOnlineStatus);
+        window.addEventListener('offline', this.updateOnfflineStatus);
+        if( ! this.online ) {
+            this.updateOnfflineStatus()
+        }
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
         let user = this.localStoragexx.retrieve(this.key_localstorage_user);
@@ -156,6 +162,24 @@ export class LoginComponent implements OnInit {
             });
     }
 
+    updateOnfflineStatus() {
+        this.online = false;
+        var toast = document.getElementById("toast");
+        toast.innerText = "waiting for Wifi connection.., Please try later";
+        toast.style.backgroundColor = "#B71C1C";
+        toast.className = "show";
+        (<HTMLInputElement> document.getElementById("login-btn")).disabled = true;
+
+    }
+    updateOnlineStatus(){
+        this.online = true;
+        var toast = document.getElementById("toast");
+        toast.className.replace("show", "");
+        toast.innerText = "connected..";
+        toast.style.backgroundColor = "#1B5E20";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        (<HTMLInputElement> document.getElementById("login-btn")).disabled = false;
+    }
 
     sendLoginStatus(status: boolean): void {
         // send status to subscribers via observable subject
