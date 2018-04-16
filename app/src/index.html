@@ -27,12 +27,9 @@
     </div>
 </div>
 
-<script src="./assets/webworker/manager-web-worker.js"></script>
 <!-- Piwik -->
 <script type="text/javascript">
-
-
-// Verification que piwik est bien en ligne
+// Verifying piwik server is online
 /*
 var boolOnline = false;
 
@@ -46,7 +43,7 @@ var boolOnline = false;
   xhttp.send();
 console.log('boolOnline : ' + boolOnline);
  
-// Fonction permettant l'envoi des donnes a piwik
+// Send data to piwik
 function sendDataToPiwik(){
 
     var _paq = _paq || [];
@@ -90,14 +87,12 @@ function sendDataToPiwik(){
             arrRequests = [];
             localStorage.setItem('piwik', JSON.stringify(arrRequests));
  }
-
-
-    // On envoi les requetes de piwik toutes les 10min
+    // Send each 10 min
     window.setInterval(function () {
 	   sendDataToPiwik();
     }, 10000*60);
 
-    // Si on ferme le navigateur on envoi les requetes à piwik
+    // Send requests before closing browser
     window.onbeforeunload = function () {
 	   sendDataToPiwik();
     }
