@@ -8,7 +8,7 @@ import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {Encoder} from "../../lib/encoder";
 import {Person} from "../../model/person";
 import {routerTransition} from '../../app.router.animation';
-import {ManagerRequest} from "../../services/ManagerRequest";
+import {RequestManager} from "../../services/request-manager.service";
 import {Mutex} from 'async-mutex';
 
 @Component({
@@ -29,7 +29,7 @@ export class PersonsComponent implements OnInit {
                 private DaoService: LocalDAOService,
                 private encoder: Encoder,
                 private  dBPLDataLoaderService: DBLPDataLoaderService,
-                private managerRequest: ManagerRequest) {
+                private managerRequest: RequestManager) {
         this.persons = [];
     }
 

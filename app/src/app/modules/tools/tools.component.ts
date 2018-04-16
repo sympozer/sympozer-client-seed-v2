@@ -1,12 +1,12 @@
-import {Component, OnInit, NgZone, Input, HostListener} from "@angular/core";
-import {ActivatedRoute} from "@angular/router";
+import {Component, OnInit, NgZone, HostListener} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {MdSnackBar} from '@angular/material';
-import {Location} from "@angular/common";
-import {routerTransition} from "../../app.router.animation";
-import {LocalDAOService} from "../../localdao.service";
+import {Location} from '@angular/common';
+import {routerTransition} from '../../app.router.animation';
+import {LocalDAOService} from '../../localdao.service';
 import {LocalStorageService} from 'ng2-webstorage';
 import {ToolsService} from '../../services/tools.service';
-import {Config} from "../../app-config";
+import {Config} from '../../app-config';
 
 const screenfull = require('screenfull');
 
@@ -19,8 +19,8 @@ const screenfull = require('screenfull');
 })
 export class ToolsComponent implements OnInit {
 
-    title: string = "Tools";
-    fontSize: number = 100;
+    title = 'Tools';
+    fontSize = 100;
     loading: boolean;
     fullScreen: boolean;
     darkTheme: boolean;
@@ -38,10 +38,11 @@ export class ToolsComponent implements OnInit {
     ngOnInit() {
         this.loading = false;
 
-        if (document.getElementById("page-title-p"))
-            document.getElementById("page-title-p").innerHTML = this.title;
+        if (document.getElementById('page-title-p')) {
+            document.getElementById('page-title-p').innerHTML = this.title;
+        }
 
-        let storage = this.localStoragexx.retrieve("zoomLevel");
+        let storage = this.localStoragexx.retrieve('zoomLevel');
 
         if (storage) {
             this.fontSize = storage;
@@ -49,52 +50,52 @@ export class ToolsComponent implements OnInit {
 
         this.fullScreen = screenfull.isFullscreen;
 
-        storage = this.localStoragexx.retrieve("darkTheme");
+        storage = this.localStoragexx.retrieve('darkTheme');
 
         if (storage) {
             this.darkTheme = storage;
         }
 
-        storage = this.localStoragexx.retrieve("material");
+        storage = this.localStoragexx.retrieve('material');
 
         if (storage) {
             this.material = storage;
         }
     }
 
-    @HostListener("document:webkitfullscreenchange") updateFullScreen() {
+    @HostListener('document:webkitfullscreenchange') updateFullScreen() {
         this.fullScreen = screenfull.isFullscreen;
-        this.sendFullScreenStatus(this.fullScreen)
+        this.sendFullScreenStatus(this.fullScreen);
     }
 
-    @HostListener("document:mozfullscreenchange") updateFullScreenMoz() {
+    @HostListener('document:mozfullscreenchange') updateFullScreenMoz() {
         this.fullScreen = screenfull.isFullscreen;
-        this.sendFullScreenStatus(this.fullScreen)
+        this.sendFullScreenStatus(this.fullScreen);
     }
 
-    @HostListener("document:msfullscreenchange") updateFullScreenIE() {
+    @HostListener('document:msfullscreenchange') updateFullScreenIE() {
         this.fullScreen = screenfull.isFullscreen;
-        this.sendFullScreenStatus(this.fullScreen)
+        this.sendFullScreenStatus(this.fullScreen);
     }
 
-    @HostListener("document:webkitfullscreenchange") updateFullScreenOther() {
+    @HostListener('document:webkitfullscreenchange') updateFullScreenOther() {
         this.fullScreen = screenfull.isFullscreen;
-        this.sendFullScreenStatus(this.fullScreen)
+        this.sendFullScreenStatus(this.fullScreen);
     }
 
     /**
-     * Load the application dataset
+     * Reload the sessions dataset
      */
         loadDataset() {
         this.loading = true;
 
         setTimeout(() => {
-            this.localdao.loadDataset(Config.conference.updateSessUri).then(() => {
-                this.snackBar.open("Dataset properly loaded", "", {
+            this.localdao.loadDataset(Config.conference.datasets['updateSessUri']).then(() => {
+                this.snackBar.open('Dataset properly loaded', '', {
                     duration: 2000,
                 });
             }).catch(() => {
-                this.snackBar.open("Dataset didn't load properly", "", {
+                this.snackBar.open('Dataset didn\'t load properly', '', {
                     duration: 2000,
                 });
             });
@@ -109,22 +110,21 @@ export class ToolsComponent implements OnInit {
     /**
      * Reset the application dataset
      */
+    // TODO change to reload complete dataset, instead of just sessions
     resetDataset() {
         try {
             if (this.localdao.resetDataset()) {
-                this.snackBar.open("Dataset succesfully reset", "", {
+                this.snackBar.open('Dataset succesfully reset', '', {
+                    duration: 2000,
+                });
+            } else {
+                this.snackBar.open('Dataset failed please retry', '', {
                     duration: 2000,
                 });
             }
-            else {
-                this.snackBar.open("Dataset failed please retry", "", {
-                    duration: 2000,
-                });
-            }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
-            this.snackBar.open("Reset failed please retry", "", {
+            this.snackBar.open('Reset failed please retry', '', {
                 duration: 2000,
             });
         }
@@ -136,11 +136,10 @@ export class ToolsComponent implements OnInit {
     decresaseFontSize() {
         if (this.fontSize > 60) {
             this.fontSize = this.fontSize - 10;
-            document.documentElement.style.fontSize = this.fontSize + "%";
-            this.localStoragexx.store("zoomLevel", this.fontSize);
-        }
-        else {
-            this.snackBar.open("You reached the minimum zoom level", "", {
+            document.documentElement.style.fontSize = this.fontSize + '%';
+            this.localStoragexx.store('zoomLevel', this.fontSize);
+        } else {
+            this.snackBar.open('You reached the minimum zoom level', '', {
                 duration: 2000,
             });
         }
@@ -152,11 +151,10 @@ export class ToolsComponent implements OnInit {
     increaseFontSize() {
         if (this.fontSize < 200) {
             this.fontSize = this.fontSize + 10;
-            document.documentElement.style.fontSize = this.fontSize + "%";
-            this.localStoragexx.store("zoomLevel", this.fontSize);
-        }
-        else {
-            this.snackBar.open("You reached the maximum zoom level", "", {
+            document.documentElement.style.fontSize = this.fontSize + '%';
+            this.localStoragexx.store('zoomLevel', this.fontSize);
+        } else {
+            this.snackBar.open('You reached the maximum zoom level', '', {
                 duration: 2000,
             });
         }
@@ -167,20 +165,22 @@ export class ToolsComponent implements OnInit {
      * @param status
      */
     sendFullScreenStatus(status: boolean): void {
-        this.toolService.sendFullScreenStatus(status)
+        this.toolService.sendFullScreenStatus(status);
     }
 
+/*
     clearFullScreenStatus(): void {
         // clear message
         this.toolService.clearFullScreenStatus();
     }
+*/
 
     /**
      * Change full screen status
      */
     toggleFullScreen() {
         this.fullScreen = !this.fullScreen;
-        this.sendFullScreenStatus(this.fullScreen)
+        this.sendFullScreenStatus(this.fullScreen);
         if (screenfull.enabled) {
             screenfull.toggle();
         }
@@ -191,39 +191,37 @@ export class ToolsComponent implements OnInit {
      */
     toggleDarkTheme() {
         this.darkTheme = !this.darkTheme;
-        this.localStoragexx.store("darkTheme", this.darkTheme);
-        let html = document.documentElement;
-        let htmlLogo = html.getElementsByClassName("logo");
+        this.localStoragexx.store('darkTheme', this.darkTheme);
+        const html = document.documentElement;
+        const htmlLogo = html.getElementsByClassName('logo');
         let i;
         if (this.darkTheme) {
-            if (!html.classList.contains("dark")) {
+            if (!html.classList.contains('dark')) {
                 html.classList.add('dark');
             }
-            for (i = 0; i < htmlLogo.length ; i++){
-                htmlLogo[i].querySelectorAll('img')[0].src = "./img/TheWebConference2018-logo-dark.png";
+            for (i = 0; i < htmlLogo.length ; i++) {
+                htmlLogo[i].querySelectorAll('img')[0].src = './img/TheWebConference2018-logo-dark.png';
             }
-        }
-        else {
-            if (html.classList.contains("dark")) {
+        } else {
+            if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
             }
-            for (i = 0; i < htmlLogo.length ; i++){
-                htmlLogo[i].querySelectorAll('img')[0].src = "./img/TheWebConference2018-logo.png";
+            for (i = 0; i < htmlLogo.length ; i++) {
+                htmlLogo[i].querySelectorAll('img')[0].src = './img/TheWebConference2018-logo.png';
             }
         }
     }
 
     toggleMaterial() {
         this.material = !this.material;
-        this.localStoragexx.store("material", this.material);
-        let html = document.documentElement;
+        this.localStoragexx.store('material', this.material);
+        const html = document.documentElement;
         if (this.material) {
-            if (html.classList.contains("no-material")) {
+            if (html.classList.contains('no-material')) {
                 html.classList.remove('no-material');
             }
-        }
-        else {
-            if (!html.classList.contains("no-material")) {
+        } else {
+            if (!html.classList.contains('no-material')) {
                 html.classList.add('no-material');
             }
         }
