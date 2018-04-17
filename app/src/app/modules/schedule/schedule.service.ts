@@ -49,8 +49,8 @@ export class ScheduleService {
     var count = Object.keys(eventHierarchy).length;
   	console.log("taille: " + count);
   	//console.log(eventHierarchy); // liste d'event
-  		// passer par data-loader.service parce que le http.get est déjà fait dans le service
-  	return this.http.get(this.scheduleUrl)
+  		// passer par data-loader.service parce que le http.get_json est déjà fait dans le service
+  	return this.http.get_json(this.scheduleUrl)
                .toPromise()
                .then(response => eventHierarchy as Event[])
                .catch(this.handleError); 

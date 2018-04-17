@@ -1,17 +1,18 @@
 import {Injectable} from '@angular/core';
-import {Http, URLSearchParams} from '@angular/http';
+import {URLSearchParams} from '@angular/http';
+import {RequestManager} from './services/request-manager.service';
 
 @Injectable()
 export class DBLPDataLoaderService {
-    uri:string = "http://dblp.rkbexplorer.com/sparql/";
+    uri = 'http://dblp.rkbexplorer.com/sparql/';
 
-    constructor(private http:Http) {
+    constructor(private requestManager: RequestManager) {
     }
 
-    public getAuthorPublications(name:string):Promise<any> {
-        let prefix = "PREFIX akt:  <http://www.aktors.org/ontology/portal#>";
+    public getAuthorPublications(name: string): Promise<any> {
+        const prefix = 'PREFIX akt:  <http://www.aktors.org/ontology/portal#>';
 
-        let query = `SELECT DISTINCT ?publiUri ?publiTitle 
+        const query = `SELECT DISTINCT ?publiUri ?publiTitle 
                     WHERE {
                      { ?publiUri akt:has-author ?o 
                         ?o akt:full-name "${name}". 
@@ -22,20 +23,20 @@ export class DBLPDataLoaderService {
         return this.query(prefix, query);
     }
 
-    public getExternPublicationAuthors = (publicationUri:string):Promise<any> => {
-        let prefix = "PREFIX akt:  <http://www.aktors.org/ontology/portal#>";
+    public getExternPublicationAuthors = (publicationUri: string): Promise<any> => {
+        const prefix = 'PREFIX akt:  <http://www.aktors.org/ontology/portal#>';
 
-        let query = ' SELECT DISTINCT ?authorUri  ?authorName WHERE { ' +
+        const query = ' SELECT DISTINCT ?authorUri  ?authorName WHERE { ' +
             '	<' + publicationUri + '> akt:has-author ?authorUri ' +
             '	?authorUri  akt:full-name ?authorName. ' +
             '}  ';
         return this.query(prefix, query);
-    };
+    }
 
-    public getExternPublicationInfo = (publicationUri:string):Promise<any> => {
-        let prefix = ` PREFIX akt:  <http://www.aktors.org/ontology/portal#>              
+    public getExternPublicationInfo = (publicationUri: string): Promise<any> => {
+        const prefix = ` PREFIX akt:  <http://www.aktors.org/ontology/portal#>              
                        PREFIX akts: <http://www.aktors.org/ontology/support#>       `;
-        let query = ' SELECT DISTINCT ?publiTitle ?publiDate ?publiJournal ?publiLink ?publiResume WHERE {  ' +
+        const query = ' SELECT DISTINCT ?publiTitle ?publiDate ?publiJournal ?publiLink ?publiResume WHERE {  ' +
             '	OPTIONAL { <' + publicationUri + '>   akt:article-of-journal ?publiJournalUri. ' +
             '	?publiJournalUri akt:has-title ?publiJournal   . }' +
             '	OPTIONAL {<' + publicationUri + '>   akt:has-date  ?year. ' +
@@ -46,23 +47,19 @@ export class DBLPDataLoaderService {
             '	OPTIONAL {<' + publicationUri + '>   akt:has-web-address ?publiLink. }' +
             ' } ';
         return this.query(prefix, query);
-    };
+    }
 
-    private query = (prefix:string, query:string, format:string = 'json')=> {
-        let params:URLSearchParams = new URLSearchParams();
-        let queryString = `${prefix}
+    private query = (prefix: string, query: string, format: string = 'json') => {
+        const params: URLSearchParams = new URLSearchParams();
+        const queryString = `${prefix}
                             ${query}`;
         params.set('format', format);
         params.set('query', queryString);
-        return this.http.get(this.uri, {search: params})
-            .toPromise()
-            .then(response => {
-                return response.json();
-            }).catch(this.handleError);
-    };
+        return this.requestManager.get_json(this.uri, {search: params}).catch(this.handleError);
+    }
 
-    handleError(error:any):Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
-}
+    handleError(error: any): Promise<any> {
+//        console.error('An error occurred', error); // for demo purposes only
+        return Promise.reject(error.message || error);
+    }
 }

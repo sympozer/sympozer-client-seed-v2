@@ -1,18 +1,18 @@
-import {Component, OnInit} from "@angular/core";
-import {Router, ActivatedRoute, Params} from "@angular/router";
-import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
-import {LocalDAOService} from "../../localdao.service";
-import {Encoder} from "../../lib/encoder";
-import {PersonService} from "./person.service";
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute, Params} from '@angular/router';
+import {DBLPDataLoaderService} from '../../dblpdata-loader.service';
+import {LocalDAOService} from '../../localdao.service';
+import {Encoder} from '../../lib/encoder';
+import {PersonService} from './person.service';
 import {Mutex} from 'async-mutex';
 import {routerTransition} from '../../app.router.animation';
-import {ManagerRequest} from "../../services/ManagerRequest";
+import {RequestManager} from '../../services/request-manager.service';
 import {Config} from '../../app-config';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {VoteService} from '../../services/vote.service'
+import {VoteService} from '../../services/vote.service';
 
 @Component({
-    selector: 'app-person',
+    selector: 'person',
     templateUrl: 'person.component.html',
     styleUrls: ['person.component.scss'],
     animations: [routerTransition()],
@@ -39,9 +39,10 @@ export class PersonComponent implements OnInit {
                 private personService: PersonService,
                 private encoder: Encoder,
                 private dBPLDataLoaderService: DBLPDataLoaderService,
-                private managerRequest: ManagerRequest,
+                private managerRequest: RequestManager,
                 private apiExternalServer: ApiExternalServer,
                 private voteService: VoteService) {
+
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
         this.mutex_box = new Mutex();
@@ -50,8 +51,8 @@ export class PersonComponent implements OnInit {
     ngOnInit() {
         const that = this;
         this.route.params.forEach((params: Params) => {
-            let id = params['id'];
-            let name = params['name'];
+            const id = params['id'];
+            const name = params['name'];
 
             if (!id || !name) {
                 return false;
@@ -59,14 +60,15 @@ export class PersonComponent implements OnInit {
             console.log('id : ' + id);
             console.log('name : ' + name);
 
-            if (document.getElementById("page-title-p"))
-                document.getElementById("page-title-p").innerHTML = name;
+            if (document.getElementById('page-title-p')) {
+                document.getElementById('page-title-p').innerHTML = name;
+            }
 
             that.getPublication(name);
 
-            let query = {'key': this.encoder.decode(id)};
-            this.DaoService.query("getPerson", query, (results) => {
-                console.log(results);
+            const query = {'key': this.encoder.decode(id)};
+            this.DaoService.query('getPerson', query, (results) => {
+//                console.log(results);
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -88,7 +90,7 @@ export class PersonComponent implements OnInit {
                                     const boxs_temp = nodeBox.value;
                                     if (boxs_temp) {
                                         switch (typeof boxs_temp) {
-                                            case "string":
+                                            case 'string':
                                                 boxs = [boxs_temp];
                                                 break;
                                             default:
@@ -97,19 +99,19 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
-                                    that.managerRequest.get_safe(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + "&id_ressource=" + id)
-                                        .then((request) => {
-                                            if (request && request._body) {
-                                                const user = JSON.parse(request._body);
-                                                console.log(user);
+                                    that.managerRequest.get(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + '&id_ressource=' + id)
+                                        .then((response) => {
+                                            if (response && response) {
+                                                const user = JSON.parse(response);
+//                                                console.log(user);
                                                 if (user && user.photoUrl) {
                                                     that.photoUrl = user.photoUrl;
                                                 }
                                                 if (user) {
                                                     let twitterpage = user.twitterpage;
 
-                                                    if(twitterpage && twitterpage.length > 0){
-                                                        if(twitterpage.includes('@')){
+                                                    if (twitterpage && twitterpage.length > 0) {
+                                                        if (twitterpage.includes('@')) {
                                                             twitterpage = twitterpage.replace('@', '');
                                                         }
                                                     }
@@ -122,8 +124,8 @@ export class PersonComponent implements OnInit {
                                                 }
                                             }
                                         })
-                                        .catch((request) => {
-
+                                        .catch((error) => {
+                                            throw error;
                                         });
                                 }
                             }
@@ -132,7 +134,7 @@ export class PersonComponent implements OnInit {
                     });
             });
 
-            this.DaoService.query("getPublicationLink", query, (results, err) => {
+            this.DaoService.query('getPublicationLink', query, (results, err) => {
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -141,7 +143,7 @@ export class PersonComponent implements OnInit {
                     });
             });
 
-            this.DaoService.query("getOrganizationLink", query, (results) => {
+            this.DaoService.query('getOrganizationLink', query, (results) => {
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -150,7 +152,7 @@ export class PersonComponent implements OnInit {
                     });
             });
 
-            this.DaoService.query("getRole", query, (results) => {
+            this.DaoService.query('getRole', query, (results) => {
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -164,9 +166,9 @@ export class PersonComponent implements OnInit {
     getPublication(name: any) {
         // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
         this.dBPLDataLoaderService.getAuthorPublications(name).then(response => {
-            if (response.results) {
+            if (response && response.results) {
                 let i = 0;
-                for (let result of response.results.bindings) {
+                for (const result of response.results.bindings) {
                     this.externPublications[i] = {
                         id: this.encoder.encodeForURI(result.publiUri.value),
                         name: result.publiTitle.value

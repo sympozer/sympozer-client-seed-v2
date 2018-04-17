@@ -10,6 +10,7 @@
     "buildbeta": "ng build --prod --aot --bh /www2018_beta/",
     "buildvote": "ng build --prod --aot --bh /www2018_vote/",
     "buildpac": "ng build --prod --aot --bh /www2018_pac/",
+    "buildapp": "ng build --prod --aot --bh /app/",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update",

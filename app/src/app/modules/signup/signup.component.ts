@@ -6,14 +6,13 @@ import {MdSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {LocalStorageService} from 'ng2-webstorage';
-import {SignUpService} from './signup.service';
 
 
 @Component({
   selector: 'signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
-  providers: [SignUpService]
+  providers: []
 })
 export class SignupComponent implements OnInit {
 
@@ -25,8 +24,7 @@ export class SignupComponent implements OnInit {
 	            public snackBar: MdSnackBar,
 	            private voteService: VoteService,
 	            private DaoService: LocalDAOService,
-				private localStoragexx: LocalStorageService,
-				private signUpService : SignUpService ) { }
+				private localStoragexx: LocalStorageService) { }
 
 	ngOnInit() {
 		let user = this.localStoragexx.retrieve(this.key_localstorage_user)
