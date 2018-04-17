@@ -1,7 +1,7 @@
-import {Component, OnInit} from "@angular/core";
-import {Router, ActivatedRoute, Params} from "@angular/router";
-import {LocalDAOService} from "../../localdao.service";
-import {Encoder} from "../../lib/encoder";
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute, Params} from '@angular/router';
+import {LocalDAOService} from '../../localdao.service';
+import {Encoder} from '../../lib/encoder';
 import {routerTransition} from '../../app.router.animation';
 
 @Component({
@@ -11,8 +11,8 @@ import {routerTransition} from '../../app.router.animation';
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
-export class PublicationsByKeyword implements OnInit {
-    title: string = "Publications by keyword";
+export class PublicationsByKeywordComponent implements OnInit {
+    title = 'Publications by keyword';
     public publications = [];
 
     constructor(private router: Router, private route: ActivatedRoute,
@@ -23,26 +23,26 @@ export class PublicationsByKeyword implements OnInit {
     ngOnInit() {
         const that = this;
         this.route.params.forEach((params: Params) => {
-            
-            let keyword = this.encoder.decode(params['keyword']);
+
+            const keyword = this.encoder.decode(params['keyword']);
 
             if (!keyword || keyword.length === 0) {
                 return false;
             }
 
-            that.DaoService.query("getPublicationsByKeyword", {
+            that.DaoService.query('getPublicationsByKeyword', {
                 keyword: keyword
             }, (results) => {
                 console.log(results);
-                if(results){
+                if (results){
                     const nodeId = results['?id'];
                     const nodeLabel = results['?label'];
 
-                    if(nodeId && nodeLabel){
+                    if (nodeId && nodeLabel){
                         let id = nodeId.value;
                         const label = nodeLabel.value;
 
-                        if(id && label){
+                        if (id && label){
                             id = that.encoder.encode(id);
                             const labelEncoded = this.encoder.encode(label);
                             if(id){
@@ -50,7 +50,7 @@ export class PublicationsByKeyword implements OnInit {
                                    return p.id === id;
                                 });
 
-                                if(find){
+                                if (find) {
                                     return false;
                                 }
 
