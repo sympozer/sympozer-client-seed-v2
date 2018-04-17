@@ -27,11 +27,11 @@ import {EventByCategoryComponent} from './modules/event-by-category/event-by-cat
 import {ExternPublicationComponent} from './modules/extern-publication/externpublication.component';
 import {ToolsComponent} from './modules/tools/tools.component';
 import {EventsByDate} from './modules/events-by-date/events-by-date';
-import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
+import {KeywordsComponent} from './modules/keywords/keywords.component';
 import {LoginComponent} from './modules/login/login.component';
 import {SignupComponent} from './modules/signup/signup.component';
 import {ConferenceComponent} from './modules/conference/conference.component';
-import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
+import {PublicationsByKeywordComponent} from './modules/publications-by-keyword/publications-by-keyword.component';
 import {UserProfileComponent} from './modules/user-profile/user-profile.component';
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import { ActivationMailComponent } from './modules/activationMail/activationMail.component';
@@ -176,12 +176,12 @@ const appRoutes: Routes = [
         component: ExternPublicationComponent
     },
     {
-        path: 'publications-by-keywords',
-        component: PublicationsByKeywords
+        path: 'keywords',
+        component: KeywordsComponent
     },
     {
         path: 'publications-by-keyword/:keyword',
-        component: PublicationsByKeyword
+        component: PublicationsByKeywordComponent
     }
 ];
 

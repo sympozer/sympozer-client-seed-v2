@@ -90,7 +90,7 @@ export class ToolsComponent implements OnInit {
         this.loading = true;
 
         setTimeout(() => {
-            this.localdao.loadDataset(Config.conference.datasets['updateSessUri']).then(() => {
+            this.localdao.reloadDataset(Config.conference.datasets['updateSessUri']).then(() => {
                 this.snackBar.open('Dataset properly loaded', '', {
                     duration: 2000,
                 });
@@ -105,29 +105,6 @@ export class ToolsComponent implements OnInit {
 
     isLoading() {
         return this.loading;
-    }
-
-    /**
-     * Reset the application dataset
-     */
-    // TODO change to reload complete dataset, instead of just sessions
-    resetDataset() {
-        try {
-            if (this.localdao.resetDataset()) {
-                this.snackBar.open('Dataset succesfully reset', '', {
-                    duration: 2000,
-                });
-            } else {
-                this.snackBar.open('Dataset failed please retry', '', {
-                    duration: 2000,
-                });
-            }
-        } catch (err) {
-            console.log(err);
-            this.snackBar.open('Reset failed please retry', '', {
-                duration: 2000,
-            });
-        }
     }
 
     /**

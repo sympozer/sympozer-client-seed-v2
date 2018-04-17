@@ -39,8 +39,8 @@ import {ToolsComponent} from './modules/tools/tools.component';
 import {EventsByDate} from './modules/events-by-date/events-by-date';
 import {ShareComponent} from './modules/share-button/share-button.component';
 import {LoginComponent} from './modules/login/login.component';
-import {ScrollLoader} from './modules/scroll-loader/scroll-loader.component';
-import {PublicationsByKeywords} from './modules/publications-by-keywords/publications-by-keywords.component';
+import {ScrollLoaderDirective} from './modules/scroll-loader/scroll-loader.component';
+import {KeywordsComponent} from './modules/keywords/keywords.component';
 import {KeysPipe} from './keys.pipe';
 import {DataLoaderService} from './data-loader.service';
 import {DBLPDataLoaderService} from './dblpdata-loader.service';
@@ -60,7 +60,7 @@ import {ConferenceComponent} from './modules/conference/conference.component';
 import {VoteService} from './services/vote.service';
 import {Angulartics2Module, Angulartics2Piwik} from 'angulartics2';
 import {ToolsService} from './services/tools.service';
-import {PublicationsByKeyword} from './modules/publications-by-keyword/publications-by-keyword.component';
+import {PublicationsByKeywordComponent} from './modules/publications-by-keyword/publications-by-keyword.component';
 import {SignupComponent} from './modules/signup/signup.component';
 import {UserProfileComponent} from './modules/user-profile/user-profile.component';
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
@@ -105,11 +105,11 @@ const routes: Routes = [];
         ToolsComponent,
         EventsByDate,
         ShareComponent,
-        ScrollLoader,
+        ScrollLoaderDirective,
         VoteComponent,
-        PublicationsByKeywords,
+        KeywordsComponent,
         ConferenceComponent,
-        PublicationsByKeyword,
+        PublicationsByKeywordComponent,
         SignupComponent,
         UserProfileComponent,
         ForgotPasswordComponent,
