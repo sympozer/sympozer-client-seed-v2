@@ -4,6 +4,8 @@ import {LocalDAOService} from "../../localdao.service";
 import {DataLoaderService} from '../../data-loader.service';
 import {Encoder} from "../../lib/encoder";
 
+const sha1 = require('sha-1');
+
 @Component({
     selector: 'app-qrcode',
     templateUrl: 'qrcode.component.html'
@@ -24,28 +26,30 @@ export class QrcodeComponent {
     ngOnInit() {
         const that = this;
         let user = this.localStoragexx.retrieve(this.key_localstorage_user);
-
+        let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        let email = that.encoder.encode(user.email);
+        let emailSha1 = sha1('mailto:' + email);
         that.DaoService.query("getAllPersons", null, (results) => {
-
+            const name = user.firstname + ' ' + user.lastname;
+            let encodename = that.encoder.encode(name);
             if (results) {
                 const nodeId = results['?id'];
                 const nodeFullName = results['?fullName'];
-                console.log(nodeFullName);
-                const name = user.firstname + ' ' + user.lastname;
-                //user in dataset
+
+                //user in data set
                 if (nodeFullName.value === name){
                     this.tmp = true;
                     let id1 = that.encoder.encode(nodeId.value);
                     let id = that.encoder.encode(id1);
-                    this.qrValue = 'https://sympozer.liris.cnrs.fr/www2018/#/person/' + user.firstname + '%20' + user.lastname + '/' + id;
+                    this.qrValue = urlHost + '#/person/' + encodename + '/' + id;
                 }
             }
 
-            //user not in dataset
+            //user not in data set
             if (this.tmp === false){
-                let email = that.encoder.encode(user.email);
-                this.qrValue = 'https://sympozer.liris.cnrs.fr/www2018/#/person/' + user.firstname + '%20' + user.lastname + '/' + email;
+                this.qrValue = urlHost + '#/person/' + encodename + '/' + emailSha1;
             }
+            console.log(this.qrValue);
         });
 
     }
