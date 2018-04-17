@@ -334,7 +334,15 @@ body {
   z-index: 999999;
   position: absolute !important;
   overflow: visible !important;
-  bottom: 2%;
+  bottom: 20px;
+  right: 20px;
+}
+
+.appointment{
+  z-index: 999999;
+  position: absolute !important;
+  overflow: visible !important;
+  bottom: 86px;
   right: 20px;
 }
 
