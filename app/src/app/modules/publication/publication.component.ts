@@ -1,16 +1,19 @@
-import {forEach} from "@angular/router/src/utils/collection";
-import {Component, OnInit} from "@angular/core";
-import {Conference} from "../../model/conference";
-import {Router, ActivatedRoute, Params} from "@angular/router";
-import {DataLoaderService} from "../../data-loader.service";
-import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
-import {LocalDAOService} from "../../localdao.service";
-import {Encoder} from "../../lib/encoder";
-import {routerTransition} from '../../app.router.animation';
+import { forEach } from "@angular/router/src/utils/collection";
+import { Component, OnInit, Injectable } from "@angular/core";
+import { Conference } from "../../model/conference";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+import { DataLoaderService } from "../../data-loader.service";
+import { DBLPDataLoaderService } from "../../dblpdata-loader.service";
+import { LocalDAOService } from "../../localdao.service";
+import { Encoder } from "../../lib/encoder";
+import { routerTransition } from '../../app.router.animation';
+import { AppointmentService } from "../../services/appointment.service";
 
-import {Subscription} from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs';
 import * as moment from 'moment';
-import {TimeManager} from "../../services/timeManager.service";
+import { TimeManager } from "../../services/timeManager.service";
 var ICS = require('ics');
 
 @Component({
@@ -18,8 +21,9 @@ var ICS = require('ics');
     templateUrl: 'publication.component.html',
     styleUrls: ['publication.component.scss'],
     animations: [routerTransition()],
-    host: {'[@routerTransition]': ''}
+    host: { '[@routerTransition]': '' }
 })
+@Injectable()
 export class PublicationComponent implements OnInit {
     public publication;
     public authors;
@@ -31,9 +35,10 @@ export class PublicationComponent implements OnInit {
     public eventType;
 
     constructor(private router: Router,
-                private route: ActivatedRoute,
-                private DaoService: LocalDAOService,
-                private encoder: Encoder) {
+        private route: ActivatedRoute,
+        private DaoService: LocalDAOService,
+        private encoder: Encoder,
+        private appointService: AppointmentService) {
         this.authors = [];
         this.publication = {
             label: undefined,
@@ -47,7 +52,7 @@ export class PublicationComponent implements OnInit {
         this.route.params.forEach((params: Params) => {
             let id = params['id'];
             let name = params['name'];
-            let query = {'key': this.encoder.decode(id)};
+            let query = { 'key': this.encoder.decode(id) };
             this.publicationId = query.key;
             /**
              * Retrieve the publication
@@ -69,6 +74,9 @@ export class PublicationComponent implements OnInit {
                     }
 
                     that.publication.label = label;
+                    // Set subject for appointment
+                    that.appointService.setSubject(that.publication.label);
+
                     that.publication.abstract = abstract;
                     if (document.getElementById("page-title-p"))
                         document.getElementById("page-title-p").innerHTML = label;
@@ -118,6 +126,8 @@ export class PublicationComponent implements OnInit {
             this.DaoService.query("getFirstAuthorLinkPublication", query, (results) => {
                 if (results) {
                     that.authorlistitem(results);
+                    // set receivers for appointment
+                    that.appointService.setReceivers(that.authors);
                 }
             });
 
@@ -148,7 +158,7 @@ export class PublicationComponent implements OnInit {
                             const id = that.encoder.encode(idBase);
                             if (id) {
 
-                               const find = that.events.find((e) => {
+                                const find = that.events.find((e) => {
                                     return e.id === id;
                                 });
 
@@ -231,6 +241,11 @@ export class PublicationComponent implements OnInit {
              this.authors[i] = this.DaoService.query("getPersonLink",query);
              }*/
         });
+
+        // add infor of the page currently on to appointment service.
+        //that.appointService.setAppointment(that.publication.label,null, that.authors);
+
+        //
     }
 
     authorlistitem = (stream) => {
@@ -242,7 +257,7 @@ export class PublicationComponent implements OnInit {
                 let idAuhtorList = nodeIdAuhtorList.value;
 
                 if (idAuhtorList) {
-                    that.DaoService.query("getIdPersonByAuthorListItem", {key: idAuhtorList}, (results) => {
+                    that.DaoService.query("getIdPersonByAuthorListItem", { key: idAuhtorList }, (results) => {
                         if (results) {
                             const nodeIdPerson = results['?id'];
 
@@ -251,7 +266,7 @@ export class PublicationComponent implements OnInit {
 
                                 if (idPerson) {
                                     const idPersonEncoded = that.encoder.encode(idPerson);
-                                    that.DaoService.query("getPerson", {key: idPerson}, (results) => {
+                                    that.DaoService.query("getPerson", { key: idPerson }, (results) => {
                                         if (results) {
                                             const nodeLabel = results['?label'];
 
@@ -271,9 +286,9 @@ export class PublicationComponent implements OnInit {
                                                         id: idPersonEncoded,
                                                         label: label
                                                     });
-
-                                                    that.DaoService.query("getNextAuthorLinkPublication", {key: idAuhtorList}, (results) => {
-                                                        if(results){
+                                                    console.log("authors: label " + label)
+                                                    that.DaoService.query("getNextAuthorLinkPublication", { key: idAuhtorList }, (results) => {
+                                                        if (results) {
                                                             that.authorlistitem(results);
                                                         }
                                                     });
@@ -307,16 +322,26 @@ export class PublicationComponent implements OnInit {
             location: talk.location, //
             url: that.publicationId,
             status: 'confirmed',
-            geo: {lat: 45.515113, lon: 13.571873,},
+            geo: { lat: 45.515113, lon: 13.571873, },
             attendees: [
                 //{ name: 'Adam Gibbons', email: 'adam@example.com' }
             ],
             categories: ['Talk'],
             alarms: [
-                {action: 'DISPLAY', trigger: '-PT24H', description: 'Reminder', repeat: true, duration: 'PT15M'},
-                {action: 'AUDIO', trigger: '-PT30M'}
+                { action: 'DISPLAY', trigger: '-PT24H', description: 'Reminder', repeat: true, duration: 'PT15M' },
+                { action: 'AUDIO', trigger: '-PT30M' }
             ]
         });
         window.open("data:text/calendar;charset=utf8," + encodeURIComponent(calendar));
     }
+    // getPublId(): Observable<any> {
+    //     return new Subject(this.publicationId).asObservable();
+    //     this.publicationId.asObservable();
+    // }
+    // getAuthors(): Observable<any> {
+    //     return this.authors.asObservable();
+    // }
+    // getTrackId(): Observable<any> {
+    //     return this.trackId.asObservable();
+    // }
 }

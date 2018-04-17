@@ -68,6 +68,7 @@ import {ActivationMailComponent} from "./modules/activationMail/activationMail.c
 import {ChangePasswordComponent} from "./modules/changePassword/changePassword.component";
 import {AppointmentComponent} from "./modules/appointment/appointment.component";
 import {AppointmentService} from "./services/appointment.service";
+import { SendEmailComponent } from './modules/send-email/send-email.component';
 
 const routes: Routes = [];
 
@@ -116,7 +117,8 @@ const routes: Routes = [];
         AppointmentComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
-        ChangePasswordComponent
+        ChangePasswordComponent,
+        SendEmailComponent
     ],
     imports: [
         BrowserModule,
@@ -147,7 +149,10 @@ const routes: Routes = [];
         VoteService,
         ToolsService,
         TimeManager,
-        AppointmentService
+        AppointmentService,
+        PublicationComponent,
+        OrganizationComponent,
+        PersonComponent
     ],
     bootstrap: [AppComponent]
 })

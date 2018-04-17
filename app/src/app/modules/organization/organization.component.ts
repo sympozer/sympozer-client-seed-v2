@@ -1,12 +1,13 @@
-import {forEach} from "@angular/router/src/utils/collection";
-import {Component, OnInit} from "@angular/core";
-import {Conference} from "../../model/conference";
-import {Router, ActivatedRoute, Params} from "@angular/router";
-import {DataLoaderService} from "../../data-loader.service";
-import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
-import {LocalDAOService} from "../../localdao.service";
-import {Encoder} from "../../lib/encoder";
-import {routerTransition} from '../../app.router.animation';
+import { forEach } from "@angular/router/src/utils/collection";
+import { Component, OnInit, Injectable } from "@angular/core";
+import { Conference } from "../../model/conference";
+import { Router, ActivatedRoute, Params } from "@angular/router";
+import { DataLoaderService } from "../../data-loader.service";
+import { DBLPDataLoaderService } from "../../dblpdata-loader.service";
+import { LocalDAOService } from "../../localdao.service";
+import { Encoder } from "../../lib/encoder";
+import { routerTransition } from '../../app.router.animation';
+import { AppointmentService } from "../../services/appointment.service";
 
 
 @Component({
@@ -14,14 +15,16 @@ import {routerTransition} from '../../app.router.animation';
     templateUrl: 'organization.component.html',
     styleUrls: ['organization.component.css'],
     animations: [routerTransition()],
-    host: {'[@routerTransition]': ''}
+    host: { '[@routerTransition]': '' }
 })
+@Injectable()
 export class OrganizationComponent implements OnInit {
     public organization;
     public members = [];
 
     constructor(private router: Router, private route: ActivatedRoute,
-                private DaoService: LocalDAOService, private encoder: Encoder) {
+        private DaoService: LocalDAOService, private encoder: Encoder,
+        private appointService: AppointmentService) {
         this.organization = {
             label: undefined,
         }
@@ -46,7 +49,7 @@ export class OrganizationComponent implements OnInit {
                 return false;
             }
 
-            let query = {'key': id};
+            let query = { 'key': id };
             this.DaoService.query("getOrganization", query, (results) => {
                 if (results) {
                     const nodeLabel = results['?label'];
@@ -57,6 +60,9 @@ export class OrganizationComponent implements OnInit {
                         }
 
                         that.organization.label = label;
+
+                        that.appointService.setSubject(label);
+                        
                         if (document.getElementById("page-title-p"))
                             document.getElementById("page-title-p").innerHTML = label;
                     }
@@ -85,10 +91,10 @@ export class OrganizationComponent implements OnInit {
                     }
 
                     const find = that.members.find((m) => {
-                       return m.id === id;
+                        return m.id === id;
                     });
 
-                    if(find){
+                    if (find) {
                         return false;
                     }
 
@@ -98,6 +104,11 @@ export class OrganizationComponent implements OnInit {
                     });
                 }
             });
+
+            this.appointService.setReceivers(that.members);
         });
+        // Set attribute for appointment service (User is null because I want to set it later)
+        this.appointService.setAppointment(this.organization.label, null, this.members);
     }
+
 }

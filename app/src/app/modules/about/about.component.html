@@ -4,25 +4,30 @@
 
   <md-card>
 
-    <p>Its data structure follows the newly published ScholarlyData Ontology, formerly Semantic Web Conference Ontology,
-      that describes persons, organizations, publications and events of the conference. The application allows browsing
-      these data. It is also a client-side mashup that can enrich them using other data sources (DBLP, ad hoc endpoint) or
-      search engines (Google, DuckDuckgo).</p>
+    <p>Its data structure follows the newly published ScholarlyData Ontology, formerly Semantic Web Conference Ontology, that
+      describes persons, organizations, publications and events of the conference. The application allows browsing these
+      data. It is also a client-side mashup that can enrich them using other data sources (DBLP, ad hoc endpoint) or search
+      engines (Google, DuckDuckgo).</p>
 
-    <p>You can use it offline to browse the conference dataset. You will need an Internet connection for viewing data
-      from online sources, as well as to vote for your preferred poster and demo.</p>
+    <p>You can use it offline to browse the conference dataset. You will need an Internet connection for viewing data from online
+      sources, as well as to vote for your preferred poster and demo.</p>
 
     <p>Periodically (but not too often), you can update the conference dataset in the Tools menu item.</p>
 
-	<p>You can create an account on our server to enrich your data in the app, as well as to be able to participate in the vote.</p>
+    <p>You can create an account on our server to enrich your data in the app, as well as to be able to participate in the vote.</p>
 
     <h3>How it works</h3>
 
     <p>In 2017, the app architecture has been completely refactored:</p>
     <ul>
-		<li>The conference dataset now follows the <a href="http://www.scholarlydata.org/">ScholarlyData</a> ontology and has been issued using <a href="https://github.com/anuzzolese/cLODg2">cLODg</a> (conference Linked Open Data generator) V2.</li>
-		<li>Its core engine is based on RDF data (instead of JSON), internally served using the <a href="https://github.com/linkeddata/rdflib.js/">rdflib.js</a> library. Feel free to open the console and watch the app sending SPARQL requests to the store.</li>
-		<li>It fully runs on the client side, and relies on the <a href="https://angular.io/">Angular 2</a> JavaScript framework, using Web components and other advances. The design layer uses <a href="https://material.angular.io/">Angular Material</a>.</li>
+      <li>The conference dataset now follows the
+        <a href="http://www.scholarlydata.org/">ScholarlyData</a> ontology and has been issued using
+        <a href="https://github.com/anuzzolese/cLODg2">cLODg</a> (conference Linked Open Data generator) V2.</li>
+      <li>Its core engine is based on RDF data (instead of JSON), internally served using the
+        <a href="https://github.com/linkeddata/rdflib.js/">rdflib.js</a> library. Feel free to open the console and watch the app sending SPARQL requests to the store.</li>
+      <li>It fully runs on the client side, and relies on the
+        <a href="https://angular.io/">Angular 2</a> JavaScript framework, using Web components and other advances. The design layer uses
+        <a href="https://material.angular.io/">Angular Material</a>.</li>
     </ul>
 
     <h3>Disclaimer</h3>
@@ -36,12 +41,11 @@
   <md-card>
     <p>Do not hesitate to report issues on the following GitHub repositories:</p>
     <ul>
-      <li><a href="https://github.com/sympozer/datasets/issues"> problems with the data</a> (e.g. incorrect/missing
-        information)
+      <li>
+        <a href="https://github.com/sympozer/datasets/issues"> problems with the data</a> (e.g. incorrect/missing information)
       </li>
-      <li><a href="https://github.com/sympozer/sympozer-client-seed-v2/issues">problems with the app</a> (e.g. strange
-        behaviors, typos in the titles, usability issues, suggestions for
-        improvement...)
+      <li>
+        <a href="https://github.com/sympozer/sympozer-client-seed-v2/issues">problems with the app</a> (e.g. strange behaviors, typos in the titles, usability issues, suggestions for improvement...)
       </li>
     </ul>
   </md-card>
@@ -54,8 +58,8 @@
     </md-card>
     <md-card>
       <md-icon md-list-avatar>sentiment_very_satisfied</md-icon>
-      <a [routerLink]="['/person/Lionel Médini/https%3A%2F%2Fw3id.org%2Fscholarlydata%2Fperson%2Flionel-medini']">Lionel
-        Médini</a>
+      <a [routerLink]="['/person/Lionel Médini/https%3A%2F%2Fw3id.org%2Fscholarlydata%2Fperson%2Flionel-medini']">Lionel Médini
+      </a>
     </md-card>
   </div>
 
@@ -128,6 +132,11 @@
 
     <md-card>
       <md-icon md-list-avatar>sentiment_very_satisfied</md-icon>
+      <a href="https://www.linkedin.com/in/thanhtu-nv/">Nguyen Van Thanh Tu</a>
+    </md-card>
+
+    <md-card>
+      <md-icon md-list-avatar>sentiment_very_satisfied</md-icon>
       <a href="">Nadine Lainceur</a>
     </md-card>
 
@@ -151,7 +160,7 @@
   <div class="sympozer-footer">
     <div>From an original idea by</div>
     <a href="http://sympozer.liris.cnrs.fr/">
-      <img src="./img/Sympozer_logo.png"/>
+      <img src="./img/Sympozer_logo.png" />
     </a>
   </div>
 </div>

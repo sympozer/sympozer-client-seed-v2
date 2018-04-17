@@ -1,0 +1,47 @@
+<div *ngIf="hasLogged">
+  <div *ngIf="subject != null && sender != null">
+    <div class="login-wrapper">
+      <md-card class="inscription-card">
+        <div class="header">
+          <h4>Email</h4>
+        </div>
+        <div class="inscription-form">
+          <br>
+          <form>
+            <md-input-container>
+              <input [(ngModel)]="sender.email" mdInput type="text" name="sender" placeholder="From" disabled>
+            </md-input-container>
+            <md-input-container>
+              <input [(ngModel)]="subject" mdInput type="text" name="subject" placeholder="Subject" disabled>
+            </md-input-container>
+
+            <md-input-container>
+              <textarea [(ngModel)]="message" mdInput type="text" name="message" placeholder="Message"></textarea>
+            </md-input-container>
+            <div *ngIf="!message_sent">
+              <div class="inscription-footer">
+                <div *ngIf="empty_message">
+                  Your message can't be empty
+                </div>
+                <button md-button color="primary" (click)="sendEmail()">Send</button>
+              </div>
+            </div>
+            <div *ngIf="message_sent">
+              <div class="inscription-footer">
+                Sent
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </md-card>
+    </div>
+  </div>
+  <div *ngIf="subject == null || sender == null">
+    <h1> You can't use this url directly. Please go to person/publication/organization page to send email.</h1>
+  </div>
+</div>
+<div *ngIf="!hasLogged">
+  <h1>You need to
+    <span [routerLink]="['/login']">login</span> to send email.</h1>
+</div>

@@ -4,81 +4,73 @@ import { ManagerRequest } from "./ManagerRequest";
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { IfObservable } from 'rxjs/observable/IfObservable';
 import { resolve } from 'url';
+import { LocalStorageService } from 'ng2-webstorage';
+import { send } from 'q';
 
 @Injectable()
 export class AppointmentService {
 
-  notiCount:any;
+  notiCount: any;
+  public subject: any;
+  public sender: any;
+  public receivers: any;
 
   constructor(private managerRequest: ManagerRequest,
-    private http: Http) {
+    private http: Http,
+    private localStoragexx: LocalStorageService) {
+  }
+
+  setAppointment(subject, sender, receivers) {
+    this.subject = subject;
+    this.sender = sender;
+    this.receivers = receivers;
 
   }
 
-  setAppointment(id_publi,sender,receivers) {
+  setSender(sender) {
+    this.sender = sender;
+  }
+
+  setSubject(subject) {
+    this.subject = subject;
+    console.log("AppointmentService:subject " + subject);
+  }
+
+  setReceivers(receivers) {
+    this.receivers = receivers;
+    if(receivers == null){
+      console.log("receivers is null");
+    }
+    console.log("AppointmentService:receivers " + receivers);
+  }
+
+  sendEmail(message) {
     return new Promise((resolve, reject) => {
       console.log("Setting an Appointment");
-      if (!id_publi || id_publi.length === 0) {
-        return reject('Erreur lors de la récupération de l\'identifiant de la ressource');
+      if (this.sender == null || this.receivers == null) {
+        return reject('Invalid input for appointment.');
       }
-
-      // if (!id_track || id_track.length === 0) {
-      //   return reject('Erreur lors de la récupération de l\'identifiant de la track');
-      // }
+      if (this.subject == null) {
+        this.subject = "[No Reply]";
+      }
       const that = this;
-      // We dont have to check for loggin because user can only see the option when login
-
-      // Set body request for later use
+      let token = this.localStoragexx.retrieve("token_external_ressource_sympozer");
+      console.log(token);
       let bodyRequest = {
-        id_publi: id_publi,
-        id_sender: sender,
-        receiver: receivers
+        subject: this.subject,
+        email_sender: this.sender.email,
+        fname_sender: this.sender.firstname,
+        lname_sender: this.sender.lastname,
+        receiver: this.receivers,
+        message: message,
+        token: token
       }
-
       //have to change the link to an existed api which will handle the appointment service
-      // that.managerRequest.post_safe("localhost:8080/Server_Symposer/Appointment", bodyRequest)
-      //   .then((Response) => {
-      //     if (Response && Response._body) {
-      //       console.log(Response);
-      //     }
-      //   });
-      console.log("setAppoint.service.ts")
-      that.http.post("http://localhost:8080/Symposer_Serveur/Appointment",bodyRequest)
+      that.http.post("http://localhost:8080/Symposer_Serveur/Appointment", bodyRequest)
         .toPromise()
-        .then((respone)=>{
+        .then((respone) => {
           console.log(respone);
         });
     });
   }
-
-  fakelogin(id){
-    return new Promise((resolve, reject) => {
-      console.log("Logging...");
-      const that = this;
-
-      console.log("setAppoint.service.ts")
-      that.http.get("http://localhost:8080/Symposer_Serveur/FakeLogin?username="+id)
-        .toPromise()
-        .then((respone)=>{
-          console.log(respone);
-        });
-    });
-  }
-
-  addUser(){
-    let bodyRequest = {
-      email: "example@email.com",
-      id: "someurl.com"
-    }
-    return new Promise((resolve,reject)=>{
-      const that=this;
-      that.http.post("http://localhost:8080/Symposer_Serveur/AddUser",bodyRequest)
-        .toPromise()
-        .then((response)=>{
-          console.log(response);
-        })
-      
-    })
-  }
-
 }

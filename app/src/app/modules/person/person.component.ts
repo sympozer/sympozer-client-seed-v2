@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Injectable } from "@angular/core";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { DBLPDataLoaderService } from "../../dblpdata-loader.service";
 import { LocalDAOService } from "../../localdao.service";
@@ -9,7 +9,8 @@ import { routerTransition } from '../../app.router.animation';
 import { ManagerRequest } from "../../services/ManagerRequest";
 import { Config } from '../../app-config';
 import { ApiExternalServer } from '../../services/ApiExternalServer';
-import { VoteService } from '../../services/vote.service'
+import { VoteService } from '../../services/vote.service';
+import { AppointmentService } from "../../services/appointment.service";
 
 @Component({
     selector: 'app-person',
@@ -18,6 +19,7 @@ import { VoteService } from '../../services/vote.service'
     animations: [routerTransition()],
     host: { '[@routerTransition]': '' }
 })
+@Injectable()
 export class PersonComponent implements OnInit {
     public externPublications = [];
     public photoUrl: any;
@@ -30,7 +32,7 @@ export class PersonComponent implements OnInit {
     public roles = [];
     public orgas = [];
     public publiConf = [];
-    public PersonId;
+    public personId;
     private mutex: any;
     private mutex_box: any;
 
@@ -43,7 +45,8 @@ export class PersonComponent implements OnInit {
         private dBPLDataLoaderService: DBLPDataLoaderService,
         private managerRequest: ManagerRequest,
         private apiExternalServer: ApiExternalServer,
-        private voteService: VoteService) {
+        private voteService: VoteService,
+        private appointService: AppointmentService) {
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
         this.mutex_box = new Mutex();
@@ -58,7 +61,8 @@ export class PersonComponent implements OnInit {
             if (!id || !name) {
                 return false;
             }
-            this.PersonId = id;
+            this.personId = id;
+
             if (document.getElementById("page-title-p"))
                 document.getElementById("page-title-p").innerHTML = name;
 
@@ -84,6 +88,8 @@ export class PersonComponent implements OnInit {
                                     boxs: boxs,
                                 };
 
+                                that.appointService.setReceivers([{id:id,label:label}]);
+
                                 if (nodeBox) {
                                     const boxs_temp = nodeBox.value;
                                     if (boxs_temp) {
@@ -101,7 +107,7 @@ export class PersonComponent implements OnInit {
                                         .then((request) => {
                                             if (request && request._body) {
                                                 const user = JSON.parse(request._body);
-                                                console.log(user);
+                                                //console.log(user);
                                                 if (user && user.photoUrl) {
                                                     that.photoUrl = user.photoUrl;
                                                 }
@@ -159,6 +165,8 @@ export class PersonComponent implements OnInit {
                     });
             });
         });
+        // Set attribute for appointmentService
+        //this.appointService.setAppointment("No Reply", null, [{id:this.personId,label:this.person.label}]);
     }
 
     getPublication(name: any) {

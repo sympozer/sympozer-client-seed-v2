@@ -4,6 +4,7 @@ import { ApiExternalServer } from '../../services/ApiExternalServer';
 import { Config } from "../../app-config";
 import { LocalStorageService } from 'ng2-webstorage';
 import { AppointmentService } from "../../services/appointment.service";
+import { Organization } from '../../model/organization';
 
 @Component({
   selector: 'appointment',
@@ -14,18 +15,21 @@ export class AppointmentComponent implements OnInit {
 
   //Input from Publication
   @Input('idTrack') idTrack: Object;
-  @Input('idPublication') idPublication: Object;
-  @Input('authors') receivers: Array<String>;
+  @Input('publicationName') publicationName: Object;
+  @Input('authors') authors: any;
   //Input from person
   @Input('idPerson') idPerson: String;
+  @Input('namePerson') namePerson: String;
   //Input from organization
   @Input('membersOrg') membersOrg: Array<String>;
+  @Input('organization') organization: any;
 
   subscription: Subscription;
   hasLogged: any;
-  hasSetAppoint: any;
-  haveNoti: any;
   user: any;
+
+  subject: any;
+  receivers: any;
 
   private key_localstorage_user = 'user_external_ressource_sympozer';
 
@@ -38,39 +42,20 @@ export class AppointmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hasSetAppoint = false;
     this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
     this.hasLogged = this.apiExternalServer.checkUserLogin();
   }
 
   makeAppointment() {
-    // set appointment
-    // for publication
-    if (this.idPublication != null && this.idTrack != null) {
-      this.appointService.setAppointment(this.idPublication, this.user.email, this.receivers)
-        .then(() => {
-          alert("Set appointment successfully");
-        })
-        .catch((err) => {
-          console.log(err)
-          if (err === 500) {
-            alert("Server Error");
-          }
-        });
+    // set subject,receivers for each type
+    if (this.publicationName != null) {
+      this.appointService.setAppointment(this.publicationName, this.user, this.authors);
     } else if (this.idPerson != null) {
-      // put idPerson into an array<string>
-      this.appointService.setAppointment(null, this.user.email, [this.idPerson])
-        .then(() => {
-          alert("Set appointment successfully");
-        })
-        .catch((err) => {
-          console.log(err)
-          if (err === 500) {
-            alert("Server Error");
-          }
-        });
-    } else if (this.membersOrg != null) {
-      console.log(this.membersOrg);
+      this.appointService.setAppointment("No Reply", this.user, [{id:this.idPerson,label:this.namePerson}]);
+    } else if (this.membersOrg != null && this.organization != null) {
+      this.appointService.setAppointment(this.organization.label, this.user, this.membersOrg);
+    } else {
+      console.log("Not enough information to make an appointment");
     }
   }
 }

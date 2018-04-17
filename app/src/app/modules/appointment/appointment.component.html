@@ -1,5 +1,5 @@
 <div *ngIf="hasLogged">
-  <button md-raised-button color="primary" (click)="makeAppointment()" [disabled]="hasSetAppoint">
+  <button md-raised-button color="primary" (click)="makeAppointment()" [routerLink]="['/send-email']">
     <md-icon md-list-avatar>date_range</md-icon>Make an appointment
   </button>
 </div>
