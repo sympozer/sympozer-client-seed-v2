@@ -678,6 +678,8 @@ export class LocalDAOService {
                         'WHERE {\n' +
                         ' ?id a sd:OrganisedEvent . \n' +
                         ' ?id rdfs:label ?label . \n' +
+                        ' ?id sd:startDate ?startDate . \n' +
+                        ' ?id sd:endDate ?endDate . \n' +
                         ' ?id sd:relatesToTrack <' + data.key + '> . \n' +
                         '}';
                     that.launchQuerySparql(query, callback);
