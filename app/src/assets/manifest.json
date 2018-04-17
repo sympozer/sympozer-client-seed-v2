@@ -1,6 +1,6 @@
 {
-  "short_name": "Sympozer",
-  "name": "WWW2018",
+  "short_name": "WWW2018",
+  "name": "The web conference 2018",
   "start_url": "/www2018_pwa/",
   "theme_color": "#f48c5b",
   "background_color": "#ffffff",

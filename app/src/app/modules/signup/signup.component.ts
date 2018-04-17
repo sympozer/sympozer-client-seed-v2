@@ -47,7 +47,7 @@ export class SignupComponent implements OnInit {
     updateOnfflineStatus() {
         this.online = false;
         var toast = document.getElementById("toast");
-        toast.innerText = "waiting for Wifi connection.., Please try later";
+        toast.innerText = "Waiting for Wifi connection.., Please try later";
         toast.style.backgroundColor = "#B71C1C";
         toast.className = "show";
         (<HTMLInputElement> document.getElementById("signup-btn")).disabled = true;
@@ -58,7 +58,7 @@ export class SignupComponent implements OnInit {
         this.online = true;
         var toast = document.getElementById("toast");
         toast.className.replace("show", "");
-        toast.innerText = "connected..";
+        toast.innerText = "Connected..";
         toast.style.backgroundColor = "#1B5E20";
         setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         (<HTMLInputElement> document.getElementById("login-btn")).disabled = false;
