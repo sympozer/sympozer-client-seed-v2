@@ -29,7 +29,7 @@
           </md-input-container>
 
           <div class="inscription-footer">
-            <button md-button color="primary" (click)="signup(email.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Sign up</button>
+            <button md-button color="primary" (click)="signup(email.value, firstname.value, lastname.value, password.value, confirmPassword.value)" id="signup-btn">Sign up</button>
             <div class="sign-up">
               <br>
               <p>Already have an account ?
@@ -40,4 +40,5 @@
         </form>
     </div>
   </md-card>
+  <div id="toast"></div>
 </div>

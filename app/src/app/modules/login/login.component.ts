@@ -169,6 +169,7 @@ export class LoginComponent implements OnInit {
         toast.style.backgroundColor = "#B71C1C";
         toast.className = "show";
         (<HTMLInputElement> document.getElementById("login-btn")).disabled = true;
+        (<HTMLInputElement> document.getElementById("login-btn")).style.background = "#9E9E9E";
 
     }
     updateOnlineStatus(){
@@ -179,6 +180,7 @@ export class LoginComponent implements OnInit {
         toast.style.backgroundColor = "#1B5E20";
         setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
         (<HTMLInputElement> document.getElementById("login-btn")).disabled = false;
+        (<HTMLInputElement> document.getElementById("login-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
     }
 
     sendLoginStatus(status: boolean): void {
