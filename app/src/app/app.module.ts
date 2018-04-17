@@ -49,7 +49,6 @@ import {eventHelper} from './eventHelper';
 import {Encoder} from './lib/encoder';
 import {Ng2Webstorage} from 'ng2-webstorage';
 import {GithubService} from './services/github.service';
-import {HylarManager} from './services/hylar.service';
 import {RequestManager} from './services/request-manager.service';
 import {ApiExternalServer} from './services/ApiExternalServer';
 import {RessourceDataset} from './services/RessourceDataset';
@@ -138,7 +137,6 @@ const routes: Routes = [];
         eventHelper,
         Encoder,
         GithubService,
-        HylarManager,
         RequestManager,
         PersonService,
         RessourceDataset,

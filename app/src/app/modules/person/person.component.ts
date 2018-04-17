@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {DBLPDataLoaderService} from '../../dblpdata-loader.service';
 import {LocalDAOService} from '../../localdao.service';
@@ -108,8 +108,8 @@ export class PersonComponent implements OnInit {
                                                 if (user) {
                                                     let twitterpage = user.twitterpage;
 
-                                                    if (twitterpage && twitterpage.length > 0){
-                                                        if (twitterpage.includes('@')){
+                                                    if (twitterpage && twitterpage.length > 0) {
+                                                        if (twitterpage.includes('@')) {
                                                             twitterpage = twitterpage.replace('@', '');
                                                         }
                                                     }
@@ -164,7 +164,7 @@ export class PersonComponent implements OnInit {
     getPublication(name: any) {
         // this.dBPLDataLoaderService.getAuthorPublications(person.value.name).then(response => {
         this.dBPLDataLoaderService.getAuthorPublications(name).then(response => {
-            if (response.results) {
+            if (response && response.results) {
                 let i = 0;
                 for (const result of response.results.bindings) {
                     this.externPublications[i] = {
