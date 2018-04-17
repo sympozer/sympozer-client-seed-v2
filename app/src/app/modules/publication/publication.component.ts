@@ -24,10 +24,9 @@ export class PublicationComponent implements OnInit {
     public publication;
     public authors;
     public events = [];
-    public track = {};
+    public tracks = [];
     public keywords = [];
     public publicationId;
-    public trackId;
     public eventType;
 
     constructor(private router: Router,
@@ -184,27 +183,20 @@ export class PublicationComponent implements OnInit {
             /**
              * Retrive track from the publication
              */
-            that.DaoService.query("getPublicationTrack", query, (results) => {
+            let seenTracks = new Set();
+            that.DaoService.query("getPublicationTracks", query, (results) => {
                 if (results) {
-                    const nodeLabel = results['?label'];
                     const nodeId = results['?track'];
+                    if (nodeId) {
+                        const id = that.encoder.encode(nodeId.value);
+                        const label = results['?label'].value;
+                        if (seenTracks.has(id)) { return; }
+                        seenTracks.add(id);
 
-                    if (nodeLabel && nodeId) {
-                        const label = nodeLabel.value;
-                        let id = nodeId.value;
-
-                        if (label && id) {
-                            that.trackId = id;
-                            id = that.encoder.encode(id);
-
-                            if (id) {
-                                that.eventType = id;
-                                that.track = {
-                                    id: id,
-                                    label: label,
-                                };
-                            }
-                        }
+                        that.tracks = that.tracks.concat({
+                          id: id,
+                          label: label,
+                        });
                     }
                 }
             });

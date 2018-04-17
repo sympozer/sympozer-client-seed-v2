@@ -451,9 +451,8 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
-                case 'getPublicationTrack':
+                case 'getPublicationTracks':
                     query =
-                        'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n' +
                         'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
                         'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
                         'SELECT DISTINCT ?track ?label \n' +

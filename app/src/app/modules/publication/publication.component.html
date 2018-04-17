@@ -70,15 +70,16 @@
   </div>
   <button md-raised-button color="primary" (click)="createICS()">Add to calendar</button>
 
-  <div *ngIf="track !== {}">
-    <h2>Track</h2>
-    <div class="action-links list-items">
+  <div *ngIf="tracks !== {}">
+    <h2>Tracks</h2>
+    <div class="action-links list-items" *ngFor="let track of tracks">
       <md-card>
         <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
       </md-card>
     </div>
   </div>
 
-  <!-- Voting -->
+  <!-- Voting
   <vote [typeEvent]="eventType" [idTrack]="trackId" [idPublication]="publicationId"></vote>
+  -->
 </div>
