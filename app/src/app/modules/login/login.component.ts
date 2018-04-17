@@ -191,4 +191,20 @@ export class LoginComponent implements OnInit {
     }
 
 
+    authGoogle() {
+        console.log("HELLLLLLLLLLOOOOO"); 
+        this.apiExternalServer.authGoogleService();
+    }
+
+    authLinkedin(){
+
+    }
+
+    authTwitter() {
+
+    }
+
+    authFacebook(){
+
+    }
 }
