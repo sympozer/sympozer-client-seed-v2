@@ -183,6 +183,10 @@ const appRoutes: Routes = [
     {
         path: 'publications-by-keyword/:keyword',
         component: PublicationsByKeywordComponent
+    },
+    {
+        path: 'user',
+        component: UserInfoComponent,
     }
 ];
 

@@ -16,6 +16,5 @@ export class UserInfoComponent {
 
     ngOnInit() {
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
-
     }
 }
