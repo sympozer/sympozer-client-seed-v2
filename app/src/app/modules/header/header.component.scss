@@ -20,10 +20,8 @@ header {
       width: 120px;
       height: 50px;
       position: relative;
-      top: 0;
       display: block;
-      top: 50%;
-      transform: translate(0, -50%);
+      top: calc(100% - 60px);
     }
   }
 
@@ -36,11 +34,10 @@ header {
 
   .avatar-open {
     position: relative;
-    top: 50%;
-    transform: translate(0, -50%);
     z-index: 100;
     width: 60px;
     height: 60px;
+    top: calc(50% - 30px);
 
     .avatar-wrapper {
       display: flex;
@@ -62,9 +59,8 @@ header {
 
   .menu-button-open {
     position: relative;
-    top: 50%;
-    transform: translate(0, -50%);
     z-index: 100;
+    top: calc(50% - 20px);
 
     .mat-button-focus-overlay {
       display: none !important;
@@ -88,8 +84,6 @@ header {
       font-weight: bold;
       margin: 0;
       position: relative;
-      top: 50%;
-      transform: translate(0, -50%);
       word-wrap: break-word;
       -webkit-hyphens: auto;
       -ms-hyphens: auto;
