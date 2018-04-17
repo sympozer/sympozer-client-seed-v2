@@ -329,7 +329,7 @@ body {
 
 .share {
   z-index: 999999;
-  position: absolute !important;
+  position: fixed !important;
   overflow: visible !important;
   bottom: 20px;
   right: 20px;
