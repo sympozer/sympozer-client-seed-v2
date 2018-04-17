@@ -55,9 +55,6 @@ menu {
 
   &.side {
     .menu {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
 
       ul {
         justify-content: flex-start !important;
@@ -380,7 +377,7 @@ button.mat-menu-item {
 }
 
 .sympozer-logo {
-  position: absolute;
+  //position: absolute;
   bottom: 0;
   text-align: center;
   width: 100%;
