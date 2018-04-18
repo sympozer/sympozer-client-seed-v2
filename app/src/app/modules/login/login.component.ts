@@ -137,7 +137,7 @@ export class LoginComponent implements OnInit {
                         }
                         let username = label.split(' ');
                         that.snackBar.open("You are recognized as " + label + ".", "", {
-                            duration: 2000,
+                            duration: 3000,
                         });
                         if (username[0] && username[0].length > 0) {
                             that.update(user, username[0], username[1])
@@ -149,8 +149,8 @@ export class LoginComponent implements OnInit {
 
             })
             .catch((err) => {
-                this.snackBar.open(err, "", {
-                    duration: 2000,
+                this.snackBar.open(JSON.parse(err.text()).message, "", {
+                    duration: 3000,
                 });
             });
     }
