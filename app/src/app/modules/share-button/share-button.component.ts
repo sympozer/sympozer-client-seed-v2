@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
 import {Config} from '../../app-config';
 
+
 @Component({
     selector: 'share',
     templateUrl: 'share-button.component.html',
@@ -20,4 +21,5 @@ export class ShareComponent {
     setRoute() {
         this.url = window.location.href;
     }
+
 }

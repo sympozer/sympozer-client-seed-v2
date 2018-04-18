@@ -102,6 +102,7 @@ export class LoginComponent implements OnInit {
     */
 
     login(email, password) {
+        if (this.online){
         this.apiExternalServer.login(email, password)
             .then((user) => {
                 this.snackBar.open("Login successful.", "", {
@@ -160,6 +161,7 @@ export class LoginComponent implements OnInit {
                     duration: 2000,
                 });
             });
+        }
     }
 
     updateOnfflineStatus() {

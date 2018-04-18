@@ -115,7 +115,7 @@ const routes: Routes = [];
         ForgotPasswordComponent,
         ActivationMailComponent,
         ChangePasswordComponent
-    ],
+],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -128,7 +128,7 @@ const routes: Routes = [];
         MdGridListModule,
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
-        Angulartics2Module.forRoot([Angulartics2Piwik]),
+        Angulartics2Module.forRoot([Angulartics2Piwik])
     ],
     providers: [
         DataLoaderService,
