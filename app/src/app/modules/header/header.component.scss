@@ -32,31 +32,6 @@ header {
     flex-direction: row;
   }
 
-  .avatar-open {
-    position: relative;
-    z-index: 100;
-    width: 60px;
-    height: 60px;
-    top: calc(50% - 30px);
-
-    .avatar-wrapper {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-
-      .avatar {
-        display: inherit;
-        width: 34px;
-        height: 34px;
-        overflow: hidden;
-        border-radius: 50%;
-        box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
-      }
-    }
-
-  }
-
   .menu-button-open {
     position: relative;
     z-index: 100;
@@ -106,4 +81,16 @@ header {
 
 .mat-menu-item[disabled] {
   color: $font-color-dark;
+}
+
+.button {
+  //background-color: #F36B12;
+  color: #F36B12;
+  font-weight:bold;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 17px;
+  margin: 4px 2px;
 }
