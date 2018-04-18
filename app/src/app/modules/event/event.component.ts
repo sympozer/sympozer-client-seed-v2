@@ -22,7 +22,6 @@ import {TimeManager} from "../../services/timeManager.service";
 })
 export class EventComponent implements OnInit {
     public event;
-    public partof;
     public publications = {};
     public locations = {};
     public contents = {};
@@ -65,22 +64,23 @@ export class EventComponent implements OnInit {
                     const nodeLocation = results['?location1'] || results['?location2'];
                     const nodeLocationId = results['?locId1'] || results['?locId2'];
 
-                    if (nodeLabel && nodeDescription && nodeEndDate && nodeStartDate && nodeType) {
+                    if (nodeLabel && nodeEndDate && nodeStartDate && nodeType) {
                         const label = nodeLabel.value;
-                        const description = nodeDescription.value;
                         let endDate = nodeEndDate.value;
                         let startDate = nodeStartDate.value;
                         let type = nodeType.value;
 
-                        let homepage = nodeHomepage ? nodeHomepage.value : null;
-                        let location = nodeLocation ? nodeLocation.value : null;
-                        let locationId = nodeLocationId ? nodeLocationId.value : null;
+                        const description = nodeDescription ? nodeDescription.value : null;
+                        const homepage = nodeHomepage ? nodeHomepage.value : null;
+                        const location = nodeLocation ? nodeLocation.value : null;
+                        const locationId = nodeLocationId ? nodeLocationId.value : null;
 
-                        if (label && description && endDate && startDate && type) {
+                        if (label && endDate && startDate && type) {
                             startDate = moment(startDate);
                             endDate = moment(endDate);
 
                             const strDuration = TimeManager.startAndEndTimeToString(startDate, endDate);
+                            const strDate = TimeManager.dateDisplay(startDate, endDate);
 
                             //On récup le type dans l'URI
                             type = that.ressourceDataset.extractType(type, label);
@@ -92,6 +92,7 @@ export class EventComponent implements OnInit {
                                 description: description,
                                 startsAt: startDate.format('LLLL'),
                                 endsAt: endDate.format('LLLL'),
+                                dateVal : strDate,
                                 duration: strDuration,
                                 homepage: homepage,
                                 location: location,
@@ -100,6 +101,8 @@ export class EventComponent implements OnInit {
                                 tracks: [],
                                 type: typeIsIntoLabel ? null : type,
                             };
+
+
                             if (document.getElementById("page-title-p"))
                                 document.getElementById("page-title-p").innerHTML = label;
                             //On regarde si il y a des sub event of
@@ -172,7 +175,7 @@ export class EventComponent implements OnInit {
 
                                                         that.hasSubEvent = that.hasSubEvent.concat({
                                                             id: idEncode,
-                                                            paper: paper,
+                                                            hasPaper: (paper !== null),
                                                             label: label,
                                                             idCompare: hasSubEvent,
                                                             sortKey: [results['?subEventStart'].value, label],
@@ -231,9 +234,9 @@ export class EventComponent implements OnInit {
                                 }
                             });
 
-                            that.DaoService.query("getTrackByEvent", query, (results) => {
+                            that.DaoService.query("getTracksOf", query, (results) => {
                                 if (results) {
-                                    const nodeId = results['?id'];
+                                    const nodeId = results['?track'];
                                     const nodeLabel = results['?label'];
 
                                     if (nodeId && nodeLabel) {

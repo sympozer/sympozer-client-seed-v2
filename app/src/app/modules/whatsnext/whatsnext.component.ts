@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Params}   from '@angular/router';
+import {ActivatedRoute}   from '@angular/router';
 import {Location}              from '@angular/common';
 import {LocalDAOService} from  '../../localdao.service';
 import {routerTransition} from '../../app.router.animation';
 import * as moment from 'moment';
-import {Encoder} from "../../lib/encoder";
+import {Encoder} from '../../lib/encoder';
 import {RessourceDataset} from '../../services/RessourceDataset';
 
 @Component({
@@ -16,7 +16,7 @@ import {RessourceDataset} from '../../services/RessourceDataset';
 })
 export class WhatsNextComponent implements OnInit {
     schedules;
-    title: string = "What's Next";
+    title = 'What\'s Next';
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
@@ -27,10 +27,11 @@ export class WhatsNextComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (document.getElementById("page-title-p"))
-            document.getElementById("page-title-p").innerHTML = this.title;
+        if (document.getElementById('page-title-p')) {
+            document.getElementById('page-title-p').innerHTML = this.title;
+        }
         const that = this;
-        this.DaoService.query("getWhatsNext", null, (results) => {
+        this.DaoService.query('getWhatsNext', null, (results) => {
             if (results) {
                 const nodeId = results['?id'];
                 const nodeLabel = results['?label'];
@@ -55,18 +56,18 @@ export class WhatsNextComponent implements OnInit {
                             if (momentEndDate && momentStartDate) {
                                 const duration = moment.duration(momentEndDate.diff(momentStartDate));
 
-                                var hours = parseInt(duration.asHours().toString());
-                                var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
+                                const hours = parseInt(duration.asHours().toString());
+                                const minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
 
-                                let strDuration = "";
+                                let strDuration = '';
                                 if (hours > 0) {
-                                    strDuration = hours + " hours and ";
+                                    strDuration = hours + ' hours and ';
                                 }
                                 if (minutes > 0) {
-                                    strDuration += minutes + " minutes";
+                                    strDuration += minutes + ' minutes';
                                 }
 
-                                //On récup le type dans l'URI
+                                // On récup le type dans l'URI
                                 type = that.ressourceDataset.extractType(type, label);
 
                                 that.schedules = that.schedules.concat({
@@ -75,14 +76,18 @@ export class WhatsNextComponent implements OnInit {
                                     startDate: momentStartDate.format('LLLL'),
                                     duration: strDuration,
                                     endDate: momentEndDate.format('LLLL'),
-                                    dateForSort: momentStartDate.format(),
+                                    sortKey: [momentStartDate, label],
                                     type: type,
                                 });
 
                                 that.schedules.sort((a, b) => {
-                                 const momentA = moment(a.dateForSort);
-                                 const momentB = moment(b.dateForSort);
-                                 return momentA.isSameOrAfter(momentB) ? 1 : -1;
+                                  if (a.sortKey < b.sortKey) {
+                                      return -1;
+                                  } else if (a.sortKey > b.sortKey) {
+                                      return 1;
+                                  } else {
+                                      return 0;
+                                  }
                                 });
                             }
                         }

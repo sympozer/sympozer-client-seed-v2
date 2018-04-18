@@ -24,10 +24,9 @@ export class PublicationComponent implements OnInit {
     public publication;
     public authors;
     public events = [];
-    public track = {};
+    public tracks = [];
     public keywords = [];
     public publicationId;
-    public trackId;
     public eventType;
 
     constructor(private router: Router,
@@ -114,11 +113,11 @@ export class PublicationComponent implements OnInit {
              });
              }
              });*/
-
-            this.DaoService.query("getFirstAuthorLinkPublication", query, (results) => {
+            this.DaoService.query("getAuthorLinkPublication", query, (results) => {
                 if (results) {
                     that.authorlistitem(results);
                 }
+
             });
 
             /**
@@ -184,27 +183,20 @@ export class PublicationComponent implements OnInit {
             /**
              * Retrive track from the publication
              */
-            that.DaoService.query("getPublicationTrack", query, (results) => {
+            let seenTracks = new Set();
+            that.DaoService.query("getTracksOf", query, (results) => {
                 if (results) {
-                    const nodeLabel = results['?label'];
                     const nodeId = results['?track'];
+                    if (nodeId) {
+                        const id = that.encoder.encode(nodeId.value);
+                        const label = results['?label'].value;
+                        if (seenTracks.has(id)) { return; }
+                        seenTracks.add(id);
 
-                    if (nodeLabel && nodeId) {
-                        const label = nodeLabel.value;
-                        let id = nodeId.value;
-
-                        if (label && id) {
-                            that.trackId = id;
-                            id = that.encoder.encode(id);
-
-                            if (id) {
-                                that.eventType = id;
-                                that.track = {
-                                    id: id,
-                                    label: label,
-                                };
-                            }
-                        }
+                        that.tracks = that.tracks.concat({
+                          id: id,
+                          label: label,
+                        });
                     }
                 }
             });
@@ -218,9 +210,15 @@ export class PublicationComponent implements OnInit {
 
                     if (nodeKeywords) {
                         const keyword = nodeKeywords.value;
+                        const keywordEncoded = this.encoder.encode(keyword);
+
+                        const k = {
+                            keyword : keyword,
+                            keywordEncoded : keywordEncoded,
+                        }
 
                         if (keyword && keyword.length > 0) {
-                            that.keywords.push(keyword);
+                            that.keywords.push(k);
                         }
                     }
                 }
@@ -233,6 +231,44 @@ export class PublicationComponent implements OnInit {
         });
     }
 
+    authorlistitem = (results) => {
+        const that = this;
+        if (results) {
+            const nodeIdPerson = results['?idPerson'];
+            const nodeLabel = results['?label'];
+
+            if (!nodeIdPerson || !nodeLabel) {
+                return false;
+            }
+
+            let idPerson = nodeIdPerson.value;
+            const label = nodeLabel.value;
+
+            if (!idPerson || !label) {
+                return false;
+            }
+
+            idPerson = that.encoder.encode(idPerson);
+            if (!idPerson) {
+                return false;
+            }
+
+            const find = that.authors.find((a) => {
+                return a.id === idPerson;
+            });
+
+            if (find) {
+                return false;
+            }
+
+            that.authors.push({
+                id: idPerson,
+                label: label,
+            });
+        }
+        console.log(that.authors);
+    };
+    /*
     authorlistitem = (stream) => {
         const that = this;
         if (stream) {
@@ -242,6 +278,7 @@ export class PublicationComponent implements OnInit {
                 let idAuhtorList = nodeIdAuhtorList.value;
 
                 if (idAuhtorList) {
+                    console.log("Get id by Person");
                     that.DaoService.query("getIdPersonByAuthorListItem", {key: idAuhtorList}, (results) => {
                         if (results) {
                             const nodeIdPerson = results['?id'];
@@ -251,6 +288,7 @@ export class PublicationComponent implements OnInit {
 
                                 if (idPerson) {
                                     const idPersonEncoded = that.encoder.encode(idPerson);
+                                    console.log("Get Person");
                                     that.DaoService.query("getPerson", {key: idPerson}, (results) => {
                                         if (results) {
                                             const nodeLabel = results['?label'];
@@ -267,15 +305,12 @@ export class PublicationComponent implements OnInit {
                                                         return false;
                                                     }
 
+                                                    console.log("Données User");
+                                                    console.log(idPersonEncoded);
+                                                    console.log(label);
                                                     that.authors = that.authors.concat({
                                                         id: idPersonEncoded,
                                                         label: label
-                                                    });
-
-                                                    that.DaoService.query("getNextAuthorLinkPublication", {key: idAuhtorList}, (results) => {
-                                                        if(results){
-                                                            that.authorlistitem(results);
-                                                        }
                                                     });
                                                 }
                                             }
@@ -289,16 +324,17 @@ export class PublicationComponent implements OnInit {
             }
         }
     };
+    */
 
     /**
      * Constructs a realistic ICS description of the talk, that can be imported in a calendar
      */
-    createICS = () => {
-        var ics = new ICS();
+    createICS = (i : number) => {
+        const ics = new ICS();
         const that = this;
-        const talk = that.events[0];
+        const talk = that.events[i];
 
-        let calendar = ics.buildEvent({
+        const calendar = ics.buildEvent({
             uid: '', // (optional)
             start: talk.startDate,
             end: talk.endDate,
@@ -307,9 +343,9 @@ export class PublicationComponent implements OnInit {
             location: talk.location, //
             url: that.publicationId,
             status: 'confirmed',
-            geo: {lat: 45.515113, lon: 13.571873,},
+            geo: {lat: 45.764043, lon: 4.835658999999964,}, //Lyon coordinates
             attendees: [
-                //{ name: 'Adam Gibbons', email: 'adam@example.com' }
+                // { name: 'Adam Gibbons', email: 'adam@example.com' }
             ],
             categories: ['Talk'],
             alarms: [
@@ -317,6 +353,8 @@ export class PublicationComponent implements OnInit {
                 {action: 'AUDIO', trigger: '-PT30M'}
             ]
         });
-        window.open("data:text/calendar;charset=utf8," + encodeURIComponent(calendar));
+
+        window.open('data:text/calendar;charset=utf8,' + encodeURIComponent(calendar));
+
     }
 }

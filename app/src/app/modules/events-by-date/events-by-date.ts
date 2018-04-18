@@ -69,6 +69,7 @@ export class EventsByDate implements OnInit {
 
                                         if (momentEndDate && momentStartDate) {
                                             const strDuration = TimeManager.startAndEndTimeToString(momentStartDate, momentEndDate);
+                                            const strDate = TimeManager.dateDisplay(momentStartDate, momentEndDate);
 
                                             //On récup le type dans l'URI
                                             type = that.ressourceDataset.extractType(type, label);
@@ -79,20 +80,20 @@ export class EventsByDate implements OnInit {
                                                 startDate: momentStartDate.format('LLLL'),
                                                 duration: strDuration,
                                                 endDate: momentEndDate.format('LLLL'),
+                                                dateVal : strDate,
                                                 dateForSort: momentStartDate.format(),
                                                 type: type,
-                                                compare: momentStartDate,
+                                                compare: [momentStartDate, label],
                                             });
 
-                                            /*that.schedules.sort((a, b) => {
-                                             const momentA = moment(a.dateForSort);
-                                             const momentB = moment(b.dateForSort);
-                                             return momentA.isSameOrAfter(momentB) ? 1 : -1;
-                                             });*/
-
                                             that.schedules.sort((a, b) => {
-                                                return a.compare.isAfter(b.compare) ? 1 : -1;
-                                                //return a.compare > b.beginStartDate ? 1 : -1;
+                                                if (a.compare < b.compare) {
+                                                  return -1
+                                                } else if (a.compare > b.compare) {
+                                                  return 1
+                                                } else {
+                                                  return 0;
+                                                }
                                             });
                                         }
                                     }

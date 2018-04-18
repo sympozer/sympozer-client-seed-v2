@@ -1,7 +1,7 @@
 import {Component, OnInit, trigger, transition, style, animate, state} from '@angular/core';
-import {ActivatedRoute, Params}   from '@angular/router';
-import {Location}              from '@angular/common';
-import {LocalDAOService} from  '../../localdao.service';
+import {ActivatedRoute, Params} from '@angular/router';
+import {Location} from '@angular/common';
+import {LocalDAOService} from '../../localdao.service';
 import {routerTransition} from '../../app.router.animation';
 import * as moment from 'moment';
 
@@ -12,12 +12,13 @@ import * as moment from 'moment';
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
+
 export class ScheduleComponent implements OnInit {
     schedule;
     schedules;
     test = false;
     dayPerDay = [];
-    title: string = "Schedule";
+    title = 'Schedule';
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
@@ -26,8 +27,8 @@ export class ScheduleComponent implements OnInit {
 
     ngOnInit() {
         const that = this;
-        if (document.getElementById("page-title-p"))
-            document.getElementById("page-title-p").innerHTML = this.title;
+        if (document.getElementById('page-title-p'))
+            document.getElementById('page-title-p').innerHTML = this.title;
 
         that.DaoService.query("getDayPerDay", null, (results) => {
             if (results) {
@@ -48,7 +49,7 @@ export class ScheduleComponent implements OnInit {
                             console.log(beginStartDate.format(), beginStartDate.format('LL'));
                             that.dayPerDay = that.dayPerDay.concat({
                                 date: beginStartDate.format(),
-                                showDate: beginStartDate.format('LL'),
+                                showDate: beginStartDate.format('dddd LL'),
                                 compare: startDate,
                             });
 

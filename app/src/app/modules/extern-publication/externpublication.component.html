@@ -48,7 +48,7 @@
     <div class="action-links list-items" *ngFor="let author of publication.authors">
       <md-card>
         <md-icon md-list-avatar>perm_identity</md-icon>
-        <a [routerLink]="['/person/'+author.authorName.value+'/'+author.authorUri.value]">{{author.authorName.value}}</a>
+        <a [routerLink]="['/person/'+encoder.encode(author.authorName.value)+'/'+author.authorUri.value]">{{author.authorName.value}}</a>
       </md-card>
     </div>
   </div>

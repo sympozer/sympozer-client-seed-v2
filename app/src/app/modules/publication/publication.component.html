@@ -16,8 +16,8 @@
       <md-card class="info-text keywords">
         <md-chip-list>
           <md-chip color="primary" selected="true" *ngFor="let keyword of keywords">
-                    <span class="span-link" [routerLink]="['/publications-by-keyword/'+keyword]">
-                    {{keyword}}
+                    <span class="span-link" [routerLink]="['/publications-by-keyword/'+keyword.keywordEncoded]">
+                    {{keyword.keyword}}
                     </span>
           </md-chip>
         </md-chip-list>
@@ -31,7 +31,7 @@
   <div class="action-links list-items" *ngFor="let author of authors">
     <md-card>
       <md-icon md-list-avatar>perm_identity</md-icon>
-      <a [routerLink]="['/person/'+author.label+'/'+author.id]">{{author.label}}</a>
+      <a [routerLink]="['/person/'+encoder.encode(author.label)+'/'+author.id]">{{author.label}}</a>
     </md-card>
   </div>
 
@@ -44,7 +44,7 @@
   </div>-->
 
   <h2>Presented at</h2>
-  <div *ngFor="let talk of events" class="action-links list-items multiple-lines multiple-links">
+  <div *ngFor="let talk of events; index as i" class="action-links list-items multiple-lines multiple-links">
     <md-card class="info-text">
       <div class="wrapper">
         <div class="other-links">
@@ -64,18 +64,26 @@
             <a *ngIf="talk.session" class="event-info" [routerLink]="['/event/'+talk.session+'/'+talk.sessionId]">
               <md-icon>event</md-icon>
               {{talk.session}}</a>
+              <br>
+              <br>
+          <button md-raised-button color="primary" (click)="createICS(i)">Add to calendar</button>
         </div>
       </div>
     </md-card>
   </div>
-  <button md-raised-button color="primary" (click)="createICS()">Add to calendar</button>
 
-  <div *ngIf="track !== {}">
-    <h2>Track</h2>
-    <div class="action-links list-items">
+  <div *ngIf="tracks !== {}">
+    <h2>Tracks</h2>
+    <div class="action-links list-items" *ngFor="let track of tracks">
       <md-card>
         <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
       </md-card>
     </div>
   </div>
+<<<<<<< HEAD
+=======
+
+  <!-- Voting -->
+  <vote *ngFor="let track of tracks" [typeEvent]="eventType" [idTrack]="track.id" [idPublication]="publicationId"></vote>
+>>>>>>> a1675873872b9594309338a6d42b3ec8a2455821
 </div>

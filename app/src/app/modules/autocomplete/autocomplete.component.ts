@@ -1,11 +1,10 @@
-import {Component, OnInit, Input, SimpleChange, SimpleChanges, Renderer, ElementRef, ViewChild} from '@angular/core';
-import {Conference} from '../../model/conference';
+import {Component, OnInit, Input, Renderer} from '@angular/core';
 import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';
-
-import {LocalDAOService} from  '../../localdao.service';
-import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
-import {Subject} from "rxjs";
+import {Encoder} from '../../lib/encoder';
+import {LocalDAOService} from '../../localdao.service';
+import {DBLPDataLoaderService} from '../../dblpdata-loader.service';
+import {Subject} from 'rxjs';
 
 @Component({
     selector: 'app-autocomplete',
@@ -26,7 +25,8 @@ export class AutocompleteComponent implements OnInit {
                 private dataLoaderService: DataLoaderService,
                 private DaoService: LocalDAOService,
                 private  dBPLDataLoaderService: DBLPDataLoaderService,
-                private renderer: Renderer) {
+                private renderer: Renderer,
+                private encoder: Encoder) {
     }
 
     ngOnInit() {
@@ -38,9 +38,9 @@ export class AutocompleteComponent implements OnInit {
 
     ngOnChanges(changes) {
         const items = changes.items;
-        if(items){
+        if (items){
             const currentValue = items.currentValue;
-            if(currentValue){
+            if (currentValue){
                 this.items = items.currentValue;
                 this.isBigItems = this.items.length > 10;
             }
@@ -50,7 +50,7 @@ export class AutocompleteComponent implements OnInit {
     search(term: string): void {
         this.searchTerms.next(term);
         this.itemsFound.length = 0;
-        if (term !== "") {
+        if (term !== '') {
             this.findItem(term);
         }
     }
@@ -60,27 +60,30 @@ export class AutocompleteComponent implements OnInit {
         let match;
         let itemName;
         let itemCloneName;
-        for (var key in this.items) {
+        for (const key in this.items) {
             itemName = this.items[key][this.seachFor.toString()];
-            match = itemName.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase().match(term.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toUpperCase());
+            match = itemName.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                .toUpperCase().match(term.normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .toUpperCase());
             if (match) {
                 isMatch = true;
                 this.hasItem = true;
-                let itemClone = JSON.parse(JSON.stringify(this.items[key]));
-                let lastIndex = match.index + term.length;
+                const itemClone = JSON.parse(JSON.stringify(this.items[key]));
+                const lastIndex = match.index + term.length;
                 itemCloneName = itemClone[this.seachFor.toString()];
-                itemClone.htmlName = itemCloneName.slice(0, match.index) + '<b>' + itemCloneName.slice(match.index, lastIndex) + '</b>' + itemCloneName.slice(lastIndex);
+                itemClone.htmlName = itemCloneName.slice(0, match.index) + '<b>' + itemCloneName
+                    .slice(match.index, lastIndex) + '</b>' + itemCloneName
+                    .slice(lastIndex);
                 this.itemsFound.push(itemClone);
             }
         }
-        if (term.trim() !== "") {
+        if (term.trim() !== '') {
             this.hasSearchValue = true;
             if (!isMatch) {
                 this.hasItem = false;
             }
-        }
-
-        else {
+        } else {
             this.hasSearchValue = false;
         }
     }
