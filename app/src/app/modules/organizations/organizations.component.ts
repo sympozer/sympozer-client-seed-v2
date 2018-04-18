@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {LocalDAOService} from  '../../localdao.service';
-import {Encoder} from "../../lib/encoder";
+import {LocalDAOService} from '../../localdao.service';
+import {Encoder} from '../../lib/encoder';
 import {routerTransition} from '../../app.router.animation';
+
+let cache: Array<Object> = null;
 
 @Component({
     selector: 'app-organizations',
@@ -13,8 +14,8 @@ import {routerTransition} from '../../app.router.animation';
 })
 export class OrganizationsComponent implements OnInit {
     public organizations;
-    public title: string = "Organizations";
-    public tabOrgas: Array<Object> = new Array();
+    public title = 'Organizations';
+    public tabOrgas: Array<Object> = [];
 
     constructor(private DaoService: LocalDAOService,
                 private encoder: Encoder) {
@@ -22,43 +23,50 @@ export class OrganizationsComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (document.getElementById("page-title-p"))
-            document.getElementById("page-title-p").innerHTML = this.title;
+        if (document.getElementById('page-title-p')) {
+            document.getElementById('page-title-p').innerHTML = this.title;
+        }
         const that = this;
-        that.DaoService.query("getAllOrganizations", null, (results) => {
-            if (results) {
-                const nodeId = results['?id'];
-                const nodeLabel = results['?label'];
 
-                if (nodeId && nodeLabel) {
-                    const id = nodeId.value;
-                    const label = nodeLabel.value;
-                    
+        if (cache) {
+            this.organizations = cache;
+            console.log('Retrieved from cache.');
+        } else {
+            that.DaoService.query('getAllOrganizations', null, (results) => {
+                if (results) {
+                    const nodeId = results['?id'];
+                    const nodeLabel = results['?label'];
 
-                    if (id && label) {
-                        const idEncoded = that.encoder.encode(id);
-                        const labelEncoded = this.encoder.encode(label);
+                    if (nodeId && nodeLabel) {
+                        const id = nodeId.value;
+                        const label = nodeLabel.value;
 
-                        const find = that.organizations.find((o) => {
-                            return o.id === idEncoded;
-                        });
+                        if (id && label) {
+                            const idEncoded = that.encoder.encode(id);
+                            // const labelEncoded = this.encoder.encode(label);
 
-                        if(find){
-                            return false;
+                            const find = that.organizations.find((o) => {
+                                return o.id === idEncoded;
+                            });
+
+                            if (find) {
+                                return false;
+                            }
+
+                            that.organizations = that.organizations.concat({
+                                id: idEncoded,
+                                label: label // , labelEncoded,
+                            });
+
+                            that.organizations.sort((a, b) => {
+                                return a.label > b.label ? 1 : -1;
+                            });
                         }
-
-                        that.organizations = that.organizations.concat({
-                            id: idEncoded,
-                            label: label,//labelEncoded,
-                        });
-
-                        that.organizations.sort((a, b) => {
-                            return a.label > b.label ? 1 : -1;
-                        });
                     }
                 }
-            }
-        });
+            }, () => {
+                cache = this.organizations;
+            });
+        }
     }
-
 }
