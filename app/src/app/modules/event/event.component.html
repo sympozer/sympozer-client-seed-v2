@@ -68,34 +68,26 @@
 
     <div *ngIf="hasSubEvent && hasSubEvent.length > 0">
         <h2>Program</h2>
-        <div class="action-links list-items" *ngFor="let hasSubEv of hasSubEvent">
+        <div class="action-links list-items" *ngFor="let subEv of hasSubEvent">
             <md-card>
                 <md-icon md-list-avatar>event</md-icon>
-                <a [routerLink]="['/publication/'+hasSubEv.label+'/'+hasSubEv.id]">{{hasSubEv.label}}</a>
+                <a *ngIf="subEv.hasPaper" [routerLink]="['/publication/'+subEv.label+'/'+subEv.id]">{{subEv.label}}</a>
+                <a *ngIf="!subEv.hasPaper" [routerLink]="['/event/'+subEv.label+'/'+subEv.id]">{{subEv.label}}</a>
             </md-card>
         </div>
     </div>
 
     <div *ngIf="subEventOf && subEventOf.length > 0">
-        <h2>Super events</h2>
-        <div class="action-links list-items" *ngFor="let subEvent of subEventOf">
+        <h2>During</h2>
+        <div class="action-links list-items" *ngFor="let superEv of subEventOf">
             <md-card>
                 <md-icon md-list-avatar>event</md-icon>
-                <a *ngIf="!subEvent.isConference" [routerLink]="['/event-by-category/'+subEvent.label+'/'+subEvent.id]">{{subEvent.label}}</a>
-                <a *ngIf="subEvent.isConference" [routerLink]="['/conference/'+subEvent.id]">{{subEvent.label}}</a>
+                <a *ngIf="!superEv.isConference" [routerLink]="['/event/'+superEv.label+'/'+superEv.id]">{{superEv.label}}</a>
+                <a *ngIf="superEv.isConference" [routerLink]="['/conference/'+superEv.id]">{{superEv.label}}</a>
             </md-card>
         </div>
     </div>
 
-    <div *ngIf="partof != null">
-        <h2>Part of</h2>
-        <div class="action-links list-items">
-            <md-card>
-                <md-icon md-list-avatar>account_balance</md-icon>
-                <a [routerLink]="['/event/'+partof.name+'/'+partof.id]">{{partof.name}}</a>
-            </md-card>
-        </div>
-    </div>
     <!--<div *ngIf="(contents | json) != '{}'">-->
     <!--<h2>Contents</h2>-->
     <!--</div>-->
