@@ -1,3 +1,4 @@
+
 import {Component, OnInit} from '@angular/core';
 import {Config} from "../../app-config";
 import {Router} from '@angular/router';
@@ -62,13 +63,12 @@ export class LoginComponent implements OnInit {
      */
     /*
     login(email, password) {
-
         let userResult;
         this.apiLogin.authentification(email,password).subscribe(
             response => {
                 userResult = response;
             },
-            err => { 
+            err => {
                 console.log(err);
                 this.snackBar.open("Wrong Username or Password", "", {
                     duration: 2000,
@@ -103,64 +103,63 @@ export class LoginComponent implements OnInit {
 
     login(email, password) {
         if (this.online){
-        this.apiExternalServer.login(email, password)
-            .then((user) => {
-                this.snackBar.open("Login successful.", "", {
-                    duration: 2000,
-                });
-                //window.location.href = 'http://www.google.com';
-                this.voteService.votedPublications()
-                    .then(() => {
-                        this.sendLoginStatus(true)
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        this.snackBar.open("A network error occured. Please try again later.", "", {
-                            duration: 2000,
+            this.apiExternalServer.login(email, password)
+                .then((user) => {
+                    this.snackBar.open("Login successful.", "", {
+                        duration: 2000,
+                    });
+                    //window.location.href = 'http://www.google.com';
+                    this.voteService.votedPublications()
+                        .then(() => {
+                            this.sendLoginStatus(true)
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            this.snackBar.open("A network error occured. Please try again later.", "", {
+                                duration: 2000,
+                            });
                         });
+
+
+
+                    //Retrieve the author by the publication
+                    const that = this;
+                    let emailSha1 = sha1('mailto:' + email);
+                    let query = {'key': emailSha1};
+                    this.DaoService.query("getPersonBySha", query, (results) => {
+
+                        if (results) {
+                            const nodeIdPerson = results['?id'];
+                            const nodeLabel = results['?label'];
+
+                            if (!nodeIdPerson || !nodeLabel) {
+                                return false;
+                            }
+
+                            let idPerson = nodeIdPerson.value;
+                            const label = nodeLabel.value;
+
+                            if (!idPerson || !label) {
+                                return false;
+                            }
+                            let username = label.split(' ')
+                            this.snackBar.open("You are recognized as " + label + ".", "", {
+                                duration: 2000,
+                            });
+                            if (username[0] && username[0].length > 0) {
+                                this.update(user, username[0], username[1])
+                            }
+                        }
                     });
 
+                    window.history.back()
 
-
-                //Retrieve the author by the publication
-
-                const that = this;
-                let emailSha1 = sha1('mailto:' + email);
-                let query = {'key': emailSha1};
-                this.DaoService.query("getPersonBySha", query, (results) => {
-
-                    if (results) {
-                        const nodeIdPerson = results['?id'];
-                        const nodeLabel = results['?label'];
-
-                        if (!nodeIdPerson || !nodeLabel) {
-                            return false;
-                        }
-
-                        let idPerson = nodeIdPerson.value;
-                        const label = nodeLabel.value;
-
-                        if (!idPerson || !label) {
-                            return false;
-                        }
-                        let username = label.split(' ')
-                        this.snackBar.open("You are recognized as " + label + ".", "", {
-                            duration: 2000,
-                        });
-                        if (username[0] && username[0].length > 0) {
-                            this.update(user, username[0], username[1])
-                        }
-                    }
+                })
+                .catch((err) => {
+                    this.snackBar.open(err, "", {
+                        duration: 2000,
+                    });
                 });
-
-                window.history.back()
-
-            })
-            .catch((err) => {
-                this.snackBar.open(err, "", {
-                    duration: 2000,
-                });
-            });
         }
     }
 

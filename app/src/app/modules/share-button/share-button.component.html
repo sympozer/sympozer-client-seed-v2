@@ -2,6 +2,10 @@
   <md-icon>share</md-icon>
 </button>
 <md-menu #menu="mdMenu" yPosition="above">
+  <button (click)="openDialog()" md-menu-item>
+    <md-icon><i class="fa fa-qrcode"></i></md-icon>
+    <span>Share QR</span>
+  </button>
   <button [shareButton]="'twitter'" [sbUrl]="url" [sbTags]="hashTags" md-menu-item>
     <md-icon><i class="fa fa-twitter"></i></md-icon>
     <span>Twitter</span>

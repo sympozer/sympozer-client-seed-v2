@@ -6,16 +6,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  
 }
-
-
-
 
 .inscription-card {
   width: 33.33%;
   min-width: 280px;
+
+  p {
+    text-align: center;
+  }
 
   .header {
     color: white;
@@ -48,9 +47,10 @@
     }
   }
 
-  .inscription-form {
+  .information {
     margin: 20px 0 0;
     padding: 0 10px;
+    overflow: auto;
 
     h5 {
       text-align: center;
@@ -81,9 +81,5 @@
         }
       }
     }
-  }
-
-  .qr-code {
-    text-align: center;
   }
 }

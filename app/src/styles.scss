@@ -55,9 +55,6 @@ menu {
 
   &.side {
     .menu {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
 
       ul {
         justify-content: flex-start !important;
@@ -332,7 +329,7 @@ body {
 
 .share {
   z-index: 999999;
-  position: absolute !important;
+  position: fixed !important;
   overflow: visible !important;
   bottom: 2%;
   right: 20px;
@@ -380,7 +377,7 @@ button.mat-menu-item {
 }
 
 .sympozer-logo {
-  position: absolute;
+  //position: absolute;
   bottom: 0;
   text-align: center;
   width: 100%;
@@ -465,5 +462,12 @@ html.dark {
 html.no-material {
   .info-text {
     box-shadow: none;
+  }
+}
+
+ngx-qrcode {
+  img {
+    height: 100%;
+    width: 100%;
   }
 }

@@ -6,7 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {routing} from './app.routing';
-import {MaterialModule, MdGridListModule} from '@angular/material';
+import {MaterialModule, MdGridListModule, MdDialogModule} from '@angular/material';
 import 'hammerjs';
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './modules/home/home.component';
@@ -66,6 +66,11 @@ import {UserProfileComponent} from './modules/user-profile/user-profile.componen
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import {ActivationMailComponent} from './modules/activationMail/activationMail.component';
 import {ChangePasswordComponent} from './modules/changePassword/changePassword.component';
+import {UserInfoComponent} from './modules/user-info/user-info.component';
+import {QrcodeComponent} from './modules/qrcode/qrcode.component';
+import {NgxQRCodeModule } from 'ngx-qrcode3';
+import { DialogShareQrComponent } from './modules/dialog-share-qr/dialog-share-qr.component';
+
 
 const routes: Routes = [];
 
@@ -112,10 +117,14 @@ const routes: Routes = [];
         PublicationsByKeywordComponent,
         SignupComponent,
         UserProfileComponent,
+        QrcodeComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
-        ChangePasswordComponent
-],
+        ChangePasswordComponent,
+        UserInfoComponent,
+        DialogShareQrComponent
+    ],
+
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -128,7 +137,10 @@ const routes: Routes = [];
         MdGridListModule,
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
-        Angulartics2Module.forRoot([Angulartics2Piwik])
+        Angulartics2Module.forRoot([Angulartics2Piwik]),
+        BrowserModule,
+        NgxQRCodeModule,
+        MdDialogModule
     ],
     providers: [
         DataLoaderService,
@@ -145,7 +157,9 @@ const routes: Routes = [];
         ToolsService,
         TimeManager
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents:[DialogShareQrComponent]
+
 })
 export class AppModule {
 }

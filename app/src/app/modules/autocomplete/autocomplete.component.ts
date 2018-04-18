@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, Renderer} from '@angular/core';
 import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';
-
+import {Encoder} from '../../lib/encoder';
 import {LocalDAOService} from '../../localdao.service';
 import {DBLPDataLoaderService} from '../../dblpdata-loader.service';
 import {Subject} from 'rxjs';
@@ -25,7 +25,8 @@ export class AutocompleteComponent implements OnInit {
                 private dataLoaderService: DataLoaderService,
                 private DaoService: LocalDAOService,
                 private  dBPLDataLoaderService: DBLPDataLoaderService,
-                private renderer: Renderer) {
+                private renderer: Renderer,
+                private encoder: Encoder) {
     }
 
     ngOnInit() {

@@ -12,7 +12,7 @@
     <div class="action-links list-items" *ngFor="let member of members">
         <md-card>
             <md-icon md-list-avatar>perm_identity</md-icon>
-            <a [routerLink]="['/person/'+member.name+'/'+member.id]">{{member.name}}</a>
+            <a [routerLink]="['/person/'+encoder.encode(member.name)+'/'+member.id]">{{member.name}}</a>
         </md-card>
     </div>
 </div>
