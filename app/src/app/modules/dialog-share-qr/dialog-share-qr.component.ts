@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dialog-share-qr.component.scss']
 })
 export class DialogShareQrComponent implements OnInit {
+  qrValue;
+  elementType: 'url' | 'canvas' | 'img' = 'url';
 
   constructor() { }
 
   ngOnInit() {
+      var chemin = document.location.href;
+      this.qrValue = chemin;
   }
 
 }

@@ -49,7 +49,6 @@ export class QrcodeComponent {
             if (this.tmp === false){
                 this.qrValue = urlHost + '#/person/' + encodename + '/' + emailSha1;
             }
-            console.log(this.qrValue);
         });
 
     }
