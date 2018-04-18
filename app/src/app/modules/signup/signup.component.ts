@@ -1,117 +1,109 @@
-import { Component, OnInit } from '@angular/core';
-import {Router}            from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {MdSnackBar} from "@angular/material";
+import {MdSnackBar} from '@angular/material';
 import {VoteService} from '../../services/vote.service'
-import {LocalDAOService} from "../../localdao.service";
+import {LocalDAOService} from '../../localdao.service';
 import {LocalStorageService} from 'ng2-webstorage';
 
 
 @Component({
-  selector: 'signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss'],
-  providers: []
+    selector: 'signup',
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.scss'],
+    providers: []
 })
 export class SignupComponent implements OnInit {
 
 
-	private key_localstorage_user = "user_external_ressource_sympozer"
+    private key_localstorage_user = 'user_external_ressource_sympozer'
 
-  	constructor(private router: Router,
-	            private apiExternalServer: ApiExternalServer,
-	            public snackBar: MdSnackBar,
-	            private voteService: VoteService,
-	            private DaoService: LocalDAOService,
-				private localStoragexx: LocalStorageService) { }
+    constructor(private router: Router,
+                private apiExternalServer: ApiExternalServer,
+                public snackBar: MdSnackBar,
+                private voteService: VoteService,
+                private DaoService: LocalDAOService,
+                private localStoragexx: LocalStorageService) {
+    }
 
-	ngOnInit() {
-		let user = this.localStoragexx.retrieve(this.key_localstorage_user)
-        if(user !== null){
-        	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
-            window.location.replace(urlHost+'#/home');
+    ngOnInit() {
+        let user = this.localStoragexx.retrieve(this.key_localstorage_user)
+        if (user !== null) {
+            let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname
+            window.location.replace(urlHost + '#/home');
         }
-	
-	}
 
-  	/**
-	 * Invoke the signup external server service
-	 * @param email
-	 * @param firstname
-	 * @param lastname
-	 * @param password
-	 * @param confirm password
-	 */
+    }
 
-	signup(email, firstname, lastname, password, confirmPassword){
-		/*
-		let result;
-		if ((password == confirmPassword) && (password.length >= 8))
-		{
-			this.signUpService.register(email, firstname, lastname, password).subscribe(
+    /**
+     * Invoke the signup external server service
+     * @param email
+     * @param firstname
+     * @param lastname
+     * @param password
+     * @param confirm password
+     */
 
-				response => {
-					result = response;
-				},
+    signup(email, firstname, lastname, password, confirmPassword) {
+        const that = this;
 
-				err => { 
-					console.log(err);
-				},
+        if (!email || email.length === 0) {
+            that.snackBar.open('Invalid email address.', "", {
+                duration: 3000,
+            });
+        }
 
-				() => { 
-					this.snackBar.open("Please check your email to validate your account.", "", {
-						duration: 7000,
-					});
-					this.snackBar.open("The account creation request has been accepted by our server.", "", {
-						duration: 4000,
-					});
-					let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
-            		window.location.replace(urlHost+'#/login');
-				}
+        else if (!firstname || firstname.length === 0) {
+            that.snackBar.open('Invalid firstname', "", {
+                duration: 3000,
+            });
+        }
 
+        else if (!lastname || lastname.length === 0) {
+            that.snackBar.open('Invalid lastname', "", {
+                duration: 3000,
+            });
+        }
+        else if (!password || password.length === 0) {
+            that.snackBar.open('Invalid password', "", {
+                duration: 3000,
+            });
+        }
 
+        else if (!confirmPassword || confirmPassword.length === 0) {
+            that.snackBar.open('Invalid password', "", {
+                duration: 3000,
+            });
+        }
 
-			)
-		}
-		else if (password != confirmPassword)
-		{
-			this.snackBar.open("Your password must be the same. ", "", {
-				duration: 4000
-			});
-		}
-		else if (password.length < 8)
-		{
-			this.snackBar.open("Your password must be longer than 8 characters. ", "", {
-				duration: 4000
-			});
-		}
+        else if (password !== confirmPassword) {
+            that.snackBar.open('Passwords don\'t match.', "", {
+                duration: 3000,
+            });
+        }
 
-		
+        else {
+            this.apiExternalServer.signup(email, firstname, lastname, password)
+                .then(() => {
 
+                    that.snackBar.open('Please check your email to validate your account.', '', {
+                        duration: 7000,
+                    });
 
-		*/
-		const that = this;
-	    this.apiExternalServer.signup(email, firstname, lastname, password, confirmPassword)
-	        .then(() => {
-	            
-	        	this.snackBar.open("Please check your email to validate your account.", "", {
-	                duration: 7000,
-	            });
+                    that.snackBar.open('The account creation request has been accepted by our server.', '', {
+                        duration: 4000,
+                    });
 
-	            this.snackBar.open("The account creation request has been accepted by our server.", "", {
-	                duration: 4000,
-	            });
+                    let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname
+                    window.location.replace(urlHost + '#/login');
 
-	            let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
-            	window.location.replace(urlHost+'#/login');
-	          
-	        })
-	        .catch((err) => {
-	            this.snackBar.open(err, "", {
-	                duration: 2000,
-	            });
-			});
-
-	}
+                })
+                .catch((err) => {
+                    this.snackBar.open(JSON.parse(err.text()).message, '', {
+                        duration: 2000,
+                    });
+                });
+        }
+    }
 }
