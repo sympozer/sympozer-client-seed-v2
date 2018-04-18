@@ -62,9 +62,6 @@ export class VoteService {
         }
         let headers = new Headers({
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'origin': '*',
-
         });
         let options = new RequestOptions({ headers: headers });
         that.managerRequest.post(Config.vote.url + '/api/vote',bodyRequest,options)
@@ -89,7 +86,7 @@ export class VoteService {
                 }
               }
 
-              console.log(votedTracks);
+
               if (!this.isTrackVoted(id_track)) {
                 votedTracks.push(id_track);
               }
