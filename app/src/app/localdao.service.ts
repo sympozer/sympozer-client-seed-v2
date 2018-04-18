@@ -585,6 +585,20 @@ export class LocalDAOService {
                         ' ?id scholary:relatesToEvent <' + data.key + '> . \n' +
                         ' ?id schema:label ?label . \n' +
                         '}';
+                    that.launchSparqlQuery(command, query, callback, done);
+                    break;
+                case 'getAllCategoriesForEvents':
+                    query =
+                        'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
+                        'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
+                        'SELECT DISTINCT * \n' +
+                        'WHERE {\n' +
+                        ' ?super sd:hasSubTrack ?sub . \n' +
+                        ' ?sub rdfs:label ?subL . \n' +
+                        ' ?super rdfs:label ?superL . \n' +
+                        ' ?idEvent sd:relatesToTrack ?sub . \n' +
+                        ' ?idEvent a sd:OrganisedEvent . \n' +
+                        '}';
 
                     that.launchSparqlQuery(command, query, callback, done);
                     break;
