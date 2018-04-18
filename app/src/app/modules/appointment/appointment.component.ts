@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, DoCheck } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ApiExternalServer } from '../../services/ApiExternalServer';
 import { Config } from "../../app-config";
@@ -12,28 +12,27 @@ import { Organization } from '../../model/organization';
   styleUrls: ['./appointment.component.scss']
 })
 export class AppointmentComponent implements OnInit {
-  /*
-    //Input from Publication
-    @Input('idTrack') idTrack: Object;
-    @Input('publicationName') publicationName: Object;
-    @Input('authors') authors: any;
-    //Input from person
-    @Input('idPerson') idPerson: String;
-    @Input('namePerson') namePerson: String;
-    //Input from organization
-    @Input('membersOrg') membersOrg: Array<String>;
-    @Input('organization') organization: any;
-  */
+
+  //Input from Publication
+  @Input('idTrack') idTrack: Object;
+  @Input('publicationName') publicationName: Object;
+  @Input('authors') authors: any;
+  //Input from person
+  @Input('idPerson') idPerson: String;
+  @Input('namePerson') namePerson: String;
+  //Input from organization
+  @Input('membersOrg') membersOrg: Array<String>;
+  @Input('organization') organization: any;
 
   subscription: Subscription;
   hasLogged: any;
   user: any;
 
-  subject: any;
+  subject: String;
   receivers: any;
-
   url: any;
-  validPage:boolean;
+  validPage: boolean;
+  currentPage: string;
 
   private key_localstorage_user = 'user_external_ressource_sympozer';
 
@@ -48,21 +47,28 @@ export class AppointmentComponent implements OnInit {
   ngOnInit() {
     this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
     this.hasLogged = this.apiExternalServer.checkUserLogin();
-    this.url = window.location.href;
   }
 
-  makeAppointment() {
-    // set subject,receivers for each type
-    // if (this.publicationName != null) {
-    //   this.appointService.setAppointment(this.publicationName, this.user, this.authors);
-    // } else if (this.idPerson != null) {
-    //   this.appointService.setAppointment("No Reply", this.user, [{id:this.idPerson,label:this.namePerson}]);
-    // } else if (this.membersOrg != null && this.organization != null) {
-    //   this.appointService.setAppointment(this.organization.label, this.user, this.membersOrg);
-    // } else {
-    //   console.log("Not enough information to make an appointment");
-    // }
-    console.log("it works");
+  ngDoCheck() {
+    this.url = window.location.href;
+    var personPageRegEx = ".*(\/#\/person\/).*\/.*";
+    var orgPageRegEx = ".*(\/#\/organization\/undefined\/).*";
+    var publiPageRegEx = ".*(\/#\/publication\/).*\/.*";
+    if (this.url.match(personPageRegEx) !== null) {
+      this.validPage = true;
+      this.currentPage = "person";
+    } else if (this.url.match(orgPageRegEx) !== null) {
+      this.validPage = true;
+      this.currentPage = "organization";
+    } else if (this.url.match(publiPageRegEx) !== null) {
+      this.validPage = true;
+      this.currentPage = "publication";
+    } else {
+      this.validPage = false;
+    }
+  }
+
+  setSender(){
+    this.appointService.setSender(this.user);
   }
 }
-

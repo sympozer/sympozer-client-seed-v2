@@ -22,8 +22,10 @@ export class OrganizationComponent implements OnInit {
     public organization;
     public members = [];
 
-    constructor(private router: Router, private route: ActivatedRoute,
-        private DaoService: LocalDAOService, private encoder: Encoder,
+    constructor(private router: Router,
+        private route: ActivatedRoute,
+        private DaoService: LocalDAOService,
+        private encoder: Encoder,
         private appointService: AppointmentService) {
         this.organization = {
             label: undefined,
@@ -62,7 +64,7 @@ export class OrganizationComponent implements OnInit {
                         that.organization.label = label;
 
                         that.appointService.setSubject(label);
-                        
+
                         if (document.getElementById("page-title-p"))
                             document.getElementById("page-title-p").innerHTML = label;
                     }

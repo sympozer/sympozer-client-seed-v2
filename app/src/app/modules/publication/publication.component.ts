@@ -1,5 +1,5 @@
 import { forEach } from "@angular/router/src/utils/collection";
-import { Component, OnInit, Injectable } from "@angular/core";
+import { Component, OnInit, Injectable, DoCheck } from "@angular/core";
 import { Conference } from "../../model/conference";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { DataLoaderService } from "../../data-loader.service";
@@ -14,6 +14,7 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { TimeManager } from "../../services/timeManager.service";
+
 var ICS = require('ics');
 
 @Component({
@@ -126,8 +127,6 @@ export class PublicationComponent implements OnInit {
             this.DaoService.query("getFirstAuthorLinkPublication", query, (results) => {
                 if (results) {
                     that.authorlistitem(results);
-                    // set receivers for appointment
-                    that.appointService.setReceivers(that.authors);
                 }
             });
 
@@ -244,7 +243,6 @@ export class PublicationComponent implements OnInit {
 
         // add infor of the page currently on to appointment service.
         //that.appointService.setAppointment(that.publication.label,null, that.authors);
-
         //
     }
 
@@ -286,7 +284,6 @@ export class PublicationComponent implements OnInit {
                                                         id: idPersonEncoded,
                                                         label: label
                                                     });
-                                                    console.log("authors: label " + label)
                                                     that.DaoService.query("getNextAuthorLinkPublication", { key: idAuhtorList }, (results) => {
                                                         if (results) {
                                                             that.authorlistitem(results);
@@ -294,8 +291,11 @@ export class PublicationComponent implements OnInit {
                                                     });
                                                 }
                                             }
+                                            // IT HAVE TO BE THIS POSITION TO WORK
+                                            that.appointService.setReceivers(that.authors);
                                         }
                                     });
+                                    
                                 }
                             }
                         }

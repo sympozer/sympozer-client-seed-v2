@@ -48,7 +48,7 @@ export class SendEmailComponent implements OnInit {
 
   sendEmail() {
     if (this.message != null) {
-      this.appointService.sendEmail(this.message);
+      this.appointService.sendEmail(this.message,this.subject);
       this.message_sent = true;
     }else{
       this.empty_message=true;

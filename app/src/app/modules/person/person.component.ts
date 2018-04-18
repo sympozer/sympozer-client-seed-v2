@@ -62,7 +62,6 @@ export class PersonComponent implements OnInit {
                 return false;
             }
             this.personId = id;
-
             if (document.getElementById("page-title-p"))
                 document.getElementById("page-title-p").innerHTML = name;
 
@@ -70,7 +69,7 @@ export class PersonComponent implements OnInit {
 
             let query = { 'key': this.encoder.decode(id) };
             this.DaoService.query("getPerson", query, (results) => {
-                console.log(results);
+                
                 that.mutex
                     .acquire()
                     .then(function (release) {
@@ -166,7 +165,7 @@ export class PersonComponent implements OnInit {
             });
         });
         // Set attribute for appointmentService
-        //this.appointService.setAppointment("No Reply", null, [{id:this.personId,label:this.person.label}]);
+        that.appointService.setSubject(null);
     }
 
     getPublication(name: any) {
