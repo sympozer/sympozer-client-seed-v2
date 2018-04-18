@@ -29,6 +29,10 @@ export class AutocompleteComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log("TrucTrucTruc");
+        console.log(this.items);
+        console.log(this.namespace);
+        console.log(this.seachFor);
         this.searchTerms.debounceTime(300)
             .distinctUntilChanged()
             .switchMap(term => term);

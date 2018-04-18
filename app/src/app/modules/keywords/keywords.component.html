@@ -1,11 +1,13 @@
 <!-- <div class="component-wrapper fixed-height"> -->
 <h1 id="description-title">{{title}}</h1>
 
-<app-autocomplete name="search-bar" [seachFor]="'value'" [items]="keywords" [namespace]="'keyword'"></app-autocomplete>
+<app-autocomplete name="search-bar" [seachFor]="'value'" [items]="keywords" [namespace]="'publications-by-keyword'"></app-autocomplete>
 
-<div class="action-links" *ngFor="let keyword of keywords.values()">
-    <md-card>
-        <a [routerLink]="['/publications-by-keyword/'+encoder.encode(keyword)]">{{keyword}}</a>
-        <md-icon>trending_flat</md-icon>
-    </md-card>
+<div scrollLoader class="search-results" [listItems]="keywords" (updatePartialTable)="tabKeywords = $event">
+    <div class="action-links" *ngFor="let keyword of keywords.values()">
+        <md-card>
+            <a [routerLink]="['/publications-by-keyword/'+encoder.encode(keyword.value)]">{{keyword.value}}</a>
+            <md-icon>trending_flat</md-icon>
+        </md-card>
+    </div>
 </div>
