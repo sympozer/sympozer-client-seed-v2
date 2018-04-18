@@ -15,14 +15,15 @@ let cache: Array<Object> = null;
 })
 export class KeywordsComponent implements OnInit {
     title = 'Keywords';
-    public keywords;
+    tabKeywords: Array<Object> = [];
+    keywords;
     public publications;
 
     constructor(private router: Router,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
                 private encoder: Encoder) {
-        this.keywords = new Set();
+        this.keywords = [];
         this.publications = [];
     }
 
@@ -30,23 +31,31 @@ export class KeywordsComponent implements OnInit {
         const that = this;
         if (cache) {
             this.keywords = cache;
-            console.log('Retrieved from cache.');
+            //console.log('Retrieved from cache.');
         } else {
             that.DaoService.query('getAllKeywords', null, (results) => {
                 if (results) {
                     const nodeKeyword = results['?keywords'];
 
                     if (nodeKeyword) {
+                        const id = "";
                         const value = nodeKeyword.value;
+                        const valueEncoded = this.encoder.encode(value);
+                        
 
-                        if (value && value.length > 0) {
-                            if (!that.keywords.has(value)) {
-                                that.keywords.add(value);
+                        const val = {
+                            id: id,
+                            value : value,
+                            valueEncoded : valueEncoded,
+                        };
 
-                                const array = Array.from(that.keywords).sort();
-                                that.keywords = new Set(array);
-                            }
+                        if (val && val.value.length > 0) {
+                                that.keywords = that.keywords.concat(val);
                         }
+
+                        that.keywords.sort((a, b) => {
+                            return a.value > b.value ? 1 : -1;
+                        });
                     }
                 }
             }, () => {

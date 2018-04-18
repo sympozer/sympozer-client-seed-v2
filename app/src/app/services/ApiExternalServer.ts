@@ -137,9 +137,6 @@ export class ApiExternalServer {
                     if (!resultPromise || !decoded) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
-                    if (request.status === 401 || request.status === 404) {
-                        return reject(resultPromise.message);
-                    }
                     this.getUser(decoded.id)
                         .then((userPromise: any) => {
                             const userResult = JSON.parse(userPromise);
@@ -188,32 +185,10 @@ export class ApiExternalServer {
                     return reject(request);
                 });
         });
-    }
+    };
 
-    signup = (email, firstname, lastname, password, confirmPassWord) => {
+    signup = (email, firstname, lastname, password) => {
         return new Promise((resolve, reject) => {
-            if (!email || email.length === 0) {
-                return reject('Invalid email address.');
-            }
-
-            if (!firstname || firstname.length === 0) {
-                return reject('Invalid firstname');
-            }
-
-            if (!lastname || lastname.length === 0) {
-                return reject('Invalid lastname');
-            }
-            if (!password || password.length === 0) {
-                return reject('Invalid password');
-            }
-
-            if (!confirmPassWord || confirmPassWord.length === 0) {
-                return reject('Invalid password');
-            }
-
-            if (password !== confirmPassWord) {
-                return reject('Passwords don\'t match.');
-            }
 
             const that = this;
 
@@ -228,14 +203,6 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
-                    /*
-                    if (request.status === 403) {
-                        return reject('Invalid email or password.')
-                    }
-                    if (request.status === 404) {
-                        return reject('A network error has occured. Please try again later.');
-                    }
-                    */
                     if (request.status === 400) {
                         return reject(resultPromise.message);
                     }
@@ -245,7 +212,7 @@ export class ApiExternalServer {
                     return reject(request);
                 });
         });
-    }
+    };
 
     forgotPassword = (email) => {
         return new Promise((resolve, reject) => {

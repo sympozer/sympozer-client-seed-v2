@@ -8,7 +8,7 @@
 
   <div class="search-result-wrapper" *ngIf="hasItem == true && hasSearchValue == true">
     <div *ngFor="let item of itemsFound" class="search-result">
-      <a [routerLink]="['/' + namespace + '/'+item[seachFor.toString()]+'/'+item.id]" [innerHTML]="item.htmlName"></a>
+      <a [routerLink]="['/' + namespace + '/'+encoder.encode(item[seachFor.toString()])+'/'+item.id]" [innerHTML]="item.htmlName"></a>
     </div>
 
   </div>

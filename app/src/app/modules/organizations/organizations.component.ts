@@ -30,7 +30,7 @@ export class OrganizationsComponent implements OnInit {
 
         if (cache) {
             this.organizations = cache;
-            console.log('Retrieved from cache.');
+            //console.log('Retrieved from cache.');
         } else {
             that.DaoService.query('getAllOrganizations', null, (results) => {
                 if (results) {
@@ -43,7 +43,7 @@ export class OrganizationsComponent implements OnInit {
 
                         if (id && label) {
                             const idEncoded = that.encoder.encode(id);
-                            // const labelEncoded = this.encoder.encode(label);
+                            const labelEncoded = this.encoder.encode(label);
 
                             const find = that.organizations.find((o) => {
                                 return o.id === idEncoded;
@@ -55,7 +55,8 @@ export class OrganizationsComponent implements OnInit {
 
                             that.organizations = that.organizations.concat({
                                 id: idEncoded,
-                                label: label // , labelEncoded,
+                                label: label,
+                                labelEncoded: labelEncoded
                             });
 
                             that.organizations.sort((a, b) => {
