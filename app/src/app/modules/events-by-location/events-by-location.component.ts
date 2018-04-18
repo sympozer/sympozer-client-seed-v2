@@ -17,6 +17,7 @@ import {TimeManager} from "../../services/timeManager.service";
 export class EventsByLocationComponent implements OnInit {
     public eventsLocation = [];
     public nameLocation : String;
+    public geo: String = null;;
 
     constructor(private router: Router,
                 private DaoService: LocalDAOService,
@@ -31,6 +32,12 @@ export class EventsByLocationComponent implements OnInit {
             let name = params['name'];
             let query = {'key': this.encoder.decode(name)};
             that.nameLocation = name;
+
+            that.DaoService.query("getGeoByLabel", query, (results) => {
+                  if (results && results['?geo']) {
+                      that.geo = results['?geo'].value;
+                  }
+            });
 
             that.DaoService.query("getEventByLocation", query, (results) => {
 

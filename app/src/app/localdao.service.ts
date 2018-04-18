@@ -888,6 +888,15 @@ export class LocalDAOService {
 
                     that.launchSparqlQuery(command, query, callback, done);
                     break;
+                case 'getGeoByLabel':
+                    query = 'PREFIX s: <http://schema.org/> \n' +
+                        'SELECT DISTINCT * \n' +
+                        'WHERE {\n' +
+                        ' ?id rdfs:label "' + data.key + '" . \n' +
+                        ' ?id s:geo ?geo . \n' +
+                        '}';
+                    that.launchSparqlQuery(command, query, callback, done);
+                    break;
                 default:
                     console.error("Unknown command " + command)
                     return null;
