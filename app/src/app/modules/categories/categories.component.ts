@@ -29,7 +29,6 @@ export class CategoriesComponent implements OnInit {
         let trackMap = new Map();
 
         this.DaoService.query("getAllCategoriesForEvents", null, (results) => {
-            console.log(results);
             if (results) {
                 const nodeId= results['?sub'];
                 if (!nodeId) {
