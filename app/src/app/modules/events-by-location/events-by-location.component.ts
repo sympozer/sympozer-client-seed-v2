@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
+import {DomSanitizer} from '@angular/platform-browser';
 import {LocalDAOService} from  '../../localdao.service';
+
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 
@@ -17,11 +19,14 @@ import {TimeManager} from "../../services/timeManager.service";
 export class EventsByLocationComponent implements OnInit {
     public eventsLocation = [];
     public nameLocation : String;
-    public geo: String = null;;
+    public geo = null;
 
     constructor(private router: Router,
                 private DaoService: LocalDAOService,
-                private route: ActivatedRoute, private encoder: Encoder) {
+                private route: ActivatedRoute,
+                private encoder: Encoder,
+                private sanitizer: DomSanitizer
+              ) {
     }
 
     ngOnInit() {
@@ -35,7 +40,7 @@ export class EventsByLocationComponent implements OnInit {
 
             that.DaoService.query("getGeoByLabel", query, (results) => {
                   if (results && results['?geo']) {
-                      that.geo = results['?geo'].value;
+                      that.geo = that.sanitizer.bypassSecurityTrustUrl(results['?geo'].value);
                   }
             });
 
