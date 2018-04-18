@@ -490,10 +490,10 @@ export class LocalDAOService {
                         'WHERE {\n' +
                         ' <' + data.key + '> a ?type . \n' +
                         ' <' + data.key + '> rdfs:label ?label . \n' +
-                        ' <' + data.key + '> sd:description ?description . \n' +
                         ' <' + data.key + '> sd:endDate ?endDate . \n' +
                         ' <' + data.key + '> sd:startDate ?startDate . \n' +
                         ' <' + data.key + '> sd:isSubEventOf ?isSubEventOf . \n' +
+                        ' OPTIONAL { <' + data.key + '> sd:description ?description . } \n' +
                         ' OPTIONAL { <' + data.key + '> foaf:homepage ?homepage . } \n' +
                         ' OPTIONAL { <' + data.key + '> sd:hasSite ?locId1 . ' +
                         '?locId1 rdfs:label ?location1 . } \n' +
