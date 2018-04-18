@@ -587,7 +587,7 @@ export class LocalDAOService {
                         '}';
                     that.launchSparqlQuery(command, query, callback, done);
                     break;
-                case 'getAllCategoriesForEvents':
+                case 'getAllCategoriesFor':
                     query =
                         'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
                         'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
@@ -597,22 +597,8 @@ export class LocalDAOService {
                         ' ?sub rdfs:label ?subL . \n' +
                         ' ?super rdfs:label ?superL . \n' +
                         ' ?idEvent sd:relatesToTrack ?sub . \n' +
-                        ' ?idEvent a sd:OrganisedEvent . \n' +
-                        '}';
-
-                    that.launchSparqlQuery(command, query, callback, done);
-                    break;
-                case 'getAllCategoriesForPublications':
-                    query =
-                        'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
-                        'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
-                        'SELECT DISTINCT * \n' +
-                        'WHERE {\n' +
-                        ' ?super sd:hasSubTrack ?sub . \n' +
-                        ' ?sub rdfs:label ?subL . \n' +
-                        ' ?super rdfs:label ?superL . \n' +
-                        ' ?idPubli sd:relatesToTrack ?sub . \n' +
-                        ' ?idPubli a sd:InProceedings . \n' +
+                        ' ?idEvent a sd:' +  data.key + ' . \n' +
+                        ' OPTIONAL { ?super <http://open.vocab.org/terms/sortLabel> ?sortLabel. } \n' +
                         '}';
 
                     that.launchSparqlQuery(command, query, callback, done);
