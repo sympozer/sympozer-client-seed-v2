@@ -79,7 +79,6 @@
     </div>
   </div>
 
-  <!-- Voting
-  <vote [typeEvent]="eventType" [idTrack]="trackId" [idPublication]="publicationId"></vote>
-  -->
+  <!-- Voting -->
+  <vote *ngFor="let track of tracks" [typeEvent]="eventType" [idTrack]="track.id" [idPublication]="publicationId"></vote>
 </div>
