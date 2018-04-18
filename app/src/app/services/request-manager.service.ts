@@ -57,4 +57,9 @@ export class RequestManager {
                 throw error;
             });
     }
+
+    // Removing asynchronous aspects in the loading process so that the app doesn't start while datasets are not loaded
+    async getSynchronously(uri: string) {
+        return await this.getResponseText(uri);
+    }
 }
