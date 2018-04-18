@@ -9,10 +9,6 @@ import {routerTransition} from '../../app.router.animation';
 import {RequestManager} from '../../services/request-manager.service';
 import {Config} from '../../app-config';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-<<<<<<< HEAD
-=======
-import {VoteService} from '../../services/vote.service';
->>>>>>> a1675873872b9594309338a6d42b3ec8a2455821
 
 @Component({
     selector: 'person',
@@ -44,12 +40,7 @@ export class PersonComponent implements OnInit {
                 private dBPLDataLoaderService: DBLPDataLoaderService,
                 private managerRequest: RequestManager,
                 private apiExternalServer: ApiExternalServer,
-<<<<<<< HEAD
                 ) {
-=======
-                private voteService: VoteService) {
-
->>>>>>> a1675873872b9594309338a6d42b3ec8a2455821
         this.person = this.personService.defaultPerson();
         this.mutex = new Mutex();
         this.mutex_box = new Mutex();

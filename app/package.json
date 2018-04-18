@@ -8,7 +8,7 @@
     "buildprod": "ng build --prod --aot --bh /www2018/",
     "buildtest": "ng build --prod --aot --bh /www2018_test/",
     "buildbeta": "ng build --prod --aot --bh /www2018_beta/",
-	  "buildlight": "ng build --prod --aot --bh /www2018_light/",
+    "buildlight": "ng build --prod --aot --bh /www2018_light/",
     "buildvote": "ng build --prod --aot --bh /www2018_vote/",
     "buildpac": "ng build --prod --aot --bh /www2018_pac/",
     "buildapp": "ng build --prod --aot --bh /app/",
