@@ -14,6 +14,9 @@ export class DialogShareQrComponent implements OnInit {
   ngOnInit() {
       var chemin = document.location.href;
       this.qrValue = chemin;
+      (<HTMLScriptElement[]><any>document.getElementsByTagName('img'))[0].style.width = "100%";
+      (<HTMLScriptElement[]><any>document.getElementsByTagName('img'))[0].style.height = "100%";
+
   }
 
 }
