@@ -22,7 +22,6 @@ import {TimeManager} from "../../services/timeManager.service";
 })
 export class EventComponent implements OnInit {
     public event;
-    public partof;
     public publications = {};
     public locations = {};
     public contents = {};
@@ -172,7 +171,7 @@ export class EventComponent implements OnInit {
 
                                                         that.hasSubEvent = that.hasSubEvent.concat({
                                                             id: idEncode,
-                                                            paper: paper,
+                                                            hasPaper: (paper !== null),
                                                             label: label,
                                                             idCompare: hasSubEvent,
                                                             sortKey: [results['?subEventStart'].value, label],
@@ -231,9 +230,9 @@ export class EventComponent implements OnInit {
                                 }
                             });
 
-                            that.DaoService.query("getTrackByEvent", query, (results) => {
+                            that.DaoService.query("getTracksOf", query, (results) => {
                                 if (results) {
-                                    const nodeId = results['?id'];
+                                    const nodeId = results['?track'];
                                     const nodeLabel = results['?label'];
 
                                     if (nodeId && nodeLabel) {

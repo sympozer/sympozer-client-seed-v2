@@ -451,7 +451,7 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
-                case 'getPublicationTracks':
+                case 'getTracksOf':
                     query =
                         'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
                         'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
@@ -644,7 +644,6 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
-                */
                 case 'getTrackByEvent':
                     query = 'PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n' +
                         'PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
@@ -657,6 +656,7 @@ export class LocalDAOService {
 
                     that.launchQuerySparql(query, callback);
                     break;
+                    */
                 case 'getTrackById':
                     query = 'PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n' +
                         'PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +

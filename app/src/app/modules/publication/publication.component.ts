@@ -184,7 +184,7 @@ export class PublicationComponent implements OnInit {
              * Retrive track from the publication
              */
             let seenTracks = new Set();
-            that.DaoService.query("getPublicationTracks", query, (results) => {
+            that.DaoService.query("getTracksOf", query, (results) => {
                 if (results) {
                     const nodeId = results['?track'];
                     if (nodeId) {
