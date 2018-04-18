@@ -153,7 +153,7 @@ export class LocalDAOService {
         const that = this;
 
         const querySparql = $rdf.SPARQLToQuery(query, false, that.store);
-        if (querySparql.pat.statements.length === 0) {
+        if (querySparql && querySparql.pat.statements.length === 0) {
             console.warn("The SPARQL is probably wrong (0 statements parsed)");
         }
         that.store.query(querySparql, callback, undefined, done);
@@ -889,6 +889,7 @@ export class LocalDAOService {
                     that.launchSparqlQuery(command, query, callback, done);
                     break;
                 default:
+                    console.error("Unknown command " + command)
                     return null;
             }
         } else {
