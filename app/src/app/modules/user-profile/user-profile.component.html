@@ -2,12 +2,9 @@
   <div class="login-wrapper">
     <md-card class="inscription-card">
       <div class="header">
-        <h4>Enrich your profile</h4>
+        <h4>Update your profile</h4>
       </div>
       <div class="inscription-form">
-
-      <h5><span *ngIf="user.firstname != null">{{user.firstname}}</span><span> </span><span *ngIf="user.lastname != null">{{user.lastname}}</span></h5>
-
 
       <form>
         <md-input-container>
@@ -64,6 +61,15 @@
         </div>
       </div>
       
+
+      <div class="btn-social-network">
+        <a class="social-button facebook-btn"> <span>Connect with Facebook</span></a>
+        <a class="social-button twitter-btn"> <span>Connect with Twitter</span></a>
+        <a class="social-button google-btn"> <span>Connect with Google</span></a>
+        <a class="social-button linkedin-btn"> <span>Connect with LinkedIn</span></a>
+      </div>
+
+
     </md-card>
   </div>
 </div>
