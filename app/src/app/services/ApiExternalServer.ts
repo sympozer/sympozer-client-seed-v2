@@ -257,15 +257,21 @@ export class ApiExternalServer {
                 newPassword: newPassword,
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/updatePassword/' + id, bodyRequest)
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updatePassword/' + id, bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
+                    console.log("THEN");
+                    console.log(resultPromise);
+                    console.log(resultPromise.message);
                     if (request.status === 400) {
                         return reject(resultPromise.message);
                     }
                     return resolve(true);
                 })
                 .catch((request) => {
+                    console.log("CATCH");
+                    console.log(request);
+                    console.log(request.message);
                     return reject(request);
                 });
         });
