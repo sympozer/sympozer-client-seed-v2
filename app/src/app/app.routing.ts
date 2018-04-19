@@ -36,6 +36,7 @@ import { ForgotPasswordComponent } from './modules/forgotPassword/forgotPassword
 import { ActivationMailComponent } from './modules/activationMail/activationMail.component';
 import { ChangePasswordComponent } from './modules/changePassword/changePassword.component';
 import { SendEmailComponent } from './modules/send-email/send-email.component';
+import { ParticipantComponent } from './modules/participant/participant.component';
 
 const appRoutes: Routes = [
     {
@@ -182,6 +183,10 @@ const appRoutes: Routes = [
     {
         path: 'send-email',
         component: SendEmailComponent
+    },
+    {
+        path: 'participant',
+        component: ParticipantComponent
     }
 ];
 

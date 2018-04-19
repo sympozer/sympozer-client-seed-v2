@@ -69,6 +69,7 @@ import {ChangePasswordComponent} from "./modules/changePassword/changePassword.c
 import {AppointmentComponent} from "./modules/appointment/appointment.component";
 import {AppointmentService} from "./services/appointment.service";
 import { SendEmailComponent } from './modules/send-email/send-email.component';
+import { ParticipantComponent } from './modules/participant/participant.component';
 
 const routes: Routes = [];
 
@@ -118,7 +119,8 @@ const routes: Routes = [];
         ForgotPasswordComponent,
         ActivationMailComponent,
         ChangePasswordComponent,
-        SendEmailComponent
+        SendEmailComponent,
+        ParticipantComponent
     ],
     imports: [
         BrowserModule,

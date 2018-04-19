@@ -34,7 +34,7 @@ export class AppointmentService {
 
   setSubject(subject) {
     if (subject == null) {
-      this.subject = "[NoReply]";
+      this.subject = "Message from the app";
     } else {
       this.subject = subject;
     }
