@@ -31,20 +31,31 @@ export class KeywordsComponent implements OnInit {
         const that = this;
         if (cache) {
             this.keywords = cache;
-            console.log('Retrieved from cache.');
+            //console.log('Retrieved from cache.');
         } else {
             that.DaoService.query('getAllKeywords', null, (results) => {
                 if (results) {
                     const nodeKeyword = results['?keywords'];
 
                     if (nodeKeyword) {
+                        const id = "";
+                        const value = nodeKeyword.value;
+                        const valueEncoded = this.encoder.encode(value);
+                        
+
                         const val = {
-                            value : nodeKeyword.value
+                            id: id,
+                            value : value,
+                            valueEncoded : valueEncoded,
                         };
 
                         if (val && val.value.length > 0) {
                                 that.keywords = that.keywords.concat(val);
                         }
+
+                        that.keywords.sort((a, b) => {
+                            return a.value > b.value ? 1 : -1;
+                        });
                     }
                 }
             }, () => {

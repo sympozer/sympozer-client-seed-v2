@@ -4,9 +4,9 @@
 <app-autocomplete name="search-bar" [seachFor]="'value'" [items]="keywords" [namespace]="'publications-by-keyword'"></app-autocomplete>
 
 <div scrollLoader class="search-results" [listItems]="keywords" (updatePartialTable)="tabKeywords = $event">
-    <div class="action-links" *ngFor="let keyword of keywords.values()">
+    <div class="action-links" *ngFor="let keyword of keywords">
         <md-card>
-            <a [routerLink]="['/publications-by-keyword/'+encoder.encode(keyword.value)]">{{keyword.value}}</a>
+            <a [routerLink]="['/publications-by-keyword/'+keyword.valueEncoded]">{{keyword.value}}</a>
             <md-icon>trending_flat</md-icon>
         </md-card>
     </div>

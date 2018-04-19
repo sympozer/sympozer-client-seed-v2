@@ -22,18 +22,19 @@ export class UserProfileComponent implements OnInit {
     hasLogged: any;
     user;
     private key_localstorage_user = 'user_external_ressource_sympozer';
+    private key_localstorage_id = 'id_external_ressource_sympozer';
 
     constructor(private apiExternalServer: ApiExternalServer,
                 private snackBar: MdSnackBar,
                 private localStoragexx: LocalStorageService) {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
-            console.log(status);
+            //console.log(status);
             this.hasLogged = status;
             if (!this.hasLogged) {
                 let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
                 window.location.replace(urlHost + '#/home');
             }
-            console.log(status)
+            //console.log(status)
 
         });
     }
@@ -41,7 +42,7 @@ export class UserProfileComponent implements OnInit {
     ngOnInit() {
 
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
-        console.log(this.user);
+        //console.log(this.user);
         /*
         if (this.user) {
             console.log(this.user)
@@ -50,18 +51,19 @@ export class UserProfileComponent implements OnInit {
         */
     }
 
-    update(user) {
+    updateProfile(user) {
         console.log(user);
-
-        this.apiExternalServer.update(user)
+        let id = this.localStoragexx.retrieve(this.key_localstorage_id);
+        this.apiExternalServer.updateProfile(id, user.firstname, user.lastname, user.email)
             .then((status) => {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,
                 });
-                window.history.back()
+                let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
+                window.location.replace(urlHost+'#/profile');
             })
             .catch((err) => {
-                this.snackBar.open(err, '', {
+                this.snackBar.open(JSON.parse(err.text()).message, '', {
                     duration: 2000,
                 });
             })

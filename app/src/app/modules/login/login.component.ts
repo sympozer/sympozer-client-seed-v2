@@ -139,9 +139,7 @@ export class LoginComponent implements OnInit {
                         that.snackBar.open("You are recognized as " + label + ".", "", {
                             duration: 3000,
                         });
-                        if (username[0] && username[0].length > 0) {
-                            that.update(user, username[0], username[1])
-                        }
+                        
                     }
                 });
 
@@ -174,21 +172,6 @@ export class LoginComponent implements OnInit {
         this.apiExternalServer.sendUsername(firstname)
     }
 
-    update(user, firstname, lastname) {
-        console.log(user)
-        if (user && user.firstname !== null) {
-            if (user.firstname !== firstname) {
-                user.firstname = firstname
-                user.lastname = lastname
-                this.apiExternalServer.update(user)
-                    .then(() => {
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
-            }
-        }
-    }
 
 
     authGoogle() {
