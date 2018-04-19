@@ -1,7 +1,14 @@
 <h1 id="description-title">{{title}}</h1>
-<div class="action-links" *ngFor="let track of tracks">
+
+<app-autocomplete [seachFor]="'label'" [items]="subtracks" [namespace]="'event-by-category'"></app-autocomplete>
+
+<div class="action-links list-items" *ngFor="let track of tracks">
   <md-card>
-    <a [routerLink]="['/event-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
-    <md-icon>trending_flat</md-icon>
+    <details >
+      <summary><h2>{{track.label}}</h2></summary>
+        <div class="action-links list-items" *ngFor="let subtrack of track.subtracks">
+          <a [routerLink]="['/event-by-category/'+subtrack.label+'/'+subtrack.id]">{{subtrack.label}}</a>
+        </div>
+    </details>
   </md-card>
 </div>

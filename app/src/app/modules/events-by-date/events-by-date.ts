@@ -69,6 +69,7 @@ export class EventsByDate implements OnInit {
 
                                         if (momentEndDate && momentStartDate) {
                                             const strDuration = TimeManager.startAndEndTimeToString(momentStartDate, momentEndDate);
+                                            const strDate = TimeManager.dateDisplay(momentStartDate, momentEndDate);
 
                                             //On récup le type dans l'URI
                                             type = that.ressourceDataset.extractType(type, label);
@@ -79,6 +80,7 @@ export class EventsByDate implements OnInit {
                                                 startDate: momentStartDate.format('LLLL'),
                                                 duration: strDuration,
                                                 endDate: momentEndDate.format('LLLL'),
+                                                dateVal : strDate,
                                                 dateForSort: momentStartDate.format(),
                                                 type: type,
                                                 compare: [momentStartDate, label],

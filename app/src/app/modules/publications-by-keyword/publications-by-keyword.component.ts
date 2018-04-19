@@ -23,6 +23,7 @@ export class PublicationsByKeywordComponent implements OnInit {
     ngOnInit() {
         const that = this;
         this.route.params.forEach((params: Params) => {
+
             const keyword = this.encoder.decode(params['keyword']);
 
             if (!keyword || keyword.length === 0) {
@@ -43,7 +44,8 @@ export class PublicationsByKeywordComponent implements OnInit {
 
                         if (id && label){
                             id = that.encoder.encode(id);
-                            if (id){
+                            const labelEncoded = this.encoder.encode(label);
+                            if(id){
                                 const find = that.publications.find((p) => {
                                    return p.id === id;
                                 });
@@ -55,6 +57,7 @@ export class PublicationsByKeywordComponent implements OnInit {
                                 that.publications = that.publications.concat({
                                     id: id,
                                     label: label,
+                                    labelEncoded: labelEncoded,
                                 });
 
                                 that.publications.sort((a, b) => {

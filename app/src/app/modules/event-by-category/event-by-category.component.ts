@@ -35,11 +35,11 @@ export class EventByCategoryComponent implements OnInit {
             this.DaoService.query('getEventsByTrack', query, (results) => {
                 if (results) {
                     const nodeId = results['?id'];
-                    const nodeLabel = results['?label'];
-
-                    if (nodeId && nodeLabel) {
+                    if (nodeId) {
                         let id = nodeId.value;
-                        const label = nodeLabel.value;
+                        const label = results['?label'].value;
+                        const startDate = results['?startDate'].value;
+                        const endDate = results['?endDate'].value;
 
                         if (id && label) {
                             id = that.encoder.encode(id);
@@ -56,10 +56,11 @@ export class EventByCategoryComponent implements OnInit {
                                 that.events = that.events.concat({
                                     id: id,
                                     label: label,
+                                    sortKey: [startDate, endDate, label],
                                 });
 
                                 that.events.sort((a, b) => {
-                                    return a.label > b.label ? 1 : -1;
+                                    return a.sortKey > b.sortKey ? 1 : -1;
                                 });
                             }
                         }
