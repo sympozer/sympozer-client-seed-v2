@@ -53,6 +53,8 @@ export class EventComponent implements OnInit {
             this.encodedID = this.encoder.decode(id);
             this.DaoService.query("getEventById", query, (results, err) => {
                 if (results) {
+                    that.subEventOf = [];
+                    that.hasSubEvent = [];
                     const nodeLabel = results['?label'];
                     const nodeDescription = results['?description'];
                     const nodeEndDate = results['?endDate'];

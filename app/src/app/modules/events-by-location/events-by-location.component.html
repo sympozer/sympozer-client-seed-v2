@@ -2,6 +2,14 @@
   {{nameLocation}}
 </h1>
 
+<div *ngIf="geo !== null">
+    <h2>Location</h2>
+    <md-card>
+        <md-icon>place</md-icon>
+        <a [href]="geo">Open in map</a>
+    </md-card>
+</div>
+
 <h2>Schedule</h2>
 
 <div class="action-links list-items multiple-lines" *ngFor="let event of eventsLocation">
