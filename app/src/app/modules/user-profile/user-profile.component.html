@@ -8,6 +8,27 @@
 
       <h5><span *ngIf="user.firstname != null">{{user.firstname}}</span><span> </span><span *ngIf="user.lastname != null">{{user.lastname}}</span></h5>
 
+
+      <form>
+        <md-input-container>
+          <input [(ngModel)]="user.firstname" mdInput type="text" name="user.firstname" placeholder="First name">
+        </md-input-container>
+
+        <md-input-container>
+          <input [(ngModel)]="user.lastname" mdInput type="text" name="user.lastname" placeholder="Last name">
+        </md-input-container>
+
+        <md-input-container>
+          <input [(ngModel)]="user.email" mdInput type="text" name="user.email" placeholder="Email">
+        </md-input-container>
+
+        <div class="inscription-footer">
+          <button md-button color="primary" (click)="updateProfile(user)">Update</button>
+        </div>
+      </form>
+
+
+      <!-- 
       <form>
         <md-input-container>
           <input [(ngModel)]="user.firstname" mdInput type="text" name="user.firstname" placeholder="First name">
@@ -36,6 +57,8 @@
         </div>
       </form>
 
+      -->
+      <br>
         <div>
           <p> <a [routerLink]="['/changePassword/']">Change password</a> </p>
         </div>

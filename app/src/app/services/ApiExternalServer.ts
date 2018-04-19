@@ -44,7 +44,7 @@ export class ApiExternalServer {
         return false;
     }
 
-    update(user) {
+    update(user,id) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
@@ -87,6 +87,49 @@ export class ApiExternalServer {
                     return resolve(person);
                 })
                 .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    updateProfile(id, firstname, lastname, email) {
+        return new Promise((resolve, reject) => {
+            const token = this.localStoragexx.retrieve(this.key_localstorage_token);
+            if (!token || token.length === 0) {
+                return reject('You are not logged in.');
+            }
+
+            const that = this;
+
+            const bodyRequest = {
+                firstname: firstname,
+                lastname: lastname,
+                email: email
+            };
+
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updateProfile/' + id, bodyRequest)
+                .then((request) => {
+                    const person = JSON.parse(request.text());
+                    if (request.status === 403) {
+                        return reject('Couldn\'t update.');
+                    }
+                    if (request.status === 404) {
+                        return reject('A network error has occurred. Please try again later.');
+                    }
+
+                    if (person.error) {
+                        return reject(person.error);
+                    }
+
+                    if (person.firstname && person.firstname.length > 0) {
+                        this.sendUsername(person.firstname);
+                    }
+                    
+                    return resolve(request);
+                })
+                .catch((request) => {
+                    console.log("CATCH");
+                    console.log(request);
                     return reject(request);
                 });
         });
