@@ -26,8 +26,7 @@ export class SignupComponent implements OnInit {
                 public snackBar: MdSnackBar,
                 private voteService: VoteService,
                 private DaoService: LocalDAOService,
-                private localStoragexx: LocalStorageService,
-                private signUpService : SignUpService ) {
+                private localStoragexx: LocalStorageService) {
         this.online = navigator.onLine;
     }
     ngOnInit(): void {
@@ -72,11 +71,69 @@ export class SignupComponent implements OnInit {
      * @param lastname
      * @param password
      * @param confirm password
-
      */
 
-    signup(email, firstname, lastname, password, confirmPassword){
-       
+    signup(email, firstname, lastname, password, confirmPassword) {
+        if (this.online) {
+        const that = this;
 
+        if (!email || email.length === 0) {
+            that.snackBar.open('Invalid email address.', "", {
+                duration: 3000,
+            });
+        }
+
+        else if (!firstname || firstname.length === 0) {
+            that.snackBar.open('Invalid firstname', "", {
+                duration: 3000,
+            });
+        }
+
+        else if (!lastname || lastname.length === 0) {
+            that.snackBar.open('Invalid lastname', "", {
+                duration: 3000,
+            });
+        }
+        else if (!password || password.length === 0) {
+            that.snackBar.open('Invalid password', "", {
+                duration: 3000,
+            });
+        }
+
+        else if (!confirmPassword || confirmPassword.length === 0) {
+            that.snackBar.open('Invalid password', "", {
+                duration: 3000,
+            });
+        }
+
+        else if (password !== confirmPassword) {
+            that.snackBar.open('Passwords don\'t match.', "", {
+                duration: 3000,
+            });
+        }
+
+        else {
+            this.apiExternalServer.signup(email, firstname, lastname, password)
+                .then(() => {
+
+                    that.snackBar.open('Please check your email to validate your account.', '', {
+                        duration: 7000,
+                    });
+
+                    that.snackBar.open('The account creation request has been accepted by our server.', '', {
+                        duration: 4000,
+                    });
+
+                    let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname
+                    window.location.replace(urlHost + '#/login');
+
+                })
+                .catch((err) => {
+                    this.snackBar.open(JSON.parse(err.text()).message, '', {
+                        duration: 2000,
+                    });
+                });
+        }
+    }
     }
 }
