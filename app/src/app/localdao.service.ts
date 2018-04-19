@@ -100,7 +100,7 @@ export class LocalDAOService {
             that.ready = true;
             // Process waiting queries
             for (const qw of that.pendingQueries) {
-                that.query(qw.command, qw.data, qw.callback);
+                that.query(qw.command, qw.data, qw.callback, qw.done);
             }
         });
     }
@@ -893,6 +893,7 @@ export class LocalDAOService {
                 command: command,
                 data: data,
                 callback: callback,
+                done: done,
             });
         }
     }
