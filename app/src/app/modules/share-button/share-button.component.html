@@ -1,25 +1,12 @@
 <button md-fab color="primary" [mdMenuTriggerFor]="menu" (click)="setRoute()">
   <md-icon>share</md-icon>
 </button>
-<md-menu #menu="mdMenu" yPosition="above">
-  <button (click)="openDialog()" md-menu-item>
-    <md-icon><i class="fa fa-qrcode"></i></md-icon>
-    <span>Share QR</span>
-  </button>
-  <button [shareButton]="'twitter'" [sbUrl]="url" [sbTags]="hashTags" md-menu-item>
-    <md-icon><i class="fa fa-twitter"></i></md-icon>
-    <span>Twitter</span>
-  </button>
-  <button [shareButton]="'googleplus'" [sbUrl]="url" [sbTags]="hashTags" md-menu-item>
-    <md-icon><i class="fa fa-google-plus"></i></md-icon>
-    <span>Google +</span>
-  </button>
-  <button [shareButton]="'linkedin'" [sbUrl]="url" [sbTags]="hashTags" md-menu-item>
-    <md-icon><i class="fa fa-linkedin"></i></md-icon>
-    <span>Linkedin</span>
-  </button>
-  <button [shareButton]="'facebook'" [sbUrl]="url" [sbTags]="hashTags" md-menu-item>
-    <md-icon><i class="fa fa-facebook"></i></md-icon>
-    <span>Facebook</span>
-  </button>
+<md-menu class="sharemenu" #menu="mdMenu" xPosition="after" yPosition="above">
+  <button (click)="openDialog()" md-menu-item><md-icon><i class="fa fa-qrcode"></i></md-icon></button>
+  <button [shareButton]="'twitter'" [sbUrl]="url" [sbTags]="hashTags" md-menu-item><md-icon><i class="fa fa-twitter"></i></md-icon></button>
+  <button [shareButton]="'googleplus'" [sbUrl]="url" [sbTags]="hashTags" md-menu-item><md-icon><i class="fa fa-google-plus"></i></md-icon></button>
+  <button [shareButton]="'linkedin'" [sbUrl]="url" [sbTags]="hashTags" md-menu-item><md-icon><i class="fa fa-linkedin"></i></md-icon></button>
+  <button [shareButton]="'facebook'" [sbUrl]="url" [sbTags]="hashTags" md-menu-item><md-icon><i class="fa fa-facebook"></i></md-icon></button>
 </md-menu>
+
+

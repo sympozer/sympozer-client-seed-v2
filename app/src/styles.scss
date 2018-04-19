@@ -471,3 +471,13 @@ ngx-qrcode {
     width: 100%;
   }
 }
+
+.sharemenu {
+    min-width: 0px !important;
+    max-width: 63px !important;
+  }
+  .mat-icon {
+    margin-right:7px !important;
+    text-align: center !important;
+  }
+

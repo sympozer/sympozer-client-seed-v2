@@ -10,7 +10,7 @@ import {DialogShareQrComponent} from "../dialog-share-qr/dialog-share-qr.compone
 @Component({
     selector: 'share',
     templateUrl: 'share-button.component.html',
-    styleUrls: ['./share-button.component.scss'],
+    styleUrls: ['share-button.component.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
