@@ -822,11 +822,12 @@ export class LocalDAOService {
                 case 'getAllLocations':
                     query =
                         'PREFIX sch: <http://schema.org/> \n' +
-                        'PREFIX scholar: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
+                        'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
                         'SELECT DISTINCT ?id ?location \n' +
                         'WHERE {\n' +
-                        ' ?id ?o scholar:Site . \n' +
+                        ' ?id ?o sd:Site . \n' +
                         ' ?id rdfs:label ?location . \n' +
+                        ' ?evt sd:hasSite ?id . \n' +
                         '}';
 
                     that.launchSparqlQuery(command, query, callback, done);
