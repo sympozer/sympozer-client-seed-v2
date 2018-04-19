@@ -59,10 +59,11 @@ export class UserProfileComponent implements OnInit {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,
                 });
-                window.history.back()
+                let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
+                window.location.replace(urlHost+'#/profile');
             })
             .catch((err) => {
-                this.snackBar.open(err, '', {
+                this.snackBar.open(JSON.parse(err.text()).message, '', {
                     duration: 2000,
                 });
             })

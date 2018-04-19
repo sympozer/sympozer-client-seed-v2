@@ -44,54 +44,6 @@ export class ApiExternalServer {
         return false;
     }
 
-    update(user,id) {
-        return new Promise((resolve, reject) => {
-            const token = this.localStoragexx.retrieve(this.key_localstorage_token);
-            if (!token || token.length === 0) {
-                return reject('You are not logged in.');
-            }
-
-            const that = this;
-
-            const bodyRequest = {
-                token: token,
-                firstname: user.firstname,
-                homepage: user.homepage,
-                photoUrl: user.photoUrl,
-                twitterpage: user.twitterpage,
-                linkedinaccount: user.linkedinaccount
-            };
-
-            that.managerRequest.post(Config.externalServer.url + '/api/ressource/person', bodyRequest)
-                .then((request) => {
-                    const person = JSON.parse(request.text());
-                    if (request.status === 403) {
-                        return reject('Couldn\'t update.');
-                    }
-                    if (request.status === 404) {
-                        return reject('A network error has occurred. Please try again later.');
-                    }
-
-                    if (person.error) {
-                        return reject(person.error);
-                    }
-
-                    if (person.firstname && person.firstname.length > 0) {
-                        this.sendUsername(person.firstname);
-                    }
-                    if (person.photoUrl && person.photoUrl.length > 0) {
-                        this.sendAvatar(person.photoUrl);
-                        that.localStoragexx.store(that.key_localstorage_avatar, person.photoUrl);
-                    }
-                    that.localStoragexx.store(that.key_localstorage_user, request.text());
-                    return resolve(person);
-                })
-                .catch((request) => {
-                    return reject(request);
-                });
-        });
-    }
-
     updateProfile(id, firstname, lastname, email) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
@@ -99,15 +51,18 @@ export class ApiExternalServer {
                 return reject('You are not logged in.');
             }
 
+            let id = this.localStoragexx.retrieve(this.key_localstorage_id);
+
             const that = this;
 
             const bodyRequest = {
+                id: id,
                 firstname: firstname,
                 lastname: lastname,
                 email: email
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updateProfile/' + id, bodyRequest)
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
                 .then((request) => {
                     const person = JSON.parse(request.text());
                     if (request.status === 403) {
@@ -123,6 +78,7 @@ export class ApiExternalServer {
 
                     if (person.firstname && person.firstname.length > 0) {
                         this.sendUsername(person.firstname);
+                        that.localStoragexx.store(that.key_localstorage_username, person.firstname);
                     }
                     
                     return resolve(request);
@@ -283,8 +239,16 @@ export class ApiExternalServer {
         });
     }
 
-    changePassword = (id, currentPassword, newPassword, confirmPassWord) => {
+    changePassword = (currentPassword, newPassword, confirmPassWord) => {
         return new Promise((resolve, reject) => {
+            
+            let id = this.localStoragexx.retrieve(this.key_localstorage_id);
+
+            const token = this.localStoragexx.retrieve(this.key_localstorage_token);
+            if (!token || token.length === 0) {
+                return reject('You are not logged in.');
+            }
+
             if (!currentPassword || currentPassword.length === 0 || !newPassword || newPassword.length === 0 || !confirmPassWord || confirmPassWord.length === 0 ) {
                 return reject('Invalid password.');
             }
@@ -296,11 +260,12 @@ export class ApiExternalServer {
             const that = this;
 
             const bodyRequest = {
+                id : id,
                 currentPassword: currentPassword,
-                newPassword: newPassword,
+                newPassword: newPassword
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updatePassword/' + id, bodyRequest)
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updatePassword/', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
                     console.log("THEN");
