@@ -10,6 +10,7 @@ export class ParticipantComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

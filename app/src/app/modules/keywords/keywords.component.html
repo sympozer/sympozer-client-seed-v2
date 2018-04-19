@@ -4,7 +4,7 @@
 
 <div class="action-links" *ngFor="let keyword of keywords.values()">
     <md-card>
-        <a [routerLink]="['/publications-by-keyword/'+keyword]" >{{keyword}}</a>
+        <a [routerLink]="['/publications-by-keyword/'+encoder.encode(keyword)]" >{{keyword}}</a>
         <md-icon>trending_flat</md-icon>
     </md-card>
 </div>

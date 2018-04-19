@@ -1,22 +1,22 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute}   from '@angular/router';
+import {ActivatedRoute, Params}   from '@angular/router';
 import {Location}              from '@angular/common';
 import {LocalDAOService} from  '../../localdao.service';
 import {routerTransition} from '../../app.router.animation';
 import * as moment from 'moment';
-import {Encoder} from '../../lib/encoder';
+import {Encoder} from "../../lib/encoder";
 import {RessourceDataset} from '../../services/RessourceDataset';
 
 @Component({
-    selector: 'whatsnext',
-    templateUrl: 'whatsnext.component.html',
-    styleUrls: ['whatsnext.component.scss'],
+    selector: 'whatsnow',
+    templateUrl: 'whatsnow.component.html',
+    styleUrls: ['whatsnow.component.scss'],
     animations: [routerTransition()],
     host: {'[@routerTransition]': ''}
 })
-export class WhatsNextComponent implements OnInit {
+export class WhatsNowComponent implements OnInit {
     schedules;
-    title = 'What\'s Next';
+    title: string = "What's Now";
 
     constructor(private location: Location,
                 private route: ActivatedRoute,
@@ -27,11 +27,11 @@ export class WhatsNextComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (document.getElementById('page-title-p')) {
-            document.getElementById('page-title-p').innerHTML = this.title;
-        }
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
-        this.DaoService.query('getWhatsNext', null, (results) => {
+        const now = moment();
+        this.DaoService.query("getWhatsNow", null, (results) => {
             if (results) {
                 const nodeId = results['?id'];
                 const nodeLabel = results['?label'];
@@ -56,20 +56,19 @@ export class WhatsNextComponent implements OnInit {
                             if (momentEndDate && momentStartDate) {
                                 const duration = moment.duration(momentEndDate.diff(momentStartDate));
 
-                                const hours = parseInt(duration.asHours().toString());
-                                const minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
+                                var hours = parseInt(duration.asHours().toString());
+                                var minutes = parseInt(duration.asMinutes().toString()) - hours * 60;
 
-                                let strDuration = '';
+                                let strDuration = "";
                                 if (hours > 0) {
-                                    strDuration = hours + ' hours and ';
+                                    strDuration = hours + " hours and ";
                                 }
                                 if (minutes > 0) {
-                                    strDuration += minutes + ' minutes';
+                                    strDuration += minutes + " minutes";
                                 }
 
-                                // On récup le type dans l'URI
+                                //On récup le type dans l'URI
                                 type = that.ressourceDataset.extractType(type, label);
-
                                 that.schedules = that.schedules.concat({
                                     id: id,
                                     label: label,
@@ -95,7 +94,7 @@ export class WhatsNextComponent implements OnInit {
                 }
             }
         });
-        /*this.schedules = this.DaoService.query("getWhatsNext", null);
+        /*this.schedules = this.DaoService.query("getWhatsNow", null);
          for (let i in this.schedules) {
          this.schedules[i].startsAt = moment(this.schedules[i].startsAt).format('LLLL');
          this.schedules[i].endsAt = moment(this.schedules[i].endsAt).format('LLLL');

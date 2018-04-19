@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { routerTransition } from '../../app.router.animation';
-
+import {Config} from '../../app-config';
 
 @Component({
     selector: 'share',
@@ -10,14 +10,9 @@ import { routerTransition } from '../../app.router.animation';
     animations: [routerTransition()],
     host: { '[@routerTransition]': '' }
 })
-
-export class Share {
+export class ShareComponent {
     url: string;
-    urlShare: string;
-
-
-    private key_localstorage_user = 'user_external_ressource_sympozer';
-
+    hashTags: string = Config.conference.hashtag;
     constructor(private router: Router,
         private route: ActivatedRoute) {
 
@@ -28,6 +23,5 @@ export class Share {
 
     setRoute() {
         this.url = window.location.href;
-
     }
 }

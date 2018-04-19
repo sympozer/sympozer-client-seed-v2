@@ -29,10 +29,9 @@ export class PublicationComponent implements OnInit {
     public publication;
     public authors;
     public events = [];
-    public track = {};
+    public tracks = [];
     public keywords = [];
     public publicationId;
-    public trackId;
     public eventType;
 
     constructor(private router: Router,
@@ -193,27 +192,20 @@ export class PublicationComponent implements OnInit {
             /**
              * Retrive track from the publication
              */
-            that.DaoService.query("getPublicationTrack", query, (results) => {
+            let seenTracks = new Set();
+            that.DaoService.query("getTracksOf", query, (results) => {
                 if (results) {
-                    const nodeLabel = results['?label'];
                     const nodeId = results['?track'];
+                    if (nodeId) {
+                        const id = that.encoder.encode(nodeId.value);
+                        const label = results['?label'].value;
+                        if (seenTracks.has(id)) { return; }
+                        seenTracks.add(id);
 
-                    if (nodeLabel && nodeId) {
-                        const label = nodeLabel.value;
-                        let id = nodeId.value;
-
-                        if (label && id) {
-                            that.trackId = id;
-                            id = that.encoder.encode(id);
-
-                            if (id) {
-                                that.eventType = id;
-                                that.track = {
-                                    id: id,
-                                    label: label,
-                                };
-                            }
-                        }
+                        that.tracks = that.tracks.concat({
+                          id: id,
+                          label: label,
+                        });
                     }
                 }
             });
@@ -284,8 +276,9 @@ export class PublicationComponent implements OnInit {
                                                         id: idPersonEncoded,
                                                         label: label
                                                     });
-                                                    that.DaoService.query("getNextAuthorLinkPublication", { key: idAuhtorList }, (results) => {
-                                                        if (results) {
+
+                                                    that.DaoService.query('getNextAuthorLinkPublication', {key: idAuhtorList}, (results) => {
+                                                        if(results){
                                                             that.authorlistitem(results);
                                                         }
                                                     });
@@ -309,11 +302,11 @@ export class PublicationComponent implements OnInit {
      * Constructs a realistic ICS description of the talk, that can be imported in a calendar
      */
     createICS = () => {
-        var ics = new ICS();
+        const ics = new ICS();
         const that = this;
         const talk = that.events[0];
 
-        let calendar = ics.buildEvent({
+        const calendar = ics.buildEvent({
             uid: '', // (optional)
             start: talk.startDate,
             end: talk.endDate,
@@ -324,7 +317,7 @@ export class PublicationComponent implements OnInit {
             status: 'confirmed',
             geo: { lat: 45.515113, lon: 13.571873, },
             attendees: [
-                //{ name: 'Adam Gibbons', email: 'adam@example.com' }
+                // { name: 'Adam Gibbons', email: 'adam@example.com' }
             ],
             categories: ['Talk'],
             alarms: [
@@ -332,7 +325,7 @@ export class PublicationComponent implements OnInit {
                 { action: 'AUDIO', trigger: '-PT30M' }
             ]
         });
-        window.open("data:text/calendar;charset=utf8," + encodeURIComponent(calendar));
+        window.open('data:text/calendar;charset=utf8,' + encodeURIComponent(calendar));
     }
     // getPublId(): Observable<any> {
     //     return new Subject(this.publicationId).asObservable();

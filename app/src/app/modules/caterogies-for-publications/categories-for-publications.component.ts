@@ -13,6 +13,7 @@ import {Encoder} from "../../lib/encoder";
 })
 export class CategoriesForPublicationsComponent implements OnInit {
     public tracks = [];
+    public subtracks = [];
     public title: string = "Tracks";
 
     constructor(private DaoService: LocalDAOService,
@@ -24,44 +25,53 @@ export class CategoriesForPublicationsComponent implements OnInit {
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
-        this.DaoService.query("getAllCategoriesForPublications", null, (results) => {
-            console.log(results);
+        let seen = new Set();
+        let trackMap = new Map();
+
+        this.DaoService.query("getAllCategoriesFor", {key: 'InProceedings'}, (results) => {
             if (results) {
-                const nodeId = results['?id'];
-                const nodeLabel = results['?label'];
-
-                if (!nodeLabel || !nodeId) {
+                const nodeId= results['?sub'];
+                if (!nodeId) {
                     return false;
                 }
 
-                let id = nodeId.value;
-                const label = nodeLabel.value;
-
-                if (!id || !label) {
-                    return false;
-                }
-
-                id = that.encoder.encode(id);
+                let id = that.encoder.encode(nodeId.value);
                 if (!id) {
                     return false;
                 }
-
-                const find = that.tracks.find((t) => {
-                   return t.id === id;
-                });
-
-                if(find){
+                if (seen.has(id)) {
                     return false;
                 }
+                seen.add(id);
 
-                that.tracks = that.tracks.concat({
-                    id: id,
-                    label: label,
-                });
-
-                that.tracks.sort((a, b) => {
+                const label = results['?subL'].value;
+                const superLabel = results['?superL'].value;
+                const sortLabel = results['?sortLabel'] ? results['?sortLabel'].value : superLabel;
+                let supertrack = trackMap.get(superLabel);
+                if (supertrack === undefined) {
+                    supertrack = {
+                        label: superLabel,
+                        sortLabel: sortLabel,
+                        subtracks: [],
+                    }
+                    that.tracks = that.tracks.concat(supertrack);
+                    that.tracks.sort((a, b) => {
+                      return a.sortLabel > b.sortLabel ? 1 : -1;
+                    });
+                    trackMap.set(superLabel, supertrack);
+                }
+                const subtrack = {
+                  id: id,
+                  label: label,
+                };
+                supertrack.subtracks.push(subtrack);
+                supertrack.subtracks.sort((a, b) => {
                     return a.label > b.label ? 1 : -1;
                 });
+                that.tracks = that.tracks.concat(); // force GUI refresh
+
+                that.subtracks = that.subtracks.concat(subtrack);
+                // that.subtracks is only used for the search bar; no sort needed
             }
         });
     }

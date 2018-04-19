@@ -1,0 +1,17 @@
+<div class="component-wrapper">
+  <h1 id="description-title">{{title}}</h1>
+  <div class="action-links list-items multiple-lines" *ngFor="let schedule of schedules">
+    <md-card>
+      <a class="wrapper" [routerLink]="'/event/'+schedule.label+'/'+ schedule.id">
+        <md-icon>event</md-icon>
+        <span *ngIf="schedule.type && schedule.type.length > 0">{{schedule.type}} : </span>
+        <span class="event">{{schedule.label}}</span>
+        <div class="other-links">
+          <span class="event-info"><md-icon>schedule</md-icon> {{schedule.startDate}} </span>
+          <span class="event-info"><md-icon>hourglass_empty</md-icon> {{schedule.duration}} </span>
+          <span class="event-info"><md-icon>update</md-icon> {{schedule.endDate}} </span>
+        </div>
+      </a>
+    </md-card>
+  </div>
+</div>

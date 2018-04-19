@@ -1,21 +1,18 @@
-import {Directive, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, Renderer} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, Renderer} from '@angular/core';
 
 @Directive({
     selector: '[scrollLoader]',
 })
-export class ScrollLoader implements OnInit {
+export class ScrollLoaderDirective implements OnChanges {
+
+    @Input()
+    listItems: Array<Object>;
+    partialListItem: Array<Object> = [];
+    @Output()
+    updatePartialTable = new EventEmitter();
+    private sum = 20;
 
     constructor(public el: ElementRef, public renderer: Renderer) {
-    }
-
-    @Input() listItems: Array<Object>;
-    partialListItem: Array<Object>;
-    @Output() updatePartialTable = new EventEmitter();
-    private sum: number = 20;
-
-
-    ngOnInit() {
-        this.partialListItem = new Array();
     }
 
     ngOnChanges(changes) {
@@ -33,8 +30,9 @@ export class ScrollLoader implements OnInit {
         if (this.listItems.length <= 0) {
             return;
         }
-        if (endIndex > this.listItems.length)
-            endIndex = this.listItems.length; //Si on est à la dernière insertion
+        if (endIndex > this.listItems.length) {
+            endIndex = this.listItems.length; // Si on est à la dernière insertion
+        }
         this.partialListItem = this.partialListItem.concat(this.listItems.slice(startIndex, endIndex));
         this.updatePartialTable.emit(this.partialListItem);
     }
@@ -48,10 +46,9 @@ export class ScrollLoader implements OnInit {
     }
 
     isScrolledIntoView() {
-        let elementTop = this.el.nativeElement.scrollTop;
-        let elementScrollHeight = this.el.nativeElement.scrollHeight;
-        let elementInitialHeight = this.el.nativeElement.clientHeight;
+        const elementTop = this.el.nativeElement.scrollTop;
+        const elementScrollHeight = this.el.nativeElement.scrollHeight;
+        const elementInitialHeight = this.el.nativeElement.clientHeight;
         return (elementTop + elementInitialHeight) / elementScrollHeight > 0.97;
     }
-
 }
