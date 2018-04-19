@@ -6,7 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {routing} from './app.routing';
-import {MaterialModule, MdGridListModule} from '@angular/material';
+import {MaterialModule, MdGridListModule, MdDialogModule} from '@angular/material';
 import 'hammerjs';
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './modules/home/home.component';
@@ -66,6 +66,7 @@ import {UserProfileComponent} from './modules/user-profile/user-profile.componen
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import {ActivationMailComponent} from './modules/activationMail/activationMail.component';
 import {ChangePasswordComponent} from './modules/changePassword/changePassword.component';
+import {SocialloginComponent} from './modules/sociallogin/sociallogin.component';
 
 const routes: Routes = [];
 
@@ -114,7 +115,8 @@ const routes: Routes = [];
         UserProfileComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
-        ChangePasswordComponent
+        ChangePasswordComponent,
+        SocialloginComponent
     ],
     imports: [
         BrowserModule,
@@ -126,6 +128,7 @@ const routes: Routes = [];
         RouterModule.forRoot(routes, {useHash: true}),
         MaterialModule,
         MdGridListModule,
+        MdDialogModule,
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
         Angulartics2Module.forRoot([Angulartics2Piwik]),
@@ -145,7 +148,8 @@ const routes: Routes = [];
         ToolsService,
         TimeManager
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents:[SocialloginComponent]
 })
 export class AppModule {
 }

@@ -197,14 +197,17 @@ export class LoginComponent implements OnInit {
     }
 
     authLinkedin(){
-
+        console.log("HELLLLLLLLLLOOOOO 1");
+        this.apiExternalServer.authLinkedinService();
     }
 
     authTwitter() {
-
+        console.log("HELLLLLLLLLLOOOOO 2");
+        this.apiExternalServer.authTwitterService();
     }
 
     authFacebook(){
-
+        console.log("HELLLLLLLLLLOOOOO 3");
+        this.apiExternalServer.authFacebookService();
     }
 }

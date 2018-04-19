@@ -283,6 +283,75 @@ export class ApiExternalServer {
         return this.localStoragexx.retrieve(this.key_localstorage_token);
     }
 
+
+    authGoogleService() {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/google')
+                .then((request) => {
+                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log(request);
+                    return resolve(request);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    authLinkedinService(){
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/linkedin')
+                .then((request) => {
+                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log(request);
+                    return resolve(request);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    authTwitterService() {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/twitter')
+                .then((request) => {
+                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log(request);
+                    return resolve(request);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    authFacebookService(){
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/facebook')
+                .then((request) => {
+                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log(request);
+                    return resolve(request);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
     /**
      * Send to all subscribers Login Login status
      * @param message
@@ -521,39 +590,6 @@ export class ApiExternalServer {
      */
     getFacebook(): Observable<any> {
         return this.subjectFacebook.asObservable();
-    }
-
-    
-    authGoogleService() {
-        return new Promise((resolve, reject) => {
-
-            const that = this;
-
-            const headers = new Headers({ 'Content-Type': 'application/json'});
-            const options = new RequestOptions({ headers: headers });
-
-            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/google')
-                .then((request) => {
-                    console.log("REQUEST!!!!!!!!!!!");
-                    console.log(request);
-                    return resolve(request);
-                })
-                .catch((request) => {
-                    return reject(request);
-                });
-        });
-    }
-
-    authLinkedinService(){
-
-    }
-
-    authTwitterService() {
-
-    }
-
-    authFacebookService(){
-
     }
 
 }
