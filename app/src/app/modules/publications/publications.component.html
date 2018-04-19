@@ -7,7 +7,7 @@
     <div class="action-links list-items" *ngFor="let publication of tabPubli">
       <md-card>
         <md-icon md-list-avatar>description</md-icon>
-        <a [routerLink]="['/publication/'+publication.label+'/'+publication.id]" >{{publication.label}}</a>
+        <a [routerLink]="['/publication/'+encoder.encode(publication.label)+'/'+publication.id]" >{{publication.label}}</a>
       </md-card>
     </div>
   </div>

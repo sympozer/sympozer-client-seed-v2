@@ -370,6 +370,8 @@ export class LocalDAOService {
                     that.launchSparqlQuery(command, query, callback, done);
                     break;
                 case 'getAuthorLinkPublication':
+                    console.log("Data Key")
+                    console.log(data.key);
                     query =
                         'PREFIX purl: <http://purl.org/dc/elements/1.1/> \n' +
                         'PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +

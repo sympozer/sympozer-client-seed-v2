@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { routerTransition } from '../../app.router.animation';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {routerTransition} from '../../app.router.animation';
 import {Config} from '../../app-config';
 
 @Component({

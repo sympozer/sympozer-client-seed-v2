@@ -4,7 +4,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
-import {Http} from '@angular/http';
+import {Http, Headers, RequestOptions} from '@angular/http';
 import {RequestManager} from './request-manager.service';
 import {Config} from '../app-config';
 import {LocalStorageService} from 'ng2-webstorage';
@@ -44,7 +44,7 @@ export class ApiExternalServer {
         return false;
     }
 
-    update(user) {
+    update(user,id) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
@@ -92,6 +92,49 @@ export class ApiExternalServer {
         });
     }
 
+    updateProfile(id, firstname, lastname, email) {
+        return new Promise((resolve, reject) => {
+            const token = this.localStoragexx.retrieve(this.key_localstorage_token);
+            if (!token || token.length === 0) {
+                return reject('You are not logged in.');
+            }
+
+            const that = this;
+
+            const bodyRequest = {
+                firstname: firstname,
+                lastname: lastname,
+                email: email
+            };
+
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updateProfile/' + id, bodyRequest)
+                .then((request) => {
+                    const person = JSON.parse(request.text());
+                    if (request.status === 403) {
+                        return reject('Couldn\'t update.');
+                    }
+                    if (request.status === 404) {
+                        return reject('A network error has occurred. Please try again later.');
+                    }
+
+                    if (person.error) {
+                        return reject(person.error);
+                    }
+
+                    if (person.firstname && person.firstname.length > 0) {
+                        this.sendUsername(person.firstname);
+                    }
+                    
+                    return resolve(request);
+                })
+                .catch((request) => {
+                    console.log("CATCH");
+                    console.log(request);
+                    return reject(request);
+                });
+        });
+    }
+
     getUser = (id) => {
         return new Promise((resolve, reject) => {
 
@@ -109,7 +152,7 @@ export class ApiExternalServer {
                     return reject(request);
                 });
         });
-    }
+    };
 
     login = (email, password) => {
         return new Promise((resolve, reject) => {
@@ -124,9 +167,12 @@ export class ApiExternalServer {
             const that = this;
 
             const bodyRequest = {
-                email: email,
-                password: password
+                "email": email,
+                "password": password
             };
+
+            const headers = new Headers({ 'Content-Type': 'application/json'});
+            const options = new RequestOptions({ headers: headers });
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
@@ -134,12 +180,9 @@ export class ApiExternalServer {
                     if (!resultPromise || !decoded) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
-                    if (request.status === 401 || request.status === 404) {
-                        return reject(resultPromise.message);
-                    }
                     this.getUser(decoded.id)
                         .then((userPromise: any) => {
-                            const userResult = JSON.parse(userPromise._body);
+                            const userResult = JSON.parse(userPromise);
                             const user = userResult.user;
                             if (!user) {
                                 return reject('Error while retrieving your data. Please try again later.');
@@ -168,7 +211,6 @@ export class ApiExternalServer {
                             that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
                             that.localStoragexx.store(that.key_localstorage_user, user);
 
-                            console.log('Id : ' + decoded.id);
                             that.localStoragexx.store(that.key_localstorage_id, decoded.id);
                             return resolve(user);
                         });
@@ -188,30 +230,8 @@ export class ApiExternalServer {
         });
     }
 
-    signup = (email, firstname, lastname, password, confirmPassWord) => {
+    signup = (email, firstname, lastname, password) => {
         return new Promise((resolve, reject) => {
-            if (!email || email.length === 0) {
-                return reject('Invalid email address.');
-            }
-
-            if (!firstname || firstname.length === 0) {
-                return reject('Invalid firstname');
-            }
-
-            if (!lastname || lastname.length === 0) {
-                return reject('Invalid lastname');
-            }
-            if (!password || password.length === 0) {
-                return reject('Invalid password');
-            }
-
-            if (!confirmPassWord || confirmPassWord.length === 0) {
-                return reject('Invalid password');
-            }
-
-            if (password !== confirmPassWord) {
-                return reject('Passwords don\'t match.');
-            }
 
             const that = this;
 
@@ -226,14 +246,6 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
-                    /*
-                    if (request.status === 403) {
-                        return reject('Invalid email or password.')
-                    }
-                    if (request.status === 404) {
-                        return reject('A network error has occured. Please try again later.');
-                    }
-                    */
                     if (request.status === 400) {
                         return reject(resultPromise.message);
                     }
@@ -288,15 +300,21 @@ export class ApiExternalServer {
                 newPassword: newPassword,
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/updatePassword/' + id, bodyRequest)
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updatePassword/' + id, bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
+                    console.log("THEN");
+                    console.log(resultPromise);
+                    console.log(resultPromise.message);
                     if (request.status === 400) {
                         return reject(resultPromise.message);
                     }
                     return resolve(true);
                 })
                 .catch((request) => {
+                    console.log("CATCH");
+                    console.log(request);
+                    console.log(request.message);
                     return reject(request);
                 });
         });
@@ -552,6 +570,39 @@ export class ApiExternalServer {
      */
     getFacebook(): Observable<any> {
         return this.subjectFacebook.asObservable();
+    }
+
+    
+    authGoogleService() {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const headers = new Headers({ 'Content-Type': 'application/json'});
+            const options = new RequestOptions({ headers: headers });
+
+            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/google')
+                .then((request) => {
+                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log(request);
+                    return resolve(request);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    authLinkedinService(){
+
+    }
+
+    authTwitterService() {
+
+    }
+
+    authFacebookService(){
+
     }
 
 }

@@ -43,7 +43,7 @@
     <div class="action-links list-items" *ngFor="let orga of orgas">
       <md-card>
         <md-icon md-list-avatar>account_balance</md-icon>
-        <a [routerLink]="['/organization/'+orga.name+'/'+orga.id]">{{orga.name}}</a>
+        <a [routerLink]="['/organization/'+encoder.encode(orga.name)+'/'+orga.id]">{{orga.name}}</a>
       </md-card>
     </div>
   </div>
@@ -52,7 +52,7 @@
     <div class="action-links list-items" *ngFor="let role of roles">
       <md-card>
         <md-icon md-list-avatar>perm_identity</md-icon>
-        <a [routerLink]="['/person-by-role/'+role.label+'/'+role.id]">{{role.label}}</a>
+        <a [routerLink]="['/person-by-role/'+encoder.encode(role.label)+'/'+role.id]">{{role.label}}</a>
       </md-card>
     </div>
   </div>
@@ -70,7 +70,7 @@
     <div class="action-links list-items" *ngFor="let publication of publiConf">
       <md-card>
         <md-icon md-list-avatar>description</md-icon>
-        <a [routerLink]="['/publication/'+publication.label+'/'+publication.id]">{{publication.label}}</a>
+        <a [routerLink]="['/publication/'+encoder.encode(publication.label)+'/'+publication.id]">{{publication.label}}</a>
       </md-card>
     </div>
   </div>
@@ -81,7 +81,7 @@
     <div class="action-links list-items" *ngFor="let publication of externPublications">
       <md-card>
         <md-icon md-list-avatar>description</md-icon>
-        <a [routerLink]="['/externPublication/'+publication.name+'/'+publication.id]">{{publication.name}}</a>
+        <a [routerLink]="['/externPublication/'+encoder.encode(publication.name)+'/'+publication.id]">{{publication.name}}</a>
       </md-card>
     </div>
   </div>

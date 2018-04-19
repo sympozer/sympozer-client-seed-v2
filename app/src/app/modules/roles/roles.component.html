@@ -7,7 +7,7 @@
     <div class="action-links list-items" *ngFor="let role of tabRoles">
       <md-card>
         <md-icon md-list-avatar>perm_identity</md-icon>
-        <a [routerLink]="['/person-by-role/'+role.label+'/'+role.id]">{{role.label}}</a>
+        <a [routerLink]="['/person-by-role/'+encoder.encode(role.label)+'/'+role.id]">{{role.label}}</a>
       </md-card>
     </div>
   </div>

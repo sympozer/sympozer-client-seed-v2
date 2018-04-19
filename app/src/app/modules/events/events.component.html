@@ -7,7 +7,7 @@
     <div class="action-links list-items" *ngFor="let event of events">
       <md-card>
         <md-icon md-list-avatar>event</md-icon>
-        <a [routerLink]="['/event/'+event.label+'/'+event.id]">
+        <a [routerLink]="['/event/'+encoder.encode(event.label)+'/'+event.id]">
           <!--<span class="event-type" *ngIf="event.type && event.type.length > 0">{{event.type}} : </span>-->
           {{event.label}}
         </a>

@@ -24,9 +24,8 @@
         <md-card class="info-text">
             <div class="wrapper">
                 <div class="other-links">
-                    <span class="event-info"><md-icon>schedule</md-icon> {{event.startsAt}} </span>
+                    <span class="event-info"><md-icon>schedule</md-icon> {{event.dateVal}} </span>
                     <span class="event-info"><md-icon>hourglass_empty</md-icon> {{event.duration}} </span>
-                    <span class="event-info"><md-icon>update</md-icon> {{event.endsAt}} </span>
                 </div>
             </div>
         </md-card>
@@ -52,7 +51,7 @@
         <div class="action-links list-items" *ngFor="let publication of event.publications">
             <md-card>
                 <md-icon md-list-avatar>place</md-icon>
-                <a [routerLink]="['/publication/'+publication.label+'/'+publication.id]">{{publication.label}}</a>
+                <a [routerLink]="['/publication/'+encoder.encode(publication.label)+'/'+publication.id]">{{publication.label}}</a>
             </md-card>
         </div>
     </div>
