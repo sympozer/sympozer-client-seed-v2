@@ -47,52 +47,6 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    /**
-     * Invoke the login external server service
-     * @param email
-     * @param password
-     */
-    /*
-    login(email, password) {
-
-        let userResult;
-        this.apiLogin.authentification(email,password).subscribe(
-            response => {
-                userResult = response;
-            },
-            err => { 
-                console.log(err);
-                this.snackBar.open("Wrong Username or Password", "", {
-                    duration: 2000,
-                });
-                },
-            () => {
-                this.localStoragexx.store(this.key_localstorage_token,userResult.token);
-                let decoded = jwtDecode(userResult.token);
-                console.log(decoded);
-                let userInfo;
-                this.apiLogin.getUser(decoded.id).subscribe(
-                    response => {
-                        userInfo = response;
-                    },
-                    err => {
-                        console.log("Error");
-                        console.log(err);
-                    },
-                    () =>  {
-                        console.log(userInfo);
-                        this.localStoragexx.store(this.key_localstorage_user,userInfo);
-                        this.snackBar.open("Login successful.", "", {
-                            duration: 2000,
-                        });
-                        window.history.back();
-                    }
-                );
-            }
-        );
-    }
-    */
-
     login(email, password) {
         this.apiExternalServer.login(email, password)
             .then((user) => {

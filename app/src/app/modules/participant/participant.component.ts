@@ -55,7 +55,7 @@ export class ParticipantComponent implements OnInit {
         this.route.params.forEach((params: Params) => {
             const name = params['name'];
 
-            console.log(name);  
+            //console.log(name);  
             this.participant.name = name;
         });
 
