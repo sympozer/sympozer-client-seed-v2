@@ -44,22 +44,19 @@ export class ApiExternalServer {
         return false;
     }
 
-    updateProfile(id, firstname, lastname, email) {
+    updateProfile(firstname, lastname) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
                 return reject('You are not logged in.');
             }
 
-            let id = this.localStoragexx.retrieve(this.key_localstorage_id);
-
             const that = this;
 
             const bodyRequest = {
-                id: id,
+                token: token,
                 firstname: firstname,
                 lastname: lastname,
-                email: email
             };
 
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
@@ -80,11 +77,11 @@ export class ApiExternalServer {
                         this.sendUsername(person.firstname);
                         that.localStoragexx.store(that.key_localstorage_username, person.firstname);
                     }
-                    
+
                     return resolve(request);
                 })
                 .catch((request) => {
-                    console.log("CATCH");
+                    console.log('CATCH');
                     console.log(request);
                     return reject(request);
                 });
@@ -123,62 +120,47 @@ export class ApiExternalServer {
             const that = this;
 
             const bodyRequest = {
-                "email": email,
-                "password": password
+                'email': email,
+                'password': password
             };
 
-            const headers = new Headers({ 'Content-Type': 'application/json'});
-            const options = new RequestOptions({ headers: headers });
+            const headers = new Headers({'Content-Type': 'application/json'});
+            const options = new RequestOptions({headers: headers});
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
-                    const decoded = jwtDecode(resultPromise.token);
-                    if (!resultPromise || !decoded) {
+                    const user = resultPromise.user;
+                    if (!resultPromise || !user) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
-                    this.getUser(decoded.id)
-                        .then((userPromise: any) => {
-                            const userResult = JSON.parse(userPromise);
-                            const user = userResult.user;
-                            if (!user) {
-                                return reject('Error while retrieving your data. Please try again later.');
-                            }
-                            if (user.firstname && user.firstname.length > 0) {
-                                this.sendUsername(user.firstname);
-                                that.localStoragexx.store(that.key_localstorage_username, user.firstname);
-                            }
-                            if (user.linkedin && user.linkedin.length > 0) {
-                                this.sendLinkedin(user.linkedin);
-                            }
-                            if (user.twitter && user.twitter.length > 0) {
-                                this.sendTwitter(user.twitter);
-                            }
-                            if (user.facebook && user.facebook.length > 0) {
-                                this.sendFacebook(user.facebook);
-                            }
-                            if (user.google && user.google.length > 0) {
-                                this.sendGoogle(user.google);
-                            }
-                            if (user.lastname && user.lastname.length > 0) {
-                                this.sendLastname(user.lastname);
-                            }
-
-                            this.sendLoginStatus(true);
-                            that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
-                            that.localStoragexx.store(that.key_localstorage_user, user);
-
-                            that.localStoragexx.store(that.key_localstorage_id, decoded.id);
-                            return resolve(user);
-                        });
-                    /*
-                    if(user.photoUrl && user.photoUrl.length > 0) {
-                        this.sendAvatar(user.photoUrl);
-                        that.localStoragexx.store(that.key_localstorage_avatar, user.photoUrl);
+                    if (!user) {
+                        return reject('Error while retrieving your data. Please try again later.');
                     }
-                    if(user.homepage && user.homepage.length > 0) {
-                        this.sendHomepage(user.homepage)
+                    if (user.firstname && user.firstname.length > 0) {
+                        this.sendUsername(user.firstname);
+                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
                     }
-                    */
+                    if (user.linkedin && user.linkedin.length > 0) {
+                        this.sendLinkedin(user.linkedin);
+                    }
+                    if (user.twitter && user.twitter.length > 0) {
+                        this.sendTwitter(user.twitter);
+                    }
+                    if (user.facebook && user.facebook.length > 0) {
+                        this.sendFacebook(user.facebook);
+                    }
+                    if (user.google && user.google.length > 0) {
+                        this.sendGoogle(user.google);
+                    }
+                    if (user.lastname && user.lastname.length > 0) {
+                        this.sendLastname(user.lastname);
+                    }
+
+                    this.sendLoginStatus(true);
+                    that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
+                    that.localStoragexx.store(that.key_localstorage_user, user);
+                    //that.localStoragexx.store(that.key_localstorage_id, decoded.id);
+                    return resolve(user);
                 })
                 .catch((request) => {
                     return reject(request);
@@ -241,7 +223,7 @@ export class ApiExternalServer {
 
     changePassword = (currentPassword, newPassword, confirmPassWord) => {
         return new Promise((resolve, reject) => {
-            
+
             let id = this.localStoragexx.retrieve(this.key_localstorage_id);
 
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
@@ -249,7 +231,7 @@ export class ApiExternalServer {
                 return reject('You are not logged in.');
             }
 
-            if (!currentPassword || currentPassword.length === 0 || !newPassword || newPassword.length === 0 || !confirmPassWord || confirmPassWord.length === 0 ) {
+            if (!currentPassword || currentPassword.length === 0 || !newPassword || newPassword.length === 0 || !confirmPassWord || confirmPassWord.length === 0) {
                 return reject('Invalid password.');
             }
 
@@ -260,7 +242,7 @@ export class ApiExternalServer {
             const that = this;
 
             const bodyRequest = {
-                id : id,
+                id: id,
                 currentPassword: currentPassword,
                 newPassword: newPassword
             };
@@ -268,7 +250,7 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updatePassword/', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
-                    console.log("THEN");
+                    console.log('THEN');
                     console.log(resultPromise);
                     console.log(resultPromise.message);
                     if (request.status === 400) {
@@ -277,7 +259,7 @@ export class ApiExternalServer {
                     return resolve(true);
                 })
                 .catch((request) => {
-                    console.log("CATCH");
+                    console.log('CATCH');
                     console.log(request);
                     console.log(request.message);
                     return reject(request);
@@ -305,7 +287,7 @@ export class ApiExternalServer {
 
             that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/google')
                 .then((request) => {
-                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
                     return resolve(request);
                 })
@@ -315,14 +297,14 @@ export class ApiExternalServer {
         });
     }
 
-    authLinkedinService(){
+    authLinkedinService() {
         return new Promise((resolve, reject) => {
 
             const that = this;
 
             that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/linkedin')
                 .then((request) => {
-                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
                     return resolve(request);
                 })
@@ -339,7 +321,7 @@ export class ApiExternalServer {
 
             that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/twitter')
                 .then((request) => {
-                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
                     return resolve(request);
                 })
@@ -349,14 +331,14 @@ export class ApiExternalServer {
         });
     }
 
-    authFacebookService(){
+    authFacebookService() {
         return new Promise((resolve, reject) => {
 
             const that = this;
 
             that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/facebook')
                 .then((request) => {
-                    console.log("REQUEST!!!!!!!!!!!");
+                    console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
                     return resolve(request);
                 })

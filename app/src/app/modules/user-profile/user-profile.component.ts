@@ -22,7 +22,6 @@ export class UserProfileComponent implements OnInit {
     hasLogged: any;
     user;
     private key_localstorage_user = 'user_external_ressource_sympozer';
-    private key_localstorage_id = 'id_external_ressource_sympozer';
 
     constructor(private apiExternalServer: ApiExternalServer,
                 private snackBar: MdSnackBar,
@@ -53,8 +52,7 @@ export class UserProfileComponent implements OnInit {
 
     updateProfile(user) {
         console.log(user);
-        let id = this.localStoragexx.retrieve(this.key_localstorage_id);
-        this.apiExternalServer.updateProfile(id, user.firstname, user.lastname, user.email)
+        this.apiExternalServer.updateProfile(user.firstname, user.lastname)
             .then((status) => {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,
