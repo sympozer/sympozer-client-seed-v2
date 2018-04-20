@@ -29,8 +29,6 @@ export class AppComponent implements OnInit {
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private localStoragexx: LocalStorageService
-//                private toolService: ToolsService,
-//                private voteService: VoteService,
                 ) { }
 /*
         router.events.filter(event => event instanceof NavigationStart)
@@ -75,16 +73,6 @@ export class AppComponent implements OnInit {
             }
         } else {
             this.localStoragexx.store('material', true);
-        }
-
-        storage = this.localStoragexx.retrieve('darkTheme');
-        if (storage) {
-            if (!html.classList.contains('dark')) {
-                html.classList.add('dark');
-                for (i = 0; i < htmlLogo.length ; i++) {
-                    htmlLogo[i].querySelectorAll('img')[0].src = './img/TheWebConference2018-logo-dark.png';
-                }
-            }
         }
 
         // TODO Trier ce qui suit...

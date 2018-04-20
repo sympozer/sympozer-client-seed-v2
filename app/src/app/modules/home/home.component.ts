@@ -25,15 +25,8 @@ export class HomeComponent implements OnInit {
     ngOnInit() {
         if (document.getElementById("page-title-p"))
                 document.getElementById("page-title-p").innerHTML = this.title;
-        let storage = this.localStoragexx.retrieve("darkTheme");
         let twiiterTag = document.getElementById("twitter");
-        if (storage) {
-            if (twiiterTag.getAttribute("data-theme") != "dark")
-                twiiterTag.setAttribute("data-theme", "dark");
-        } else {
-            twiiterTag.setAttribute("data-theme", "light");
-        }
-
+        
         let win = WindowReference.get();
         win.twttr.widgets.load();
 
