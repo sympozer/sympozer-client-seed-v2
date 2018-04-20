@@ -37,7 +37,6 @@ import {ExternPublicationComponent} from "./modules/extern-publication/externpub
 import {AutocompleteComponent} from "./modules/autocomplete/autocomplete.component";
 import {EventsByDate} from "./modules/events-by-date/events-by-date";
 import {ShareComponent} from './modules/share-button/share-button.component';
-import {ScrollLoaderDirective} from './modules/scroll-loader/scroll-loader.component';
 import {KeywordsComponent} from './modules/keywords/keywords.component';
 import {PublicationsByKeywordComponent} from './modules/publications-by-keyword/publications-by-keyword.component';
 import {KeysPipe} from "./keys.pipe";
@@ -56,6 +55,7 @@ import {ShareButtonsModule} from "ng2-sharebuttons";
 import {ConferenceComponent} from "./modules/conference/conference.component";
 import {Angulartics2Module, Angulartics2Piwik} from "angulartics2";
 import {RequestManager} from './services/request-manager.service';
+import {ScrollLoaderDirective} from './modules/scroll-loader/scroll-loader.component';
 
 const routes: Routes = [];
 
@@ -124,7 +124,7 @@ const routes: Routes = [];
         ApiExternalServer,
         TimeManager
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {
 }

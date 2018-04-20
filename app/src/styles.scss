@@ -404,6 +404,15 @@ button.mat-menu-item {
   }
 }
 
+  .search-result-wrapper {
+    
+    .search-result {
+      
+      a {
+        color : $font-color-dark;
+      }
+    }
+  }
 
 
 html.no-material {
