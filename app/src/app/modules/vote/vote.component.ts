@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {VoteService} from '../../services/vote.service'
+import {VoteService} from '../../services/vote.service';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {Config} from "../../app-config";
 import {LocalStorageService} from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
-import {MdSnackBar} from "@angular/material";
+import {MdSnackBar} from '@angular/material';
 
 @Component({
   selector: 'vote',
@@ -14,7 +13,7 @@ import {MdSnackBar} from "@angular/material";
 export class VoteComponent implements OnInit {
   token;
   subscription: Subscription;
-  canVote: any
+  canVote: any;
   /***
    * Retrive the track Id and the event Type from the publication
    */
@@ -24,16 +23,16 @@ export class VoteComponent implements OnInit {
   public votable = false;
   public hasVoted = false;
   public justVoted = false;
-  private key_localstorage_token = "token_external_ressource_sympozer";
-  private key_localstorage_vote = "hasVoted"
+  private key_localstorage_token = 'token_external_ressource_sympozer';
+  private key_localstorage_vote = 'hasVoted';
   constructor(private voteService: VoteService,
               private localStoragexx: LocalStorageService,
               private snackBar: MdSnackBar,
               private apiExternalServer: ApiExternalServer) {
 
       this.subscription = this.apiExternalServer.getAuthorizationVoteStatus().subscribe(status => {
-            console.log(status) 
-            this.canVote = status; 
+            console.log(status);
+            this.canVote = status;
         });
   }
 
@@ -42,39 +41,39 @@ export class VoteComponent implements OnInit {
    */
   ngOnInit() {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
-    let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
-    votedPublications = JSON.parse(votedPublications)
+    // let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
+    // votedPublications = JSON.parse(votedPublications);
     setTimeout(() => {
-      this.votable = this.voteService.isTrackVotable(this.idTrack)
-      this.hasVoted = this.voteService.isTrackVoted(this.idTrack)
-    }, 1000)
-    this.canVote = true
+      this.votable = this.voteService.isTrackVotable(this.idTrack);
+      this.hasVoted = this.voteService.isTrackVoted(this.idTrack);
+    }, 1000);
+    this.canVote = true;
   }
 
   /**
    * Invoke voting service
    */
   vote = () => {
-    const that = this
+    const that = this;
     this.voteService.vote(this.idTrack, this.idPublication)
-        .then(()=>{
-          this.snackBar.open("Vote successful", "", {
+        .then(() => {
+          this.snackBar.open('Vote successful', '', {
               duration: 2000,
           });
-          that.hasVoted = true
-          that.justVoted = true
+          that.hasVoted = true;
+          that.justVoted = true;
         })
-        .catch((err) =>{
-          console.log(err)
-          if(err === 403){
-            that.hasVoted = true
-            this.snackBar.open("You have already voted", "", {
+        .catch((err) => {
+          console.log(err);
+          if (err === 403){
+            that.hasVoted = true;
+            this.snackBar.open('You have already voted', '', {
               duration: 2000,
             });
           }
-          
-        })
+
+        });
     }
-  
+
 
 }
