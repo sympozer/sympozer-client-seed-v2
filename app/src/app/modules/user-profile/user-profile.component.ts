@@ -27,13 +27,13 @@ export class UserProfileComponent implements OnInit {
                 private snackBar: MdSnackBar,
                 private localStoragexx: LocalStorageService) {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
-            console.log(status);
+            //console.log(status);
             this.hasLogged = status;
             if (!this.hasLogged) {
                 let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
                 window.location.replace(urlHost + '#/home');
             }
-            console.log(status)
+            //console.log(status)
 
         });
     }
@@ -41,7 +41,7 @@ export class UserProfileComponent implements OnInit {
     ngOnInit() {
 
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
-        console.log(this.user);
+        //console.log(this.user);
         /*
         if (this.user) {
             console.log(this.user)
@@ -50,18 +50,18 @@ export class UserProfileComponent implements OnInit {
         */
     }
 
-    update(user) {
+    updateProfile(user) {
         console.log(user);
-
-        this.apiExternalServer.update(user)
+        this.apiExternalServer.updateProfile(user.firstname, user.lastname)
             .then((status) => {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,
                 });
-                window.history.back()
+                let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
+                window.location.replace(urlHost+'#/profile');
             })
             .catch((err) => {
-                this.snackBar.open(err, '', {
+                this.snackBar.open(JSON.parse(err.text()).message, '', {
                     duration: 2000,
                 });
             })

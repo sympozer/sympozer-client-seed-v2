@@ -114,7 +114,7 @@ const routes: Routes = [];
         UserProfileComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
-        ChangePasswordComponent
+        ChangePasswordComponent,
     ],
     imports: [
         BrowserModule,
@@ -145,7 +145,7 @@ const routes: Routes = [];
         ToolsService,
         TimeManager
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {
 }
