@@ -40,12 +40,14 @@ import {ShareComponent} from './modules/share-button/share-button.component';
 import {KeywordsComponent} from './modules/keywords/keywords.component';
 import {PublicationsByKeywordComponent} from './modules/publications-by-keyword/publications-by-keyword.component';
 import {KeysPipe} from "./keys.pipe";
+import {ToolsComponent} from './modules/tools/tools.component';
 import {DataLoaderService} from "./data-loader.service";
 import {DBLPDataLoaderService} from "./dblpdata-loader.service";
 import {LocalDAOService} from "./localdao.service";
 import {eventHelper} from "./eventHelper";
 import {Encoder} from "./lib/encoder";
 import {Ng2Webstorage} from "ng2-webstorage";
+import {ToolsService} from './services/tools.service';
 import {GithubService} from "./services/github.service";
 import {ApiExternalServer} from "./services/ApiExternalServer";
 import {RessourceDataset} from "./services/RessourceDataset";
@@ -90,6 +92,7 @@ const routes: Routes = [];
         ExternPublicationComponent,
         AutocompleteComponent,
         KeysPipe,
+        ToolsComponent,
         EventsByDate,
         ShareComponent,
         ScrollLoaderDirective,
@@ -122,7 +125,8 @@ const routes: Routes = [];
         PersonService,
         RessourceDataset,
         ApiExternalServer,
-        TimeManager
+        TimeManager,
+        ToolsService
     ],
     bootstrap: [AppComponent],
 })

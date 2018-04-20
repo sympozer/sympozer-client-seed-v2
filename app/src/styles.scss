@@ -404,16 +404,60 @@ button.mat-menu-item {
   }
 }
 
+html.dark {
+  * {
+    color: white !important;
+  }
+
+  .mat-card {
+    background: $dark-theme-bg-light;
+
+    a {
+      color: white;
+    }
+  }
+
+  header {
+    background: $dark-theme-bg-light;
+  }
+
+  menu.side .menu ul li a .link {
+    color: white !important;
+  }
+
+  #search-box {
+    background: $dark-theme-bg-light;
+    color: white !important;
+  }
+
   .search-result-wrapper {
-    
+    background: $dark-theme-bg-light;
+
     .search-result {
-      
+      background: $dark-theme-bg-light;
+
       a {
-        color : $font-color-dark;
+        background: $dark-theme-bg-light;
+
+        &:not(#not-found):hover {
+          text-decoration: underline;
+        }
       }
     }
   }
 
+  .mat-menu-content {
+    background: $dark-theme-bg-light;
+  }
+
+  md-sidenav-container {
+    background: $dark-theme-bg !important;
+  }
+
+  .mat-sidenav.mat-sidenav-push {
+    background: $dark-theme-bg !important;
+  }
+}
 
 html.no-material {
   .info-text {

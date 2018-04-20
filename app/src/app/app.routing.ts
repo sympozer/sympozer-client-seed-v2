@@ -28,6 +28,9 @@ import {EventsByDate} from './modules/events-by-date/events-by-date';
 import {KeywordsComponent} from './modules/keywords/keywords.component';
 import {ConferenceComponent} from './modules/conference/conference.component';
 import {PublicationsByKeywordComponent} from './modules/publications-by-keyword/publications-by-keyword.component';
+import {ToolsComponent} from './modules/tools/tools.component';
+
+
 
 const appRoutes: Routes = [
     {
@@ -146,7 +149,11 @@ const appRoutes: Routes = [
     {
         path: 'publications-by-keyword/:keyword',
         component: PublicationsByKeywordComponent
-    }
+    },
+    {
+        path: 'tools',
+        component: ToolsComponent
+    },
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);

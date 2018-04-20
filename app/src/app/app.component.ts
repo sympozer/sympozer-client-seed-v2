@@ -75,6 +75,16 @@ export class AppComponent implements OnInit {
             this.localStoragexx.store('material', true);
         }
 
+        storage = this.localStoragexx.retrieve('darkTheme');
+        if (storage) {
+            if (!html.classList.contains('dark')) {
+                html.classList.add('dark');
+                for (i = 0; i < htmlLogo.length ; i++) {
+                    htmlLogo[i].querySelectorAll('img')[0].src = './img/TheWebConference2018-logo-dark.png';
+                }
+            }
+        }
+        
         // TODO Trier ce qui suit...
 /*
         let token = this.localStoragexx.retrieve(this.key_localstorage_token);
