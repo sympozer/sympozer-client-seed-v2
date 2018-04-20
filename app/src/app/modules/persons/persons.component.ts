@@ -34,13 +34,15 @@ export class PersonsComponent implements OnInit {
             document.getElementById('page-title-p').innerHTML = this.title;
         }
         const that = this;
-        const alreadyInserted = new Set([]);
 
         console.log('Cache available: ', cache ? 'YES' : 'NO');
         if (cache) {
             this.persons = cache;
             console.log('Retrieved from cache.');
         } else {
+            let personsBuffer = [];
+            let alreadyInserted = new Set([]);
+
             that.DaoService.query('getAllPersons', null, (results) => {
                 if (results) {
                     const nodeId = results['?id'];
@@ -78,13 +80,14 @@ export class PersonsComponent implements OnInit {
                         sortName: sortName,
                     };
 
-                    that.persons = that.persons.concat(person);
+                    personsBuffer.push(person);
 
-                    that.persons.sort((a, b) => {
-                        return a.sortName > b.sortName ? 1 : -1;
-                    });
                 }
             }, () => {
+                that.persons.sort((a, b) => {
+                    return a.sortName > b.sortName ? 1 : -1;
+                });
+                that.persons = personsBuffer; // force GUI refresh
                 cache = this.persons;
             });
         }
