@@ -44,6 +44,9 @@ export class SendEmailComponent implements OnInit {
     this.subject = this.appointService.subject;
     this.sender = this.appointService.sender;
     this.receivers = this.appointService.receivers;
+    console.log(this.subject);
+    console.log(this.sender.email);
+    console.log(this.receivers);
   }
 
   sendEmail() {
