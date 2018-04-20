@@ -1,4 +1,3 @@
-
 import {Component, OnInit} from '@angular/core';
 import {Config} from "../../app-config";
 import {Router} from '@angular/router';
@@ -9,7 +8,6 @@ import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {LocalStorageService} from 'ng2-webstorage';
-import {LoginService} from './login.service';
 
 const sha1 = require('sha-1');
 const jwtDecode = require('jwt-decode');
@@ -18,7 +16,7 @@ const jwtDecode = require('jwt-decode');
     selector: 'login',
     templateUrl: 'login.component.html',
     styleUrls: ['./login.component.scss'],
-    providers: [LoginService]
+    providers: []
 })
 export class LoginComponent implements OnInit {
 
@@ -27,7 +25,7 @@ export class LoginComponent implements OnInit {
     toggleLogin = true;
     private key_localstorage_token = "token_external_ressource_sympozer";
     private key_localstorage_user = "user_external_ressource_sympozer";
-    online : any ;
+    online:any;
 
 
     constructor(private router: Router,
@@ -36,8 +34,7 @@ export class LoginComponent implements OnInit {
                 private voteService: VoteService,
                 private DaoService: LocalDAOService,
                 private encoder: Encoder,
-                private localStoragexx: LocalStorageService,
-                private apiLogin : LoginService) {
+                private localStoragexx: LocalStorageService) {
         this.online = navigator.onLine;
     }
     ngOnInit(): void {
@@ -102,67 +99,101 @@ export class LoginComponent implements OnInit {
     */
 
     login(email, password) {
-        if (this.online){
-            this.apiExternalServer.login(email, password)
-                .then((user) => {
-                    this.snackBar.open("Login successful.", "", {
-                        duration: 2000,
+        this.apiExternalServer.login(email, password)
+            .then((user) => {
+                this.snackBar.open("Login successful.", "", {
+                    duration: 2000,
+                });
+                //window.location.href = 'http://www.google.com';
+                /*
+                this.voteService.votedPublications()
+                    .then(() => {
+                        this.sendLoginStatus(true)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        this.snackBar.open("A network error occured. Please try again later.", "", {
+                            duration: 2000,
+                        });
                     });
-                    //window.location.href = 'http://www.google.com';
-                    this.voteService.votedPublications()
-                        .then(() => {
-                            this.sendLoginStatus(true)
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            this.snackBar.open("A network error occured. Please try again later.", "", {
-                                duration: 2000,
-                            });
+                */
+
+
+                //Retrieve the author by the publication
+                const that = this;
+                let emailSha1 = sha1('mailto:' + email);
+                let query = {'key': emailSha1};
+                that.DaoService.query("getPersonBySha", query, (results) => {
+
+                    if (results) {
+                        const nodeIdPerson = results['?id'];
+                        const nodeLabel = results['?label'];
+
+                        if (!nodeIdPerson || !nodeLabel) {
+                            return false;
+                        }
+
+                        let idPerson = nodeIdPerson.value;
+                        const label = nodeLabel.value;
+
+                        if (!idPerson || !label) {
+                            return false;
+                        }
+                        let username = label.split(' ');
+                        that.snackBar.open("You are recognized as " + label + ".", "", {
+                            duration: 3000,
                         });
 
-
-
-                    //Retrieve the author by the publication
-                    const that = this;
-                    let emailSha1 = sha1('mailto:' + email);
-                    let query = {'key': emailSha1};
-                    this.DaoService.query("getPersonBySha", query, (results) => {
-
-                        if (results) {
-                            const nodeIdPerson = results['?id'];
-                            const nodeLabel = results['?label'];
-
-                            if (!nodeIdPerson || !nodeLabel) {
-                                return false;
-                            }
-
-                            let idPerson = nodeIdPerson.value;
-                            const label = nodeLabel.value;
-
-                            if (!idPerson || !label) {
-                                return false;
-                            }
-                            let username = label.split(' ')
-                            this.snackBar.open("You are recognized as " + label + ".", "", {
-                                duration: 2000,
-                            });
-                            if (username[0] && username[0].length > 0) {
-                                this.update(user, username[0], username[1])
-                            }
-                        }
-                    });
-
-                    window.history.back()
-
-                })
-                .catch((err) => {
-                    this.snackBar.open(err, "", {
-                        duration: 2000,
-                    });
+                    }
                 });
-        }
+
+                window.history.back()
+
+            })
+            .catch((err) => {
+                this.snackBar.open(JSON.parse(err.text()).message, "", {
+                    duration: 3000,
+                });
+            });
     }
 
+
+    sendLoginStatus(status: boolean): void {
+        // send status to subscribers via observable subject
+        this.apiExternalServer.sendLoginStatus(status);
+    }
+
+    sendAuthorizationStatus(status: boolean): void {
+        // send status to subscribers via observable subject
+        this.apiExternalServer.sendAuthorizationVoteStatus(status);
+    }
+
+    /**
+     * Send boolean firstname to all subscribers
+     * @param firstname
+     */
+    sendFirstname(firstname: string): void {
+        this.apiExternalServer.sendUsername(firstname)
+    }
+
+
+
+    authGoogle() {
+        console.log("HELLLLLLLLLLOOOOO");
+        this.apiExternalServer.authGoogleService();
+    }
+
+    authLinkedin(){
+
+    }
+
+    authTwitter() {
+
+    }
+
+    authFacebook(){
+
+    }
     updateOnfflineStatus() {
         this.online = false;
         var toast = document.getElementById("toast");
@@ -183,40 +214,4 @@ export class LoginComponent implements OnInit {
         (<HTMLInputElement> document.getElementById("login-btn")).disabled = false;
         (<HTMLInputElement> document.getElementById("login-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
     }
-
-    sendLoginStatus(status: boolean): void {
-        // send status to subscribers via observable subject
-        this.apiExternalServer.sendLoginStatus(status);
-    }
-
-    sendAuthorizationStatus(status: boolean): void {
-        // send status to subscribers via observable subject
-        this.apiExternalServer.sendAuthorizationVoteStatus(status);
-    }
-
-    /**
-     * Send boolean firstname to all subscribers
-     * @param firstname
-     */
-    sendFirstname(firstname: string): void {
-        this.apiExternalServer.sendUsername(firstname)
-    }
-
-    update(user, firstname, lastname) {
-        console.log(user)
-        if (user && user.firstname !== null) {
-            if (user.firstname !== firstname) {
-                user.firstname = firstname
-                user.lastname = lastname
-                this.apiExternalServer.update(user)
-                    .then(() => {
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
-            }
-        }
-    }
-
-
 }
