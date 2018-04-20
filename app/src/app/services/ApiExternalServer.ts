@@ -73,9 +73,10 @@ export class ApiExternalServer {
                         return reject(person.error);
                     }
 
-                    if (person.firstname && person.firstname.length > 0) {
-                        this.sendUsername(person.firstname);
-                        that.localStoragexx.store(that.key_localstorage_username, person.firstname);
+                    if (bodyRequest.firstname && bodyRequest.firstname.length > 0) {
+                        console.log(bodyRequest.firstname);
+                        this.sendUsername(bodyRequest.firstname);
+                        that.localStoragexx.store(that.key_localstorage_username, bodyRequest.firstname);
                     }
 
                     return resolve(request);
