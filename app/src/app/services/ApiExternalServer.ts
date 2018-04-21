@@ -61,7 +61,7 @@ export class ApiExternalServer {
                 linkedinaccount: user.linkedinaccount
             };
 
-            that.managerRequest.post(Config.externalServer.url + '/api/ressource/person', bodyRequest)
+            that.managerRequest.post(Config.externalServer.url + '/api/person', bodyRequest)
                 .then((request) => {
                     const person = JSON.parse(request.text());
                     if (request.status === 403) {
