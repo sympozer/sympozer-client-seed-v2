@@ -884,12 +884,14 @@ export class LocalDAOService {
 
                     that.launchSparqlQuery(command, query, callback, done);
                     break;
-                case 'getGeoByLabel':
+                case 'getLocInfoByLabel':
                     query = 'PREFIX s: <http://schema.org/> \n' +
+                        'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
                         'SELECT DISTINCT * \n' +
                         'WHERE {\n' +
                         ' ?id rdfs:label "' + data.key + '" . \n' +
-                        ' ?id s:geo ?geo . \n' +
+                        ' OPTIONAL { ?id s:geo ?geo . } \n' +
+                        ' OPTIONAL { ?id sd:address ?address . } \n' +
                         '}';
                     that.launchSparqlQuery(command, query, callback, done);
                     break;
