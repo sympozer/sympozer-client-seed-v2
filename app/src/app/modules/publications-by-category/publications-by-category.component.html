@@ -1,7 +1,7 @@
 <h1 id="description-title">{{labelTrack}}</h1>
 
 <div class='action-links track-switch'>
-    <a [routerLink]="['/event-by-category/'+labelTrack+'/'+trackId]">Sessions</a> / Publications
+    <a [routerLink]="['/event-by-category/'+labelTrack+'/'+trackId]">Sessions</a> | Publications
 </div><div class='action-links'>
 
 <app-autocomplete [seachFor]="'label'" [items]="publications" [namespace]="'publication'"></app-autocomplete>
