@@ -342,13 +342,14 @@ export class LocalDAOService {
                 case 'getPublication':
                     query =
                         'PREFIX foaf: <http://xmlns.com/foaf/0.1/> \n' +
-                        'PREFIX scholary: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
-                        'PREFIX schema: <http://www.w3.org/2000/01/rdf-schema#> \n' +
+                        'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
+                        'PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> \n' +
                         'SELECT DISTINCT ?label ?abstract \n' +
                         'WHERE {\n' +
-                        ' <' + data.key + '> a scholary:InProceedings . \n' +
-                        ' <' + data.key + '> scholary:abstract ?abstract . \n' +
-                        ' <' + data.key + '> schema:label ?label . \n' +
+                        ' <' + data.key + '> a sd:InProceedings . \n' +
+                        ' <' + data.key + '> sd:abstract ?abstract . \n' +
+                        ' <' + data.key + '> rdfs:label ?label . \n' +
+                        ' OPTIONAL { <' + data.key + '> foaf:homepage ?homepage . } \n' +
                         '}';
 
                     that.launchSparqlQuery(command, query, callback, done);

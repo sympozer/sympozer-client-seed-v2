@@ -9,6 +9,9 @@
       {{publication.abstract}}
     </p>
   </md-card>
+  <md-card *ngIf="publication.homepage" class="info-text">
+    <a [href]="publication.homepage" target="_blank">Open in ACM Proceedings</a>
+  </md-card>
 
   <div *ngIf="keywords && keywords.length > 0">
     <h2>Keywords</h2>
