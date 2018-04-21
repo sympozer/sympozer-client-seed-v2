@@ -76,7 +76,7 @@
     <h2>Tracks</h2>
     <div class="action-links list-items" *ngFor="let track of tracks">
       <md-card>
-        <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
+        <a [routerLink]="['/event-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
       </md-card>
     </div>
   </div>
