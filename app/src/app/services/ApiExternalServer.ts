@@ -257,6 +257,34 @@ getUserExternal(hashmail) {
         });
     };
 
+    signupWithBadge = (email,emailUsed, firstname, lastname, password) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                email: email,
+                emailUsed: emailUsed,
+                firstname: firstname,
+                lastname: lastname,
+                password: password,
+                confirmPassword: password
+            };
+
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
+                .then((request) => {
+                    const resultPromise = JSON.parse(request.text());
+                    if (request.status === 400) {
+                        return reject(resultPromise.message);
+                    }
+                    return resolve(true);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    };
+
     forgotPassword = (email) => {
         return new Promise((resolve, reject) => {
             if (!email || email.length === 0) {

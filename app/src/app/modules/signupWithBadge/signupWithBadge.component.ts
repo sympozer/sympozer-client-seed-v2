@@ -39,17 +39,24 @@ export class SignupWithBadgeComponent implements OnInit {
     /**
      * Invoke the signup external server service
      * @param email
+     * @param emailUsed
      * @param firstname
      * @param lastname
      * @param password
      * @param confirm password
      */
 
-    signup(email, firstname, lastname, password, confirmPassword) {
+    signupWithBadge(email, emailUsed, firstname, lastname, password, confirmPassword) {
         const that = this;
 
         if (!email || email.length === 0) {
             that.snackBar.open('Invalid email address.', "", {
+                duration: 3000,
+            });
+        }
+
+        if (!emailUsed || emailUsed.length === 0) {
+            that.snackBar.open('Invalid email Used address.', "", {
                 duration: 3000,
             });
         }
@@ -84,7 +91,7 @@ export class SignupWithBadgeComponent implements OnInit {
         }
 
         else {
-            this.apiExternalServer.signup(email, firstname, lastname, password)
+            this.apiExternalServer.signupWithBadge(email,emailUsed,firstname, lastname, password)
                 .then(() => {
 
                     that.snackBar.open('Please check your email to validate your account.', '', {
