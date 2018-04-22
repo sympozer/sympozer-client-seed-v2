@@ -40,9 +40,8 @@ export class UserProfileComponent implements OnInit {
         this.online = navigator.onLine;
     }
 
-    ngOnInit() {
     ngOnInit(): void {
-        window.addEventListener('online',  this.updateOnline);
+        window.addEventListener('online', this.updateOnline);
         window.addEventListener('offline', this.updateOnffline);
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
         this.firstName = this.localStoragexx.retrieve(this.key_localstorage_userName);
@@ -56,22 +55,22 @@ export class UserProfileComponent implements OnInit {
     }
 
     updateProfile(user) {
-        if (!this.online){
-        console.log(user);
-        this.apiExternalServer.updateProfile(user.firstname, user.lastname)
-            .then((status) => {
-                this.snackBar.open('Update successful.', '', {
-                    duration: 2000,
+        if (!this.online) {
+            console.log(user);
+            this.apiExternalServer.updateProfile(user.firstname, user.lastname)
+                .then((status) => {
+                    this.snackBar.open('Update successful.', '', {
+                        duration: 2000,
+                    });
+                    const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                    window.location.replace(urlHost + '#/profile');
+                })
+                .catch((err) => {
+                    this.snackBar.open(JSON.parse(err.text()).message, '', {
+                        duration: 2000,
+                    });
                 });
-                const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
-                window.location.replace(urlHost + '#/profile');
-            })
-            .catch((err) => {
-                this.snackBar.open(JSON.parse(err.text()).message, '', {
-                    duration: 2000,
-                });
-            });
-        }else{
+        } else {
             this.snackBar.open('No Connection, Please try later', '', {
                 duration: 3000,
             });
@@ -79,19 +78,26 @@ export class UserProfileComponent implements OnInit {
     }
 
     updateUser(user) {
-        if (!this.online ) {
-        this.apiExternalServer.update(user)
-            .then((status) => {
-                this.snackBar.open('Update successful.', '', {
-                    duration: 2000,
+        if (!this.online) {
+            this.apiExternalServer.update(user)
+                .then((status) => {
+                    this.snackBar.open('Update successful.', '', {
+                        duration: 2000,
+                    });
+                    window.history.back();
+                })
+                .catch((err) => {
+                    this.snackBar.open(err, '', {
+                        duration: 2000,
+                    });
                 });
-                window.history.back();
-            })
-            .catch((err) => {
-                this.snackBar.open(err, '', {
-                    duration: 2000,
-                });
-            });
-    }
+        }
 
+    }
+    updateOnffline() {
+        this.online = false;
+    }
+    updateOnline(){
+        this.online = true;
+    }
 }
