@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, NgModule } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiExternalServer } from '../../services/ApiExternalServer';
 import { MdSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
@@ -21,27 +21,29 @@ export class UserProfileComponent implements OnInit {
 
     hasLogged: any;
     user;
+    firstName: string;
     private key_localstorage_user = 'user_external_ressource_sympozer';
+    private key_localstorage_userName = 'username_external_ressource_sympozer';
 
     constructor(private apiExternalServer: ApiExternalServer,
         private snackBar: MdSnackBar,
         private localStoragexx: LocalStorageService) {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
-            //console.log(status);
+            // console.log(status);
             this.hasLogged = status;
             if (!this.hasLogged) {
-                let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
                 window.location.replace(urlHost + '#/home');
             }
-            //console.log(status)
+            // console.log(status)
 
         });
     }
 
     ngOnInit() {
-
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
-        //console.log(this.user);
+        this.firstName = this.localStoragexx.retrieve(this.key_localstorage_userName);
+        //console.log(this.firstName);
         /*
         if (this.user) {
             console.log(this.user)
@@ -57,14 +59,14 @@ export class UserProfileComponent implements OnInit {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,
                 });
-                let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
                 window.location.replace(urlHost + '#/profile');
             })
             .catch((err) => {
                 this.snackBar.open(JSON.parse(err.text()).message, '', {
                     duration: 2000,
                 });
-            })
+            });
     }
 
     updateUser(user) {
@@ -75,13 +77,13 @@ export class UserProfileComponent implements OnInit {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,
                 });
-                window.history.back()
+                window.history.back();
             })
             .catch((err) => {
                 this.snackBar.open(err, '', {
                     duration: 2000,
                 });
-            })
+            });
     }
 
     getUserExternal(user) {
