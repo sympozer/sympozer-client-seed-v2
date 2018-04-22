@@ -24,8 +24,8 @@ export class UserProfileComponent implements OnInit {
     private key_localstorage_user = 'user_external_ressource_sympozer';
 
     constructor(private apiExternalServer: ApiExternalServer,
-        private snackBar: MdSnackBar,
-        private localStoragexx: LocalStorageService) {
+                private snackBar: MdSnackBar,
+                private localStoragexx: LocalStorageService) {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
             //console.log(status);
             this.hasLogged = status;
@@ -34,7 +34,6 @@ export class UserProfileComponent implements OnInit {
                 window.location.replace(urlHost + '#/home');
             }
             //console.log(status)
-
         });
     }
 
@@ -81,18 +80,6 @@ export class UserProfileComponent implements OnInit {
                 this.snackBar.open(err, '', {
                     duration: 2000,
                 });
-            })
-    }
-
-    getUserExternal(user) {
-        console.log(user);
-
-        this.apiExternalServer.getUserExternal(user.mbox_sha1sum)
-            .then((status) => {
-               
-            })
-            .catch((err) => {
-               
             })
     }
 
