@@ -1,21 +1,13 @@
 <div class="component-wrapper">
-  <div class="login-wrapper">
+    <div class="login-wrapper">
     <md-card class="inscription-card">
-      <div class="header">
-        <h4>Update your profile</h4>
+         <div class="header">
+            <h4>{{firstName}}, update your profile</h4>
       </div>
       <div class="inscription-form">
 
         <form>
           <br>
-          <md-input-container>
-            <input [(ngModel)]="user.firstname" mdInput type="text" name="user.firstname" placeholder="First name" readOnly="readOnly">
-          </md-input-container>
-
-          <md-input-container>
-            <input [(ngModel)]="user.lastname" mdInput type="text" name="user.lastname" placeholder="Last name" readOnly="readOnly">
-          </md-input-container>
-
           <md-icon>
             <i class="fa fa-twitter"></i>
           </md-icon>
@@ -56,10 +48,7 @@
               <span>Connect with LinkedIn</span>
             </a>
           </div>
-
         </form>
-
-
       </div>
     </md-card>
   </div>
