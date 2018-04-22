@@ -9,9 +9,6 @@
       {{publication.abstract}}
     </p>
   </md-card>
-  <md-card *ngIf="publication.homepage" class="info-text">
-    <a [href]="publication.homepage" target="_blank">Open in ACM Proceedings</a>
-  </md-card>
 
   <div *ngIf="keywords && keywords.length > 0">
     <h2>Keywords</h2>
@@ -79,7 +76,7 @@
     <h2>Tracks</h2>
     <div class="action-links list-items" *ngFor="let track of tracks">
       <md-card>
-        <a [routerLink]="['/event-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
+        <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
       </md-card>
     </div>
   </div>

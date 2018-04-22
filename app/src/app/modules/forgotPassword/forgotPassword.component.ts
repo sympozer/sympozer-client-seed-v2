@@ -6,12 +6,13 @@ import {MdSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {LocalStorageService} from 'ng2-webstorage';
+import {ForgotPasswordService} from './forgotPassword.service';
 
 @Component({
     selector: 'forgotPassword',
     templateUrl: './forgotPassword.component.html',
     styleUrls: ['./forgotPassword.component.scss'],
-    providers: []
+    providers: [ForgotPasswordService]
 })
 
 export class ForgotPasswordComponent implements OnInit {
@@ -22,7 +23,8 @@ export class ForgotPasswordComponent implements OnInit {
         private apiExternalServer: ApiExternalServer,
         public snackBar: MdSnackBar,
         private DaoService: LocalDAOService,
-        private localStoragexx: LocalStorageService ) {
+        private localStoragexx: LocalStorageService,
+        private ForgotPasswordService : ForgotPasswordService ) {
 
         }
 

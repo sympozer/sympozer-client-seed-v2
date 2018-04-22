@@ -2,15 +2,6 @@
   {{nameLocation}}
 </h1>
 
-<p *ngIf="address !== null">
-  {{address}}
-</p>
-
-<md-card *ngIf="geo !== null" class="info-text">
-    <md-icon>place</md-icon>
-    <a [href]="geo">Open in map</a>
-</md-card>
-
 <h2>Schedule</h2>
 
 <div class="action-links list-items multiple-lines" *ngFor="let event of eventsLocation">

@@ -62,7 +62,6 @@ export class PublicationComponent implements OnInit {
 
                     const label = nodeLabel.value;
                     const abstract = nodeAbstract.value;
-                    const homepage = results['?homepage'] ? results['?homepage'].value : null;
 
                     if (!label || !abstract) {
                         return false;
@@ -70,7 +69,6 @@ export class PublicationComponent implements OnInit {
 
                     that.publication.label = label;
                     that.publication.abstract = abstract;
-                    that.publication.homepage = homepage;
                     if (document.getElementById("page-title-p"))
                         document.getElementById("page-title-p").innerHTML = label;
                 }

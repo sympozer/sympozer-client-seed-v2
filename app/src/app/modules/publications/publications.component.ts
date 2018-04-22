@@ -33,9 +33,6 @@ export class PublicationsComponent implements OnInit {
             this.publications = cache;
             console.log('Retrieved from cache.');
         } else {
-            this.publications = [];
-            let publicationsBuffer = [];
-            let seen = new Set();
             that.DaoService.query('getAllPublications', null, (results) => {
                 if (results) {
                     const nodeId = results['?id'];
@@ -57,20 +54,24 @@ export class PublicationsComponent implements OnInit {
                         return false;
                     }
 
-                    if (seen.has(id)) { return false; }
-                    seen.add(id);
+                    const find = that.publications.find((p) => {
+                        return p.id === id;
+                    });
 
-                    publicationsBuffer.push({
+                    if (find) {
+                        return false;
+                    }
+
+                    that.publications = that.publications.concat({
                         id: id,
                         label: label,
                     });
 
+                    that.publications.sort((a, b) => {
+                        return a.label > b.label ? 1 : -1;
+                    });
                 }
             }, () => {
-                publicationsBuffer.sort((a, b) => {
-                    return a.label > b.label ? 1 : -1;
-                });
-                that.publications = publicationsBuffer; // force GUI refresh
                 cache = this.publications;
             });
         }

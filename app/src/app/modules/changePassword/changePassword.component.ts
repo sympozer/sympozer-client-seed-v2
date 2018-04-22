@@ -6,12 +6,13 @@ import {MdSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
 import {LocalStorageService} from 'ng2-webstorage';
+import {ChangePasswordService} from './changePassword.service';
 
 @Component({
     selector: 'changePassword',
     templateUrl: './changePassword.component.html',
     styleUrls: ['./changePassword.component.scss'],
-    providers: []
+    providers: [ChangePasswordService]
 })
 
 export class ChangePasswordComponent implements OnInit {
@@ -23,7 +24,8 @@ export class ChangePasswordComponent implements OnInit {
         private apiExternalServer: ApiExternalServer,
         public snackBar: MdSnackBar,
         private DaoService: LocalDAOService,
-        private localStoragexx: LocalStorageService) {
+        private localStoragexx: LocalStorageService,
+        private ChangePasswordService : ChangePasswordService ) {
 
         }
 
@@ -42,17 +44,19 @@ export class ChangePasswordComponent implements OnInit {
 	 * @param newPassword
 	 */
 	changePassword(currentPassword, newPassword, confirmPassword){
+
+		let id = this.localStoragexx.retrieve(this.key_localstorage_id);
 		
-		this.apiExternalServer.changePassword(currentPassword, newPassword, confirmPassword)
+		this.apiExternalServer.changePassword(id, currentPassword, newPassword, confirmPassword)
             .then(() => {
                 this.snackBar.open("You have successfully updated your password.", "", {
 					duration: 3000,
 				});
                 let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
-                window.location.replace(urlHost+'#/profile');
+                window.location.replace(urlHost+'#/login');
             })
             .catch((err) => {
-                this.snackBar.open(JSON.parse(err.text()).message, "", {
+                this.snackBar.open(err, "", {
                     duration: 3000,
                 });
             });

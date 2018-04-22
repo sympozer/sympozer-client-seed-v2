@@ -28,7 +28,7 @@ export class CategoriesComponent implements OnInit {
         let seen = new Set();
         let trackMap = new Map();
 
-        this.DaoService.query("getAllCategoriesFor", {key: 'OrganisedEvent'}, (results) => {
+        this.DaoService.query("getAllCategoriesForEvents", null, (results) => {
             if (results) {
                 const nodeId= results['?sub'];
                 if (!nodeId) {
@@ -46,17 +46,15 @@ export class CategoriesComponent implements OnInit {
 
                 const label = results['?subL'].value;
                 const superLabel = results['?superL'].value;
-                const sortLabel = results['?sortLabel'] ? results['?sortLabel'].value : superLabel;
                 let supertrack = trackMap.get(superLabel);
                 if (supertrack === undefined) {
                     supertrack = {
                         label: superLabel,
-                        sortLabel: sortLabel,
                         subtracks: [],
                     }
                     that.tracks = that.tracks.concat(supertrack);
                     that.tracks.sort((a, b) => {
-                        return a.sortLabel > b.sortLabel ? 1 : -1;
+                        return a.label > b.label ? 1 : -1;
                     });
                     trackMap.set(superLabel, supertrack);
                 }

@@ -26,8 +26,8 @@ export class RequestManager {
                 return null;
             });
     }
-    get(url,options?) {
-        return this.http.get(url,options)
+    get(url) {
+        return this.http.get(url)
             .toPromise()
             .then((response: Response) => {
                 return response.text();

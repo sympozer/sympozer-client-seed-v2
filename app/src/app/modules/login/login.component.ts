@@ -47,6 +47,52 @@ export class LoginComponent implements OnInit {
         }
     }
 
+    /**
+     * Invoke the login external server service
+     * @param email
+     * @param password
+     */
+    /*
+    login(email, password) {
+
+        let userResult;
+        this.apiLogin.authentification(email,password).subscribe(
+            response => {
+                userResult = response;
+            },
+            err => { 
+                console.log(err);
+                this.snackBar.open("Wrong Username or Password", "", {
+                    duration: 2000,
+                });
+                },
+            () => {
+                this.localStoragexx.store(this.key_localstorage_token,userResult.token);
+                let decoded = jwtDecode(userResult.token);
+                console.log(decoded);
+                let userInfo;
+                this.apiLogin.getUser(decoded.id).subscribe(
+                    response => {
+                        userInfo = response;
+                    },
+                    err => {
+                        console.log("Error");
+                        console.log(err);
+                    },
+                    () =>  {
+                        console.log(userInfo);
+                        this.localStoragexx.store(this.key_localstorage_user,userInfo);
+                        this.snackBar.open("Login successful.", "", {
+                            duration: 2000,
+                        });
+                        window.history.back();
+                    }
+                );
+            }
+        );
+    }
+    */
+
     login(email, password) {
         this.apiExternalServer.login(email, password)
             .then((user) => {
@@ -93,7 +139,9 @@ export class LoginComponent implements OnInit {
                         that.snackBar.open("You are recognized as " + label + ".", "", {
                             duration: 3000,
                         });
-                        
+                        if (username[0] && username[0].length > 0) {
+                            that.update(user, username[0], username[1])
+                        }
                     }
                 });
 
@@ -126,6 +174,21 @@ export class LoginComponent implements OnInit {
         this.apiExternalServer.sendUsername(firstname)
     }
 
+    update(user, firstname, lastname) {
+        console.log(user)
+        if (user && user.firstname !== null) {
+            if (user.firstname !== firstname) {
+                user.firstname = firstname
+                user.lastname = lastname
+                this.apiExternalServer.update(user)
+                    .then(() => {
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            }
+        }
+    }
 
 
     authGoogle() {
@@ -134,17 +197,14 @@ export class LoginComponent implements OnInit {
     }
 
     authLinkedin(){
-        console.log("HELLLLLLLLLLOOOOO 1");
-        this.apiExternalServer.authLinkedinService();
+
     }
 
     authTwitter() {
-        console.log("HELLLLLLLLLLOOOOO 2");
-        this.apiExternalServer.authTwitterService();
+
     }
 
     authFacebook(){
-        console.log("HELLLLLLLLLLOOOOO 3");
-        this.apiExternalServer.authFacebookService();
+
     }
 }

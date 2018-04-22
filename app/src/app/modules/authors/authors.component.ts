@@ -31,12 +31,11 @@ export class AuthorsComponent implements OnInit {
         if (document.getElementById('page-title-p')) {
             document.getElementById('page-title-p').innerHTML = this.title;
         }
+        const authorMap = new Map();
         if (cache) {
             this.authors = cache;
             console.log('Retrieved from cache.');
         } else {
-            let authorsBuffer = [];
-            let authorMap = new Map();
             this.DaoService.query('getAllAuthors', null, (result) => {
                 if (!result) {
                     return;
@@ -58,7 +57,10 @@ export class AuthorsComponent implements OnInit {
                         publications: [],
                     };
                     authorMap.set(idPerson, author);
-                    authorsBuffer.push(author);
+                    that.authors = that.authors.concat(author);
+                    that.authors.sort((a, b) => {
+                        return a.sortName > b.sortName ? 1 : -1;
+                    });
                 }
                 const idPubli = that.encoder.encode(result['?idPubli'].value);
                 const title = result['?title'].value;
@@ -70,10 +72,6 @@ export class AuthorsComponent implements OnInit {
                     return a.label < b.label ? 1 : -1;
                 });
             }, () => {
-                authorsBuffer.sort((a, b) => {
-                    return a.sortName > b.sortName ? 1 : -1;
-                });
-                this.authors = authorsBuffer; // force GUI refresh
                 cache = this.authors;
             });
         }
