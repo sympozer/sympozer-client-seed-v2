@@ -56,9 +56,12 @@ export class ApiExternalServer {
             const bodyRequest = {
                 token: token,
                 firstname: user.firstname,
+                lastname: user.lastname,
                 homepage: user.homepage,
                 photoUrl: user.photoUrl,
                 twitterpage: user.twitterpage,
+                facebookpage: user.facebookpage,
+                googlepage: user.googlepage,
                 linkedinaccount: user.linkedinaccount
             };
 
@@ -92,7 +95,31 @@ export class ApiExternalServer {
         });
     }
 
-    getUser = (id) => {
+getUserExternal(hashmail) {
+    return new Promise((resolve, reject) => {
+        const token = this.localStoragexx.retrieve(this.key_localstorage_token);
+        const user = this.localStoragexx.retrieve(this.key_localstorage_token);
+
+        if (!token || token.length === 0) {
+            return reject('You are not logged in.');
+        }
+
+        const that = this;
+
+        that.managerRequest.get(Config.externalServer.url + '/api/person')
+            .then((request) => {
+                console.log("THEN");
+                console.log(request);
+
+            })
+            .catch((request) => {
+                console.log("CATCH");
+                return reject(request);
+            });
+    });
+}
+
+    updateProfile(firstname, lastname) {
         return new Promise((resolve, reject) => {
 
             if (!id || id.length === 0) {
