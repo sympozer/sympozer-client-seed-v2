@@ -28,8 +28,9 @@ export class VoteService {
     console.log('track---->' + trackName);
     for (let i = 0; i < Config.vote.tracks.length; i++) {
       const uri = Config.vote.tracks[i];
-      if (uri ===  this.encoder.decode(trackName))
-        return true;
+      if (uri ===  this.encoder.decode(trackName)) {
+          return true;
+      }
     }
     return false;
   }
@@ -41,8 +42,8 @@ export class VoteService {
    * @returns {Promise<T>}
    */
   vote = (id_track, id_publi) => {
+    id_track = this.encoder.decode(id_track)
     return new Promise((resolve, reject) => {
-      console.log('vote called');
       if (!id_publi || id_publi.length === 0) {
         return reject('Erreur lors de la récupération de l\'identifiant de la ressource');
       }
@@ -50,12 +51,12 @@ export class VoteService {
       if (!id_track || id_track.length === 0) {
         return reject('Erreur lors de la récupération de l\'identifiant de la track');
       }
-
       const that = this;
       const token = that.localStoragexx.retrieve(that.key_localstorage_token);
       if (!token || token.length === 0) {
         return reject('Vous devez vous connectez avant de pouvoir voter');
       }
+      console.log(token);
         const bodyRequest = {
             'token': token,
             'id_publication': id_publi,
@@ -70,11 +71,11 @@ export class VoteService {
             console.log('la reponse est' + response.text());
             if (response && response.text()) {
               console.log(response.text());
-                let votedTracks;
-              if (that.localStoragexx.retrieve(that.key_localstorage_vote) == null) {
-                   votedTracks = [];
-              } else {
-                   votedTracks = [that.localStoragexx.retrieve(that.key_localstorage_vote)];
+                const votedTracks = [];
+              if (that.localStoragexx.retrieve(that.key_localstorage_vote) !== null ) {
+                  votedTracks.push(that.localStoragexx.retrieve(that.key_localstorage_vote));
+              }else {
+                  that.localStoragexx.store(that.key_localstorage_vote, []);
               }
               console.log(votedTracks);
               if (response.text() !== 'OK') {
@@ -89,7 +90,7 @@ export class VoteService {
                     if (!this.isTrackVoted(id_track)) {
                       votedTracks.push(id_track);
                     }
-                    console.log(votedTracks)
+                    console.log(votedTracks);
                     that.localStoragexx.store(that.key_localstorage_vote, votedTracks);
                     reject(response.status);
                   }
@@ -101,7 +102,7 @@ export class VoteService {
 
                 votedTracks.push(id_track);
               }
-              console.log(votedTracks);
+              console.log(votedTracks.length);
               that.localStoragexx.store(that.key_localstorage_vote, votedTracks);
               return resolve(true);
             }
@@ -115,17 +116,22 @@ export class VoteService {
     });
   }
 
-  votedPublications() {
+  votedPublications(id_track) {
     return new Promise((resolve, reject) => {
       const that = this;
       const token = that.localStoragexx.retrieve(that.key_localstorage_token);
       if (!token || token.length === 0) {
         return reject('Vous devez vous connectez avant de pouvoir voter');
       }
-      that.managerRequest.get(Config.externalServer.url + '/api/user/vote/information?token=' + token )
+      id_track = this.encoder.decode(id_track)
+        console.log(id_track);
+      that.managerRequest.get(Config.vote.url +  '/api/vote/information?token=' + token + '&id_track=' + id_track )
           .then((response) => {
+            console.log(response);
             if (response && response) {
-              that.localStoragexx.store(that.key_localstorage_vote, response);
+              const res = [];
+                  res.push(JSON.parse(response));
+              that.localStoragexx.store(that.key_localstorage_vote, res);
               return resolve(true);
             }
 
@@ -140,10 +146,8 @@ export class VoteService {
 
   isTrackVoted(idTrack) {
     const votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
-    console.log('votedPUb' + votedPublications);
-    console.log('votedPUb' + idTrack);
     for (const i in votedPublications) {
-      if (votedPublications[i] === idTrack) {
+      if (votedPublications[i] === this.encoder.decode(idTrack)) {
         return true;
       }
     }

@@ -25,6 +25,7 @@ export class VoteComponent implements OnInit {
   public justVoted = false;
   private key_localstorage_token = 'token_external_ressource_sympozer';
   private key_localstorage_vote = 'hasVoted';
+  // private key_localstorage_begin_vote = 'beginVote';
   constructor(private voteService: VoteService,
               private localStoragexx: LocalStorageService,
               private snackBar: MdSnackBar,
@@ -41,8 +42,16 @@ export class VoteComponent implements OnInit {
    */
   ngOnInit() {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
-    // let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
-    // votedPublications = JSON.parse(votedPublications);
+      // let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
+      // votedPublications = JSON.parse(votedPublications);
+      console.log('jsute on init' + this.idTrack)
+      this.voteService.votedPublications(this.idTrack)
+          .then((votedPublications) => {
+              console.log(votedPublications);
+          })
+          .catch((err) => {
+              console.log(err);
+          })
     setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.idTrack);
       this.hasVoted = this.voteService.isTrackVoted(this.idTrack);
@@ -65,10 +74,18 @@ export class VoteComponent implements OnInit {
         })
         .catch((err) => {
           console.log(err);
-          if (err === 403){
+          if (err === 403) {
             that.hasVoted = true;
             this.snackBar.open('You have already voted', '', {
               duration: 2000,
+            });
+          }
+          if (err.status === 403) {
+            // this.beginVote = err._body.begin;
+            // var tmp = JSON.parse(err._body);
+            // this.beginVote = tmp.begin;
+            this.snackBar.open('Vote has not began try again on Wednesday 25 April', '', {
+                duration: 2000,
             });
           }
 
