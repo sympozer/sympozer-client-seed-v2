@@ -47,7 +47,7 @@ export class QrcodeComponent {
 
             //user not in data set
             if (this.tmp === false){
-                this.qrValue = urlHost + '#/person/' + encodename + '/' + emailSha1;
+                this.qrValue = urlHost + '#/participant/' + encodename + '/' + emailSha1;
             }
         });
 

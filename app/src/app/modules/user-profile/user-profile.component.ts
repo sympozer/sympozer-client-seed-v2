@@ -21,30 +21,32 @@ export class UserProfileComponent implements OnInit {
 
     hasLogged: any;
     user;
+    firstName: string;
     private key_localstorage_user = 'user_external_ressource_sympozer';
     online: any;
+    private key_localstorage_userName = 'username_external_ressource_sympozer';
 
     constructor(private apiExternalServer: ApiExternalServer,
-        private snackBar: MdSnackBar,
-        private localStoragexx: LocalStorageService) {
+                private snackBar: MdSnackBar,
+                private localStoragexx: LocalStorageService) {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
-            //console.log(status);
+            // console.log(status);
             this.hasLogged = status;
             if (!this.hasLogged) {
-                let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
                 window.location.replace(urlHost + '#/home');
             }
-            //console.log(status)
-
         });
         this.online = navigator.onLine;
     }
 
+    ngOnInit() {
     ngOnInit(): void {
         window.addEventListener('online',  this.updateOnline);
         window.addEventListener('offline', this.updateOnffline);
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
-        //console.log(this.user);
+        this.firstName = this.localStoragexx.retrieve(this.key_localstorage_userName);
+        //console.log(this.firstName);
         /*
         if (this.user) {
             console.log(this.user)
@@ -61,7 +63,7 @@ export class UserProfileComponent implements OnInit {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,
                 });
-                let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
                 window.location.replace(urlHost + '#/profile');
             })
             .catch((err) => {
@@ -83,36 +85,13 @@ export class UserProfileComponent implements OnInit {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,
                 });
-                window.history.back()
+                window.history.back();
             })
             .catch((err) => {
                 this.snackBar.open(err, '', {
                     duration: 2000,
                 });
             });
-        }else {
-            this.snackBar.open('No Connection, Please try later', '', {
-                duration: 3000,
-            });
-        }
-    }
-
-    getUserExternal(user) {
-        console.log(user);
-
-        this.apiExternalServer.getUserExternal(user.mbox_sha1sum)
-            .then((status) => {
-               
-            })
-            .catch((err) => {
-               
-            })
-    }
-    updateOnffline() {
-        this.online = false;
-    }
-    updateOnline(){
-        this.online = true;
     }
 
 }
