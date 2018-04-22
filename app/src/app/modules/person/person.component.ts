@@ -99,7 +99,9 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
-                                    that.managerRequest.get(Config.externalServer.url + '/api/person?mbox_sha1sum=' + boxs + '&iri=' + id)
+                                    // TODO put back when external is fixed
+//                                    that.managerRequest.get(Config.externalServer.url + '/api/person?mbox_sha1sum=' + boxs + '&iri=' + id)
+                                    that.managerRequest.get(Config.externalServer.url + '/api/person?mbox_sha1sum=')
                                         .then((response) => {
                                             if (response && response) {
                                                 const user = JSON.parse(response);
