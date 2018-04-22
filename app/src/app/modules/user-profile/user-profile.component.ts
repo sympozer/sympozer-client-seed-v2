@@ -22,6 +22,7 @@ export class UserProfileComponent implements OnInit {
     hasLogged: any;
     user;
     private key_localstorage_user = 'user_external_ressource_sympozer';
+    online: any;
 
     constructor(private apiExternalServer: ApiExternalServer,
         private snackBar: MdSnackBar,
@@ -36,10 +37,12 @@ export class UserProfileComponent implements OnInit {
             //console.log(status)
 
         });
+        this.online = navigator.onLine;
     }
 
-    ngOnInit() {
-
+    ngOnInit(): void {
+        window.addEventListener('online',  this.updateOnline);
+        window.addEventListener('offline', this.updateOnffline);
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
         //console.log(this.user);
         /*
@@ -51,6 +54,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     updateProfile(user) {
+        if (!this.online){
         console.log(user);
         this.apiExternalServer.updateProfile(user.firstname, user.lastname)
             .then((status) => {
@@ -64,12 +68,16 @@ export class UserProfileComponent implements OnInit {
                 this.snackBar.open(JSON.parse(err.text()).message, '', {
                     duration: 2000,
                 });
-            })
+            });
+        }else{
+            this.snackBar.open('No Connection, Please try later', '', {
+                duration: 3000,
+            });
+        }
     }
 
     updateUser(user) {
-        console.log(user);
-
+        if (!this.online ) {
         this.apiExternalServer.update(user)
             .then((status) => {
                 this.snackBar.open('Update successful.', '', {
@@ -81,7 +89,12 @@ export class UserProfileComponent implements OnInit {
                 this.snackBar.open(err, '', {
                     duration: 2000,
                 });
-            })
+            });
+        }else {
+            this.snackBar.open('No Connection, Please try later', '', {
+                duration: 3000,
+            });
+        }
     }
 
     getUserExternal(user) {
@@ -94,6 +107,12 @@ export class UserProfileComponent implements OnInit {
             .catch((err) => {
                
             })
+    }
+    updateOnffline() {
+        this.online = false;
+    }
+    updateOnline(){
+        this.online = true;
     }
 
 }

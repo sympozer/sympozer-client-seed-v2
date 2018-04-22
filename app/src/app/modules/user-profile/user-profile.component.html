@@ -49,7 +49,7 @@
 
 
           <div class="inscription-footer">
-            <button md-button color="primary" (click)="updateUser(user)">Update</button>
+            <button md-button color="primary" (click)="updateUser(user)" id="update_btn">Update</button>
           </div>
 
           <div class="btn-social-network">
@@ -71,11 +71,12 @@
 
 
         <div class="inscription-footer">
-          <button md-button color="primary" (click)="getUserExternal(user)">GET USER</button>
+          <button md-button color="primary" (click)="getUserExternal(user)" id="getuser_btn">GET USER</button>
         </div>
 
 
       </div>
     </md-card>
   </div>
+  <div id="toast"></div>
 </div>
