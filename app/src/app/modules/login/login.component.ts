@@ -37,11 +37,12 @@ export class LoginComponent implements OnInit {
                 private localStoragexx: LocalStorageService) {
         this.online = navigator.onLine;
     }
+
     ngOnInit(): void {
-        window.addEventListener('online',  this.updateOnlineStatus);
-        window.addEventListener('offline', this.updateOnfflineStatus);
-        if( ! this.online ) {
-            this.updateOnfflineStatus()
+        window.addEventListener('online',  this.updateOnlinelogin);
+        window.addEventListener('offline', this.updateOfflinelogin);
+        if ( ! this.online ) {
+            this.updateOfflinelogin();
         }
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
@@ -54,63 +55,65 @@ export class LoginComponent implements OnInit {
     }
 
     login(email, password) {
-        this.apiExternalServer.login(email, password)
-            .then((user) => {
-                this.snackBar.open("Login successful.", "", {
-                    duration: 2000,
-                });
-                //window.location.href = 'http://www.google.com';
-                /*
-                this.voteService.votedPublications()
-                    .then(() => {
-                        this.sendLoginStatus(true)
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        this.snackBar.open("A network error occured. Please try again later.", "", {
-                            duration: 2000,
-                        });
+        if (this.online) {
+            this.apiExternalServer.login(email, password)
+                .then((user) => {
+                    this.snackBar.open("Login successful.", "", {
+                        duration: 2000,
                     });
-                */
-
-
-                //Retrieve the author by the publication
-
-                const that = this;
-                let emailSha1 = sha1('mailto:' + email);
-                let query = {'key': emailSha1};
-                that.DaoService.query("getPersonBySha", query, (results) => {
-
-                    if (results) {
-                        const nodeIdPerson = results['?id'];
-                        const nodeLabel = results['?label'];
-
-                        if (!nodeIdPerson || !nodeLabel) {
-                            return false;
-                        }
-
-                        let idPerson = nodeIdPerson.value;
-                        const label = nodeLabel.value;
-
-                        if (!idPerson || !label) {
-                            return false;
-                        }
-                        let username = label.split(' ');
-                        that.snackBar.open("You are recognized as " + label + ".", "", {
-                            duration: 3000,
+                    //window.location.href = 'http://www.google.com';
+                    /*
+                    this.voteService.votedPublications()
+                        .then(() => {
+                            this.sendLoginStatus(true)
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            this.snackBar.open("A network error occured. Please try again later.", "", {
+                                duration: 2000,
+                            });
                         });
+                    */
 
-                    }
+
+                    //Retrieve the author by the publication
+
+                    const that = this;
+                    let emailSha1 = sha1('mailto:' + email);
+                    let query = {'key': emailSha1};
+                    that.DaoService.query("getPersonBySha", query, (results) => {
+
+                        if (results) {
+                            const nodeIdPerson = results['?id'];
+                            const nodeLabel = results['?label'];
+
+                            if (!nodeIdPerson || !nodeLabel) {
+                                return false;
+                            }
+
+                            let idPerson = nodeIdPerson.value;
+                            const label = nodeLabel.value;
+
+                            if (!idPerson || !label) {
+                                return false;
+                            }
+                            let username = label.split(' ');
+                            that.snackBar.open("You are recognized as " + label + ".", "", {
+                                duration: 3000,
+                            });
+
+                        }
+                    });
+
+                    window.history.back()
+
+                })
+                .catch((err) => {
+                    this.snackBar.open(JSON.parse(err.text()).message, "", {
+                        duration: 3000,
+                    });
                 });
-
-                window.history.back()
-
-            })
-            .catch((err) => {
-                this.snackBar.open(JSON.parse(err.text()).message, "", {
-                    duration: 3000,
-                });
-            });
+        }
     }
 
 
@@ -133,17 +136,19 @@ export class LoginComponent implements OnInit {
     }
 
     update(user, firstname, lastname) {
-        console.log(user)
-        if (user && user.firstname !== null) {
-            if (user.firstname !== firstname) {
-                user.firstname = firstname
-                user.lastname = lastname
-                this.apiExternalServer.update(user)
-                    .then(() => {
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
+        if ( this.online ) {
+            console.log(user)
+            if (user && user.firstname !== null) {
+                if (user.firstname !== firstname) {
+                    user.firstname = firstname
+                    user.lastname = lastname
+                    this.apiExternalServer.update(user)
+                        .then(() => {
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                }
             }
         }
     }
@@ -168,7 +173,7 @@ export class LoginComponent implements OnInit {
         console.log("HELLLLLLLLLLOOOOO 3");
         this.apiExternalServer.authFacebookService();
     }
-    updateOnfflineStatus() {
+    updateOfflinelogin() {
         this.online = false;
         var toast = document.getElementById("toast");
         toast.innerText = "Waiting for Wifi connection.., Please try later";
@@ -178,7 +183,7 @@ export class LoginComponent implements OnInit {
         (<HTMLInputElement> document.getElementById("login-btn")).style.background = "#9E9E9E";
 
     }
-    updateOnlineStatus(){
+    updateOnlinelogin(){
         this.online = true;
         var toast = document.getElementById("toast");
         toast.className.replace("show", "");

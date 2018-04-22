@@ -17,7 +17,8 @@ import {ActivationMailService} from './activationMail.service';
 
 export class ActivationMailComponent implements OnInit {
 
-    private key_localstorage_user = "user_external_ressource_sympozer"
+    private key_localstorage_user = "user_external_ressource_sympozer";
+    online:any;
 
     constructor(private router: Router,
         private apiExternalServer: ApiExternalServer,
@@ -25,24 +26,28 @@ export class ActivationMailComponent implements OnInit {
         private DaoService: LocalDAOService,
         private localStoragexx: LocalStorageService,
         private ActivationMailService : ActivationMailService ) {
+        this.online = navigator.onLine;
+    }
 
+    ngOnInit(): void {
+        window.addEventListener('online',  this.updateOnline);
+        window.addEventListener('offline', this.updateOnffline);
+        if ( ! this.online ) {
+            this.updateOnffline()
         }
-
-    ngOnInit() {
 		let user = this.localStoragexx.retrieve(this.key_localstorage_user)
         if(user !== null){
         	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
             window.location.replace(urlHost+'#/home');
         }
-	
     }
     
     /**
 	 *
 	 * @param email
 	 */
-	resend(email){
-		
+	resend(email) {
+		if ( this.online) {
 		let result;
 		this.ActivationMailService.resend(email).subscribe(
 
@@ -65,6 +70,28 @@ export class ActivationMailComponent implements OnInit {
             	window.location.replace(urlHost+'#/login');
 			}
 			)
+        }
+    }
+
+    updateOnffline() {
+        this.online = false;
+        var toast = document.getElementById("toast");
+        toast.innerText = "Waiting for Wifi connection.., Please try later";
+        toast.style.backgroundColor = "#B71C1C";
+        toast.className = "show";
+        (<HTMLInputElement> document.getElementById("resend-btn")).disabled = true;
+        (<HTMLInputElement> document.getElementById("resend-btn")).style.background = "#9E9E9E";
+
+    }
+    updateOnline(){
+        this.online = true;
+        var toast = document.getElementById("toast");
+        toast.className.replace("show", "");
+        toast.innerText = "Connected..";
+        toast.style.backgroundColor = "#1B5E20";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        (<HTMLInputElement> document.getElementById("resend-btn")).disabled = false;
+        (<HTMLInputElement> document.getElementById("resend-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
     }
 
 }

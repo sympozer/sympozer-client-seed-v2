@@ -29,11 +29,12 @@ export class SignupComponent implements OnInit {
                 private localStoragexx: LocalStorageService) {
         this.online = navigator.onLine;
     }
+
     ngOnInit(): void {
-        window.addEventListener('online',  this.updateOnlineStatus);
-        window.addEventListener('offline', this.updateOnfflineStatus);
-        if( ! this.online ) {
-            this.updateOnfflineStatus()
+        window.addEventListener('online',  this.updateOnline);
+        window.addEventListener('offline', this.updateOnffline);
+        if ( ! this.online ) {
+            this.updateOnffline()
         }
         let user = this.localStoragexx.retrieve(this.key_localstorage_user)
         if(user !== null){
@@ -43,7 +44,7 @@ export class SignupComponent implements OnInit {
 
     }
 
-    updateOnfflineStatus() {
+    updateOnffline() {
         this.online = false;
         var toast = document.getElementById("toast");
         toast.innerText = "Waiting for Wifi connection.., Please try later";
@@ -53,15 +54,15 @@ export class SignupComponent implements OnInit {
         (<HTMLInputElement> document.getElementById("signup-btn")).style.background = "#9E9E9E";
 
     }
-    updateOnlineStatus(){
+    updateOnline(){
         this.online = true;
         var toast = document.getElementById("toast");
         toast.className.replace("show", "");
         toast.innerText = "Connected..";
         toast.style.backgroundColor = "#1B5E20";
         setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
-        (<HTMLInputElement> document.getElementById("login-btn")).disabled = false;
-        (<HTMLInputElement> document.getElementById("login-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
+        (<HTMLInputElement> document.getElementById("signup-btn")).disabled = false;
+        (<HTMLInputElement> document.getElementById("signup-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
     }
 
     /**
