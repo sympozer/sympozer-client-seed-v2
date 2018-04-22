@@ -89,7 +89,7 @@ export let Config = {
         url: 'https://sympozer.com/external'
     },
     vote : {
-        url: 'https://sympozer.com/external/',
-        tracks: ['https://w3id.org/scholarlydata/track/www-2018-demo', 'https://w3id.org/scholarlydata/track/www-2018-poster']
+        url: 'http://localhost:3000',
+        tracks: ['https://w3id.org/scholarlydata/track/www-demo-2018', 'https://w3id.org/scholarlydata/track/www-posters-2018']
     }
 };
