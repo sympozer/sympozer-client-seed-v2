@@ -18,7 +18,6 @@
     "e2e": "protractor",
     "pwa": "ng build --prod --aot --bh /www2018_pwa/ && sw-precache --root=dist --config=precache-sw.js"
   },
-
   "private": true,
   "dependencies": {
     "@angular/animations": "^4.1.0",
