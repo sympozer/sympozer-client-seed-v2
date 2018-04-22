@@ -105,7 +105,12 @@ getUserExternal(hashmail) {
 
         const that = this;
 
-        that.managerRequest.get(Config.externalServer.url + '/api/person')
+        const bodyRequest = {
+            'iri' : user,
+            'mbox_sha1sum' : hashmail
+        };
+
+        that.managerRequest.get(Config.externalServer.url + '/api/person', bodyRequest)
             .then((request) => {
                 console.log("THEN");
                 console.log(request);
