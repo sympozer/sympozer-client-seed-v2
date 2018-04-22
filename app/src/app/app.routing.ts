@@ -6,6 +6,7 @@ import {ScheduleComponent} from './modules/schedule/schedule.component';
 import {SearchComponent} from './modules/search/search.component';
 import {AboutComponent} from './modules/about/about.component';
 import {PersonComponent} from './modules/person/person.component';
+import {ParticipantComponent} from './modules/participant/participant.component';
 import {PersonsComponent} from './modules/persons/persons.component';
 import {PublicationsComponent} from './modules/publications/publications.component';
 import {PublicationComponent} from './modules/publication/publication.component';
@@ -99,6 +100,10 @@ const appRoutes: Routes = [
     {
         path: 'persons',
         component: PersonsComponent
+    },
+    {
+        path: 'participant/:name/:id',
+        component: ParticipantComponent
     },
     {
         path: 'publications',
