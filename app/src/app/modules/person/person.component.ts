@@ -97,7 +97,7 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
-                                    that.managerRequest.get(Config.externalServer.url + '/user/sha1?email_sha1=' + boxs + '&id_ressource=' + id)
+                                    that.managerRequest.get(Config.externalServer.url + '/api/person?mbox_sha1sum=' + boxs + '&iri=' + id)
                                         .then((response) => {
                                             if (response && response) {
                                                 const user = JSON.parse(response);

@@ -55,6 +55,7 @@ export class ApiExternalServer {
             const bodyRequest = {
                 token: token,
                 firstname: user.firstname,
+                lastname: user.lastname,
                 homepage: user.homepage,
                 photoUrl: user.photoUrl,
                 twitterpage: user.twitterpage,
