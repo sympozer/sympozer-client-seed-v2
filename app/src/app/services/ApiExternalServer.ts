@@ -271,7 +271,7 @@ getUserExternal(hashmail) {
                 confirmPassword: password
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/registerFromBadge', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
                     if (request.status === 400) {
