@@ -20,7 +20,22 @@
             <i class="fa fa-twitter"></i>
           </md-icon>
           <md-input-container>
-            <input [(ngModel)]="user.twitterpage" mdInput type="text" name="user.twitterpage" placeholder="Twitter Account">
+            <input [(ngModel)]="user.twitter" mdInput type="text" name="user.twitterpage" placeholder="Twitter Account">
+          </md-input-container>
+
+          <md-input-container>
+            <input [(ngModel)]="user.facebook" mdInput type="text" name="user.facebookpage" placeholder="Facebook Account">
+          </md-input-container>
+
+          <md-input-container>
+            <input [(ngModel)]="user.google" mdInput type="text" name="user.googlepage" placeholder="Google Account">
+          </md-input-container>
+
+          <md-icon>
+            <i class="fa fa-linkedin"></i>
+          </md-icon>
+          <md-input-container>
+            <input [(ngModel)]="user.linkedinaccount" mdInput type="text" name="user.linkedinaccount" placeholder="Linkedin Account">
           </md-input-container>
 
           <md-input-container>
@@ -31,12 +46,7 @@
             <input [(ngModel)]="user.photoUrl" mdInput type="text" name="user.photoUrl" placeholder="Photo Link">
           </md-input-container>
 
-          <md-icon>
-            <i class="fa fa-linkedin"></i>
-          </md-icon>
-          <md-input-container>
-            <input [(ngModel)]="user.linkedinaccount" mdInput type="text" name="user.linkedinaccount" placeholder="Linkedin Account">
-          </md-input-container>
+
 
           <div class="inscription-footer">
             <button md-button color="primary" (click)="updateUser(user)">Update</button>
@@ -58,6 +68,11 @@
           </div>
 
         </form>
+
+
+        <div class="inscription-footer">
+          <button md-button color="primary" (click)="getUserExternal(user)">GET USER</button>
+        </div>
 
 
       </div>

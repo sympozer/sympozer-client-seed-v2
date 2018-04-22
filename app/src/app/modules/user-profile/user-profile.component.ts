@@ -84,4 +84,16 @@ export class UserProfileComponent implements OnInit {
             })
     }
 
+    getUserExternal(user) {
+        console.log(user);
+
+        this.apiExternalServer.getUserExternal(user.mbox_sha1sum)
+            .then((status) => {
+               
+            })
+            .catch((err) => {
+               
+            })
+    }
+
 }
