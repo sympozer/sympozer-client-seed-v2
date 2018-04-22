@@ -81,9 +81,6 @@ export class VoteComponent implements OnInit {
             });
           }
           if (err.status === 403) {
-            // this.beginVote = err._body.begin;
-            // var tmp = JSON.parse(err._body);
-            // this.beginVote = tmp.begin;
             this.snackBar.open('Vote has not began try again on Wednesday 25 April', '', {
                 duration: 2000,
             });
