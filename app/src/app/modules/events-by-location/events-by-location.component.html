@@ -2,13 +2,14 @@
   {{nameLocation}}
 </h1>
 
-<div *ngIf="geo !== null">
-    <h2>Location</h2>
-    <md-card>
-        <md-icon>place</md-icon>
-        <a [href]="geo">Open in map</a>
-    </md-card>
-</div>
+<p *ngIf="address !== null">
+  {{address}}
+</p>
+
+<md-card *ngIf="geo !== null" class="info-text">
+    <md-icon>place</md-icon>
+    <a [href]="geo">Open in map</a>
+</md-card>
 
 <h2>Schedule</h2>
 
