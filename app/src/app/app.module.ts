@@ -64,6 +64,7 @@ import {Angulartics2Module, Angulartics2Piwik} from 'angulartics2';
 import {ToolsService} from './services/tools.service';
 import {PublicationsByKeywordComponent} from './modules/publications-by-keyword/publications-by-keyword.component';
 import {SignupComponent} from './modules/signup/signup.component';
+import {SignupWithBadgeComponent} from './modules/signupWithBadge/signupWithBadge.component';
 import {UserProfileComponent} from './modules/user-profile/user-profile.component';
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import {ActivationMailComponent} from './modules/activationMail/activationMail.component';
@@ -113,6 +114,7 @@ const routes: Routes = [];
         ConferenceComponent,
         PublicationsByKeywordComponent,
         SignupComponent,
+        SignupWithBadgeComponent,
         UserProfileComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
