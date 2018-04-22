@@ -19,5 +19,15 @@ module.exports = {
             stripPrefix: 'dist/assets/',
             mergeStaticsConfig: true
         }),
-    ]
+    ],
+    runtimeCaching: [
+        {
+            urlPattern:/^https:\/\/raw\.githubusercontent\.com\/sympozer\/datasets\/master\/WWW2018\/publications\.ttl/,
+            handler: 'cacheFirst'
+        },
+        {
+            urlPattern: /^https:\/\/raw\.githubusercontent\.com\/sympozer\/datasets\/master\/WWW2018\/sessions\.ttl/,
+            handler: 'cacheFirst'
+        },
+    ],
 };
