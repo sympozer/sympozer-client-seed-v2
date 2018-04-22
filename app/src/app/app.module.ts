@@ -53,6 +53,8 @@ import {RequestManager} from './services/request-manager.service';
 import {ApiExternalServer} from './services/ApiExternalServer';
 import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
+import {ParticipantComponent} from './modules/participant/participant.component';
+import {ParticipantService} from './modules/participant/participant.service';
 import {TimeManager} from './services/timeManager.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
@@ -122,8 +124,8 @@ const routes: Routes = [];
         ActivationMailComponent,
         ChangePasswordComponent,
         UserInfoComponent,
-        DialogShareQrComponent
-
+        DialogShareQrComponent,
+        ParticipantComponent
     ],
     imports: [
         BrowserModule,
@@ -156,11 +158,11 @@ const routes: Routes = [];
         ApiExternalServer,
         VoteService,
         ToolsService,
-        TimeManager
+        TimeManager,
+        ParticipantService
     ],
     bootstrap: [AppComponent],
     entryComponents:[DialogShareQrComponent]
-
 })
 export class AppModule {
 }
