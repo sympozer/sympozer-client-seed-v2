@@ -5,6 +5,8 @@ import {routerTransition} from '../../app.router.animation';
 import {Encoder} from "../../lib/encoder";
 import {RessourceDataset} from '../../services/RessourceDataset';
 
+let cache: Array<Object> = null;
+
 @Component({
     selector: 'app-events',
     templateUrl: 'events.component.html',
@@ -24,51 +26,54 @@ export class EventsComponent implements OnInit {
                 private encoder: Encoder,
                 private ressourceDataset: RessourceDataset) {
         this.events = [];
+        if (cache === null) {
+            cache = [];
+            DaoService.registerShortLivedCache(cache);
+        }
     }
 
     ngOnInit() {
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = this.title;
         const that = this;
-        this.DaoService.query("getAllEvents", null, (results) => {
-            if (results) {
-                const nodeId = results['?id'];
-                const nodeLabel = results['?label'];
-                const nodeType = results['?type'];
 
-                if (nodeId && nodeLabel && nodeType) {
-                    let id = nodeId.value;
-                    const label = nodeLabel.value;
-                    let type = nodeType.value;
+        if (cache.length > 0) {
+            that.events = cache;
+        } else {
+            let seen = new Set();
+            let eventsBuffer = [];
+            this.DaoService.query("getAllEvents", null, (results) => {
+                if (results) {
+                    // only keep events with no related publication
+                    if (results['?paper']) { return false; }
 
-                    if (id && label && type) {
-                        id = that.encoder.encode(id);
-                        if (id) {
-                            //On récup le type dans l'URI
-                            type = that.ressourceDataset.extractType(type, label);
+                    let id = results['?id'].value;
+                    if (seen.has(id)) { return false; }
+                    seen.add(id);
 
-                            const find = that.events.find((e) => {
-                                return e.id === id;
-                            });
+                    const label = results['?label'].value;
+                    //let type = results['?type'].value; // removed from SPARQL for perf
 
-                            if (find) {
-                                return false;
-                            }
+                    id = that.encoder.encode(id);
+                    if (id) {
+                        //On récup le type dans l'URI
+                        //type = that.ressourceDataset.extractType(type, label);
 
-                            that.events = that.events.concat({
-                                id: id,
-                                label: label,
-                                type: type
-                            });
-
-                            that.events.sort((a, b) => {
-                                return a.label > b.label ? 1 : -1;
-                            });
-                        }
+                        eventsBuffer.push({
+                            id: id,
+                            label: label,
+                            //type: type
+                        });
                     }
                 }
-            }
-        });
+            }, () => {
+                eventsBuffer.sort((a, b) => {
+                    return a.label > b.label ? 1 : -1;
+                });
+                that.events = eventsBuffer; // force GUI refresh
+                cache.push(...eventsBuffer);
+            });
+        }
     }
 
 }

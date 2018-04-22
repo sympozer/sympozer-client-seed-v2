@@ -6,7 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {routing} from './app.routing';
-import {MaterialModule, MdGridListModule, MdDialogModule} from '@angular/material';
+import {MaterialModule, MdGridListModule} from '@angular/material';
 import 'hammerjs';
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './modules/home/home.component';
@@ -53,6 +53,8 @@ import {RequestManager} from './services/request-manager.service';
 import {ApiExternalServer} from './services/ApiExternalServer';
 import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
+import {ParticipantComponent} from './modules/participant/participant.component';
+import {ParticipantService} from './modules/participant/participant.service';
 import {TimeManager} from './services/timeManager.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
@@ -66,11 +68,6 @@ import {UserProfileComponent} from './modules/user-profile/user-profile.componen
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import {ActivationMailComponent} from './modules/activationMail/activationMail.component';
 import {ChangePasswordComponent} from './modules/changePassword/changePassword.component';
-import {UserInfoComponent} from './modules/user-info/user-info.component';
-import {QrcodeComponent} from './modules/qrcode/qrcode.component';
-import {NgxQRCodeModule } from 'ngx-qrcode3';
-import { DialogShareQrComponent } from './modules/dialog-share-qr/dialog-share-qr.component';
-
 
 const routes: Routes = [];
 
@@ -117,14 +114,11 @@ const routes: Routes = [];
         PublicationsByKeywordComponent,
         SignupComponent,
         UserProfileComponent,
-        QrcodeComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
         ChangePasswordComponent,
-        UserInfoComponent,
-        DialogShareQrComponent
+        ParticipantComponent
     ],
-
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -138,9 +132,6 @@ const routes: Routes = [];
         ShareButtonsModule.forRoot(),
         Ng2Webstorage,
         Angulartics2Module.forRoot([Angulartics2Piwik]),
-        BrowserModule,
-        NgxQRCodeModule,
-        MdDialogModule
     ],
     providers: [
         DataLoaderService,
@@ -155,11 +146,10 @@ const routes: Routes = [];
         ApiExternalServer,
         VoteService,
         ToolsService,
-        TimeManager
+        TimeManager,
+        ParticipantService
     ],
     bootstrap: [AppComponent],
-    entryComponents:[DialogShareQrComponent]
-
 })
 export class AppModule {
 }
