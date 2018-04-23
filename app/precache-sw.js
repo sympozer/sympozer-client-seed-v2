@@ -14,7 +14,8 @@ module.exports = {
                 'dist/**.js',
                 'dist/**.css',
                 'dist/img/**.*',
-                'dist/assets/**.*'
+                'dist/assets/**.*',
+                'dist/service-worker.js'
             ],
             stripPrefix: 'dist/assets/',
             mergeStaticsConfig: true
@@ -30,4 +31,5 @@ module.exports = {
             handler: 'cacheFirst'
         },
     ],
+    maximumFileSizeToCacheInBytes: 4194304
 };
