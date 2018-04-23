@@ -70,6 +70,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     updateUser(user) {
+        console.log("afficheUser");
         console.log(user);
 
         this.apiExternalServer.update(user)
