@@ -15,6 +15,7 @@ import * as moment from 'moment';
 })
 export class EventByCategoryComponent implements OnInit {
     public trackName;
+    public trackId;
     public events = [];
 
     constructor(private router: Router,
@@ -29,6 +30,7 @@ export class EventByCategoryComponent implements OnInit {
         const that = this;
         this.route.params.forEach((params: Params) => {
             that.trackName = params['name'];
+            that.trackId = params['id'];
             if (document.getElementById("page-title-p"))
                 document.getElementById("page-title-p").innerHTML = that.trackName;
             let query = {'key': this.encoder.decode(params['id'])};

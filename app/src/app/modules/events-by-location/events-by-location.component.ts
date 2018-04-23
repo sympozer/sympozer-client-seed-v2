@@ -20,6 +20,7 @@ export class EventsByLocationComponent implements OnInit {
     public eventsLocation = [];
     public nameLocation : String;
     public geo = null;
+    public address = null;
 
     constructor(private router: Router,
                 private DaoService: LocalDAOService,
@@ -38,9 +39,12 @@ export class EventsByLocationComponent implements OnInit {
             let query = {'key': this.encoder.decode(name)};
             that.nameLocation = name;
 
-            that.DaoService.query("getGeoByLabel", query, (results) => {
+            that.DaoService.query("getLocInfoByLabel", query, (results) => {
                   if (results && results['?geo']) {
                       that.geo = that.sanitizer.bypassSecurityTrustUrl(results['?geo'].value);
+                  }
+                  if (results && results['?address']) {
+                      that.address = results['?address'].value;
                   }
             });
 

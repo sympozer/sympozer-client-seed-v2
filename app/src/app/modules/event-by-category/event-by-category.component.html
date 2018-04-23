@@ -1,5 +1,7 @@
 <h1 id="description-title">{{trackName}}</h1>
-<div class='action-links'>
+<div class='action-links track-switch'>
+    Sessions | <a [routerLink]="['/publications-by-category/'+trackName+'/'+trackId]">Publications</a>
+</div><div class='action-links'>
   <md-card *ngFor="let event of events">
     <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
     <md-icon>trending_flat</md-icon>

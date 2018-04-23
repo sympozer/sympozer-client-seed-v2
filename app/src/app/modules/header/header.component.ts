@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {Subscription} from 'rxjs/Subscription';
 import {MdSnackBar} from '@angular/material';

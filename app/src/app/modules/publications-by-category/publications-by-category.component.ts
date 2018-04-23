@@ -14,6 +14,7 @@ import {routerTransition} from '../../app.router.animation';
 })
 export class PublicationsByCategoryComponent implements OnInit {
     public labelTrack;
+    public trackId;
     public publications = [];
 
     constructor(private route: ActivatedRoute,
@@ -30,6 +31,7 @@ export class PublicationsByCategoryComponent implements OnInit {
             const labelTrack = params['name'];
 
             if(labelTrack){
+                that.trackId = id;
                 that.labelTrack = labelTrack;
                  if (document.getElementById("page-title-p"))
                         document.getElementById("page-title-p").innerHTML = labelTrack + " publications";

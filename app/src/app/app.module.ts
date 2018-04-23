@@ -58,6 +58,9 @@ import {ConferenceComponent} from "./modules/conference/conference.component";
 import {Angulartics2Module, Angulartics2Piwik} from "angulartics2";
 import {RequestManager} from './services/request-manager.service';
 import {ScrollLoaderDirective} from './modules/scroll-loader/scroll-loader.component';
+import {ParticipantComponent} from './modules/participant/participant.component';
+import {ParticipantService} from './modules/participant/participant.service';
+
 
 const routes: Routes = [];
 
@@ -98,7 +101,8 @@ const routes: Routes = [];
         ScrollLoaderDirective,
         KeywordsComponent,
         ConferenceComponent,
-        PublicationsByKeywordComponent
+        PublicationsByKeywordComponent,
+        ParticipantComponent
     ],
     imports: [
         BrowserModule,
@@ -126,7 +130,8 @@ const routes: Routes = [];
         RessourceDataset,
         ApiExternalServer,
         TimeManager,
-        ToolsService
+        ToolsService,
+        ParticipantService
     ],
     bootstrap: [AppComponent],
 })
