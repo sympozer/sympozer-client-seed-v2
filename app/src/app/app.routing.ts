@@ -38,7 +38,6 @@ import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.c
 import { ActivationMailComponent } from './modules/activationMail/activationMail.component';
 import { ChangePasswordComponent } from './modules/changePassword/changePassword.component';
 import {SignupWithBadgeComponent} from './modules/signupWithBadge/signupWithBadge.component';
-import { UserInfoComponent } from './modules/user-info/user-info.component';
 
 const appRoutes: Routes = [
     {
@@ -194,10 +193,6 @@ const appRoutes: Routes = [
     {
         path: 'publications-by-keyword/:keyword',
         component: PublicationsByKeywordComponent
-    },
-    {
-        path: 'user',
-        component: UserInfoComponent,
     }
 ];
 

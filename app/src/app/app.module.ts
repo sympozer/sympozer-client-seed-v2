@@ -69,7 +69,6 @@ import {UserProfileComponent} from './modules/user-profile/user-profile.componen
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import {ActivationMailComponent} from './modules/activationMail/activationMail.component';
 import {ChangePasswordComponent} from './modules/changePassword/changePassword.component';
-import {UserInfoComponent} from './modules/user-info/user-info.component';
 import {QrcodeComponent} from './modules/qrcode/qrcode.component';
 import {NgxQRCodeModule } from 'ngx-qrcode3';
 import { DialogShareQrComponent } from './modules/dialog-share-qr/dialog-share-qr.component';
@@ -125,7 +124,6 @@ const routes: Routes = [];
         ForgotPasswordComponent,
         ActivationMailComponent,
         ChangePasswordComponent,
-        UserInfoComponent,
         DialogShareQrComponent,
         ParticipantComponent
     ],
