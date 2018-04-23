@@ -69,11 +69,9 @@ export class UserProfileComponent implements OnInit {
             });
     }
 
-    updateUser(user) {
-        console.log("afficheUser");
-        console.log(user);
+    updateUser(token,firstname,lastname,homepage,twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl) {
 
-        this.apiExternalServer.update(user)
+        this.apiExternalServer.update(token,firstname,lastname,homepage,twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl)
             .then((status) => {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,

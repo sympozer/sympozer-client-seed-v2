@@ -43,7 +43,7 @@ export class ApiExternalServer {
         return false;
     }
 
-    update(user) {
+    update(token,firstname,lastname,homepage,twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
@@ -54,14 +54,14 @@ export class ApiExternalServer {
 
             const bodyRequest = {
                 token: token,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                homepage: user.homepage,
-                photoUrl: user.photoUrl,
-                twitterpage: user.twitterpage,
-                facebookpage: user.facebookpage,
-                googlepage: user.googlepage,
-                linkedinaccount: user.linkedinaccount
+                firstname: firstname,
+                lastname: lastname,
+                homepage: homepage,
+                photoUrl: photoUrl,
+                twitterpage: twitterpage,
+                facebookpage: facebookpage,
+                googlepage: googlepage,
+                linkedinaccount: linkedinaccount
             };
 
             that.managerRequest.post(Config.externalServer.url + '/api/person', bodyRequest)
@@ -89,6 +89,7 @@ export class ApiExternalServer {
                     return resolve(person);
                 })
                 .catch((request) => {
+                    console.log("catch"); 
                     return reject(request);
                 });
         });
