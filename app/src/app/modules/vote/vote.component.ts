@@ -57,7 +57,7 @@ export class VoteComponent implements OnInit {
   vote = () => {
     const that = this
     this.voteService.vote(this.idTrack, this.idPublication)
-        /*.then(()=>{
+        .then(()=>{
           this.snackBar.open("Vote successful", "", {
               duration: 2000,
           });
@@ -73,7 +73,7 @@ export class VoteComponent implements OnInit {
             });
           }
           
-        })*/
+        })
     }
   
 

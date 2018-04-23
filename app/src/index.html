@@ -27,13 +27,15 @@
     <meta name="theme-color" content="#f48c5b">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="icon" href="www2018_new_ico-150x150.png" sizes="32x32">
+
 </head>
 <body>
 <app-root></app-root>
 
 <div class="loading-screen">
     <div class="loading-wrapper">
-        <img src="./img/TheWebConference2018-logo.png">
+        <img style="max-width: 100%;" src="./img/TheWebConference2018-logo.png">
         <div class="showbox">
             <div class="loader">
                 <svg class="circular" viewBox="25 25 50 50">
@@ -43,7 +45,6 @@
         </div>
     </div>
 </div>
-
 
 <script type="text/javascript">
     if (navigator.serviceWorker.controller ) {
@@ -60,5 +61,80 @@
     }
 </script>
 
+<!-- Piwik -->
+<script type="text/javascript">
+// Verifying piwik server is online
+/*
+var boolOnline = false;
+
+ var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        boolOnline = true;
+    }
+  };
+  xhttp.open("GET", "http://dsi-guest-28.univ-lyon1.fr/piwik/piwik.php", true);
+  xhttp.send();
+console.log('boolOnline : ' + boolOnline);
+ 
+// Send data to piwik
+function sendDataToPiwik(){
+
+    var _paq = _paq || [];
+    // _paq.push(['trackPageView']);
+    (function () {
+        _paq.push(['enableLinkTracking']);
+        var u = "//dsi-guest-28.univ-lyon1.fr/piwik/";
+        _paq.push(['setTrackerUrl', u + 'piwik.php']);
+        _paq.push(['setSiteId', '2']);
+        var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.defer = true;
+        g.src = u + 'piwik.js';
+        s.parentNode.insertBefore(g, s);
+    })();
+
+        var strRequestsJson = localStorage.getItem('piwik');
+        if (strRequestsJson) {
+            try {
+                var arrRequests = JSON.parse(strRequestsJson);
+                arrRequests = JSON.parse(arrRequests);
+            } catch (e) {
+            }
+        } else {
+            var arrRequests = [];
+        }
+       
+		console.log(boolOnline); 
+	    if (arrRequests.constructor === Array) {
+
+                for (var i = 0; i < arrRequests.length; i++) {
+			if(boolOnline){
+                    		_paq.push(['trackPageView', arrRequests[i]]);
+                    		console.log('sent 1 request');
+			}
+                }
+            } else {
+                console.log(arrRequests);
+            }
+            arrRequests = [];
+            localStorage.setItem('piwik', JSON.stringify(arrRequests));
+ }
+    // Send each 10 min
+    window.setInterval(function () {
+	   sendDataToPiwik();
+    }, 10000*60);
+
+    // Send requests before closing browser
+    window.onbeforeunload = function () {
+	   sendDataToPiwik();
+    }
+*/
+</script>
+<!-- End Piwik Code -->
 </body>
 </html>
+
+
+

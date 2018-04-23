@@ -28,10 +28,10 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        window.addEventListener('online',  this.updateOnlineForgotPassword);
-        window.addEventListener('offline', this.updateOfflineForgotPassword);
-        if( ! this.online ) {
-            this.updateOfflineForgotPassword();
+        window.addEventListener('online',  this.updateOnlinelogin);
+        window.addEventListener('offline', this.updateOfflinelogin);
+        if ( ! this.online ) {
+            this.updateOfflinelogin();
         }
 		let user = this.localStoragexx.retrieve(this.key_localstorage_user);
         if(user !== null){
@@ -46,45 +46,45 @@ export class ForgotPasswordComponent implements OnInit {
 	 * @param email
 	 */
 	forgotPassword(email){
-	    if (navigator.onLine ) {
-		this.apiExternalServer.forgotPassword(email)
-            .then(() => {
-                this.snackBar.open("A mail has been sent to your email. Please follow the instruction in the email to reset your password", "", {
-					duration: 3000,
-				});
-				this.snackBar.open("Please follow the instruction in the email to reset your password", "", {
-					duration: 3000,
-				});
-                let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname;
-                window.location.replace(urlHost+'#/login');
-            })
-            .catch((err) => {
-                this.snackBar.open(err, "", {
-                    duration: 3000,
+	    if(this.online) {
+            this.apiExternalServer.forgotPassword(email)
+                .then(() => {
+                    this.snackBar.open("A mail has been sent to your email. Please follow the instruction in the email to reset your password", "", {
+                        duration: 3000,
+                    });
+                    this.snackBar.open("Please follow the instruction in the email to reset your password", "", {
+                        duration: 3000,
+                    });
+                    let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
+                    window.location.replace(urlHost + '#/login');
+                })
+                .catch((err) => {
+                    this.snackBar.open(err, "", {
+                        duration: 3000,
+                    });
                 });
-            });
+        }
     }
-    }
-
-    updateOfflineForgotPassword() {
+    updateOfflinelogin() {
         this.online = false;
         var toast = document.getElementById("toast");
         toast.innerText = "Waiting for Wifi connection.., Please try later";
         toast.style.backgroundColor = "#B71C1C";
         toast.className = "show";
-        (<HTMLInputElement> document.getElementById("forgot-btn")).disabled = true;
-        (<HTMLInputElement> document.getElementById("forgot-btn")).style.background = "#9E9E9E";
+        (<HTMLInputElement> document.getElementById("forgotpass-btn")).disabled = true;
+        (<HTMLInputElement> document.getElementById("forgotpass-btn")).style.background = "#9E9E9E";
 
     }
-    updateOnlineForgotPassword(){
+    updateOnlinelogin(){
         this.online = true;
         var toast = document.getElementById("toast");
         toast.className.replace("show", "");
         toast.innerText = "Connected..";
         toast.style.backgroundColor = "#1B5E20";
         setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
-        (<HTMLInputElement> document.getElementById("forgot-btn")).disabled = false;
-        (<HTMLInputElement> document.getElementById("forgot-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
+        (<HTMLInputElement> document.getElementById("forgotpass-btn")).disabled = false;
+        (<HTMLInputElement> document.getElementById("forgotpass-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
     }
+
 }
 

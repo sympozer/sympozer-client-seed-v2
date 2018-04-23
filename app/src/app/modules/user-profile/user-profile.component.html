@@ -14,42 +14,42 @@
           <i class="fa fa-twitter"></i>
         </md-icon>
         <md-input-container>
-          <input [(ngModel)]="user.twitterpage" mdInput type="text" name="user.twitterpage" placeholder="Twitter Account">
+          <input [(ngModel)]="user.twitterpage" #twitterpage mdInput type="text" name="user.twitterpage" placeholder="Twitter Account">
         </md-input-container>
 
         <md-icon>
           <i class="fa fa-facebook"></i>
         </md-icon>
         <md-input-container>
-          <input [(ngModel)]="user.facebookpage" mdInput type="text" name="user.facebook" placeholder="Facebook Account">
+          <input [(ngModel)]="user.facebookpage" #facebookpage mdInput type="text" name="user.facebook" placeholder="Facebook Account">
         </md-input-container>
 
         <md-icon>
           <i class="fa fa-google"></i>
         </md-icon>
         <md-input-container>
-          <input [(ngModel)]="user.googlepage" mdInput type="text" name="user.google" placeholder="Google Account">
+          <input [(ngModel)]="user.googlepage" #googlepage mdInput type="text" name="user.google" placeholder="Google Account">
         </md-input-container>
 
         <md-icon>
           <i class="fa fa-linkedin"></i>
         </md-icon>
         <md-input-container>
-          <input [(ngModel)]="user.linkedinaccount" mdInput type="text" name="user.linkedinaccount" placeholder="Linkedin Account">
+          <input [(ngModel)]="user.linkedinaccount" #linkedinaccount mdInput type="text" name="user.linkedinaccount" placeholder="Linkedin Account">
         </md-input-container>
 
 
         <md-input-container>
-          <input [(ngModel)]="user.homepage" mdInput type="text" name="user.homepage" placeholder="Home Page">
+          <input [(ngModel)]="user.homepage" #homepage mdInput type="text" name="user.homepage" placeholder="Home Page">
         </md-input-container>
 
 
         <md-input-container>
-          <input [(ngModel)]="user.photoUrl" mdInput type="text" name="user.photoUrl" placeholder="Photo Link">
+          <input [(ngModel)]="user.photoUrl" #photoUrl mdInput type="text" name="user.photoUrl" placeholder="Photo Link">
         </md-input-container>
 
         <div class="inscription-footer">
-          <button md-button color="primary" (click)="updateUser(user)">Update</button>
+          <button md-button color="primary" (click)="updateUser(user.token,user.firstname, user.lastname,homepage.value,twitterpage.value, facebookpage.value, googlepage.value, linkedinaccount.value, photoUrl.value)" id="update-btn">Update</button>
         </div>
 
         <!--
@@ -74,4 +74,5 @@
     </div>
   </md-card>
 </div>
+  <div id="toast"></div>
 </div>

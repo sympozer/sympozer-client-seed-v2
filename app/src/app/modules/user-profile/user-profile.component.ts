@@ -23,8 +23,8 @@ export class UserProfileComponent implements OnInit {
     user;
     firstName: string;
     private key_localstorage_user = 'user_external_ressource_sympozer';
-    online: any;
     private key_localstorage_userName = 'username_external_ressource_sympozer';
+    online:any;
 
     constructor(private apiExternalServer: ApiExternalServer,
         private snackBar: MdSnackBar,
@@ -39,11 +39,15 @@ export class UserProfileComponent implements OnInit {
             // console.log(status)
 
         });
+        this.online = navigator.onLine;
     }
 
     ngOnInit(): void {
-        window.addEventListener('online', this.updateOnline);
-        window.addEventListener('offline', this.updateOnffline);
+        window.addEventListener('online',  this.updateOnlinelogin);
+        window.addEventListener('offline', this.updateOfflinelogin);
+        if ( ! this.online ) {
+            this.updateOfflinelogin();
+        }
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
         this.firstName = this.localStoragexx.retrieve(this.key_localstorage_userName);
         //console.log(this.firstName);
@@ -56,7 +60,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     updateProfile(user) {
-        if (!this.online) {
+        if(this.online) {
             console.log(user);
             this.apiExternalServer.updateProfile(user.firstname, user.lastname)
                 .then((status) => {
@@ -71,47 +75,59 @@ export class UserProfileComponent implements OnInit {
                         duration: 2000,
                     });
                 });
-        } else {
-            this.snackBar.open('No Connection, Please try later', '', {
-                duration: 3000,
-            });
         }
     }
 
-    updateUser(user) {
-        console.log("afficheUser");
-        console.log(user);
-
-        this.apiExternalServer.update(user)
-            .then((status) => {
-                this.snackBar.open('Update successful.', '', {
-                    duration: 2000,
+    updateUser(token,firstname,lastname,homepage,twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl) {
+        if(this.online){
+            this.apiExternalServer.update(token,firstname,lastname,homepage,twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl)
+                .then((status) => {
+                    this.snackBar.open('Update successful.', '', {
+                        duration: 2000,
+                    });
+                    window.history.back();
+                })
+                .catch((err) => {
+                    this.snackBar.open(err, '', {
+                        duration: 2000,
+                    });
                 });
-                window.history.back();
-            })
-            .catch((err) => {
-                this.snackBar.open(err, '', {
-                    duration: 2000,
-                });
-            });
+        }
     }
 
     getUserExternal(user) {
-        console.log(user);
+        if(this.online){
+            console.log(user);
 
-        this.apiExternalServer.getUserExternal(user.mbox_sha1sum)
-            .then((status) => {
+            this.apiExternalServer.getUserExternal(user.mbox_sha1sum)
+                .then((status) => {
 
-            })
-            .catch((err) => {
+                })
+                .catch((err) => {
 
-            })
+                })
+        }
     }
-    updateOnffline() {
+    
+    updateOfflinelogin() {
         this.online = false;
+        var toast = document.getElementById("toast");
+        toast.innerText = "Waiting for Wifi connection.., Please try later";
+        toast.style.backgroundColor = "#B71C1C";
+        toast.className = "show";
+        (<HTMLInputElement> document.getElementById("update-btn")).disabled = true;
+        (<HTMLInputElement> document.getElementById("update-btn")).style.background = "#9E9E9E";
+
     }
-    updateOnline(){
+    updateOnlinelogin(){
         this.online = true;
+        var toast = document.getElementById("toast");
+        toast.className.replace("show", "");
+        toast.innerText = "Connected..";
+        toast.style.backgroundColor = "#1B5E20";
+        setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        (<HTMLInputElement> document.getElementById("update-btn")).disabled = false;
+        (<HTMLInputElement> document.getElementById("update-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
     }
 
 }

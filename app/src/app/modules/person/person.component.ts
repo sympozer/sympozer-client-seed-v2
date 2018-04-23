@@ -57,8 +57,6 @@ export class PersonComponent implements OnInit {
             if (!id || !name) {
                 return false;
             }
-            console.log('id : ' + id);
-            console.log('name : ' + name);
 
             if (document.getElementById('page-title-p')) {
                 document.getElementById('page-title-p').innerHTML = name;

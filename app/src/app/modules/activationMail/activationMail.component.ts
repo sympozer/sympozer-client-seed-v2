@@ -30,68 +30,68 @@ export class ActivationMailComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        window.addEventListener('online',  this.updateOnline);
-        window.addEventListener('offline', this.updateOnffline);
+        window.addEventListener('online',  this.updateOnlineactive);
+        window.addEventListener('offline', this.updateOfflineactive);
         if ( ! this.online ) {
-            this.updateOnffline()
+            this.updateOfflineactive();
         }
 		let user = this.localStoragexx.retrieve(this.key_localstorage_user)
         if(user !== null){
         	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
             window.location.replace(urlHost+'#/home');
         }
+	
     }
     
     /**
 	 *
 	 * @param email
 	 */
-	resend(email) {
-		if ( this.online) {
-		let result;
-		this.ActivationMailService.resend(email).subscribe(
-
-			response => {
-				result = response;
-			},
-
-			err => { 
-				console.log(err);
-				this.snackBar.open("This email is invalid", "", {
-					duration: 7000,
-				});
-			},
-
-			() => { 
-				this.snackBar.open("An email has been sent to your email. Please follow the instruction in the email to reset your password", "", {
-					duration: 7000,
-				});
-				let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
-            	window.location.replace(urlHost+'#/login');
-			}
-			)
+	resend(email){
+		if(this.online){
+			let result;
+			this.ActivationMailService.resend(email).subscribe(
+	
+				response => {
+					result = response;
+				},
+	
+				err => { 
+					console.log(err);
+					this.snackBar.open("This email is invalid", "", {
+						duration: 7000,
+					});
+				},
+	
+				() => { 
+					this.snackBar.open("An email has been sent to your email. Please follow the instruction in the email to reset your password", "", {
+						duration: 7000,
+					});
+					let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
+					window.location.replace(urlHost+'#/login');
+				}
+				)
         }
     }
-
-    updateOnffline() {
+    updateOfflineactive() {
         this.online = false;
         var toast = document.getElementById("toast");
         toast.innerText = "Waiting for Wifi connection.., Please try later";
         toast.style.backgroundColor = "#B71C1C";
         toast.className = "show";
-        (<HTMLInputElement> document.getElementById("resend-btn")).disabled = true;
-        (<HTMLInputElement> document.getElementById("resend-btn")).style.background = "#9E9E9E";
+        (<HTMLInputElement> document.getElementById("active-btn")).disabled = true;
+        (<HTMLInputElement> document.getElementById("active-btn")).style.background = "#9E9E9E";
 
     }
-    updateOnline(){
+    updateOnlineactive(){
         this.online = true;
         var toast = document.getElementById("toast");
         toast.className.replace("show", "");
         toast.innerText = "Connected..";
         toast.style.backgroundColor = "#1B5E20";
         setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
-        (<HTMLInputElement> document.getElementById("resend-btn")).disabled = false;
-        (<HTMLInputElement> document.getElementById("resend-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
+        (<HTMLInputElement> document.getElementById("active-btn")).disabled = false;
+        (<HTMLInputElement> document.getElementById("active-btn")).style.background = "linear-gradient(#e58307, #F36B12)";
     }
 
 }

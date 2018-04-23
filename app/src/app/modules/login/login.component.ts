@@ -35,11 +35,11 @@ export class LoginComponent implements OnInit {
                 private DaoService: LocalDAOService,
                 private encoder: Encoder,
                 private localStoragexx: LocalStorageService) {
-        this.online = navigator.onLine;
-    }
+            this.online = navigator.onLine;
+        }
 
-    ngOnInit(): void {
-        window.addEventListener('online',  this.updateOnlinelogin);
+        ngOnInit(): void {
+            window.addEventListener('online',  this.updateOnlinelogin);
         window.addEventListener('offline', this.updateOfflinelogin);
         if ( ! this.online ) {
             this.updateOfflinelogin();
@@ -55,64 +55,64 @@ export class LoginComponent implements OnInit {
     }
 
     login(email, password) {
-        if (this.online) {
-            this.apiExternalServer.login(email, password)
-                .then((user) => {
-                    this.snackBar.open("Login successful.", "", {
-                        duration: 2000,
-                    });
-                    //window.location.href = 'http://www.google.com';
-                    /*
-                    this.voteService.votedPublications()
-                        .then(() => {
-                            this.sendLoginStatus(true)
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            this.snackBar.open("A network error occured. Please try again later.", "", {
-                                duration: 2000,
-                            });
-                        });
-                    */
-
-
-                    //Retrieve the author by the publication
-
-                    const that = this;
-                    let emailSha1 = sha1('mailto:' + email);
-                    let query = {'key': emailSha1};
-                    that.DaoService.query("getPersonBySha", query, (results) => {
-
-                        if (results) {
-                            const nodeIdPerson = results['?id'];
-                            const nodeLabel = results['?label'];
-
-                            if (!nodeIdPerson || !nodeLabel) {
-                                return false;
-                            }
-
-                            let idPerson = nodeIdPerson.value;
-                            const label = nodeLabel.value;
-
-                            if (!idPerson || !label) {
-                                return false;
-                            }
-                            let username = label.split(' ');
-                            that.snackBar.open("You are recognized as " + label + ".", "", {
-                                duration: 3000,
-                            });
-
-                        }
-                    });
-
-                    window.history.back()
-
-                })
-                .catch((err) => {
-                    this.snackBar.open(JSON.parse(err.text()).message, "", {
-                        duration: 3000,
-                    });
+        if(this.online){
+        this.apiExternalServer.login(email, password)
+            .then((user) => {
+                this.snackBar.open("Login successful.", "", {
+                    duration: 2000,
                 });
+                //window.location.href = 'http://www.google.com';
+                /*
+                this.voteService.votedPublications()
+                    .then(() => {
+                        this.sendLoginStatus(true)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        this.snackBar.open("A network error occured. Please try again later.", "", {
+                            duration: 2000,
+                        });
+                    });
+                */
+
+
+                //Retrieve the author by the publication
+
+                const that = this;
+                let emailSha1 = sha1('mailto:' + email);
+                let query = {'key': emailSha1};
+                that.DaoService.query("getPersonBySha", query, (results) => {
+
+                    if (results) {
+                        const nodeIdPerson = results['?id'];
+                        const nodeLabel = results['?label'];
+
+                        if (!nodeIdPerson || !nodeLabel) {
+                            return false;
+                        }
+
+                        let idPerson = nodeIdPerson.value;
+                        const label = nodeLabel.value;
+
+                        if (!idPerson || !label) {
+                            return false;
+                        }
+                        let username = label.split(' ');
+                        that.snackBar.open("You are recognized as " + label + ".", "", {
+                            duration: 3000,
+                        });
+
+                    }
+                });
+
+                window.history.back()
+
+            })
+            .catch((err) => {
+                this.snackBar.open(JSON.parse(err.text()).message, "", {
+                    duration: 3000,
+                });
+            });
         }
     }
 
@@ -135,27 +135,10 @@ export class LoginComponent implements OnInit {
         this.apiExternalServer.sendUsername(firstname)
     }
 
-    update(user, firstname, lastname) {
-        if ( this.online ) {
-            console.log(user)
-            if (user && user.firstname !== null) {
-                if (user.firstname !== firstname) {
-                    user.firstname = firstname
-                    user.lastname = lastname
-                    this.apiExternalServer.update(user)
-                        .then(() => {
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                }
-            }
-        }
-    }
 
 
     authGoogle() {
-        console.log("HELLLLLLLLLLOOOOO");
+        console.log("HELLLLLLLLLLOOOOO"); 
         this.apiExternalServer.authGoogleService();
     }
 

@@ -91,15 +91,9 @@ export class ToolsComponent implements OnInit {
 
         setTimeout(() => {
             this.localdao.reloadDataset(Config.conference.datasets['updateSessUri']).then(() => {
-                if (navigator.onLine){
                 this.snackBar.open('Dataset properly loaded', '', {
                     duration: 2000,
                 });
-                }else {
-                    this.snackBar.open('No netwrok ,please try later', '', {
-                        duration: 2000,
-                    });
-                }
             }).catch(() => {
                 this.snackBar.open('Dataset didn\'t load properly', '', {
                     duration: 2000,
