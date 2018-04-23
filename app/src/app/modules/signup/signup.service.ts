@@ -4,21 +4,21 @@ import {Observable} from 'rxjs/Observable';
 import {Config} from "../../app-config";
 
 @Injectable()
-export class ActivationMailService {
+export class SignUpService {
 
     constructor(private http: Http) {
     }
 
-    resend(email: string):Observable<any>{
+    register(email: string, firstname: string, lastname: string, password:string):Observable<any>{
         
         let headers = new Headers();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-        let data = "email=" + email;
+        let data = "email=" + email + "&" + "firstname=" + firstname + "&" + "lastname=" + lastname + "&" + "password=" + password; 
 
         return this.http
-            .post( Config.apiLogin.url + "/api/v1/resend", data, {headers:headers})
+            .post( Config.apiLogin.url + "/api/v1/register", data, {headers:headers})
             .map(res => res.json())
             .catch(this.handleError);
     }

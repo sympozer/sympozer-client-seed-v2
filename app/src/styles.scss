@@ -464,3 +464,11 @@ html.no-material {
     box-shadow: none;
   }
 }
+
+ngx-qrcode {
+  img {
+    height: 100%;
+    width: 100%;
+  }
+}
+

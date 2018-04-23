@@ -43,7 +43,7 @@ export class ApiExternalServer {
         return false;
     }
 
-    update(token,firstname,lastname,homepage,twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl) {
+    update(token, firstname, lastname, homepage, twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
@@ -89,40 +89,40 @@ export class ApiExternalServer {
                     return resolve(person);
                 })
                 .catch((request) => {
-                    console.log("catch"); 
+                    console.log('catch');
                     return reject(request);
                 });
         });
-}
+    }
 
-getUserExternal(hashmail) {
-    return new Promise((resolve, reject) => {
-        const token = this.localStoragexx.retrieve(this.key_localstorage_token);
-        const user = this.localStoragexx.retrieve(this.key_localstorage_token);
+    getUserExternal(hashmail) {
+        return new Promise((resolve, reject) => {
+            const token = this.localStoragexx.retrieve(this.key_localstorage_token);
+            const user = this.localStoragexx.retrieve(this.key_localstorage_token);
 
-        if (!token || token.length === 0) {
-            return reject('You are not logged in.');
-        }
+            if (!token || token.length === 0) {
+                return reject('You are not logged in.');
+            }
 
-        const that = this;
+            const that = this;
 
-        const bodyRequest = {
-            'iri' : user,
-            'mbox_sha1sum' : hashmail
-        };
+            const bodyRequest = {
+                'iri': user,
+                'mbox_sha1sum': hashmail
+            };
 
-        that.managerRequest.get(Config.externalServer.url + '/api/person', bodyRequest)
-            .then((request) => {
-                console.log("THEN");
-                console.log(request);
+            that.managerRequest.get(Config.externalServer.url + '/api/person', bodyRequest)
+                .then((request) => {
+                    console.log('THEN');
+                    console.log(request);
 
-            })
-            .catch((request) => {
-                console.log("CATCH");
-                return reject(request);
-            });
-    });
-}
+                })
+                .catch((request) => {
+                    console.log('CATCH');
+                    return reject(request);
+                });
+        });
+    }
 
     updateProfile(firstname, lastname) {
         return new Promise((resolve, reject) => {
@@ -258,7 +258,7 @@ getUserExternal(hashmail) {
         });
     };
 
-    signupWithBadge = (email,emailUsed, firstname, lastname, password) => {
+    signupWithBadge = (email, emailUsed, firstname, lastname, password) => {
         return new Promise((resolve, reject) => {
 
             const that = this;
