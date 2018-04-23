@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, NgModule } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiExternalServer } from '../../services/ApiExternalServer';
 import { MdSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
@@ -27,8 +27,8 @@ export class UserProfileComponent implements OnInit {
     private key_localstorage_userName = 'username_external_ressource_sympozer';
 
     constructor(private apiExternalServer: ApiExternalServer,
-                private snackBar: MdSnackBar,
-                private localStoragexx: LocalStorageService) {
+        private snackBar: MdSnackBar,
+        private localStoragexx: LocalStorageService) {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
             // console.log(status);
             this.hasLogged = status;
@@ -36,8 +36,9 @@ export class UserProfileComponent implements OnInit {
                 const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
                 window.location.replace(urlHost + '#/home');
             }
+            // console.log(status)
+
         });
-        this.online = navigator.onLine;
     }
 
     ngOnInit(): void {
@@ -78,21 +79,33 @@ export class UserProfileComponent implements OnInit {
     }
 
     updateUser(user) {
-        if (!this.online) {
-            this.apiExternalServer.update(user)
-                .then((status) => {
-                    this.snackBar.open('Update successful.', '', {
-                        duration: 2000,
-                    });
-                    window.history.back();
-                })
-                .catch((err) => {
-                    this.snackBar.open(err, '', {
-                        duration: 2000,
-                    });
-                });
-        }
+        console.log("afficheUser");
+        console.log(user);
 
+        this.apiExternalServer.update(user)
+            .then((status) => {
+                this.snackBar.open('Update successful.', '', {
+                    duration: 2000,
+                });
+                window.history.back();
+            })
+            .catch((err) => {
+                this.snackBar.open(err, '', {
+                    duration: 2000,
+                });
+            });
+    }
+
+    getUserExternal(user) {
+        console.log(user);
+
+        this.apiExternalServer.getUserExternal(user.mbox_sha1sum)
+            .then((status) => {
+
+            })
+            .catch((err) => {
+
+            })
     }
     updateOnffline() {
         this.online = false;
@@ -100,4 +113,5 @@ export class UserProfileComponent implements OnInit {
     updateOnline(){
         this.online = true;
     }
+
 }

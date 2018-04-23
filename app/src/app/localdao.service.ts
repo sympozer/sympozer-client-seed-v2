@@ -577,7 +577,7 @@ export class LocalDAOService {
                         'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
                         'SELECT DISTINCT ?label ?id \n' +
                         'WHERE {\n' +
-                        ' ?id a sd:OrganisedEvent . \n' +
+                        ' ?id a sd:Session . \n' +
                         ' ?id rdfs:label ?label . \n' +
                         ' ?id sd:startDate ?startDate . \n' +
                         ' ?id sd:endDate ?endDate . \n' +

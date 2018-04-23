@@ -93,7 +93,37 @@ export class ApiExternalServer {
                 });
         });
 }
-updateProfile(firstname, lastname) {
+
+getUserExternal(hashmail) {
+    return new Promise((resolve, reject) => {
+        const token = this.localStoragexx.retrieve(this.key_localstorage_token);
+        const user = this.localStoragexx.retrieve(this.key_localstorage_token);
+
+        if (!token || token.length === 0) {
+            return reject('You are not logged in.');
+        }
+
+        const that = this;
+
+        const bodyRequest = {
+            'iri' : user,
+            'mbox_sha1sum' : hashmail
+        };
+
+        that.managerRequest.get(Config.externalServer.url + '/api/person', bodyRequest)
+            .then((request) => {
+                console.log("THEN");
+                console.log(request);
+
+            })
+            .catch((request) => {
+                console.log("CATCH");
+                return reject(request);
+            });
+    });
+}
+
+    updateProfile(firstname, lastname) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
@@ -214,6 +244,34 @@ updateProfile(firstname, lastname) {
             };
 
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
+                .then((request) => {
+                    const resultPromise = JSON.parse(request.text());
+                    if (request.status === 400) {
+                        return reject(resultPromise.message);
+                    }
+                    return resolve(true);
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    };
+
+    signupWithBadge = (email,emailUsed, firstname, lastname, password) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                email: email,
+                emailUsed: emailUsed,
+                firstname: firstname,
+                lastname: lastname,
+                password: password,
+                confirmPassword: password
+            };
+
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/registerFromBadge', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
                     if (request.status === 400) {
