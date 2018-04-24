@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
 import {Config} from '../../app-config';
 import { MdDialog  } from '@angular/material';
-import {DialogShareQrComponent} from "../dialog-share-qr/dialog-share-qr.component";
+import {DialogShareQrComponent} from '../dialog-share-qr/dialog-share-qr.component';
 
 
 

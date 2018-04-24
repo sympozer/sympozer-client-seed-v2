@@ -98,7 +98,7 @@ export class ApiExternalServer {
     getUserExternal(hashmail) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
-            const user = this.localStoragexx.retrieve(this.key_localstorage_token);
+            // const user = this.localStoragexx.retrieve(this.key_localstorage_token);
 
             if (!token || token.length === 0) {
                 return reject('You are not logged in.');
@@ -107,7 +107,7 @@ export class ApiExternalServer {
             const that = this;
 
             const bodyRequest = {
-                'iri': user,
+                // 'iri': user,
                 'mbox_sha1sum': hashmail
             };
 
@@ -672,5 +672,4 @@ export class ApiExternalServer {
     getFacebook(): Observable<any> {
         return this.subjectFacebook.asObservable();
     }
-
 }

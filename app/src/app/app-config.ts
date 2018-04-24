@@ -23,7 +23,7 @@ export let Config = {
     },
     conference: {
         'name': 'The Web Conference 2018',
-        'hashtag': 'WWW2018 @TheWebConf',
+        'hashtag': 'TheWebConf @TheWebConf',
         'acronym': 'WWW2018',
         'logoUri': 'data/images/TheWebConference2018-logo.png',
         'website': 'https://www2018.thewebconf.org/',
@@ -81,9 +81,8 @@ export let Config = {
     },
     apiLogin: {
         url: 'https://login.sympozer.com'
+//        url: 'http://localhost:3000'
     },
-
-    jwt_key : 'testsympozerlogin',
 
     externalServer: {
         url: 'https://sympozer.com/external'
