@@ -6,6 +6,7 @@ import {routerTransition} from '../../app.router.animation';
 import * as moment from 'moment';
 import {Encoder} from "../../lib/encoder";
 import {RessourceDataset} from '../../services/RessourceDataset';
+import {TimeManager} from '../../services/timeManager.service';
 
 @Component({
     selector: 'whatsnow',
@@ -45,6 +46,7 @@ export class WhatsNowComponent implements OnInit {
                     const startDate = nodeStartDate.value;
                     const endDate = nodeEndDate.value;
                     let type = nodeType.value;
+                    let siteLabel = results['?siteLabel'].value;
 
                     if (id && label && startDate && endDate && type) {
                         id = that.encoder.encode(id);
@@ -66,6 +68,7 @@ export class WhatsNowComponent implements OnInit {
                                 if (minutes > 0) {
                                     strDuration += minutes + " minutes";
                                 }
+                                const strDate = TimeManager.dateDisplay(momentStartDate, momentEndDate);
 
                                 //On récup le type dans l'URI
                                 type = that.ressourceDataset.extractType(type, label);
@@ -75,7 +78,9 @@ export class WhatsNowComponent implements OnInit {
                                     startDate: momentStartDate.format('LLLL'),
                                     duration: strDuration,
                                     endDate: momentEndDate.format('LLLL'),
+                                    dateVal: strDate,
                                     sortKey: [momentStartDate, label],
+                                    siteLabel: siteLabel,
                                     type: type,
                                 });
 
