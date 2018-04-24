@@ -187,11 +187,11 @@ export class ApiExternalServer {
                 'email': email,
                 'password': password
             };
+            console.log('ici');
 
-            const headers = new Headers({'Content-Type': 'application/json'});
-            const options = new RequestOptions({headers: headers});
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
                 .then((request) => {
+                    console.log('la');
                     const resultPromise = JSON.parse(request.text());
                     const user = resultPromise.user;
                     if (!resultPromise || !user) {
@@ -223,13 +223,14 @@ export class ApiExternalServer {
                     this.sendLoginStatus(true);
                     that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
                     that.localStoragexx.store(that.key_localstorage_user, user);
-                    return resolve(user);
+                    resolve(user);
                 })
                 .catch((request) => {
-                    return reject(request);
+                    console.log('ailleurs');
+                    reject(request);
                 });
         });
-    };
+    }
 
     signup = (email, firstname, lastname, password) => {
         return new Promise((resolve, reject) => {
@@ -245,18 +246,19 @@ export class ApiExternalServer {
             };
 
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
-                .then((request) => {
-                    const resultPromise = JSON.parse(request.text());
-                    if (request.status === 400) {
-                        return reject(resultPromise.message);
+                .then((response) => {
+                    if (response.status <= 299) {
+                        console.log('a ', response);
+                        resolve(JSON.parse(response.text()).message);
+                    } else {
+                        reject(JSON.parse(response['_body']).message);
                     }
-                    return resolve(true);
                 })
                 .catch((request) => {
                     return reject(request);
                 });
         });
-    };
+    }
 
     signupWithBadge = (email, emailUsed, firstname, lastname, password) => {
         return new Promise((resolve, reject) => {
@@ -284,7 +286,7 @@ export class ApiExternalServer {
                     return reject(request);
                 });
         });
-    };
+    }
 
     forgotPassword = (email) => {
         return new Promise((resolve, reject) => {
@@ -293,7 +295,6 @@ export class ApiExternalServer {
             }
 
             const that = this;
-
             const bodyRequest = {
                 email: email,
             };
@@ -315,7 +316,7 @@ export class ApiExternalServer {
     changePassword = (currentPassword, newPassword, confirmPassWord) => {
         return new Promise((resolve, reject) => {
 
-            let id = this.localStoragexx.retrieve(this.key_localstorage_id);
+            const id = this.localStoragexx.retrieve(this.key_localstorage_id);
 
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {

@@ -1,16 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {Config} from "../../app-config";
 import {Router} from '@angular/router';
-import {routerTransition} from '../../app.router.animation';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {MdSnackBar} from "@angular/material";
-import {VoteService} from '../../services/vote.service'
-import {LocalDAOService} from "../../localdao.service";
-import {Encoder} from "../../lib/encoder";
+import {MdSnackBar} from '@angular/material';
+import {VoteService} from '../../services/vote.service';
+import {LocalDAOService} from '../../localdao.service';
+import {Encoder} from '../../lib/encoder';
 import {LocalStorageService} from 'ng2-webstorage';
 
 const sha1 = require('sha-1');
-const jwtDecode = require('jwt-decode');
 
 @Component({
     selector: 'login',
@@ -20,11 +17,11 @@ const jwtDecode = require('jwt-decode');
 })
 export class LoginComponent implements OnInit {
 
-    title: string = "Login";
-    username: string = "User";
+    title = 'Login';
+    username = 'User';
     toggleLogin = true;
-    private key_localstorage_token = "token_external_ressource_sympozer";
-    private key_localstorage_user = "user_external_ressource_sympozer";
+//    private key_localstorage_token = 'token_external_ressource_sympozer';
+    private key_localstorage_user = 'user_external_ressource_sympozer';
 
 
     constructor(private router: Router,
@@ -37,11 +34,12 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (document.getElementById("page-title-p"))
-            document.getElementById("page-title-p").innerHTML = this.title;
-        let user = this.localStoragexx.retrieve(this.key_localstorage_user);
+        if (document.getElementById('page-title-p')) {
+            document.getElementById('page-title-p').innerHTML = this.title;
+        }
+        const user = this.localStoragexx.retrieve(this.key_localstorage_user);
         if (user !== null) {
-            let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
+            const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
             window.location.replace(urlHost + '#/home');
 
         }
@@ -50,10 +48,10 @@ export class LoginComponent implements OnInit {
     login(email, password) {
         this.apiExternalServer.login(email, password)
             .then((user) => {
-                this.snackBar.open("Login successful.", "", {
+                this.snackBar.open('Login successful.', '', {
                     duration: 2000,
                 });
-                //window.location.href = 'http://www.google.com';
+                // window.location.href = 'http://www.google.com';
                 /*
                 this.voteService.votedPublications()
                     .then(() => {
@@ -68,12 +66,12 @@ export class LoginComponent implements OnInit {
                 */
 
 
-                //Retrieve the author by the publication
+                // Retrieve the author by the publication
 
                 const that = this;
-                let emailSha1 = sha1('mailto:' + email);
-                let query = {'key': emailSha1};
-                that.DaoService.query("getPersonBySha", query, (results) => {
+                const emailSha1 = sha1('mailto:' + email);
+                const query = {'key': emailSha1};
+                that.DaoService.query('getPersonBySha', query, (results) => {
 
                     if (results) {
                         const nodeIdPerson = results['?id'];
@@ -83,25 +81,26 @@ export class LoginComponent implements OnInit {
                             return false;
                         }
 
-                        let idPerson = nodeIdPerson.value;
+                        const idPerson = nodeIdPerson.value;
                         const label = nodeLabel.value;
 
                         if (!idPerson || !label) {
                             return false;
                         }
-                        let username = label.split(' ');
-                        that.snackBar.open("You are recognized as " + label + ".", "", {
+                        const username = label.split(' ');
+                        that.snackBar.open('You are recognized as ' + label + '.', '', {
                             duration: 3000,
                         });
-                        
+
                     }
                 });
 
-                window.history.back()
+                window.history.back();
 
             })
-            .catch((err) => {
-                this.snackBar.open(JSON.parse(err.text()).message, "", {
+            .catch((resp) => {
+                console.log(resp);
+                this.snackBar.open(JSON.parse(resp._body)['message'], '', {
                     duration: 3000,
                 });
             });
@@ -123,28 +122,28 @@ export class LoginComponent implements OnInit {
      * @param firstname
      */
     sendFirstname(firstname: string): void {
-        this.apiExternalServer.sendUsername(firstname)
+        this.apiExternalServer.sendUsername(firstname);
     }
 
 
 
     authGoogle() {
-        console.log("HELLLLLLLLLLOOOOO"); 
+        console.log('HELLLLLLLLLLOOOOO');
         this.apiExternalServer.authGoogleService();
     }
 
     authLinkedin(){
-        console.log("HELLLLLLLLLLOOOOO 1");
+        console.log('HELLLLLLLLLLOOOOO 1');
         this.apiExternalServer.authLinkedinService();
     }
 
     authTwitter() {
-        console.log("HELLLLLLLLLLOOOOO 2");
+        console.log('HELLLLLLLLLLOOOOO 2');
         this.apiExternalServer.authTwitterService();
     }
 
     authFacebook(){
-        console.log("HELLLLLLLLLLOOOOO 3");
+        console.log('HELLLLLLLLLLOOOOO 3');
         this.apiExternalServer.authFacebookService();
     }
 }
