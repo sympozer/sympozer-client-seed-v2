@@ -672,6 +672,8 @@ export class LocalDAOService {
                         ' ?id sd:endDate ?endDate . \n' +
                         ' ?id sd:isSubEventOf ?conf . \n' +
                         ' ?conf a sd:Conference . \n' +
+                        ' ?id sd:hasSite ?site . \n' +
+                        ' ?site rdfs:label ?siteLabel . \n' +
                         '}';
                     that.launchSparqlQuery(command, query, (results) => {
                         const id = results['?id'].value;
@@ -763,6 +765,8 @@ export class LocalDAOService {
                         ' ?id sd:endDate ?endDate . \n' +
                         ' ?id sd:isSubEventOf ?conf . \n' +
                         ' ?conf a sd:Conference . \n' +
+                        ' ?id sd:hasSite ?site . \n' +
+                        ' ?site rdfs:label ?siteLabel . \n' +
                         '}';
                     const seenEventByDateDayPerDay = new Set();
                     that.launchSparqlQuery(command, query, (results) => {
