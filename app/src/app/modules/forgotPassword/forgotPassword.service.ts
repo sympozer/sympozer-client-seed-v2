@@ -4,12 +4,12 @@ import {Observable} from 'rxjs/Observable';
 import {Config} from "../../app-config";
 
 @Injectable()
-export class ActivationMailService {
+export class ForgotPasswordService {
 
     constructor(private http: Http) {
     }
 
-    resend(email: string):Observable<any>{
+    forgotPassword(email: string):Observable<any>{
         
         let headers = new Headers();
         headers.set('Accept', 'application/json');
@@ -18,7 +18,7 @@ export class ActivationMailService {
         let data = "email=" + email;
 
         return this.http
-            .post( Config.apiLogin.url + "/api/v1/resend", data, {headers:headers})
+            .post( Config.apiLogin.url + "/api/v1/forgotPassword", data, {headers:headers})
             .map(res => res.json())
             .catch(this.handleError);
     }

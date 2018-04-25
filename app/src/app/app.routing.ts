@@ -37,6 +37,7 @@ import {UserProfileComponent} from './modules/user-profile/user-profile.componen
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import { ActivationMailComponent } from './modules/activationMail/activationMail.component';
 import { ChangePasswordComponent } from './modules/changePassword/changePassword.component';
+import {SignupWithBadgeComponent} from './modules/signupWithBadge/signupWithBadge.component';
 
 const appRoutes: Routes = [
     {
@@ -156,9 +157,14 @@ const appRoutes: Routes = [
         path: 'login',
         component: LoginComponent
     },
+
     {
         path: 'signup',
         component: SignupComponent
+    },
+    {
+        path: 'signupWithBadge',
+        component: SignupWithBadgeComponent
     },
     {
         path: 'forgotPassword',

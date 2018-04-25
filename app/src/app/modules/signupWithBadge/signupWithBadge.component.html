@@ -1,21 +1,25 @@
 <div class="login-wrapper">
   <md-card class="inscription-card">
   	<div class="header">
-      <h4>Sign Up</h4>
+      <h4>Alternate sign in form</h4>
     </div>
     <div class="inscription-form">
-        <h5>Sign up with your account</h5>
+        <h5>Use this form if you have not registered to the conference yourself or used another email address than the one you will log in with.</h5>
         <form>
-          <md-input-container>
-            <input #email mdInput type="email" placeholder="Email">
-          </md-input-container>
-
           <md-input-container>
             <input #firstname mdInput type="firstname" placeholder="First Name">
           </md-input-container>
 
           <md-input-container>
             <input #lastname mdInput type="lastname" placeholder="Last Name">
+          </md-input-container>
+
+          <md-input-container>
+            <input #email mdInput type="email" placeholder="Your email address (we will send you a link at that address)">
+          </md-input-container>
+
+          <md-input-container>
+            <input #emailUsed mdInput type="email" placeholder="The email address used (by you or someone else) for your registration">
           </md-input-container>
 
           <md-input-container>
@@ -29,11 +33,9 @@
           </md-input-container>
 
           <div class="inscription-footer">
-            <button md-button color="primary" (click)="signup(email.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Sign up</button>
+            <button md-button color="primary" (click)="signupWithBadge(email.value, emailUsed.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Sign up</button>
             <div class="sign-up">
               <br>
-              <p>Already have a Badge ?
-                <a [routerLink]="['/signupWithBadge/']">Sign Up here</a> </p>
               <p>Already have an account ?
               <a [routerLink]="['/login/']">Log in</a> </p>
               

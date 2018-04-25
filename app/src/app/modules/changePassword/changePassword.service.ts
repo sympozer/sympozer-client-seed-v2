@@ -4,21 +4,21 @@ import {Observable} from 'rxjs/Observable';
 import {Config} from "../../app-config";
 
 @Injectable()
-export class ActivationMailService {
+export class ChangePasswordService {
 
     constructor(private http: Http) {
     }
 
-    resend(email: string):Observable<any>{
+    changePassword(currentPassword:string, newPassword: string):Observable<any>{
         
         let headers = new Headers();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-        let data = "email=" + email;
+        let data = "currentPassword=" + currentPassword + "&" + "newPassword=" + newPassword;
 
         return this.http
-            .post( Config.apiLogin.url + "/api/v1/resend", data, {headers:headers})
+            .post( Config.apiLogin.url + "/api/v1/updatePassword", data, {headers:headers})
             .map(res => res.json())
             .catch(this.handleError);
     }

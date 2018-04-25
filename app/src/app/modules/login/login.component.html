@@ -18,13 +18,14 @@
           <button md-button (click)="login(email.value, password.value)">Login</button>
           <div class="sign-up">
             <br>
-            <p>Don’t have an account yet ? 
+            <p>Don’t have an account yet ?
             <a [routerLink]="['/signup/']">Sign up</a> </p>
             <p>Forgot your password ? <a [routerLink]="['/forgotPassword/']" id="link" >Click here</a> </p>
-            <p>Didn't receive an activation email ? 
+            <p>Didn't receive an activation email ?
             <a [routerLink]="['/resend/']">Resend activation mail</a> </p>
           </div>
         </div>
+          <!--
         <div class="btn-social-network">
           <h1>OR</h1>
           <a (click)="authFacebook()" class="social-button facebook-btn"> <span>Log in with Facebook</span></a>
@@ -32,6 +33,7 @@
           <a href="https://login.sympozer.com/api/v1/auth/google" class="social-button google-btn"> <span>Log in with Google</span></a>
           <a href="https://login.sympozer.com/api/v1/auth/linkedin" class="social-button linkedin-btn"> <span>Log in with LinkedIn</span></a>
         </div>
+        -->
       </form>
     </div>
   </md-card>

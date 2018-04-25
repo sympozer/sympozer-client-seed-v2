@@ -577,7 +577,7 @@ export class LocalDAOService {
                         'PREFIX sd: <https://w3id.org/scholarlydata/ontology/conference-ontology.owl#> \n' +
                         'SELECT DISTINCT ?label ?id \n' +
                         'WHERE {\n' +
-                        ' ?id a sd:OrganisedEvent . \n' +
+                        ' ?id a sd:Session . \n' +
                         ' ?id rdfs:label ?label . \n' +
                         ' ?id sd:startDate ?startDate . \n' +
                         ' ?id sd:endDate ?endDate . \n' +
@@ -634,6 +634,8 @@ export class LocalDAOService {
                         ' ?id sd:endDate ?endDate . \n' +
                         ' ?id sd:isSubEventOf ?conf . \n' +
                         ' ?conf a sd:Conference . \n' +
+                        ' ?id sd:hasSite ?site . \n' +
+                        ' ?site rdfs:label ?siteLabel . \n' +
                         '}';
                     that.launchSparqlQuery(command, query, (results) => {
                         const nodeId = results['?id'];
@@ -672,6 +674,8 @@ export class LocalDAOService {
                         ' ?id sd:endDate ?endDate . \n' +
                         ' ?id sd:isSubEventOf ?conf . \n' +
                         ' ?conf a sd:Conference . \n' +
+                        ' ?id sd:hasSite ?site . \n' +
+                        ' ?site rdfs:label ?siteLabel . \n' +
                         '}';
                     that.launchSparqlQuery(command, query, (results) => {
                         const id = results['?id'].value;
@@ -763,6 +767,8 @@ export class LocalDAOService {
                         ' ?id sd:endDate ?endDate . \n' +
                         ' ?id sd:isSubEventOf ?conf . \n' +
                         ' ?conf a sd:Conference . \n' +
+                        ' ?id sd:hasSite ?site . \n' +
+                        ' ?site rdfs:label ?siteLabel . \n' +
                         '}';
                     const seenEventByDateDayPerDay = new Set();
                     that.launchSparqlQuery(command, query, (results) => {

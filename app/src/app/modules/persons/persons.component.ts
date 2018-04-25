@@ -25,6 +25,7 @@ export class PersonsComponent implements OnInit {
     constructor(private router: Router,
                 private dataLoaderService: DataLoaderService,
                 private DaoService: LocalDAOService,
+
                 private encoder: Encoder) {
         this.persons = [];
     }
