@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute}   from '@angular/router';
-import {Location}              from '@angular/common';
-import {LocalDAOService} from  '../../localdao.service';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {LocalDAOService} from '../../localdao.service';
 import {routerTransition} from '../../app.router.animation';
 import * as moment from 'moment';
 import {Encoder} from '../../lib/encoder';
@@ -46,7 +46,7 @@ export class WhatsNextComponent implements OnInit {
                     const startDate = nodeStartDate.value;
                     const endDate = nodeEndDate.value;
                     let type = nodeType.value;
-                    let siteLabel = results['?siteLabel'].value;
+                    const siteLabel = results['?siteLabel'].value;
 
                     if (id && label && startDate && endDate && type) {
                         id = that.encoder.encode(id);
