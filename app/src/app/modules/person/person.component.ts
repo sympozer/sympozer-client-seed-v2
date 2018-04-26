@@ -99,11 +99,13 @@ export class PersonComponent implements OnInit {
                                         }
                                     }
 
-                                    that.managerRequest.get(Config.externalServer.url + '/api/person?mbox_sha1sum=' + boxs + '&iri=' + id)
+                                    // Patch until external handles resource IRIs...
+//                                    that.managerRequest.get(Config.externalServer.url + '/api/person?mbox_sha1sum=' + boxs + '&iri=' + id)
+                                    that.managerRequest.get(Config.externalServer.url + '/api/person?mbox_sha1sum=' + boxs)
                                         .then((response) => {
                                             if (response && response) {
                                                 const user = JSON.parse(response);
-//                                                console.log(user);
+                                                console.log(user);
                                                 if (user && user.photoUrl) {
                                                     that.photoUrl = user.photoUrl;
                                                 }

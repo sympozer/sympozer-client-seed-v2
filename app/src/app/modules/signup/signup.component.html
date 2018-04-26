@@ -4,7 +4,7 @@
       <h4>Sign Up</h4>
     </div>
     <div class="inscription-form">
-        <h5>Sign up with your account</h5>
+        <h5>Please sign up using the email address used for registering to the conference</h5>
         <form>
           <md-input-container>
             <input #email mdInput type="email" placeholder="Email">
@@ -32,8 +32,8 @@
             <button md-button color="primary" (click)="signup(email.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Sign up</button>
             <div class="sign-up">
               <br>
-              <p>Already have a Badge ?
-                <a [routerLink]="['/signupWithBadge/']">Sign Up here</a> </p>
+              <p>Can't sign up with this form?
+                <a [routerLink]="['/signupWithBadge/']">Try signing up here</a> </p>
               <p>Already have an account ?
               <a [routerLink]="['/login/']">Log in</a> </p>
               
