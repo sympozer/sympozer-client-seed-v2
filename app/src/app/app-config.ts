@@ -88,7 +88,7 @@ export let Config = {
         url: 'https://sympozer.com/external'
     },
     vote :{
-        url: 'http://localhost:3000',
+        url: 'https://sympozer.com/vote',
         tracks: ['https://w3id.org/scholarlydata/track/www-demo-2018', 'https://w3id.org/scholarlydata/track/www-posters-2018']
     }
 };
