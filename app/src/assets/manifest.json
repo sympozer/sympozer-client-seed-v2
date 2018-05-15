@@ -1,6 +1,6 @@
 {
-  "short_name": "Sympozer",
-  "name": "Sympozer WWW 2018",
+  "short_name": "WWW 2018",
+  "name": "The Web Conference 2018",
   "icons": [
     {
       "src": "../img/TheWebConference2018-logo.png",
@@ -8,7 +8,9 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/www2018_test/",
+  "start_url": "/app/#/home",
   "display": "fullscreen",
-  "orientation": "landscape"
+  "orientation": "landscape",
+  "background_color": "#fafafa",
+  "theme_color": "#f36a13"
 }

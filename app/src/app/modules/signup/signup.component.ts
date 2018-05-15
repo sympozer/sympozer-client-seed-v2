@@ -1,12 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {routerTransition} from '../../app.router.animation';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {MdSnackBar} from '@angular/material';
-import {VoteService} from '../../services/vote.service'
+import {VoteService} from '../../services/vote.service';
 import {LocalDAOService} from '../../localdao.service';
 import {LocalStorageService} from 'ng2-webstorage';
-
 
 @Component({
     selector: 'signup',
@@ -16,8 +14,7 @@ import {LocalStorageService} from 'ng2-webstorage';
 })
 export class SignupComponent implements OnInit {
 
-
-    private key_localstorage_user = 'user_external_ressource_sympozer'
+    private key_localstorage_user = 'user_external_ressource_sympozer';
 
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
@@ -28,12 +25,11 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit() {
-        let user = this.localStoragexx.retrieve(this.key_localstorage_user)
+        const user = this.localStoragexx.retrieve(this.key_localstorage_user);
         if (user !== null) {
-            let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname
+            const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
             window.location.replace(urlHost + '#/home');
         }
-
     }
 
     /**
@@ -49,58 +45,52 @@ export class SignupComponent implements OnInit {
         const that = this;
 
         if (!email || email.length === 0) {
-            that.snackBar.open('Invalid email address.', "", {
+            that.snackBar.open('Invalid email address.', '', {
                 duration: 3000,
             });
-        }
+        } else
 
-        else if (!firstname || firstname.length === 0) {
-            that.snackBar.open('Invalid firstname', "", {
+        if (!firstname || firstname.length === 0) {
+            that.snackBar.open('Invalid firstname', '', {
                 duration: 3000,
             });
-        }
+        } else
 
-        else if (!lastname || lastname.length === 0) {
-            that.snackBar.open('Invalid lastname', "", {
+        if (!lastname || lastname.length === 0) {
+            that.snackBar.open('Invalid lastname', '', {
                 duration: 3000,
             });
-        }
-        else if (!password || password.length === 0) {
-            that.snackBar.open('Invalid password', "", {
+        } else
+        if (!password || password.length === 0) {
+            that.snackBar.open('Invalid password', '', {
                 duration: 3000,
             });
-        }
+        } else
 
-        else if (!confirmPassword || confirmPassword.length === 0) {
-            that.snackBar.open('Invalid password', "", {
+        if (!confirmPassword || confirmPassword.length === 0) {
+            that.snackBar.open('Invalid password', '', {
                 duration: 3000,
             });
-        }
+        } else
 
-        else if (password !== confirmPassword) {
-            that.snackBar.open('Passwords don\'t match.', "", {
+        if (password !== confirmPassword) {
+            that.snackBar.open('Passwords don\'t match.', '', {
                 duration: 3000,
             });
-        }
-
-        else {
+        } else {
             this.apiExternalServer.signup(email, firstname, lastname, password)
-                .then(() => {
+                .then((message: string) => {
 
-                    that.snackBar.open('Please check your email to validate your account.', '', {
-                        duration: 7000,
-                    });
-
-                    that.snackBar.open('The account creation request has been accepted by our server.', '', {
+                    that.snackBar.open(message, '', {
                         duration: 4000,
                     });
 
-                    let urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname
+                    const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
                     window.location.replace(urlHost + '#/login');
 
                 })
-                .catch((err) => {
-                    this.snackBar.open(JSON.parse(err.text()).message, '', {
+                .catch((resp) => {
+                    this.snackBar.open(JSON.parse(resp._body)['message'], '', {
                         duration: 2000,
                     });
                 });

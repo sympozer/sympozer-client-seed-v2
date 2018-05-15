@@ -27,12 +27,13 @@ export class VoteService {
   isTrackVotable = (trackName) => {
     for (let i = 0; i < Config.vote.tracks.length; i++) {
       const uri = Config.vote.tracks[i];
-      if (uri === trackName) {
-        return true;
+      if (uri ===  this.encoder.decode(trackName)) {
+          return true;
       }
     }
     return false;
   }
+
 
   /**
    * Vote to the track
@@ -40,8 +41,9 @@ export class VoteService {
    * @returns {Promise<T>}
    */
   vote = (id_track, id_publi) => {
+    id_track = this.encoder.decode(id_track)
+
     return new Promise((resolve, reject) => {
-      console.log('vote called');
       if (!id_publi || id_publi.length === 0) {
         return reject('Erreur lors de la récupération de l\'identifiant de la ressource');
       }
@@ -49,48 +51,55 @@ export class VoteService {
       if (!id_track || id_track.length === 0) {
         return reject('Erreur lors de la récupération de l\'identifiant de la track');
       }
-
       const that = this;
       const token = that.localStoragexx.retrieve(that.key_localstorage_token);
       if (!token || token.length === 0) {
         return reject('Vous devez vous connectez avant de pouvoir voter');
       }
-      const bodyRequest = {
-        id_track: id_track,
-        id_ressource: id_publi,
-        token: token
-      };
-
-      const headers = new Headers({ 'Content-Type': 'application/json' });
-      const options = new RequestOptions({ headers: headers });
-      that.managerRequest.post(Config.externalServer.url + '/api/vote', bodyRequest)
+      console.log(token);
+        const bodyRequest = {
+            'token': token,
+            'id_publication': id_publi,
+            'id_track': id_track
+        };
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+        });
+        const options = new RequestOptions({ headers: headers });
+        that.managerRequest.post(Config.vote.url + '/api/vote', bodyRequest, options)
           .then((response) => {
             if (response && response.text()) {
-              console.log(response);
-              const votedTracks = JSON.parse(that.localStoragexx.retrieve(that.key_localstorage_vote));
+              console.log(response.text());
+                const votedTracks = [];
+              if (that.localStoragexx.retrieve(that.key_localstorage_vote) !== null ) {
+                  votedTracks.push(that.localStoragexx.retrieve(that.key_localstorage_vote));
+              }else {
+                  that.localStoragexx.store(that.key_localstorage_vote, []);
+              }
+              console.log(votedTracks);
               if (response.text() !== 'OK') {
                 const responseBody = JSON.parse(response.text());
+                console.log(responseBody);
+                console.log(responseBody.err);
                 if (responseBody && responseBody.error) {
                   console.log('entered in error response body error');
                   console.log(response.status);
                   if (response.status === 403) {
-                    console.log(votedTracks[0]);
-                    if (!this.isTrackVoted(id_publi)) {
-                      votedTracks.push(id_publi);
+                    if (!this.isTrackVoted(id_track)) {
+                      votedTracks.push(id_track);
                     }
-                    that.localStoragexx.store(that.key_localstorage_vote, JSON.stringify(votedTracks));
+                    that.localStoragexx.store(that.key_localstorage_vote, votedTracks);
                     reject(response.status);
                   }
                   reject(responseBody.error);
                 }
               }
-
-              console.log(votedTracks);
               if (!this.isTrackVoted(id_track)) {
+
                 votedTracks.push(id_track);
               }
-              console.log(votedTracks);
-              that.localStoragexx.store(that.key_localstorage_vote, JSON.stringify(votedTracks));
+              console.log(votedTracks.length);
+              that.localStoragexx.store(that.key_localstorage_vote, votedTracks);
               return resolve(true);
             }
 
@@ -103,17 +112,20 @@ export class VoteService {
     });
   }
 
-  votedPublications() {
+  votedPublications(id_track) {
     return new Promise((resolve, reject) => {
       const that = this;
       const token = that.localStoragexx.retrieve(that.key_localstorage_token);
       if (!token || token.length === 0) {
         return reject('Vous devez vous connectez avant de pouvoir voter');
       }
-      that.managerRequest.get(Config.externalServer.url + '/api/user/vote/information?token=' + token )
+      id_track = this.encoder.decode(id_track)
+        console.log(id_track);
+      that.managerRequest.get(Config.vote.url +  '/api/vote/information?token=' + token + '&id_track=' + id_track )
           .then((response) => {
+            console.log(response);
             if (response && response) {
-              that.localStoragexx.store(that.key_localstorage_vote, response);
+              that.localStoragexx.store(that.key_localstorage_vote, JSON.parse(response));
               return resolve(true);
             }
 
@@ -127,9 +139,10 @@ export class VoteService {
   }
 
   isTrackVoted(idTrack) {
-    const votedPublications = JSON.parse(this.localStoragexx.retrieve(this.key_localstorage_vote));
+    const votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
+    console.log(JSON.stringify(votedPublications))
     for (const i in votedPublications) {
-      if (votedPublications[i] === idTrack) {
+      if (votedPublications[i] === this.encoder.decode(idTrack)) {
         return true;
       }
     }

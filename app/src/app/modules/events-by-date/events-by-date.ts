@@ -59,6 +59,7 @@ export class EventsByDate implements OnInit {
                                 const startDate = nodeStartDate.value;
                                 const endDate = nodeEndDate.value;
                                 let type = nodeType.value;
+                                let siteLabel = results['?siteLabel'].value;
 
                                 if (id && label && startDate && endDate && type) {
                                     id = that.encoder.encode(id);
@@ -82,6 +83,7 @@ export class EventsByDate implements OnInit {
                                                 endDate: momentEndDate.format('LLLL'),
                                                 dateVal : strDate,
                                                 dateForSort: momentStartDate.format(),
+                                                siteLabel: siteLabel,
                                                 type: type,
                                                 compare: [momentStartDate, label],
                                             });

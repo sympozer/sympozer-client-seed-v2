@@ -43,7 +43,7 @@ export class ApiExternalServer {
         return false;
     }
 
-    update(user) {
+    update(token, firstname, lastname, homepage, twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
@@ -54,14 +54,14 @@ export class ApiExternalServer {
 
             const bodyRequest = {
                 token: token,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                homepage: user.homepage,
-                photoUrl: user.photoUrl,
-                twitterpage: user.twitterpage,
-                facebookpage: user.facebookpage,
-                googlepage: user.googlepage,
-                linkedinaccount: user.linkedinaccount
+                firstname: firstname,
+                lastname: lastname,
+                homepage: homepage,
+                photoUrl: photoUrl,
+                twitterpage: twitterpage,
+                facebookpage: facebookpage,
+                googlepage: googlepage,
+                linkedinaccount: linkedinaccount
             };
 
             that.managerRequest.post(Config.externalServer.url + '/api/person', bodyRequest)
@@ -89,11 +89,42 @@ export class ApiExternalServer {
                     return resolve(person);
                 })
                 .catch((request) => {
+                    console.log('catch');
                     return reject(request);
                 });
         });
-}
-updateProfile(firstname, lastname) {
+    }
+
+    getUserExternal(hashmail) {
+        return new Promise((resolve, reject) => {
+            const token = this.localStoragexx.retrieve(this.key_localstorage_token);
+            // const user = this.localStoragexx.retrieve(this.key_localstorage_token);
+
+            if (!token || token.length === 0) {
+                return reject('You are not logged in.');
+            }
+
+            const that = this;
+
+            const bodyRequest = {
+                // 'iri': user,
+                'mbox_sha1sum': hashmail
+            };
+
+            that.managerRequest.get(Config.externalServer.url + '/api/person', bodyRequest)
+                .then((request) => {
+                    console.log('THEN');
+                    console.log(request);
+
+                })
+                .catch((request) => {
+                    console.log('CATCH');
+                    return reject(request);
+                });
+        });
+    }
+
+    updateProfile(firstname, lastname) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
@@ -156,11 +187,11 @@ updateProfile(firstname, lastname) {
                 'email': email,
                 'password': password
             };
+            console.log('ici');
 
-            const headers = new Headers({'Content-Type': 'application/json'});
-            const options = new RequestOptions({headers: headers});
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
                 .then((request) => {
+                    console.log('la');
                     const resultPromise = JSON.parse(request.text());
                     const user = resultPromise.user;
                     if (!resultPromise || !user) {
@@ -192,13 +223,14 @@ updateProfile(firstname, lastname) {
                     this.sendLoginStatus(true);
                     that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
                     that.localStoragexx.store(that.key_localstorage_user, user);
-                    return resolve(user);
+                    resolve(user);
                 })
                 .catch((request) => {
-                    return reject(request);
+                    console.log('ailleurs');
+                    reject(request);
                 });
         });
-    };
+    }
 
     signup = (email, firstname, lastname, password) => {
         return new Promise((resolve, reject) => {
@@ -214,6 +246,35 @@ updateProfile(firstname, lastname) {
             };
 
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
+                .then((response) => {
+                    if (response.status <= 299) {
+                        console.log('a ', response);
+                        resolve(JSON.parse(response.text()).message);
+                    } else {
+                        reject(JSON.parse(response['_body']).message);
+                    }
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    signupWithBadge = (email, emailUsed, firstname, lastname, password) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                email: email,
+                emailUsed: emailUsed,
+                firstname: firstname,
+                lastname: lastname,
+                password: password,
+                confirmPassword: password
+            };
+
+            that.managerRequest.post(Config.apiLogin.url + '/api/v1/registerFromBadge', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.text());
                     if (request.status === 400) {
@@ -225,7 +286,7 @@ updateProfile(firstname, lastname) {
                     return reject(request);
                 });
         });
-    };
+    }
 
     forgotPassword = (email) => {
         return new Promise((resolve, reject) => {
@@ -234,7 +295,6 @@ updateProfile(firstname, lastname) {
             }
 
             const that = this;
-
             const bodyRequest = {
                 email: email,
             };
@@ -256,7 +316,7 @@ updateProfile(firstname, lastname) {
     changePassword = (currentPassword, newPassword, confirmPassWord) => {
         return new Promise((resolve, reject) => {
 
-            let id = this.localStoragexx.retrieve(this.key_localstorage_id);
+            const id = this.localStoragexx.retrieve(this.key_localstorage_id);
 
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
             if (!token || token.length === 0) {
@@ -613,5 +673,4 @@ updateProfile(firstname, lastname) {
     getFacebook(): Observable<any> {
         return this.subjectFacebook.asObservable();
     }
-
 }

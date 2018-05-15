@@ -86,6 +86,7 @@ export class EventsByLocationComponent implements OnInit {
 
                                 const momentStartDate = moment(startDate);
                                 const momentEndDate = moment(endDate);
+                                const strDate = TimeManager.dateDisplay(momentStartDate, momentEndDate);
 
                                 if (momentEndDate && momentStartDate) {
                                     const strDuration = TimeManager.startAndEndTimeToString(momentStartDate, momentEndDate);
@@ -104,6 +105,7 @@ export class EventsByLocationComponent implements OnInit {
                                         startDate: momentStartDate.format('LLLL'),
                                         duration: strDuration,
                                         endDate: momentEndDate.format('LLLL'),
+                                        dateVal: strDate,
                                         dateForSort: momentStartDate.format(),
                                     });
 

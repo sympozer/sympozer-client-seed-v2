@@ -6,7 +6,6 @@ import {ScheduleComponent} from './modules/schedule/schedule.component';
 import {SearchComponent} from './modules/search/search.component';
 import {AboutComponent} from './modules/about/about.component';
 import {PersonComponent} from './modules/person/person.component';
-import {ParticipantComponent} from './modules/participant/participant.component';
 import {PersonsComponent} from './modules/persons/persons.component';
 import {PublicationsComponent} from './modules/publications/publications.component';
 import {PublicationComponent} from './modules/publication/publication.component';
@@ -37,7 +36,7 @@ import {UserProfileComponent} from './modules/user-profile/user-profile.componen
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import { ActivationMailComponent } from './modules/activationMail/activationMail.component';
 import { ChangePasswordComponent } from './modules/changePassword/changePassword.component';
-import { UserInfoComponent } from './modules/user-info/user-info.component';
+import {SignupWithBadgeComponent} from './modules/signupWithBadge/signupWithBadge.component';
 
 const appRoutes: Routes = [
     {
@@ -102,10 +101,6 @@ const appRoutes: Routes = [
         component: PersonsComponent
     },
     {
-        path: 'participant/:name/:id',
-        component: ParticipantComponent
-    },
-    {
         path: 'publications',
         component: PublicationsComponent
     },
@@ -157,9 +152,14 @@ const appRoutes: Routes = [
         path: 'login',
         component: LoginComponent
     },
+
     {
         path: 'signup',
         component: SignupComponent
+    },
+    {
+        path: 'signupWithBadge',
+        component: SignupWithBadgeComponent
     },
     {
         path: 'forgotPassword',
@@ -188,10 +188,6 @@ const appRoutes: Routes = [
     {
         path: 'publications-by-keyword/:keyword',
         component: PublicationsByKeywordComponent
-    },
-    {
-        path: 'user',
-        component: UserInfoComponent,
     }
 ];
 

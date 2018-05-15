@@ -41,7 +41,7 @@ export class UserProfileComponent implements OnInit {
     ngOnInit() {
         this.user = this.localStoragexx.retrieve(this.key_localstorage_user);
         this.firstName = this.localStoragexx.retrieve(this.key_localstorage_userName);
-        //console.log(this.firstName);
+        //  console.log(this.firstName);
         /*
         if (this.user) {
             console.log(this.user)
@@ -67,10 +67,9 @@ export class UserProfileComponent implements OnInit {
             });
     }
 
-    updateUser(user) {
-        console.log(user);
+    updateUser(token, firstname, lastname, homepage, twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl) {
 
-        this.apiExternalServer.update(user)
+        this.apiExternalServer.update(token, firstname, lastname, homepage, twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl)
             .then((status) => {
                 this.snackBar.open('Update successful.', '', {
                     duration: 2000,
@@ -83,5 +82,4 @@ export class UserProfileComponent implements OnInit {
                 });
             });
     }
-
 }

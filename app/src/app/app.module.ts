@@ -53,8 +53,6 @@ import {RequestManager} from './services/request-manager.service';
 import {ApiExternalServer} from './services/ApiExternalServer';
 import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
-import {ParticipantComponent} from './modules/participant/participant.component';
-import {ParticipantService} from './modules/participant/participant.service';
 import {TimeManager} from './services/timeManager.service';
 import {ShareButtonsModule} from 'ng2-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
@@ -64,11 +62,11 @@ import {Angulartics2Module, Angulartics2Piwik} from 'angulartics2';
 import {ToolsService} from './services/tools.service';
 import {PublicationsByKeywordComponent} from './modules/publications-by-keyword/publications-by-keyword.component';
 import {SignupComponent} from './modules/signup/signup.component';
+import {SignupWithBadgeComponent} from './modules/signupWithBadge/signupWithBadge.component';
 import {UserProfileComponent} from './modules/user-profile/user-profile.component';
 import {ForgotPasswordComponent} from './modules/forgotPassword/forgotPassword.component';
 import {ActivationMailComponent} from './modules/activationMail/activationMail.component';
 import {ChangePasswordComponent} from './modules/changePassword/changePassword.component';
-import {UserInfoComponent} from './modules/user-info/user-info.component';
 import {QrcodeComponent} from './modules/qrcode/qrcode.component';
 import {NgxQRCodeModule } from 'ngx-qrcode3';
 import { DialogShareQrComponent } from './modules/dialog-share-qr/dialog-share-qr.component';
@@ -118,14 +116,13 @@ const routes: Routes = [];
         ConferenceComponent,
         PublicationsByKeywordComponent,
         SignupComponent,
+        SignupWithBadgeComponent,
         UserProfileComponent,
         QrcodeComponent,
         ForgotPasswordComponent,
         ActivationMailComponent,
         ChangePasswordComponent,
-        UserInfoComponent,
         DialogShareQrComponent,
-        ParticipantComponent
     ],
     imports: [
         BrowserModule,
@@ -159,7 +156,6 @@ const routes: Routes = [];
         VoteService,
         ToolsService,
         TimeManager,
-        ParticipantService
     ],
     bootstrap: [AppComponent],
     entryComponents:[DialogShareQrComponent]
