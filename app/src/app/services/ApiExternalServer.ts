@@ -23,6 +23,7 @@ export class ApiExternalServer {
     private subjectFacebook = new Subject<any>();
 
     private key_localstorage_token = 'token_external_ressource_sympozer';
+    private key_localstorage_refreshToken = 'refreshToken_external_ressource_sympozer';
     private key_localstorage_user = 'user_external_ressource_sympozer';
     private key_localstorage_id = 'id_external_ressource_sympozer';
     private key_localstorage_username = 'username_external_ressource_sympozer';
@@ -148,7 +149,7 @@ export class ApiExternalServer {
                 lastname: lastname,
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
                 .then((request) => {
                     //const person = JSON.parse(request);
 
@@ -198,9 +199,9 @@ export class ApiExternalServer {
                 'email': email,
                 'password': password
             };
-            console.log('ici');
+            console.log('avant req');
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/login', bodyRequest)
                 .then((request) => {
                     console.log('la');
                     const resultPromise = JSON.parse(request.toString());
@@ -237,7 +238,7 @@ export class ApiExternalServer {
                     resolve(user);
                 })
                 .catch((request) => {
-                    console.log('ailleurs');
+                    console.log('exception');
                     reject(request);
                 });
         });
@@ -256,7 +257,7 @@ export class ApiExternalServer {
                 confirmPassword: password
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/register', bodyRequest)
                 .then((response) => {
                   (err : any)=>{
                     if (err.status <= 299){
@@ -288,7 +289,7 @@ export class ApiExternalServer {
                 confirmPassword: password
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/registerFromBadge', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/registerFromBadge', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.toString());
                     (err : any)=>{
@@ -315,7 +316,7 @@ export class ApiExternalServer {
                 email: email,
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/forgotpassword', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/forgotpassword', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.toString());
                     (err : any)=>{
@@ -357,7 +358,7 @@ export class ApiExternalServer {
                 newPassword: newPassword
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updatePassword/', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/user/updatePassword/', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(request.toString());
                     (err : any)=>{
@@ -374,12 +375,58 @@ export class ApiExternalServer {
     }
 
     logoutUser() {
-        this.localStoragexx.clear(this.key_localstorage_token);
-        this.localStoragexx.clear(this.key_localstorage_username);
-        this.localStoragexx.clear(this.key_localstorage_user);
-        this.localStoragexx.clear(this.key_localstorage_id);
+        
+        
         // this.localStoragexx.clear(this.key_localstorage_avatar);
+
+        return new Promise((resolve, reject) => {
+          
+            const that = this;
+
+           
+            console.log('avant req');
+
+            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/logout', null)
+                .then((request) => {
+                    console.log('dans req');
+                    const resultPromise = JSON.parse(request.toString());
+                    this.localStoragexx.clear(this.key_localstorage_token);
+                    this.localStoragexx.clear(this.key_localstorage_username);
+                    this.localStoragexx.clear(this.key_localstorage_user);
+                    this.localStoragexx.clear(this.key_localstorage_id);
+                })
+                .catch((request) => {
+                    console.log('exception');
+                    reject(request);
+                });
+        });
     }
+
+    refresh() {
+        
+        
+        // this.localStoragexx.clear(this.key_localstorage_avatar);
+
+        return new Promise((resolve, reject) => {
+          
+            const that = this;
+           
+            console.log('avant req');
+
+            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/refresh', null)
+                .then((request) => {
+                    console.log('dans req');
+                    const resultPromise = JSON.parse(request.toString());
+                    
+                    that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.token);
+                })
+                .catch((request) => {
+                    console.log('exception');
+                    reject(request);
+                });
+        });
+    }
+
 
     getToken() {
         return this.localStoragexx.retrieve(this.key_localstorage_token);
@@ -391,7 +438,7 @@ export class ApiExternalServer {
 
             const that = this;
 
-            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/google')
+            that.managerRequest.get(Config.serverLogin.url + '/api/v1/auth/google')
                 .then((request) => {
                     console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
@@ -408,7 +455,7 @@ export class ApiExternalServer {
 
             const that = this;
 
-            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/linkedin')
+            that.managerRequest.get(Config.serverLogin.url + '/api/v1/auth/linkedin')
                 .then((request) => {
                     console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
@@ -425,7 +472,7 @@ export class ApiExternalServer {
 
             const that = this;
 
-            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/twitter')
+            that.managerRequest.get(Config.serverLogin.url + '/api/v1/auth/twitter')
                 .then((request) => {
                     console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
@@ -442,7 +489,7 @@ export class ApiExternalServer {
 
             const that = this;
 
-            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/facebook')
+            that.managerRequest.get(Config.serverLogin.url + '/api/v1/auth/facebook')
                 .then((request) => {
                     console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);

@@ -21,10 +21,36 @@ export class LoginService {
         const data = 'email=' + email + '&' + 'password=' + password;
 
         return this.http
-            .post( Config.apiLogin.url + '/api/v1/auth', data, {headers: headers}).pipe(
-            //map(res => res.json()),
-            catchError(this.handleError),);
-    }
+            .post( Config.serverLogin.url + '/login/www2018/login', data, {headers: headers}).pipe(
+                //map(res => res.json()),
+                catchError(this.handleError),);
+    } 
+
+    refresh(): Observable<any>{
+
+        const headers = new Headers();
+        headers.set('Accept', 'application/json');
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+       
+        return this.http
+            .post( Config.serverLogin.url + '/login/www2018/refresh',  {headers: headers}).pipe(
+                //map(res => res.json()),
+                catchError(this.handleError),);
+    } 
+
+    logout(): Observable<any>{
+
+        const headers = new Headers();
+        headers.set('Accept', 'application/json');
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+       
+        return this.http
+            .post( Config.serverLogin.url + '/login/www2018/logout',  {headers: headers}).pipe(
+                //map(res => res.json()),
+                catchError(this.handleError),);
+    } 
+    
 
     getUser(id: string): Observable<any>{
 
@@ -32,9 +58,9 @@ export class LoginService {
         headers.set('Accept', 'application/json');
 
         return this.http
-            .get( Config.apiLogin.url + '/api/v1/user/' + id, {headers: headers}).pipe(
-            //map(res => res.json()),
-            catchError(this.handleError),);
+            .get( Config.serverLogin.url + '/api/v1/user/' + id, {headers: headers}).pipe(
+                //map(res => res.json()),
+                catchError(this.handleError),);
     }
 
     private handleError(error: Response) {

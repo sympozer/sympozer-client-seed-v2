@@ -7,8 +7,18 @@ import {DBLPDataLoaderService} from "../../dblpdata-loader.service";
 import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
+import {LocalStorageService} from 'ngx-webstorage';
+import {MatSnackBarModule} from '@angular/material';
+import {ApiExternalServer} from '../../services/ApiExternalServer';
+import {Config} from '../../app-config';
+import {VoteService} from '../../services/vote.service';
+import {HttpClient, Response, Headers,RequestOptions} from '@angular/http';
+import {MatDialogModule, MatButtonModule, MatCardModule, MatDialog} from '@angular/material';
+import {ConfirmationDialogComponent} from './../confirmation-dialog/confirmation-dialog.component';
 
-import {Subscription} from 'rxjs';
+
+
+import {Subscription} from 'rxjs/Subscription';
 import * as moment from 'moment';
 import {TimeManager} from "../../services/timeManager.service";
 var ICS = require('ics');
@@ -28,11 +38,29 @@ export class PublicationComponent implements OnInit {
     public keywords = [];
     public publicationId;
     public eventType;
+    public vote;
+    private key_localstorage_user = 'user_external_ressource_sympozer';
+    private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
+    private key_localstorage_ballotsByElection = 'ballotsbyelection_external_ressource_sympozer';
+    private key_localstorage_vote = 'hasVoted';
+
+    datas: Array<string>;
+    tabElec: Array<Object> = new Array();
+    idElections: Array<string> = new Array();
+    electionsForPublication: Array<any> = new Array();
+    elections = [];
+    elec; 
+    ballots;
+
 
     constructor(private router: Router,
+                private localStoragexx: LocalStorageService,    
+                private apiExternalServer: ApiExternalServer,
+                private snackBar: MdSnackBar,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
-                private encoder: Encoder) {
+                private encoder: Encoder, private http: Http, private voteService: VoteService,
+                public dialog: MdDialog) {
         this.authors = [];
         this.publication = {
             label: undefined,
@@ -190,6 +218,8 @@ export class PublicationComponent implements OnInit {
                 if (results) {
                     const nodeId = results['?track'];
                     if (nodeId) {
+                        console.log("idTrack: " + nodeId.value);       
+
                         const id = that.encoder.encode(nodeId.value);
                         const label = results['?label'].value;
                         if (seenTracks.has(id)) { return; }
@@ -200,8 +230,11 @@ export class PublicationComponent implements OnInit {
                           label: label,
                         });
                     }
+                    
                 }
             });
+            
+            
 
             /**
              * Retrieve keywords from publication
@@ -226,6 +259,28 @@ export class PublicationComponent implements OnInit {
                 }
             });
 
+            let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
+
+            if(token) {
+                console.log("dans if publi");
+                
+                this.voteService.getElections(this.idElections, this.elec, this.elections)
+
+                this.http.get("./assets/vote.json").map(data => data.json() as Array<string>).subscribe((data) => {
+                
+                    this.datas = data;
+                                
+                    if (this.idElections.length != 0) {
+                        this.idElections.forEach(element => {
+                            this.voteService.CompareIdShowBallotsByElection(element, this.ballots, this.publicationId, this.electionsForPublication);        
+
+                        });
+
+                    }
+        
+                });  
+            }   
+            
             /*for(let i in this.publication.authors){
              let query = { 'key' : this.publication.authors[i] };
              this.authors[i] = this.DaoService.query("getPersonLink",query);
@@ -359,4 +414,46 @@ export class PublicationComponent implements OnInit {
         window.open('data:text/calendar;charset=utf8,' + encodeURIComponent(calendar));
 
     }
+
+    createVote(idElection) {
+        let user = this.localStoragexx.retrieve(this.key_localstorage_user);
+        let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
+        this.apiExternalServer.createVote(idElection, user.id, token, this.publicationId)
+            .then((response) => {
+                this.snackBar.open('You have voted', '', {
+                    duration: 2000,
+                });  
+
+                if (response) {
+                    console.log(response);
+                      const votedTracks = [];
+                    if (this.localStoragexx.retrieve(this.key_localstorage_vote) !== null ) {
+                        votedTracks.push(this.localStoragexx.retrieve(this.key_localstorage_vote));
+                    }else {
+                        this.localStoragexx.store(this.key_localstorage_vote, []);
+                    }
+                }
+  
+            })
+            .catch((resp) => {
+                console.log(resp);
+                this.snackBar.open(JSON.parse(resp._body)['message'], '', {
+                    duration: 3000,
+                });
+            });
+    }
+
+    openConfirmationDialog(idElection) {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+          width: '600px',
+          data: {id: idElection, publi: this.publicationId}
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(`Dialog closed: ${result}`);
+          
+        });
+      }
+
+    
 }

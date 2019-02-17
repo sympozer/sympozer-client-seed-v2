@@ -21,7 +21,7 @@ export class SignUpService {
         const data = 'email=' + email + '&' + 'firstname=' + firstname + '&' + 'lastname=' + lastname + '&' + 'password=' + password;
 
         return this.http
-            .post( Config.apiLogin.url + '/api/v1/register', data, {headers: headers}).pipe(
+            .post( Config.serverLogin.url + '/api/v1/register', data, {headers: headers}).pipe(
             //map(res => res.json()),
             catchError(this.handleError),);
     }
