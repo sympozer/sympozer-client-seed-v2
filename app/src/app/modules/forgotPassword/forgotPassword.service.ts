@@ -18,7 +18,7 @@ export class ForgotPasswordService {
         const data = 'email=' + email;
 
         return this.http
-            .post( Config.apiLogin.url + '/api/v1/forgotPassword', data, {headers: headers})
+            .post( Config.serverLogin.url + '/api/v1/forgotPassword', data, {headers: headers})
             .map(res => res.json())
             .catch(this.handleError);
     }

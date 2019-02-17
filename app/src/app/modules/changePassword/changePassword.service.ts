@@ -18,7 +18,7 @@ export class ChangePasswordService {
         let data = "currentPassword=" + currentPassword + "&" + "newPassword=" + newPassword;
 
         return this.http
-            .post( Config.apiLogin.url + "/api/v1/updatePassword", data, {headers:headers})
+            .post( Config.serverLogin.url + "/api/v1/updatePassword", data, {headers:headers})
             .map(res => res.json())
             .catch(this.handleError);
     }

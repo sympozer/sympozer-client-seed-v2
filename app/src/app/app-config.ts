@@ -79,7 +79,8 @@ export let Config = {
             'commands': 'TwitterWidgetCommandStore'
         }
     },
-    apiLogin: {
+    serverLogin: {
+        //url: '192.168.75.12'
         url: 'https://login.sympozer.com'
 //        url: 'http://localhost:3000'
     },
