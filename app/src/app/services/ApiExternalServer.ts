@@ -246,7 +246,7 @@ export class ApiExternalServer {
                 confirmPassword: password
             };
 
-            that.managerRequest.post(Config.serverLogin.url + '/api/v1/register', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/createPassword', bodyRequest)
                 .then((response) => {
                     if (response.status <= 299) {
                         console.log('a ', response);

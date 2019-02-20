@@ -23,6 +23,19 @@ export class LoginService {
             .catch(this.handleError);
     } 
 
+    signup(email: string, firstname: string, lastname: string, password: string): Observable<any> {
+        const headers = new Headers();
+        headers.set('Accept', 'application/json');
+        headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+        const data = 'email=' + email + '&' + 'firstname=' + firstname + 'lastname=' + lastname + 'password=' + password;
+
+        return this.http
+            .post( Config.serverLogin.url + '/login/www2018/createPassword', data, {headers: headers})
+            .map(res => res.json())
+            .catch(this.handleError);
+    }
+
     refresh(): Observable<any>{
 
         const headers = new Headers();
