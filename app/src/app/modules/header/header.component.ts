@@ -51,7 +51,7 @@ export class HeaderComponent {
     }
 
     logout = () => {
-        this.apiExternalServer.logoutUser();
+        this.apiExternalServer.logoutUser(this.apiExternalServer.getRefreshToken());
         this.apiExternalServer.sendLoginStatus(false);
         this.apiExternalServer.sendUsername('User');
         this.apiExternalServer.sendAvatar(null);

@@ -257,6 +257,32 @@ export class ApiExternalServer {
                 confirmPassword: password
             };
 
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/register', bodyRequest)
+                .then((response) => {
+                    if (response.status <= 299) {
+                        console.log('a ', response);
+                        resolve(JSON.parse(response.text()).message);
+                    } else {
+                        reject(JSON.parse(response['_body']).message);
+                    }
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    createPassword = (email, unique_token, password) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                email: email,
+                unique_token: unique_token,
+                password: password
+            };
+
             that.managerRequest.post(Config.serverLogin.url + '/login/www2018/createPassword', bodyRequest)
                 .then((response) => {
                   (err : any)=>{
@@ -374,19 +400,20 @@ export class ApiExternalServer {
         });
     }
 
-    logoutUser() {
-        
+    logoutUser = (refresh_token) => {        
         
         // this.localStoragexx.clear(this.key_localstorage_avatar);
 
         return new Promise((resolve, reject) => {
           
             const that = this;
-
+            const bodyRequest = {
+                'refresh_token': refresh_token
+            };
            
             console.log('avant req');
 
-            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/logout', null)
+            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/logout', bodyRequest)
                 .then((request) => {
                     console.log('dans req');
                     const resultPromise = JSON.parse(request.toString());
@@ -402,18 +429,19 @@ export class ApiExternalServer {
         });
     }
 
-    refresh() {
-        
+    refresh = (refresh_token) => {        
         
         // this.localStoragexx.clear(this.key_localstorage_avatar);
 
         return new Promise((resolve, reject) => {
           
             const that = this;
-           
+            const bodyRequest = {
+                'refresh_token': refresh_token
+            };
             console.log('avant req');
 
-            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/refresh', null)
+            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/refresh', bodyRequest)
                 .then((request) => {
                     console.log('dans req');
                     const resultPromise = JSON.parse(request.toString());
@@ -430,6 +458,10 @@ export class ApiExternalServer {
 
     getToken() {
         return this.localStoragexx.retrieve(this.key_localstorage_token);
+    }
+
+    getRefreshToken() {
+        return this.localStoragexx.retrieve(this.key_localstorage_refreshToken);
     }
 
 
