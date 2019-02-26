@@ -380,7 +380,7 @@ export class ApiExternalServer {
         });
     }
 
-    logoutUser = (refresh_token) => {        
+    logout = (refresh_token) => {        
         
         // this.localStoragexx.clear(this.key_localstorage_avatar);
 
