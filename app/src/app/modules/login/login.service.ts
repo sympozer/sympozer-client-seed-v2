@@ -31,32 +31,33 @@ export class LoginService {
         const data = 'email=' + email + '&' + 'firstname=' + firstname + 'lastname=' + lastname + 'password=' + password;
 
         return this.http
-            .post( Config.serverLogin.url + '/login/www2018/createPassword', data, {headers: headers})
+            .post( Config.serverLogin.url + '/api/v1/register', data, {headers: headers})
             .map(res => res.json())
             .catch(this.handleError);
     }
 
-    refresh(): Observable<any>{
+    refresh(refresh_token: string): Observable<any>{
 
         const headers = new Headers();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-       
+        const data = 'refresh_token=' + refresh_token;
+
         return this.http
-            .post( Config.serverLogin.url + '/login/www2018/refresh',  {headers: headers})
+            .post( Config.serverLogin.url + '/login/www2018/refresh', data, {headers: headers})
             .map(res => res.json())
             .catch(this.handleError);
     } 
 
-    logout(): Observable<any>{
+    logout(refresh_token: string): Observable<any>{
 
         const headers = new Headers();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
+        const data = 'refresh_token=' + refresh_token;
        
         return this.http
-            .post( Config.serverLogin.url + '/login/www2018/logout',  {headers: headers})
+            .post( Config.serverLogin.url + '/login/www2018/logout', data, {headers: headers})
             .map(res => res.json())
             .catch(this.handleError);
     } 

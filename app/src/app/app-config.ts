@@ -81,8 +81,8 @@ export let Config = {
     },
     serverLogin: {
         //url: '192.168.75.12'
-        url: 'https://login.sympozer.com'
-//        url: 'http://localhost:3000'
+ //       url: 'https://login.sympozer.com'
+        url: 'http://localhost:4200'
     },
 
     externalServer: {
