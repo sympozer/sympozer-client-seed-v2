@@ -18,7 +18,7 @@ export class LoginService {
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-        const data = 'email=' + email + '&' + 'password=' + password;
+        const data = 'username=' + email + '&' + 'password=' + password;
 
         return this.http
             .post( Config.serverLogin.url + '/login/www2018/login', data, {headers: headers}).pipe(

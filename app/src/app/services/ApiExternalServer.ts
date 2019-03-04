@@ -196,16 +196,18 @@ export class ApiExternalServer {
             const that = this;
 
             const bodyRequest = {
-                'email': email,
+                'username': email,
                 'password': password
             };
             console.log('avant req');
 
             that.managerRequest.post(Config.serverLogin.url + '/login/www2018/login', bodyRequest)
                 .then((request) => {
-                    console.log('la');
+                    console.log('dans req');
                     const resultPromise = JSON.parse(request.toString());
-                    const user = resultPromise.user;
+                    console.log('user:');
+                    const user = resultPromise.user_id;
+                    console.log(resultPromise);
                     if (!resultPromise || !user) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
@@ -261,7 +263,7 @@ export class ApiExternalServer {
                 .then((response) => {
                     if (response.status <= 299) {
                         console.log('a ', response);
-                        resolve(JSON.parse(response.text()).message);
+                        resolve(JSON.parse(response.toString()).message);
                     } else {
                         reject(JSON.parse(response['_body']).message);
                     }
@@ -439,7 +441,7 @@ export class ApiExternalServer {
             const bodyRequest = {
                 'refresh_token': refresh_token
             };
-            console.log('avant req');
+            console.log('avant req refresh');
 
             that.managerRequest.post(Config.serverLogin.url + '/login/www2018/refresh', bodyRequest)
                 .then((request) => {
