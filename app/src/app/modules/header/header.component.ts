@@ -38,6 +38,7 @@ export class HeaderComponent {
     }
 
     ngOnInit(): void {
+        console.log('init');
         this.hasLogged = this.apiExternalServer.checkUserLogin();
         if (this.username == undefined || this.username === '') {
             this.apiExternalServer.sendUsername(this.localStoragexx.retrieve(this.key_localstorage_username))
