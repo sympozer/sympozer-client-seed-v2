@@ -23,7 +23,7 @@ export class LoginService {
             .catch(this.handleError);
     } 
 
-    signup(email: string, firstname: string, lastname: string, password: string): Observable<any> {
+    signup(email: string, firstname: string, lastname: string , password: string): Observable<any> {
         const headers = new Headers();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -49,12 +49,12 @@ export class LoginService {
             .catch(this.handleError);
     } 
 
-    logout(refresh_token: string): Observable<any>{
+    logout(access_token: string, refresh_token: string): Observable<any>{
 
         const headers = new Headers();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        const data = 'refresh_token=' + refresh_token;
+        const data = 'access_token=' + access_token + '&' + 'refresh_token=' + refresh_token;
        
         return this.http
             .post( Config.serverLogin.url + '/login/www2018/logout', data, {headers: headers})
