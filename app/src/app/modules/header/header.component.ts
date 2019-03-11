@@ -19,6 +19,8 @@ export class HeaderComponent {
     public avatar: any;
     private key_localstorage_username = 'username_external_ressource_sympozer';
     private key_localstorage_avatar = 'avatar_external_ressource_sympozer';
+    private key_localstorage_token = 'token_external_ressource_sympozer';
+    private key_localstorage_refreshToken = 'refreshtoken_external_ressource_sympozer';
 
     constructor(private apiExternalServer: ApiExternalServer,
                 private localStoragexx: LocalStorageService,
@@ -51,8 +53,8 @@ export class HeaderComponent {
         }
     }
 
-    logout(refreshToken) {
-        this.apiExternalServer.logout(refreshToken);
+    logout() {
+        this.apiExternalServer.logout(this.localStoragexx.retrieve(this.key_localstorage_token),this.localStoragexx.retrieve(this.key_localstorage_refreshToken));
         this.apiExternalServer.sendLoginStatus(false);
         this.apiExternalServer.sendUsername('User');
         this.apiExternalServer.sendAvatar(null);

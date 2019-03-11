@@ -80,8 +80,8 @@ export let Config = {
         }
     },
     serverLogin: {
-        url: 'http://192.168.75.12'
- //       url: 'https://login.sympozer.com'
+        //url: 'http://192.168.75.12'
+        url: 'https://api.sympozer.com'
        // url: 'http://localhost:4200'
     },
 

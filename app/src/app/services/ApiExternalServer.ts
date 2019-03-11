@@ -23,7 +23,7 @@ export class ApiExternalServer {
     private subjectFacebook = new Subject<any>();
 
     private key_localstorage_token = 'token_external_ressource_sympozer';
-    private key_localstorage_refreshToken = 'refreshToken_external_ressource_sympozer';
+    private key_localstorage_refreshToken = 'refreshtoken_external_ressource_sympozer';
     private key_localstorage_user = 'user_external_ressource_sympozer';
     private key_localstorage_id = 'id_external_ressource_sympozer';
     private key_localstorage_username = 'username_external_ressource_sympozer';
@@ -235,7 +235,8 @@ export class ApiExternalServer {
                     }
 
                     this.sendLoginStatus(true);
-                    that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
+                    that.localStoragexx.store(that.key_localstorage_token, resultPromise.access_token);
+                    that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.refresh_token);
                     that.localStoragexx.store(that.key_localstorage_user, user);
                     resolve(user);
                 })
@@ -280,9 +281,9 @@ export class ApiExternalServer {
             const that = this;
 
             const bodyRequest = {
-                email: email,
-                unique_token: unique_token,
-                password: password
+                'email': email,
+                'unique_token': unique_token,
+                'password': password
             };
 
             that.managerRequest.post(Config.serverLogin.url + '/login/www2018/createPassword', bodyRequest)
@@ -402,14 +403,15 @@ export class ApiExternalServer {
         });
     }
 
-    logout = (refresh_token) => {        
+    logout = (access_token, refresh_token) => {        
         
         // this.localStoragexx.clear(this.key_localstorage_avatar);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => { 
           
             const that = this;
             const bodyRequest = {
+                'access_token': access_token,
                 'refresh_token': refresh_token
             };
            
@@ -418,14 +420,14 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.serverLogin.url + '/login/www2018/logout', bodyRequest)
                 .then((request) => {
                     console.log('dans req');
-                    const resultPromise = JSON.parse(request.toString());
                     this.localStoragexx.clear(this.key_localstorage_token);
                     this.localStoragexx.clear(this.key_localstorage_username);
                     this.localStoragexx.clear(this.key_localstorage_user);
                     this.localStoragexx.clear(this.key_localstorage_id);
+                    resolve(request);
                 })
                 .catch((request) => {
-                    console.log('exception');
+                    console.log('exception:' + request);
                     reject(request);
                 });
         });
@@ -449,6 +451,7 @@ export class ApiExternalServer {
                     const resultPromise = JSON.parse(request.toString());
                     
                     that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.token);
+                    //resolve(request)
                 })
                 .catch((request) => {
                     console.log('exception');
