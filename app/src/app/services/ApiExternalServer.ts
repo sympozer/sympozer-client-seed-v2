@@ -203,9 +203,9 @@ export class ApiExternalServer {
                     if (!user) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
-                    if (user.firstname && user.firstname.length > 0) {
-                        this.sendUsername(user.firstname);
-                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
+                    if (user.username && user.username.length > 0) {
+                        this.sendUsername(user.username);
+                        that.localStoragexx.store(that.key_localstorage_username, user.username);
                     }
                     if (user.linkedin && user.linkedin.length > 0) {
                         this.sendLinkedin(user.linkedin);
@@ -412,7 +412,7 @@ export class ApiExternalServer {
                 });
         });
     }
-
+//timeout, toutes les 5min refresh le token
     refresh = (refresh_token) => {        
         
         // this.localStoragexx.clear(this.key_localstorage_avatar);
