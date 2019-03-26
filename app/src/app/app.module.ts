@@ -153,7 +153,7 @@ const MATERIAL_MODULES = [
         RouterModule.forRoot(routes, {useHash: true}),
         MatGridListModule,
         ShareButtonsModule.forRoot(),
-        NgxWebstorageModule,
+        NgxWebstorageModule.forRoot(),
         Angulartics2Module.forRoot([Angulartics2Piwik]),
         BrowserModule,
         NgxQRCodeModule,
