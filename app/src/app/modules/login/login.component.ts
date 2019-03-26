@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit {
         if (user !== null) {
             const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
             window.location.replace(urlHost + '#/home');
-
         }
+        
     }
 
     login(email, password) {
@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
                 this.snackBar.open('Login successful.', '', {
                     duration: 2000,
                 });
+                
                 // window.location.href = 'http://www.google.com';
                 /*
                 this.voteService.votedPublications()
@@ -96,6 +97,7 @@ export class LoginComponent implements OnInit {
                 });
 
                 window.history.back();
+                
 
             })
             .catch((resp) => {
@@ -104,6 +106,10 @@ export class LoginComponent implements OnInit {
                     duration: 3000,
                 });
             });
+            setTimeout(() => {
+                this.apiExternalServer.refresh(this.apiExternalServer.getRefreshToken());
+                console.log('timeout success!!');
+            }, 10000);
     }
 
 
