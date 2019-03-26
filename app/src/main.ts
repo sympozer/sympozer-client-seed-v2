@@ -5,4 +5,5 @@ import {AppModule} from "./app/app.module";
 import {enableProdMode} from '@angular/core';
 
 enableProdMode();
-platformBrowserDynamic().bootstrapModule(AppModule, [LocalDAOService]);
+//platformBrowserDynamic().bootstrapModule(AppModule, [LocalDAOService]);
+platformBrowserDynamic().bootstrapModule(AppModule);

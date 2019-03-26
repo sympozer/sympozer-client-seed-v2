@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import {Config} from './app-config';
 import {RequestManager} from './services/request-manager.service';
 import {DOCUMENT} from '@angular/platform-browser';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 
 const $rdf = require('rdflib');
 
@@ -28,7 +28,7 @@ export class LocalDAOService {
     private shortLivedCaches = [];
 
     constructor(private requestManager: RequestManager,
-                public snackBar: MdSnackBar,
+                public snackBar: MatSnackBar,
                 @Inject(DOCUMENT) private document: any) {
 
         window['query'] = (sparql, limit, filter) => {

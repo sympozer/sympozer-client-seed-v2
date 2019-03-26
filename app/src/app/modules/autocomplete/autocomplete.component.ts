@@ -1,10 +1,13 @@
 import {Component, OnInit, Input, Renderer} from '@angular/core';
+import { debounceTime } from 'rxjs/operators';
 import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';
 import {Encoder} from '../../lib/encoder';
 import {LocalDAOService} from '../../localdao.service';
 import {DBLPDataLoaderService} from '../../dblpdata-loader.service';
 import {Subject} from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';   
 
 @Component({
     selector: 'app-autocomplete',
@@ -30,9 +33,9 @@ export class AutocompleteComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.searchTerms.debounceTime(300)
-            .distinctUntilChanged()
-            .switchMap(term => term);
+        this.searchTerms.pipe(debounceTime(300))
+            .pipe(distinctUntilChanged())
+            .pipe(switchMap(term => term));
         this.isBigItems = this.items.length > 10;
     }
 

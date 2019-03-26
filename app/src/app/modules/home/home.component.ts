@@ -4,7 +4,7 @@ import {routerTransition} from '../../app.router.animation';
 import {LocalDAOService} from '../../localdao.service';
 import {window} from "rxjs/operator/window";
 import {WindowReference} from '../../window-reference';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 import '../../../assets/widgets.js';
 
 @Component({

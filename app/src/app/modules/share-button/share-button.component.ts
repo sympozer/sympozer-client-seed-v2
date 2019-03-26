@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
 import {Config} from '../../app-config';
-import { MdDialog  } from '@angular/material';
+import { MatDialog  } from '@angular/material';
 import {DialogShareQrComponent} from '../dialog-share-qr/dialog-share-qr.component';
 
 
@@ -19,7 +19,7 @@ export class ShareComponent {
     hashTags: string = Config.conference.hashtag;
     constructor(private router: Router,
                 private route: ActivatedRoute,
-                public dialog: MdDialog) {
+                public dialog: MatDialog) {
     }
 
     setRoute() {

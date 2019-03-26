@@ -1,48 +1,48 @@
 <div class="component-wrapper">
   <h1 id="description-title"> {{title}} </h1>
   <h2>Dataset</h2>
-  <md-card class="info-text">
-    <button id="dataset-load" md-raised-button color="primary" (click)="loadDataset()" [disabled]="isLoading()">Load
+  <mat-card class="info-text">
+    <button id="dataset-load" mat-raised-button color="primary" (click)="loadDataset()" [disabled]="isLoading()">Load
       dataset
     </button>
-  </md-card>
+  </mat-card>
 
   <h2>Font size</h2>
-  <md-card class="info-text">
-    <button md-icon-button color="primary" (click)="decresaseFontSize()">
-      <md-icon>zoom_out</md-icon>
+  <mat-card class="info-text">
+    <button mat-icon-button color="primary" (click)="decresaseFontSize()">
+      <mat-icon>zoom_out</mat-icon>
     </button>
     <span>{{fontSize + "%"}}</span>
-    <button md-icon-button color="primary" (click)="increaseFontSize()">
-      <md-icon>zoom_in</md-icon>
+    <button mat-icon-button color="primary" (click)="increaseFontSize()">
+      <mat-icon>zoom_in</mat-icon>
     </button>
-  </md-card>
+  </mat-card>
 
   <h2>Fullscreen</h2>
-  <md-card class="info-text">
-    <md-slide-toggle
+  <mat-card class="info-text">
+    <mat-slide-toggle
          color="primary"
          [checked]="fullScreen"
          (change)="toggleFullScreen()">
       Fullscreen Mode
-    </md-slide-toggle>
-  </md-card>
+    </mat-slide-toggle>
+  </mat-card>
 
 
   <h2>Theme</h2>
-  <md-card class="info-text">
-    <md-slide-toggle
+  <mat-card class="info-text">
+    <mat-slide-toggle
          color="primary"
          [checked]="darkTheme"
          (change)="toggleDarkTheme()">
       Dark Theme
-    </md-slide-toggle>
+    </mat-slide-toggle>
 
-    <md-slide-toggle
+    <mat-slide-toggle
          color="primary"
          [checked]="material"
          (change)="toggleMaterial()">
       Material
-    </md-slide-toggle>
-  </md-card>
+    </mat-slide-toggle>
+  </mat-card>
 </div>

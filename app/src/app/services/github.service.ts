@@ -3,7 +3,7 @@
  */
 import {Injectable} from "@angular/core";
 import {Http, Headers, RequestOptions} from "@angular/http";
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 const github = require('octonode');
 
 @Injectable()

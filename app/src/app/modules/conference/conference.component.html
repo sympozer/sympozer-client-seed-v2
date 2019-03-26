@@ -4,33 +4,33 @@
 
 <h2>Schedule</h2>
 <div class="action-links list-items multiple-lines">
-    <md-card class="info-text">
+    <mat-card class="info-text">
         <div class="wrapper">
             <div class="other-links">
-                <span class="event-info"><md-icon>schedule</md-icon> {{event.startsAt}} </span>
-                <span class="event-info"><md-icon>hourglass_empty</md-icon> {{event.duration}} </span>
-                <span class="event-info"><md-icon>update</md-icon> {{event.endsAt}} </span>
+                <span class="event-info"><mat-icon>schedule</mat-icon> {{event.startsAt}} </span>
+                <span class="event-info"><mat-icon>hourglass_empty</mat-icon> {{event.duration}} </span>
+                <span class="event-info"><mat-icon>update</mat-icon> {{event.endsAt}} </span>
             </div>
         </div>
-    </md-card>
+    </mat-card>
 </div>
 
 <div *ngIf="event.location && event.location.length > 0">
     <h2>Location</h2>
     <div class="action-links list-items">
-        <md-card>
-            <md-icon md-list-avatar>access_time</md-icon>
+        <mat-card>
+            <mat-icon mat-list-avatar>access_time</mat-icon>
             <a [routerLink]="['/events-by-location/'+event.location]">{{event.location}}</a>
-        </md-card>
+        </mat-card>
     </div>
 </div>
 
 <div *ngIf="subEventOf && subEventOf.length > 0">
     <h2>Sub events</h2>
     <div class="action-links list-items" *ngFor="let subEvent of subEventOf">
-        <md-card>
-            <md-icon md-list-avatar>place</md-icon>
+        <mat-card>
+            <mat-icon mat-list-avatar>place</mat-icon>
             <a [routerLink]="[subEvent.urlToSearch + subEvent.label+'/'+subEvent.id]">{{subEvent.label}}</a>
-        </md-card>
+        </mat-card>
     </div>
 </div>

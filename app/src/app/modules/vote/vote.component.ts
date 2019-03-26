@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {VoteService} from '../../services/vote.service';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 import { Subscription } from 'rxjs/Subscription';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'vote',
@@ -28,7 +28,7 @@ export class VoteComponent implements OnInit {
   // private key_localstorage_begin_vote = 'beginVote';
   constructor(private voteService: VoteService,
               private localStoragexx: LocalStorageService,
-              private snackBar: MdSnackBar,
+              private snackBar: MatSnackBar,
               private apiExternalServer: ApiExternalServer) {
 
       this.subscription = this.apiExternalServer.getAuthorizationVoteStatus().subscribe(status => {

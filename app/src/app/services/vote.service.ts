@@ -3,7 +3,7 @@ import {Http, Headers, RequestOptions} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {Config} from '../app-config';
 import {RequestManager} from './request-manager.service';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 import {Encoder} from '../lib/encoder';
 
 @Injectable()

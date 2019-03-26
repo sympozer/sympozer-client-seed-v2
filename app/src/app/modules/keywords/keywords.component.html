@@ -5,9 +5,9 @@
 
 <div scrollLoader class="search-results" [listItems]="keywords" (updatePartialTable)="tabKeywords = $event">
     <div class="action-links" *ngFor="let keyword of keywords">
-        <md-card>
+        <mat-card>
             <a [routerLink]="['/publications-by-keyword/'+keyword.valueEncoded]">{{keyword.value}}</a>
-            <md-icon>trending_flat</md-icon>
-        </md-card>
+            <mat-icon>trending_flat</mat-icon>
+        </mat-card>
     </div>
 </div>

@@ -7,7 +7,7 @@ import {Subject} from 'rxjs/Subject';
 import {Http, Headers, RequestOptions} from '@angular/http';
 import {RequestManager} from './request-manager.service';
 import {Config} from '../app-config';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 
 
 @Injectable()

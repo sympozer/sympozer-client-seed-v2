@@ -5,10 +5,10 @@
 
   <div scrollLoader class="search-results" [listItems]="publications" (updatePartialTable)="tabPubli = $event">
     <div class="action-links list-items" *ngFor="let publication of tabPubli">
-      <md-card>
-        <md-icon md-list-avatar>description</md-icon>
+      <mat-card>
+        <mat-icon mat-list-avatar>description</mat-icon>
         <a [routerLink]="['/publication/'+encoder.encode(publication.label)+'/'+publication.id]" >{{publication.label}}</a>
-      </md-card>
+      </mat-card>
     </div>
   </div>
 </div>

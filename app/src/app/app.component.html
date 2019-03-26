@@ -1,7 +1,7 @@
-<md-sidenav-container>
+<mat-sidenav-container>
   <header-app [sidenav]="end"></header-app>
 
-  <md-sidenav #end align="end" mode="push">
+  <mat-sidenav #end align="end" mode="push">
     <div class="conf-logo">
       <a class="logo" [routerLink]="['/home/']">
         <img src="./img/TheWebConference2018-logo.png">
@@ -13,7 +13,7 @@
         <img src="./img/Sympozer_logo.png"/>
       </a>
     </div>
-  </md-sidenav>
+  </mat-sidenav>
 
   <div class="content">
     <router-outlet></router-outlet>
@@ -21,10 +21,10 @@
 
   <div class="back" *ngIf="backHistory && (iOS || (!iOS && fullscreen))">
     <button md-fab color="primary" (click)="goBack()">
-      <md-icon>arrow_back</md-icon>
+      <mat-icon>arrow_back</mat-icon>
     </button>
   </div>
 
   <share id="share" class="share"></share>
 
-</md-sidenav-container>
+</mat-sidenav-container>

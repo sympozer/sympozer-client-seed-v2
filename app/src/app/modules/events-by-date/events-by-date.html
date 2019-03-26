@@ -1,13 +1,13 @@
 <h1 id="description-title">{{day}}</h1>
 <div class="action-links list-items multiple-lines" *ngFor="let schedule of schedules">
-  <md-card>
+  <mat-card>
     <a class="wrapper" [routerLink]="'/event/'+encoder.encode(schedule.label)+'/'+ schedule.id">
-      <md-icon>event</md-icon>
+      <mat-icon>event</mat-icon>
       <span ><b *ngIf="schedule.type && schedule.type.length > 0">{{schedule.type}} :</b>{{schedule.label}}</span>
       <div class="other-links">
-        <span class="event-info"><md-icon>schedule</md-icon> {{schedule.dateVal}} </span>
-        <span class="event-info"><md-icon md-list-avatar>place</md-icon> {{schedule.siteLabel}} </span>
+        <span class="event-info"><mat-icon>schedule</mat-icon> {{schedule.dateVal}} </span>
+        <span class="event-info"><mat-icon mat-list-avatar>place</mat-icon> {{schedule.siteLabel}} </span>
       </div>
     </a>
-  </md-card>
+  </mat-card>
 </div>

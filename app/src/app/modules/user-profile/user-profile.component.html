@@ -1,6 +1,6 @@
 <div class="component-wrapper">
     <div class="login-wrapper">
-        <md-card class="inscription-card">
+        <mat-card class="inscription-card">
             <div class="header">
                 <h4>{{firstName}}, update your profile</h4>
             </div>
@@ -10,52 +10,52 @@
                     <br>
                     <h2>{{user.firstname}} {{user.lastname}}</h2>
                     <br>
-                    <md-icon>
+                    <mat-icon>
                         <i class="fa fa-twitter"></i>
-                    </md-icon>
-                    <md-input-container>
-                        <input [(ngModel)]="user.twitterpage" #twitterpage mdInput type="text" name="user.twitterpage"
+                    </mat-icon>
+                    <mat-form-field>
+                        <input [(ngModel)]="user.twitterpage" #twitterpage matInput type="text" name="user.twitterpage"
                                placeholder="Twitter Account">
-                    </md-input-container>
+                    </mat-form-field>
 
-                    <md-icon>
+                    <mat-icon>
                         <i class="fa fa-facebook"></i>
-                    </md-icon>
-                    <md-input-container>
-                        <input [(ngModel)]="user.facebookpage" #facebookpage mdInput type="text" name="user.facebook"
+                    </mat-icon>
+                    <mat-form-field>
+                        <input [(ngModel)]="user.facebookpage" #facebookpage matInput type="text" name="user.facebook"
                                placeholder="Facebook Account">
-                    </md-input-container>
+                    </mat-form-field>
 
-                    <md-icon>
+                    <mat-icon>
                         <i class="fa fa-google"></i>
-                    </md-icon>
-                    <md-input-container>
-                        <input [(ngModel)]="user.googlepage" #googlepage mdInput type="text" name="user.google"
+                    </mat-icon>
+                    <mat-form-field>
+                        <input [(ngModel)]="user.googlepage" #googlepage matInput type="text" name="user.google"
                                placeholder="Google Account">
-                    </md-input-container>
+                    </mat-form-field>
 
-                    <md-icon>
+                    <mat-icon>
                         <i class="fa fa-linkedin"></i>
-                    </md-icon>
-                    <md-input-container>
-                        <input [(ngModel)]="user.linkedinaccount" #linkedinaccount mdInput type="text"
+                    </mat-icon>
+                    <mat-form-field>
+                        <input [(ngModel)]="user.linkedinaccount" #linkedinaccount matInput type="text"
                                name="user.linkedinaccount" placeholder="Linkedin Account">
-                    </md-input-container>
+                    </mat-form-field>
 
 
-                    <md-input-container>
-                        <input [(ngModel)]="user.homepage" #homepage mdInput type="text" name="user.homepage"
+                    <mat-form-field>
+                        <input [(ngModel)]="user.homepage" #homepage matInput type="text" name="user.homepage"
                                placeholder="Home Page">
-                    </md-input-container>
+                    </mat-form-field>
 
 
-                    <md-input-container>
-                        <input [(ngModel)]="user.photoUrl" #photoUrl mdInput type="text" name="user.photoUrl"
+                    <mat-form-field>
+                        <input [(ngModel)]="user.photoUrl" #photoUrl matInput type="text" name="user.photoUrl"
                                placeholder="Photo Link">
-                    </md-input-container>
+                    </mat-form-field>
 
                     <div class="inscription-footer">
-                        <button md-button color="primary"
+                        <button mat-button color="primary"
                                 (click)="updateUser(user.token,user.firstname, user.lastname,homepage.value,twitterpage.value, facebookpage.value, googlepage.value, linkedinaccount.value, photoUrl.value)">
                             Update
                         </button>
@@ -81,6 +81,6 @@
 
                 </form>
             </div>
-        </md-card>
+        </mat-card>
     </div>
 </div>

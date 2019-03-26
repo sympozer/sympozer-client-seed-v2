@@ -4,7 +4,7 @@ import 'rxjs/add/operator/mergeMap';
 import {Component, OnInit, HostListener} from '@angular/core';
 import {LocalDAOService} from './localdao.service';
 import {Router, ActivatedRoute} from '@angular/router';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 import {ApiExternalServer} from './services/ApiExternalServer';
 // import {Subscription} from 'rxjs/Subscription';
 // import {ToolsService} from './services/tools.service';

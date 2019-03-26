@@ -3,12 +3,12 @@
 <app-autocomplete [seachFor]="'label'" [items]="subtracks" [namespace]="'publications-by-category'"></app-autocomplete>
 
 <div class="action-links list-items" *ngFor="let track of tracks">
-  <md-card>
+  <mat-card>
     <details >
       <summary><h2>{{track.label}}</h2></summary>
         <div class="action-links list-items" *ngFor="let subtrack of track.subtracks">
           <a [routerLink]="['/publications-by-category/'+subtrack.label+'/'+subtrack.id]">{{subtrack.label}}</a>
         </div>
     </details>
-  </md-card>
+  </mat-card>
 </div>

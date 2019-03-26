@@ -5,13 +5,13 @@
 
   <div scrollLoader class="search-results" [listItems]="events" (updatePartialTable)="tabEvents = $event">
     <div class="action-links list-items" *ngFor="let event of events">
-      <md-card>
-        <md-icon md-list-avatar>event</md-icon>
+      <mat-card>
+        <mat-icon mat-list-avatar>event</mat-icon>
         <a [routerLink]="['/event/'+encoder.encode(event.label)+'/'+event.id]">
           <!--<span class="event-type" *ngIf="event.type && event.type.length > 0">{{event.type}} : </span>-->
           {{event.label}}
         </a>
-      </md-card>
+      </mat-card>
     </div>
   </div>
 </div>

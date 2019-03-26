@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {VoteService} from '../../services/vote.service';
 import {LocalDAOService} from '../../localdao.service';
 import {Encoder} from '../../lib/encoder';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 
 const sha1 = require('sha-1');
 
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
-                public snackBar: MdSnackBar,
+                public snackBar: MatSnackBar,
                 private voteService: VoteService,
                 private DaoService: LocalDAOService,
                 private encoder: Encoder,

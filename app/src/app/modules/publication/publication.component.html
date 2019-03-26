@@ -4,27 +4,27 @@
   <!-- Logo -->
 
   <h2>Abstract</h2>
-  <md-card class="info-text">
+  <mat-card class="info-text">
     <p>
       {{publication.abstract}}
     </p>
-  </md-card>
-  <md-card *ngIf="publication.homepage" class="info-text">
+  </mat-card>
+  <mat-card *ngIf="publication.homepage" class="info-text">
     <a [href]="publication.homepage" target="_blank">Open in ACM Proceedings</a>
-  </md-card>
+  </mat-card>
 
   <div *ngIf="keywords && keywords.length > 0">
     <h2>Keywords</h2>
     <div class="action-links list-items">
-      <md-card class="info-text keywords">
-        <md-chip-list>
-          <md-chip color="primary" selected="true" *ngFor="let keyword of keywords">
+      <mat-card class="info-text keywords">
+        <mat-chip-list>
+          <mat-chip color="primary" selected="true" *ngFor="let keyword of keywords">
                     <span class="span-link" [routerLink]="['/publications-by-keyword/'+keyword.keywordEncoded]">
                     {{keyword.keyword}}
                     </span>
-          </md-chip>
-        </md-chip-list>
-      </md-card>
+          </mat-chip>
+        </mat-chip-list>
+      </mat-card>
     </div>
   </div>
 
@@ -32,55 +32,55 @@
 
   <h2 *ngIf="(authors | json) != '{}'">Authors</h2>
   <div class="action-links list-items" *ngFor="let author of authors">
-    <md-card>
-      <md-icon md-list-avatar>perm_identity</md-icon>
+    <mat-card>
+      <mat-icon mat-list-avatar>perm_identity</mat-icon>
       <a [routerLink]="['/person/'+encoder.encode(author.label)+'/'+author.id]">{{author.label}}</a>
-    </md-card>
+    </mat-card>
   </div>
 
   <!--<h2 *ngIf="events.length > 0">Presented in</h2>
   <div class="action-links list-items" *ngFor="let event of events">
-    <md-card>
-      <md-icon md-list-avatar>perm_identity</md-icon>
+    <mat-card>
+      <mat-icon mat-list-avatar>perm_identity</mat-icon>
       <a [routerLink]="['/event/'+event.label+'/'+event.id]">{{event.label}}</a>
-    </md-card>
+    </mat-card>
   </div>-->
 
   <h2>Presented at</h2>
   <div *ngFor="let talk of events; index as i" class="action-links list-items multiple-lines multiple-links">
-    <md-card class="info-text">
+    <mat-card class="info-text">
       <div class="wrapper">
         <div class="other-links">
           <!-- usually redundant with paper title
             <span class="event-info"> {{talk.label}} </span>
           -->
-          <span class="event-info"><md-icon>schedule</md-icon> {{talk.startsAt}} </span>
-          <span class="event-info"><md-icon>hourglass_empty</md-icon> {{talk.duration}} </span>
-          <span class="event-info"><md-icon>update</md-icon> {{talk.endsAt}} </span>
+          <span class="event-info"><mat-icon>schedule</mat-icon> {{talk.startsAt}} </span>
+          <span class="event-info"><mat-icon>hourglass_empty</mat-icon> {{talk.duration}} </span>
+          <span class="event-info"><mat-icon>update</mat-icon> {{talk.endsAt}} </span>
 
             <a *ngIf="talk.location" class="event-info" [routerLink]="['/events-by-location/'+talk.location]">
-              <md-icon>place</md-icon>
+              <mat-icon>place</mat-icon>
               {{talk.location}}</a>
             <!-- we may use locationId in the future
-            <a [routerLink]="['/location/'+talk.location+'/'+talk.locationId]"><md-icon>place</md-icon> {{talk.label}}</a>
+            <a [routerLink]="['/location/'+talk.location+'/'+talk.locationId]"><mat-icon>place</mat-icon> {{talk.label}}</a>
             -->
             <a *ngIf="talk.session" class="event-info" [routerLink]="['/event/'+talk.session+'/'+talk.sessionId]">
-              <md-icon>event</md-icon>
+              <mat-icon>event</mat-icon>
               {{talk.session}}</a>
               <br>
               <br>
-          <button md-raised-button color="primary" (click)="createICS(i)">Add to calendar</button>
+          <button mat-raised-button color="primary" (click)="createICS(i)">Add to calendar</button>
         </div>
       </div>
-    </md-card>
+    </mat-card>
   </div>
 
   <div *ngIf="tracks !== {}">
     <h2>Tracks</h2>
     <div class="action-links list-items" *ngFor="let track of tracks">
-      <md-card>
+      <mat-card>
         <a [routerLink]="['/publications-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
-      </md-card>
+      </mat-card>
     </div>
   </div>
 
