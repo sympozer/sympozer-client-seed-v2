@@ -4,7 +4,7 @@ import {PersonComponent} from './modules/person/person.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
+import {HttpClientModule} from '@angular/common/http';
 import {routing} from './app.routing';
 import {MatGridListModule, MatDialogModule, MatSnackBarModule} from '@angular/material';
 import 'hammerjs';
@@ -148,7 +148,7 @@ const MATERIAL_MODULES = [
         BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpModule,
+        HttpClientModule,
         routing,
         RouterModule.forRoot(routes, {useHash: true}),
         MatGridListModule,

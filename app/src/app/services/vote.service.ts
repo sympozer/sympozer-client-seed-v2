@@ -1,5 +1,5 @@
 
-import {Http, Headers, RequestOptions} from '@angular/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Config} from '../app-config';
 import {RequestManager} from './request-manager.service';
@@ -12,7 +12,7 @@ export class VoteService {
   private key_localstorage_token = 'token_external_ressource_sympozer';
   private key_localstorage_vote = 'hasVoted';
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
               private managerRequest: RequestManager,
               private localStoragexx: LocalStorageService,
               private encoder: Encoder) {
@@ -62,10 +62,11 @@ export class VoteService {
             'id_publication': id_publi,
             'id_track': id_track
         };
-        const headers = new Headers({
-            'Content-Type': 'application/json',
-        });
-        const options = new RequestOptions({ headers: headers });
+        const headers = new Headers({'Content-Type': 'application/json'});
+        const options = { 
+          headers: headers,
+          params: new HttpParams()
+        };
         that.managerRequest.post(Config.vote.url + '/api/vote', bodyRequest, options)
           .then((response) => {
             if (response && response.text()) {
