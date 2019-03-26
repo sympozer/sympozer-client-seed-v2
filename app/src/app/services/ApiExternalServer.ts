@@ -238,6 +238,7 @@ export class ApiExternalServer {
                     that.localStoragexx.store(that.key_localstorage_token, resultPromise.access_token);
                     that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.refresh_token);
                     that.localStoragexx.store(that.key_localstorage_user, user);
+                    
                     resolve(user);
                 })
                 .catch((request) => {
@@ -419,8 +420,9 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.serverLogin.url + '/login/www2018/logout', bodyRequest)
                 .then((request) => {
-                    console.log('dans req');
+                    console.log('dans req logout');
                     this.localStoragexx.clear(this.key_localstorage_token);
+                    //this.localStoragexx.clear(this.key_localstorage_refreshToken);
                     this.localStoragexx.clear(this.key_localstorage_username);
                     this.localStoragexx.clear(this.key_localstorage_user);
                     this.localStoragexx.clear(this.key_localstorage_id);
@@ -435,29 +437,39 @@ export class ApiExternalServer {
 //timeout, toutes les 5min refresh le token
     refresh = (refresh_token) => {        
         
-        // this.localStoragexx.clear(this.key_localstorage_avatar);
+            return new Promise((resolve, reject) => {
+                const token = this.localStoragexx.retrieve(this.key_localstorage_token);
+                console.log("token = " + token);
+                if (!token || token.length === 0 || token == "null") {
+                    return reject('You are not logged in.');
+                } else {
+                    const that = this;
+                    const bodyRequest = {
+                        'refresh_token': refresh_token
+                    };
+                    console.log('avant req refresh');
 
-        return new Promise((resolve, reject) => {
-          
-            const that = this;
-            const bodyRequest = {
-                'refresh_token': refresh_token
-            };
-            console.log('avant req refresh');
-
-            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/refresh', bodyRequest)
-                .then((request) => {
-                    console.log('dans req');
-                    const resultPromise = JSON.parse(request.toString());
-                    
-                    that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.token);
-                    //resolve(request)
-                })
-                .catch((request) => {
-                    console.log('exception');
-                    reject(request);
-                });
-        });
+                    that.managerRequest.post(Config.serverLogin.url + '/login/www2018/refresh', bodyRequest)
+                        .then((request) => {
+                            console.log('dans req');
+                            const resultPromise = JSON.parse(request.toString());
+                            console.log(resultPromise);
+                            that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.refresh_token);
+                            that.localStoragexx.store(that.key_localstorage_token, resultPromise.access_token);
+                            
+                            setTimeout(() => {
+                                this.refresh(this.getRefreshToken());
+                                console.log('timeout success in refresh!!');
+                            }, 10000);
+                        
+                        })
+                        .catch((request) => {
+                            console.log('exception');
+                            reject(request);
+                        });
+                }
+            });
+       
     }
 
 

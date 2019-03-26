@@ -51,6 +51,7 @@ export class HeaderComponent {
         if (this.avatar == undefined || this.avatar === '') {
             this.apiExternalServer.sendAvatar(this.localStoragexx.retrieve(this.key_localstorage_avatar))
         }
+      
     }
 
     logout() {
