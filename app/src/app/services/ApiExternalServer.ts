@@ -28,6 +28,7 @@ export class ApiExternalServer {
     private key_localstorage_id = 'id_external_ressource_sympozer';
     private key_localstorage_username = 'username_external_ressource_sympozer';
     private key_localstorage_avatar = 'avatar_external_ressource_sympozer';
+    private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
 
     constructor(private http: HttpClient,
                 private managerRequest: RequestManager,
@@ -238,6 +239,7 @@ export class ApiExternalServer {
                     that.localStoragexx.store(that.key_localstorage_token, resultPromise.access_token);
                     that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.refresh_token);
                     that.localStoragexx.store(that.key_localstorage_user, user);
+                    that.localStoragexx.store(that.key_localstorage_sessionState, resultPromise.session_state);
                     
                     resolve(user);
                 })
@@ -788,5 +790,36 @@ export class ApiExternalServer {
      */
     getFacebook(): Observable<any> {
         return this.subjectFacebook.asObservable();
+    }
+
+    createElection = (idUser, sessionState, name, description, idResource, dateBegin, dateEnd, listCandidates) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                idUser: idUser,
+                token: sessionState,
+                name: name,
+                description: description,
+                idResource: idResource,
+                dateBegin: dateBegin,
+                dateEnd: dateEnd,
+                listCandidates: listCandidates
+            };
+
+            that.managerRequest.post(Config.serverLogin.url + '/vote/www2018/createElection', bodyRequest)
+                .then((response) => {
+                    if (response.status <= 200) {
+                        console.log('a ', response);
+                        resolve(JSON.parse(response.text()).message);
+                    } else {
+                        reject(JSON.parse(response['_body']).message);
+                    }
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
     }
 }
