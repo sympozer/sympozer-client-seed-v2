@@ -191,7 +191,7 @@ const appRoutes: Routes = [
         component: PublicationsByKeywordComponent
     },
     {
-        path: 'vote',
+        path: 'vote/:id',
         component: VoteComponent
     }
 ];

@@ -4,6 +4,8 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {LocalStorageService} from 'ng2-webstorage';
 import { Subscription } from 'rxjs/Subscription';
 import {MdSnackBar} from '@angular/material';
+import {ActivatedRoute, Params} from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'vote',
@@ -14,6 +16,7 @@ export class VoteComponent implements OnInit {
   token;
   subscription: Subscription;
   canVote: any;
+  testId: String;
   /***
    * Retrive the track Id and the event Type from the publication
    */
@@ -25,11 +28,14 @@ export class VoteComponent implements OnInit {
   public justVoted = false;
   private key_localstorage_token = 'token_external_ressource_sympozer';
   private key_localstorage_vote = 'hasVoted';
+  private key_localstorage_user = 'user_external_ressource_sympozer';
+  private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
   // private key_localstorage_begin_vote = 'beginVote';
   constructor(private voteService: VoteService,
               private localStoragexx: LocalStorageService,
               private snackBar: MdSnackBar,
-              private apiExternalServer: ApiExternalServer) {
+              private apiExternalServer: ApiExternalServer, private location: Location,
+              private route: ActivatedRoute) {
 
       this.subscription = this.apiExternalServer.getAuthorizationVoteStatus().subscribe(status => {
             console.log(status);
@@ -41,6 +47,11 @@ export class VoteComponent implements OnInit {
    * Retrieve login token and all voting credentials on init
    */
   ngOnInit() {
+    this.route.params.forEach((params: Params) => {
+      console.log(this.route); // snapshot -> _urlSegment -> segments (0, 1, etc.)
+      let id = params['id'];
+      this.testId = id;
+    });
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
       // let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
       // votedPublications = JSON.parse(votedPublications);
@@ -52,10 +63,10 @@ export class VoteComponent implements OnInit {
           .catch((err) => {
               console.log(err);
           })
-    setTimeout(() => {
+    /*setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.idTrack);
       this.hasVoted = this.voteService.isTrackVoted(this.idTrack);
-    }, 1000);
+    }, 1000);*/
     this.canVote = true;
   }
 
@@ -88,6 +99,25 @@ export class VoteComponent implements OnInit {
 
         });
     }
+
+    createElection(name, description, idResource, dateBegin, dateEnd, listCandidates) {
+      let user = this.localStoragexx.retrieve(this.key_localstorage_user);
+      let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
+      this.apiExternalServer.createElection(user.id, token, name, description, idResource, dateBegin, dateEnd, ["1","5"])
+          .then((user) => {
+              this.snackBar.open('Election created', '', {
+                  duration: 2000,
+              });
+
+
+          })
+          .catch((resp) => {
+              console.log(resp);
+              this.snackBar.open(JSON.parse(resp._body)['message'], '', {
+                  duration: 3000,
+              });
+          });
+  }
 
 
 }
