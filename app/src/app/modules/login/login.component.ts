@@ -108,8 +108,7 @@ export class LoginComponent implements OnInit {
             });
             setTimeout(() => {
                 this.apiExternalServer.refresh(this.apiExternalServer.getRefreshToken());
-                console.log('timeout success!!');
-            }, 10000);
+            }, 1800000);
     }
 
 

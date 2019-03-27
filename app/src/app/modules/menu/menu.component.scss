@@ -82,6 +82,49 @@
         }
       }
     }
+
+    .sub-menu {
+      position: absolute; /* Evite que la dimension du conteneur ne change quand la sous-liste est affichée */
+      white-space: nowrap; /* Pour que le texte ne revienne pas à la ligne */
+      left: 0; /* FIX IE7 : pour que le sous-menu s’aligne avec son conteneur */
+      top: 2em; /* FIX IE7 : pour que le sous-menu s’aligne avec son conteneur */
+      white-space: nowrap; /* Pour que le texte ne revienne pas à la ligne */
+      background: white; /* FIX IE7 : évite que la sous-liste ne disparaisse au moment où le curseur arrive au-dessus */
+      margin-top: -2px; /* Pour que le sous-menu recouvre son parent, facilitant le passage de la souris de l’un à l’autre */
+  }
+  /* Réduit cette boîte à un carré d’1px de côté, dont le texte est déporté loin à gauche */
+  .sub-menu-item a {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      float: left; /* Fix WebKit : force la largeur des sous-navigations à s’adapter automatiquement, pour pouvoir l’atteindre à la souris */
+  }
+  .sub-menu-item a:focus, .sub-menu-item a {
+      position: static;
+      left: auto;
+      width: auto;
+      height: auto;
+      overflow: visible;
+  }
+  @media screen and (max-width: 480px) {
+  
+  .sub-menu {
+          position: static; /* Replace la sous-liste dans le flux du document */
+          white-space: normal /* Permet au texte de revenir à la ligne normalement */
+      }
+  .sub-menu-item a {
+          display: block; /* Pour que la ligne entière soit cliquable */
+          width: auto; /* Annule width: 1px */
+          height: auto; /* Annule height: 1px */
+          position: static; /* Annule position: absolute */
+          padding-left: 1em; /* Annule le padding vertical et en rajoute à gauche pour indiquer le sous-niveau */
+          overflow: visible; /* Annule overflow: hidden */
+          float: none;
+      }
+  }
   }
 
   @media screen and (max-width: 1180px) {

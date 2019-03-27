@@ -26,6 +26,8 @@ export class SearchComponent implements OnInit {
             this.testId = id;
             if (this.testId == 'event')
                 this.title = "Find an " + this.testId;
+            else if (this.testId == 'vote')
+                this.title = "Find an Election";
             else
                 this.title = "Find a " + this.testId;
             if (document.getElementById("page-title-p"))
