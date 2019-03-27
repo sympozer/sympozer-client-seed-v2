@@ -414,7 +414,7 @@ export class ApiExternalServer {
                 });
         });
     }
-//timeout, toutes les 5min refresh le token
+
     refresh = (refresh_token) => {        
         
             return new Promise((resolve, reject) => {
@@ -440,7 +440,7 @@ export class ApiExternalServer {
                             setTimeout(() => {
                                 this.refresh(this.getRefreshToken());
                                 console.log('timeout success in refresh!!');
-                            }, 10000);
+                            }, 1800000);
                         
                         })
                         .catch((request) => {

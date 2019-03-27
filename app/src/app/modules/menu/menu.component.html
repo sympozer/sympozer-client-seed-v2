@@ -33,6 +33,30 @@
       </a>
     </li>
     <li class="menu-item">
+      <a>
+        <div class="link">
+          <md-icon>how_to_vote</md-icon>
+          Votes
+        </div>
+      </a>
+      <ul class="sub-menu">
+        <li class="sub-menu-item">
+          <a [routerLink]="['/search/vote']" routerLinkActive="active">
+            <div class="link">
+              Search Elections
+            </div>
+          </a>
+        </li>
+        <li class="sub-menu-item">
+          <a [routerLink]="['/vote']" routerLinkActive="active">
+            <div class="link">
+              Create Election
+            </div>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="menu-item">
       <a [routerLink]="['/tools']" routerLinkActive="active">
         <div class="link">
           <md-icon>build</md-icon>
