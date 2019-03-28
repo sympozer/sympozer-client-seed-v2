@@ -2,13 +2,13 @@
  * Created by pierremarsot on 23/01/2017.
  */
 
-import {Http, Response} from '@angular/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import 'rxjs/operator/toPromise';
 
 @Injectable()
 export class RequestManager {
-    constructor(private http: Http) { }
+    constructor(private http: HttpClient) { }
 
     get_json(url, params?) {
         let req: any;
@@ -29,8 +29,8 @@ export class RequestManager {
     get(url,options?) {
         return this.http.get(url,options)
             .toPromise()
-            .then((response: Response) => {
-                return response.text();
+            .then((response: HttpResponse<any>) => {
+                return response;
             })
             .catch((error) => {
                 throw error;
@@ -41,7 +41,7 @@ export class RequestManager {
     getResponseText(url) {
         const prom = new Promise((resolve, reject) => {
             let resp = '';
-            this.http.get(url).subscribe((x: Response) => resp += x.text(), (err: any) => reject(err), () => resolve(resp));
+            this.http.get(url).subscribe((x: HttpResponse<any>) => resp += x, (err: any) => reject(err), () => resolve(resp));
         });
         return prom;
     }

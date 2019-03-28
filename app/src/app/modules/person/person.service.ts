@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import {Encoder} from '../../lib/encoder';
 
 
@@ -7,7 +7,7 @@ import {Encoder} from '../../lib/encoder';
 export class PersonService {
 
   constructor(
-      private http: Http,
+      private http: HttpClient,
       private encoder: Encoder
   ) {
 

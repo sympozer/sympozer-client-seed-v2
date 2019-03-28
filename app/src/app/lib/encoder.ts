@@ -1,5 +1,5 @@
 import { Injectable }     from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 export class Encoder {
 
     private _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-    constructor(private http: Http) {}
+    constructor(private http: HttpClient) {}
 
     encode64(input : string) : string{
         var output = "";

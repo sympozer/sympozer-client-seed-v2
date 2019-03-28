@@ -2,7 +2,7 @@
  * Created by pierremarsot on 27/02/2017.
  */
 import {Injectable} from "@angular/core";
-import {Http, Headers, RequestOptions} from "@angular/http";
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {LocalStorageService} from 'ngx-webstorage';
 const github = require('octonode');
 
@@ -16,7 +16,7 @@ export class GithubService {
     private localstorage_jsonld = 'dataset-sympozer-jsonld';
     diffExample = {_body : ''};
 
-    constructor(private http: Http,
+    constructor(private http: HttpClient,
                 private localStoragexx: LocalStorageService) {
 
     }
@@ -242,7 +242,7 @@ export class GithubService {
                     //On télécharge le fichier de diff
                     console.log(this.http)
                     let headers = new Headers({ 'Access-Control-Allow-Origin': '*'});
-                    let options = new RequestOptions({ headers: headers });
+                    //let options = new RequestOptions({ headers: headers });
                     this.http.get(response.diff_url)
                         .toPromise()
                         .then((response) => {
@@ -273,7 +273,7 @@ export class GithubService {
             var res = text.match(patternDiffConference)
             if(res !== null){
                 let headers = new Headers({'Content-Type': 'application/json',});
-                let options = new RequestOptions({ headers: headers });
+                //let options = new RequestOptions({ headers: headers });
                 this.http.get("https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/dev-front/app/src/app/conference_test.ttl")
                     .toPromise()
                     .then((response) => {

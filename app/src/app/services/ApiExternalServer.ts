@@ -4,7 +4,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
-import {Http, Headers, RequestOptions} from '@angular/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {RequestManager} from './request-manager.service';
 import {Config} from '../app-config';
 import {LocalStorageService} from 'ngx-webstorage';
@@ -29,7 +29,7 @@ export class ApiExternalServer {
     private key_localstorage_username = 'username_external_ressource_sympozer';
     private key_localstorage_avatar = 'avatar_external_ressource_sympozer';
 
-    constructor(private http: Http,
+    constructor(private http: HttpClient,
                 private managerRequest: RequestManager,
                 private localStoragexx: LocalStorageService) {
 
@@ -66,7 +66,7 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.externalServer.url + '/api/person', bodyRequest)
                 .then((request) => {
-                    const person = JSON.parse(request.text());
+                    const person = JSON.parse(request.toString());
                     if (request.status === 403) {
                         return reject('Couldn\'t update.');
                     }
