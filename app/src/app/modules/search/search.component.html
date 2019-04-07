@@ -28,19 +28,15 @@
     </mat-card>
   </div>
 </div>
-<div *ngIf="testId == 'vote'">
-  <div class="action-links">
-    <md-card><a [routerLink]="['/elections']">by id </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
-    <md-card><a [routerLink]="['/resources']">by publication </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
-    <md-card><a [routerLink]="['/elections&dates']">by id if votable </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
+
+  <div *ngIf="testId == 'vote'">
+    <div class="action-links">
+      <md-card><a [routerLink]="['/votes']">by name </a>
+        <md-icon>trending_flat</md-icon>
+      </md-card>
+    </div>
   </div>
-</div>
+
 <div *ngIf="testId == 'event'">
   <div class="action-links">
     <mat-card><a [routerLink]="['/events']">by name </a>

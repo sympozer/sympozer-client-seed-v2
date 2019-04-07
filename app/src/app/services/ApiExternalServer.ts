@@ -822,4 +822,57 @@ export class ApiExternalServer {
                 });
         });
     }
+
+    showElectionById = (idElection) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                id: idElection                
+            };
+
+            that.managerRequest.post(Config.serverLogin.url + '/vote/www2018/showElectionById', bodyRequest)
+                .then((response) => {
+                    if (response.status <= 200) {
+                        console.log('showElection ', response);
+                        resolve(JSON.parse(response.text()).message);
+                    } else {
+                        reject(JSON.parse(response['_body']).message);
+                    }
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });        
+    }
+
+    createVote = (idElection, idVoter, sessionState, idCandidate) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                idElection: idElection,
+                idVoter: idVoter,
+                token: sessionState,
+                idCandidate: idCandidate         
+            };
+
+            that.managerRequest.post(Config.serverLogin.url + '/vote/www2018/createVote', bodyRequest)
+                .then((response) => {
+                    if (response.status <= 200) {
+                        console.log('createVote ', response);
+                        resolve(JSON.parse(response.text()).message);
+                    } else {
+                        reject(JSON.parse(response['_body']).message);
+                    }
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });        
+    }
+
+    
 }

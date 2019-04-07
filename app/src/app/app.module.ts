@@ -57,6 +57,7 @@ import {PersonService} from './modules/person/person.service';
 import {TimeManager} from './services/timeManager.service';
 import {ShareButtonsModule} from 'ngx-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
+import {VotesComponent} from './modules/votes/votes.component';
 import {ConferenceComponent} from './modules/conference/conference.component';
 import {VoteService} from './services/vote.service';
 import {Angulartics2Module, Angulartics2Piwik} from 'angulartics2';
@@ -136,6 +137,7 @@ const MATERIAL_MODULES = [
         ShareComponent,
         ScrollLoaderDirective,
         VoteComponent,
+        VotesComponent,
         KeywordsComponent,
         ConferenceComponent,
         PublicationsByKeywordComponent,

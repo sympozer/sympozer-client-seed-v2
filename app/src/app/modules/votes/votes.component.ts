@@ -1,18 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {VoteService} from '../../services/vote.service';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {LocalStorageService} from 'ngx-webstorage';
-import { Subscription } from 'rxjs';
-import {MatSnackBar} from '@angular/material';
+import {LocalStorageService} from 'ng2-webstorage';
+import { Subscription } from 'rxjs/Subscription';
+import {MdSnackBar} from '@angular/material';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Location} from '@angular/common';
 
 @Component({
-  selector: 'vote',
-  templateUrl: './vote.component.html',
-  styleUrls: ['./vote.component.scss']
+  selector: 'votes',
+  templateUrl: './votes.component.html',
+  styleUrls: ['./votes.component.scss']
 })
-export class VoteComponent implements OnInit {
+export class VotesComponent implements OnInit {
+  title = 'Elections';
   token;
   subscription: Subscription;
   logSubscription: Subscription;
@@ -35,7 +36,7 @@ export class VoteComponent implements OnInit {
   // private key_localstorage_begin_vote = 'beginVote';
   constructor(private voteService: VoteService,
               private localStoragexx: LocalStorageService,
-              private snackBar: MatSnackBar,
+              private snackBar: MdSnackBar,
               private apiExternalServer: ApiExternalServer, private location: Location,
               private route: ActivatedRoute) {
 
@@ -68,10 +69,6 @@ export class VoteComponent implements OnInit {
           .catch((err) => {
               console.log(err);
           })
-    /*setTimeout(() => {
-      this.votable = this.voteService.isTrackVotable(this.idTrack);
-      this.hasVoted = this.voteService.isTrackVoted(this.idTrack);
-    }, 1000);*/
     this.canVote = true;
   }
 
@@ -122,6 +119,10 @@ export class VoteComponent implements OnInit {
                   duration: 3000,
               });
           });
+  }
+
+  showElectionById(Id) {
+    this.apiExternalServer.showElectionById(Id);
   }
 
 

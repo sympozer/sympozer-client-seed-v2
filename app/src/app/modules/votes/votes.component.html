@@ -1,0 +1,21 @@
+<div class="component-wrapper fixed-height">
+  <h1 id="description-title">{{title}}</h1>
+<!-- 
+  <app-autocomplete name="search-bar" [seachFor]="'id'" ></app-autocomplete>
+
+  <div scrollLoader class="search-results">
+    <div class="action-links list-items">
+      <md-card>
+        <md-icon md-list-avatar>perm_identity</md-icon>
+        <a [routerLink]="['/vote/'+vote.id]">{{vote.id}}</a>
+      </md-card>
+    </div>
+  </div> -->
+
+
+  <md-input-container>
+    <input #id mdInput type="id" placeholder="id">
+  </md-input-container>
+
+  <button md-button (click)="showElectionById(id.value)">Show</button>
+</div>

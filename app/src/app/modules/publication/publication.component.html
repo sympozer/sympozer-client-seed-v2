@@ -13,6 +13,9 @@
     <a [href]="publication.homepage" target="_blank">Open in ACM Proceedings</a>
   </mat-card>
 
+  <button id="vote" md-raised-button color="primary" (click)="createVote()" > Vote for this publication
+  </button>
+
   <div *ngIf="keywords && keywords.length > 0">
     <h2>Keywords</h2>
     <div class="action-links list-items">
