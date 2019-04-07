@@ -8,11 +8,12 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {Location} from '@angular/common';
 
 @Component({
-  selector: 'vote',
-  templateUrl: './vote.component.html',
-  styleUrls: ['./vote.component.scss']
+  selector: 'votes',
+  templateUrl: './votes.component.html',
+  styleUrls: ['./votes.component.scss']
 })
-export class VoteComponent implements OnInit {
+export class VotesComponent implements OnInit {
+  title = 'Elections';
   token;
   subscription: Subscription;
   logSubscription: Subscription;
@@ -68,10 +69,6 @@ export class VoteComponent implements OnInit {
           .catch((err) => {
               console.log(err);
           })
-    /*setTimeout(() => {
-      this.votable = this.voteService.isTrackVotable(this.idTrack);
-      this.hasVoted = this.voteService.isTrackVoted(this.idTrack);
-    }, 1000);*/
     this.canVote = true;
   }
 
@@ -122,6 +119,10 @@ export class VoteComponent implements OnInit {
                   duration: 3000,
               });
           });
+  }
+
+  showElectionById(Id) {
+    this.apiExternalServer.showElectionById(Id);
   }
 
 
