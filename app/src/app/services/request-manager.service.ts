@@ -18,9 +18,9 @@ export class RequestManager {
             req = this.http.get(url);
         }
         return req.toPromise()
-            .then((response) => response.json())
-            .then((json) => {
-                return json;
+            .then((response) => /*response.json())
+            .then((json) => */{
+                return response;
             })
             .catch(() => {
                 return null;
@@ -29,7 +29,7 @@ export class RequestManager {
     get(url,options?) {
         return this.http.get(url,options)
             .toPromise()
-            .then((response: HttpResponse<any>) => {
+            .then((response) => {
                 return response;
             })
             .catch((error) => {
@@ -41,7 +41,7 @@ export class RequestManager {
     getResponseText(url) {
         const prom = new Promise((resolve, reject) => {
             let resp = '';
-            this.http.get(url).subscribe((x: HttpResponse<any>) => resp += x, (err: any) => reject(err), () => resolve(resp));
+            this.http.get(url).subscribe((x) => resp += x, (err) => reject(err), () => resolve(resp));
         });
         return prom;
     }

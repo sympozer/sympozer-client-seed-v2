@@ -62,15 +62,15 @@ export class VoteService {
             'id_publication': id_publi,
             'id_track': id_track
         };
-        const headers = new Headers({'Content-Type': 'application/json'});
-        const options = { 
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+        const options = {
           headers: headers,
           params: new HttpParams()
         };
         that.managerRequest.post(Config.vote.url + '/api/vote', bodyRequest, options)
           .then((response) => {
-            if (response && response.text()) {
-              console.log(response.text());
+            if (response && response.toString()) {
+              console.log(response.toString());
                 const votedTracks = [];
               if (that.localStoragexx.retrieve(that.key_localstorage_vote) !== null ) {
                   votedTracks.push(that.localStoragexx.retrieve(that.key_localstorage_vote));
@@ -78,19 +78,21 @@ export class VoteService {
                   that.localStoragexx.store(that.key_localstorage_vote, []);
               }
               console.log(votedTracks);
-              if (response.text() !== 'OK') {
-                const responseBody = JSON.parse(response.text());
+              if (response.toString() !== 'OK') {
+                const responseBody = JSON.parse(response.toString());
                 console.log(responseBody);
                 console.log(responseBody.err);
                 if (responseBody && responseBody.error) {
                   console.log('entered in error response body error');
-                  console.log(response.status);
-                  if (response.status === 403) {
-                    if (!this.isTrackVoted(id_track)) {
-                      votedTracks.push(id_track);
+                  (err : any)=>{
+                    console.log(err.status);
+                    if (err.status === 403) {
+                      if (!this.isTrackVoted(id_track)) {
+                        votedTracks.push(id_track);
+                      }
+                      that.localStoragexx.store(that.key_localstorage_vote, votedTracks);
+                      reject(err.status);
                     }
-                    that.localStoragexx.store(that.key_localstorage_vote, votedTracks);
-                    reject(response.status);
                   }
                   reject(responseBody.error);
                 }
@@ -126,7 +128,7 @@ export class VoteService {
           .then((response) => {
             console.log(response);
             if (response && response) {
-              that.localStoragexx.store(that.key_localstorage_vote, JSON.parse(response));
+              that.localStoragexx.store(that.key_localstorage_vote, response);
               return resolve(true);
             }
 

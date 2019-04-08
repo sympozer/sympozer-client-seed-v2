@@ -4,7 +4,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Subject} from 'rxjs/Subject';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {RequestManager} from './request-manager.service';
 import {Config} from '../app-config';
 import {LocalStorageService} from 'ngx-webstorage';
@@ -43,6 +43,8 @@ export class ApiExternalServer {
         return false;
     }
 
+
+
     update(token, firstname, lastname, homepage, twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl) {
         return new Promise((resolve, reject) => {
             const token = this.localStoragexx.retrieve(this.key_localstorage_token);
@@ -67,13 +69,13 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.externalServer.url + '/api/person', bodyRequest)
                 .then((request) => {
                     const person = JSON.parse(request.toString());
-                    if (request.status === 403) {
+                    /*if (request.status === 403) {
                         return reject('Couldn\'t update.');
                     }
                     if (request.status === 404) {
                         return reject('A network error has occurred. Please try again later.');
                     }
-
+                    */
                     if (person.error) {
                         return reject(person.error);
                     }
@@ -85,11 +87,19 @@ export class ApiExternalServer {
                         this.sendAvatar(person.photoUrl);
                         that.localStoragexx.store(that.key_localstorage_avatar, person.photoUrl);
                     }
-                    that.localStoragexx.store(that.key_localstorage_user, request.text());
+                    that.localStoragexx.store(that.key_localstorage_user, request);
                     return resolve(person);
                 })
                 .catch((request) => {
-                    console.log('catch');
+                    //console.log('catch');
+                    (err : any)=>{
+                      if (err.status == 403){
+                        return reject('Couldn\'t update.');
+                      }
+                      if (err.status == 404){
+                        return reject('A network error has occurred. Please try again later.');
+                      }
+                    }
                     return reject(request);
                 });
         });
@@ -141,17 +151,11 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
                 .then((request) => {
-                    const person = JSON.parse(request.text());
-                    if (request.status === 403) {
-                        return reject('Couldn\'t update.');
-                    }
-                    if (request.status === 404) {
-                        return reject('A network error has occurred. Please try again later.');
-                    }
+                    //const person = JSON.parse(request);
 
-                    if (person.error) {
-                        return reject(person.error);
-                    }
+                    //if (person.error) {
+                    //    return reject(person.error);
+                    //}
 
                     if (bodyRequest.firstname && bodyRequest.firstname.length > 0) {
                         this.sendUsername(bodyRequest.firstname);
@@ -166,6 +170,14 @@ export class ApiExternalServer {
                     return resolve(request);
                 })
                 .catch((request) => {
+                  (err : any)=>{
+                    if (err.status == 403){
+                      return reject('Couldn\'t update.');
+                    }
+                    if (err.status == 404){
+                      return reject('A network error has occurred. Please try again later.');
+                    }
+                  }
                     return reject(request);
                 });
         });
@@ -192,7 +204,7 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
                 .then((request) => {
                     console.log('la');
-                    const resultPromise = JSON.parse(request.text());
+                    const resultPromise = JSON.parse(request.toString());
                     const user = resultPromise.user;
                     if (!resultPromise || !user) {
                         return reject('Error while retrieving your data. Please try again later.');
@@ -247,12 +259,15 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
                 .then((response) => {
-                    if (response.status <= 299) {
-                        console.log('a ', response);
-                        resolve(JSON.parse(response.text()).message);
-                    } else {
+                  (err : any)=>{
+                    if (err.status <= 299){
+                      console.log('a ', response);
+                      resolve(JSON.parse(response.toString()).message);
+                    }else{
                         reject(JSON.parse(response['_body']).message);
                     }
+                  }
+
                 })
                 .catch((request) => {
                     return reject(request);
@@ -276,9 +291,11 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/registerFromBadge', bodyRequest)
                 .then((request) => {
-                    const resultPromise = JSON.parse(request.text());
-                    if (request.status === 400) {
+                    const resultPromise = JSON.parse(request.toString());
+                    (err : any)=>{
+                      if (err.status == 400){
                         return reject(resultPromise.message);
+                      }
                     }
                     return resolve(true);
                 })
@@ -301,9 +318,11 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/forgotpassword', bodyRequest)
                 .then((request) => {
-                    const resultPromise = JSON.parse(request.text());
-                    if (request.status === 400) {
-                        return reject(resultPromise.message);
+                    const resultPromise = JSON.parse(request.toString());
+                    (err : any)=>{
+                      if (err.status === 400) {
+                          return reject(resultPromise.message);
+                      }
                     }
                     return resolve(true);
                 })
@@ -341,9 +360,11 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updatePassword/', bodyRequest)
                 .then((request) => {
-                    const resultPromise = JSON.parse(request.text());
-                    if (request.status === 400) {
-                        return reject(resultPromise.message);
+                    const resultPromise = JSON.parse(request.toString());
+                    (err : any)=>{
+                      if (err.status === 400) {
+                          return reject(resultPromise.message);
+                      }
                     }
                     return resolve(true);
                 })
