@@ -372,7 +372,7 @@ export class PublicationComponent implements OnInit {
     createVote() {
         let user = this.localStoragexx.retrieve(this.key_localstorage_user);
         let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
-        this.apiExternalServer.createVote("5c88fa0fd1bfec0026457807",user.id, token,"1")
+        this.apiExternalServer.createVote("5cb7330cd1bfec0026457823",user.id, token,"1")
             .then((user) => {
                 this.snackBar.open('You have voted', '', {
                     duration: 2000,
