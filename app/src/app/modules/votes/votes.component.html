@@ -11,11 +11,15 @@
       </md-card>
     </div>
   </div> -->
+  <div class="search-form">
+    <form>
+      <md-input-container>
+        <input #id mdInput type="id" placeholder="id">
+      </md-input-container>
 
-
-  <md-input-container>
-    <input #id mdInput type="id" placeholder="id">
-  </md-input-container>
-
-  <button md-button (click)="showElectionById(id.value)">Show</button>
+      <div class="search-footer">
+        <button md-button (click)="showElectionById(id.value)">Show</button>
+      </div>
+    </form>
+  </div>
 </div>
