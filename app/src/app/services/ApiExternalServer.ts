@@ -2,8 +2,7 @@
  * Created by pierremarsot on 27/02/2017.
  */
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {Subject} from 'rxjs/Subject';
+import {Observable, Subject} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {RequestManager} from './request-manager.service';
 import {Config} from '../app-config';

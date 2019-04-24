@@ -1,6 +1,9 @@
+
+import {throwError as observableThrowError, Observable} from 'rxjs';
+
+import {catchError, map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
 import {Config} from '../../app-config';
 
 @Injectable()
@@ -18,12 +21,12 @@ export class SignUpService {
         const data = 'email=' + email + '&' + 'firstname=' + firstname + '&' + 'lastname=' + lastname + '&' + 'password=' + password;
 
         return this.http
-            .post( Config.apiLogin.url + '/api/v1/register', data, {headers: headers})
-            .map(res => res.json())
-            .catch(this.handleError);
+            .post( Config.apiLogin.url + '/api/v1/register', data, {headers: headers}).pipe(
+            map(res => res.json()),
+            catchError(this.handleError),);
     }
 
     private handleError(error: Response) {
-        return Observable.throw(error.statusText);
+        return observableThrowError(error.statusText);
     }
 }

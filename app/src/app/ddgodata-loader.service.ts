@@ -1,24 +1,24 @@
 import {Injectable} from '@angular/core';
-import {Http, URLSearchParams} from "@angular/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 
 @Injectable()
 export class DDGoDataLoaderService {
     uri:string = "http://api.duckduckgo.com/";
 
-    constructor(private http:Http) {
+    constructor(private http:HttpClient) {
     }
 
     public getResultOrganization = (authorName:string)=> {
-        let params:URLSearchParams = new URLSearchParams();
-        params.set('q', authorName);
-        params.set('format', 'json');
-        params.set('pretty', "1");
-        params.set('no_redirect', "1");
-        params.set('output', 'json');
-        return this.http.get(this.uri, {search: params})
+        let params = new HttpParams();
+        params = params.append('q', authorName);
+        params = params.append('format', 'json');
+        params = params.append('pretty', "1");
+        params = params.append('no_redirect', "1");
+        params = params.append('output', 'json');
+        return this.http.get(this.uri, {params})
             .toPromise()
             .then(response => {
-                return response.json();
+                return response;
             }).catch(this.handleError);
     };
 

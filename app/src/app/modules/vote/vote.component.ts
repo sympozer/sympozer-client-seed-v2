@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {VoteService} from '../../services/vote.service';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {LocalStorageService} from 'ngx-webstorage';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import {MatSnackBar} from '@angular/material';
 
 @Component({

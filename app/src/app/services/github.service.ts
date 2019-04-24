@@ -272,7 +272,7 @@ export class GithubService {
 
             var res = text.match(patternDiffConference)
             if(res !== null){
-                let headers = new Headers({'Content-Type': 'application/json',});
+                let headers = new HttpHeaders({'Content-Type': 'application/json',});
                 //let options = new RequestOptions({ headers: headers });
                 this.http.get("https://raw.githubusercontent.com/sympozer/sympozer-client-seed-v2/dev-front/app/src/app/conference_test.ttl")
                     .toPromise()

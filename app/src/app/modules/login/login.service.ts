@@ -1,6 +1,9 @@
+
+import {throwError as observableThrowError, Observable} from 'rxjs';
+
+import {catchError, map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Http, Response, Headers} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
 import {Config} from '../../app-config';
 
 @Injectable()
@@ -18,9 +21,9 @@ export class LoginService {
         const data = 'email=' + email + '&' + 'password=' + password;
 
         return this.http
-            .post( Config.apiLogin.url + '/api/v1/auth', data, {headers: headers})
-            .map(res => res.json())
-            .catch(this.handleError);
+            .post( Config.apiLogin.url + '/api/v1/auth', data, {headers: headers}).pipe(
+            map(res => res.json()),
+            catchError(this.handleError),);
     }
 
     getUser(id: string): Observable<any>{
@@ -29,12 +32,12 @@ export class LoginService {
         headers.set('Accept', 'application/json');
 
         return this.http
-            .get( Config.apiLogin.url + '/api/v1/user/' + id, {headers: headers})
-            .map(res => res.json())
-            .catch(this.handleError);
+            .get( Config.apiLogin.url + '/api/v1/user/' + id, {headers: headers}).pipe(
+            map(res => res.json()),
+            catchError(this.handleError),);
     }
 
     private handleError(error: Response) {
-        return Observable.throw(error.statusText);
+        return observableThrowError(error.statusText);
     }
 }

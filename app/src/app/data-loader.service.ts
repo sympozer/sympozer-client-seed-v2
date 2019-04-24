@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
 import {Http, Response, URLSearchParams} from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+
 import {Conference} from './model/conference';
 
 @Injectable()

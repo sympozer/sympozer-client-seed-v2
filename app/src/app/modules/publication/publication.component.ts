@@ -8,7 +8,7 @@ import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import * as moment from 'moment';
 import {TimeManager} from "../../services/timeManager.service";
 var ICS = require('ics');

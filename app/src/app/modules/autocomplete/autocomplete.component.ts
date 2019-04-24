@@ -1,13 +1,11 @@
 import {Component, OnInit, Input, Renderer} from '@angular/core';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime ,  distinctUntilChanged ,  switchMap } from 'rxjs/operators';
 import {DataLoaderService} from '../../data-loader.service';
 import {Router} from '@angular/router';
 import {Encoder} from '../../lib/encoder';
 import {LocalDAOService} from '../../localdao.service';
 import {DBLPDataLoaderService} from '../../dblpdata-loader.service';
-import {Subject} from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { switchMap } from 'rxjs/operators';   
+import {Subject} from 'rxjs';   
 
 @Component({
     selector: 'app-autocomplete',

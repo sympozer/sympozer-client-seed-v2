@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiExternalServer } from '../../services/ApiExternalServer';
 import { MatSnackBar } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
