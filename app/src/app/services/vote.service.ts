@@ -5,17 +5,22 @@ import {Config} from '../app-config';
 import {RequestManager} from './request-manager.service';
 import {LocalStorageService} from 'ng2-webstorage';
 import {Encoder} from '../lib/encoder';
+import {ApiExternalServer} from './ApiExternalServer';
+
 
 @Injectable()
 export class VoteService {
 
   private key_localstorage_token = 'token_external_ressource_sympozer';
+  private key_localstorage_user = 'user_external_ressource_sympozer';
+  private key_localstorage_sessionState = 'sessionstate_external_ressource_sympozer';
+  private key_localstorage_election = 'election_external_ressource_sympozer';
   private key_localstorage_vote = 'hasVoted';
 
   constructor(private http: Http,
               private managerRequest: RequestManager,
               private localStoragexx: LocalStorageService,
-              private encoder: Encoder) {
+              private encoder: Encoder, private apiExternalServer: ApiExternalServer) {
 
   }
 
@@ -43,7 +48,13 @@ export class VoteService {
   vote = (id_track, id_publi) => {
     id_track = this.encoder.decode(id_track)
 
-    return new Promise((resolve, reject) => {
+    let user = this.localStoragexx.retrieve(this.key_localstorage_user);
+    let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
+    let election = this.localStoragexx.retrieve(this.key_localstorage_election);
+
+
+    this.apiExternalServer.createVote(election.id,user.id,token,id_track);
+    /*return new Promise((resolve, reject) => {
       if (!id_publi || id_publi.length === 0) {
         return reject('Erreur lors de la récupération de l\'identifiant de la ressource');
       }
@@ -66,7 +77,7 @@ export class VoteService {
             'Content-Type': 'application/json',
         });
         const options = new RequestOptions({ headers: headers });
-        that.managerRequest.post(Config.vote.url + '/api/vote', bodyRequest, options)
+        that.managerRequest.post(Config.vote.url + '/createVote', bodyRequest, options)
           .then((response) => {
             if (response && response.text()) {
               console.log(response.text());
@@ -109,7 +120,7 @@ export class VoteService {
             return reject(request);
           })
       ;
-    });
+    });*/
   }
 
   votedPublications(id_track) {

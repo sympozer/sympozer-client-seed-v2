@@ -81,7 +81,7 @@ export let Config = {
     },
     serverLogin: {
         //url: 'http://192.168.75.12'
-        url: 'https://api.sympozer.com'
+        url: 'https://api.sympozer.com/login/www2018'
        // url: 'http://localhost:4200'
     },
 
@@ -89,7 +89,8 @@ export let Config = {
         url: 'https://sympozer.com/external'
     },
     vote :{
-        url: 'https://sympozer.com/vote/vote',
-        tracks: ['https://w3id.org/scholarlydata/track/www-demo-2018', 'https://w3id.org/scholarlydata/track/www-posters-2018']
+        url: 'https://api.sympozer.com/vote/www2018',
+        tracks: ['https://w3id.org/scholarlydata/track/www-demo-2018', 'https://w3id.org/scholarlydata/track/www-posters-2018'],
+        urlVotes: 'http://localhost/vote.json'
     }
 };

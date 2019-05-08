@@ -6,6 +6,9 @@ import { Subscription } from 'rxjs/Subscription';
 import {MdSnackBar} from '@angular/material';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Location} from '@angular/common';
+import {Config} from '../../app-config';
+import {Http, Response, Headers} from '@angular/http';
+import {Encoder} from "../../lib/encoder";
 
 @Component({
   selector: 'vote',
@@ -19,6 +22,8 @@ export class VoteComponent implements OnInit {
   canVote: any;
   testId: String;
   hasLogged: any;
+  election;
+  datas;
   /***
    * Retrive the track Id and the event Type from the publication
    */
@@ -28,16 +33,20 @@ export class VoteComponent implements OnInit {
   public votable = false;
   public hasVoted = false;
   public justVoted = false;
+  public electionId;
+  public elec;
   private key_localstorage_token = 'token_external_ressource_sympozer';
   private key_localstorage_vote = 'hasVoted';
   private key_localstorage_user = 'user_external_ressource_sympozer';
   private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
+  private key_localstorage_election = 'election_external_ressource_sympozer';
+
   // private key_localstorage_begin_vote = 'beginVote';
   constructor(private voteService: VoteService,
               private localStoragexx: LocalStorageService,
               private snackBar: MdSnackBar,
               private apiExternalServer: ApiExternalServer, private location: Location,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,private http: Http,private encoder: Encoder) {
 
       this.subscription = this.apiExternalServer.getAuthorizationVoteStatus().subscribe(status => {
             console.log(status);
@@ -46,12 +55,47 @@ export class VoteComponent implements OnInit {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
           this.hasLogged = status;
       });
+      this.election = {
+        name: undefined,
+        description: undefined
+    };
   }
 
   /**
    * Retrieve login token and all voting credentials on init
    */
   ngOnInit() {
+
+    this.route.params.forEach((params: Params) => {
+      let id = params['id'];
+      let name = params['name'];
+      let query = {'id': this.encoder.decode(id)};
+      this.electionId = query.id;
+      this.showElectionById(this.electionId);
+    });
+
+    this.http.get(Config.vote.urlVotes).subscribe((data) => {
+      this.datas = data;
+    });
+    //console.log(this.datas);
+    console.log(JSON.stringify(this.datas));
+    let elections = this.datas['elections'];
+    let results;
+
+    elections.forEach(function(element) {
+      results = this.showElectionById(element);
+      if(results){
+        const nodeName = results['name'];
+
+        const name = nodeName.value;
+
+        this.election.name = name;
+      }
+    });
+
+
+
+
     this.route.params.forEach((params: Params) => {
       console.log(this.route); // snapshot -> _urlSegment -> segments (0, 1, etc.)
       let id = params['id'];
@@ -80,8 +124,8 @@ export class VoteComponent implements OnInit {
    */
   vote = () => {
     const that = this;
-    this.voteService.vote(this.idTrack, this.idPublication)
-        .then(() => {
+    this.voteService.vote(this.idTrack, this.idPublication);
+        /*.then(() => {
           this.snackBar.open('Vote successful', '', {
               duration: 2000,
           });
@@ -102,7 +146,7 @@ export class VoteComponent implements OnInit {
             });
           }
 
-        });
+        });*/
     }
 
     createElection(name, description, idResource, dateBegin, dateEnd, listCandidates) {
@@ -122,6 +166,29 @@ export class VoteComponent implements OnInit {
                   duration: 3000,
               });
           });
+  }
+
+  showElectionById(Id) {
+    this.apiExternalServer.showElectionById(Id).then(() => {      
+      this.elec = this.localStoragexx.retrieve(this.key_localstorage_election);
+      console.log("aff elec: " + JSON.stringify(this.elec));
+      if (this.elec) {
+
+        let name = this.elec['name'];
+        let description = this.elec['description'];
+
+        if (!name || !description) {
+            return false;
+        }
+
+        this.election.name = name;
+        this.election.description = description;
+        if (document.getElementById("page-title-p"))
+            document.getElementById("page-title-p").innerHTML = name;     
+
+      }
+
+    });
   }
 
 

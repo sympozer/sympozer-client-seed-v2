@@ -31,6 +31,7 @@ export class PublicationComponent implements OnInit {
     public keywords = [];
     public publicationId;
     public eventType;
+    public vote;
     private key_localstorage_user = 'user_external_ressource_sympozer';
     private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
 

@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ng serve",
     "buildprod": "ng build --prod --aot --bh /www2018/",
+    "buildelo": "ng build --prod --aot --bh /www2018_elodie/",
     "buildtest": "ng build --prod --aot --bh /www2018_test/",
     "buildbeta": "ng build --prod --aot --bh /www2018_beta/",
     "buildvote": "ng build --prod --aot --bh /www2018_vote/",
