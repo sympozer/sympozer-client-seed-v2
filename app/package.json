@@ -13,6 +13,7 @@
     "buildqrcode": "ng build --prod --aot --base-href /www2018_qrcode/",
     "buildapp": "ng build --prod --aot --base-href /app/",
     "buildnour": "ng build --prod --aot --base-href /www2018_nour/",
+    "buildelo": "ng build --prod --aot --base-href /www2018_elodie/",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
     "pree2e": "webdriver-manager update",

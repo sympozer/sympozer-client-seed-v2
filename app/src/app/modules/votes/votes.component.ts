@@ -6,6 +6,10 @@ import { Subscription } from 'rxjs/Subscription';
 import {MdSnackBar} from '@angular/material';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Location} from '@angular/common';
+import {Config} from '../../app-config';
+import {Http, Response, Headers,RequestOptions} from '@angular/http';
+import { elementAt } from 'rxjs/operator/elementAt';
+import {Encoder} from '../../lib/encoder';
 
 @Component({
   selector: 'votes',
@@ -18,8 +22,18 @@ export class VotesComponent implements OnInit {
   subscription: Subscription;
   logSubscription: Subscription;
   canVote: any;
-  testId: String;
+  testId: string;
   hasLogged: any;
+  datas: Array<string>;
+  tabElec: Array<Object> = new Array();
+  idElections: Array<string> = new Array();
+  elections;
+  elec;
+  electionsBuffer = [];
+  myDate = new Date();
+  isFinish = false;
+ 
+
   /***
    * Retrive the track Id and the event Type from the publication
    */
@@ -33,12 +47,14 @@ export class VotesComponent implements OnInit {
   private key_localstorage_vote = 'hasVoted';
   private key_localstorage_user = 'user_external_ressource_sympozer';
   private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
+  private key_localstorage_election = 'election_external_ressource_sympozer';
   // private key_localstorage_begin_vote = 'beginVote';
   constructor(private voteService: VoteService,
               private localStoragexx: LocalStorageService,
               private snackBar: MdSnackBar,
               private apiExternalServer: ApiExternalServer, private location: Location,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute, private encoder:Encoder,
+              private http: Http) {
 
       this.subscription = this.apiExternalServer.getAuthorizationVoteStatus().subscribe(status => {
             console.log(status);
@@ -47,12 +63,42 @@ export class VotesComponent implements OnInit {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
           this.hasLogged = status;
       });
+      this.elections = [];
+      
+      console.log("date getTime/1000 : " + this.myDate.getTime()/1000);
+      
   }
+
 
   /**
    * Retrieve login token and all voting credentials on init
    */
+
+
+   
   ngOnInit() {
+
+    let headers = new Headers({ 'Access-Control-Allow-Origin': '*'});
+    let options = new RequestOptions({ headers: headers });
+
+
+    this.http.get(Config.vote.urlVotes).map(data => data.json() as Array<string>).subscribe((data) => {
+      console.log("data elections : " + JSON.stringify(data['elections']));
+      this.datas = data;
+      
+      data['elections'].forEach(elem => {
+        this.idElections.push(elem.id);
+      });
+      if (this.idElections.length != 0) {
+        this.idElections.forEach(element => {
+          console.log("element: " + element);
+          this.showElectionById(element);        
+
+        });
+      }
+      
+    });     
+
     this.route.params.forEach((params: Params) => {
       console.log(this.route); // snapshot -> _urlSegment -> segments (0, 1, etc.)
       let id = params['id'];
@@ -77,8 +123,8 @@ export class VotesComponent implements OnInit {
    */
   vote = () => {
     const that = this;
-    this.voteService.vote(this.idTrack, this.idPublication)
-        .then(() => {
+    this.voteService.vote(this.idTrack, this.idPublication);
+        /*.then(() => {
           this.snackBar.open('Vote successful', '', {
               duration: 2000,
           });
@@ -99,7 +145,7 @@ export class VotesComponent implements OnInit {
             });
           }
 
-        });
+        });*/
     }
 
     createElection(name, description, idResource, dateBegin, dateEnd, listCandidates) {
@@ -122,7 +168,67 @@ export class VotesComponent implements OnInit {
   }
 
   showElectionById(Id) {
-    this.apiExternalServer.showElectionById(Id);
+    this.isFinish = false;
+    this.apiExternalServer.showElectionById(Id).then(() => {      
+      this.elec = this.localStoragexx.retrieve(this.key_localstorage_election);
+      console.log("aff elec: " + JSON.stringify(this.elec));
+      if (this.elec) {
+
+        let id = this.elec['_id'].$id;
+        console.log("id: " + id);
+
+        let name = this.elec['name'];
+
+        id = this.encoder.encode(id);
+        console.log("idencode: " + id);
+
+        let beginDate = this.elec['dateBegin'].sec;
+        console.log("begin date  : " + beginDate);
+        console.log("current date  value of: " + this.myDate.valueOf()/1000);
+
+        console.log("getDate: " + this.myDate.getDate()/1000);
+        console.log("getTimezoneOffset: " + this.myDate.getTimezoneOffset()*60);
+
+        let endDate = this.elec['dateEnd'].sec;
+        console.log("end date  : " + endDate);
+
+
+        beginDate = parseFloat(beginDate);
+        endDate = parseFloat(endDate);
+
+        
+        let newDate = (this.myDate.valueOf()/1000)-(this.myDate.getTimezoneOffset()*60);
+        console.log("newDate  : " + newDate);
+
+        console.log("beginDate <= newDate  : " + (beginDate <= newDate));
+        console.log("endDate >= newDate  : " + (endDate >= newDate));
+
+
+
+        if (beginDate <= newDate && endDate >= newDate) {
+          this.isFinish = true;
+        }
+
+        
+        console.log("isFinish : " + this.isFinish);
+
+        let description = this.elec['description'];        
+
+        this.electionsBuffer.push({
+          id: id,
+          name: name,
+          description: description,
+          isFinish: this.isFinish,
+        });
+      }
+
+      this.electionsBuffer.sort((a, b) => {
+        return a.label > b.label ? 1 : -1;
+      });
+
+      this.elections = this.electionsBuffer; // force GUI refresh
+
+    });
   }
 
 

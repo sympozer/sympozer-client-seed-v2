@@ -28,7 +28,9 @@ export class ApiExternalServer {
     private key_localstorage_id = 'id_external_ressource_sympozer';
     private key_localstorage_username = 'username_external_ressource_sympozer';
     private key_localstorage_avatar = 'avatar_external_ressource_sympozer';
-    private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
+    private key_localstorage_sessionState = 'sessionstate_external_ressource_sympozer';
+    private key_localstorage_election = 'election_external_ressource_sympozer';
+
 
     constructor(private http: HttpClient,
                 private managerRequest: RequestManager,
@@ -202,7 +204,7 @@ export class ApiExternalServer {
             };
             console.log('avant req');
 
-            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/login', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/login', bodyRequest)
                 .then((request) => {
                     console.log('dans req');
                     const resultPromise = JSON.parse(request.toString());
@@ -289,7 +291,7 @@ export class ApiExternalServer {
                 'password': password
             };
 
-            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/createPassword', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/createPassword', bodyRequest)
                 .then((response) => {
                   (err : any)=>{
                     if (err.status <= 299){
@@ -420,7 +422,7 @@ export class ApiExternalServer {
            
             console.log('avant req');
 
-            that.managerRequest.post(Config.serverLogin.url + '/login/www2018/logout', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/logout', bodyRequest)
                 .then((request) => {
                     console.log('dans req logout');
                     this.localStoragexx.clear(this.key_localstorage_token);
@@ -451,7 +453,7 @@ export class ApiExternalServer {
                     };
                     console.log('avant req refresh');
 
-                    that.managerRequest.post(Config.serverLogin.url + '/login/www2018/refresh', bodyRequest)
+                    that.managerRequest.post(Config.serverLogin.url + '/refresh', bodyRequest)
                         .then((request) => {
                             console.log('dans req');
                             const resultPromise = JSON.parse(request.toString());
@@ -808,7 +810,7 @@ export class ApiExternalServer {
                 listCandidates: listCandidates
             };
 
-            that.managerRequest.post(Config.serverLogin.url + '/vote/www2018/createElection', bodyRequest)
+            that.managerRequest.post(Config.vote.url + '/createElection', bodyRequest)
                 .then((response) => {
                     if (response.status <= 200) {
                         console.log('a ', response);
@@ -832,11 +834,16 @@ export class ApiExternalServer {
                 id: idElection                
             };
 
-            that.managerRequest.post(Config.serverLogin.url + '/vote/www2018/showElectionById', bodyRequest)
+            that.managerRequest.post(Config.vote.url + '/showElectionById', bodyRequest)
                 .then((response) => {
+                    const resultPromise = JSON.parse(response.text());
+                    console.log('showElection:' + resultPromise);
+                    const election = resultPromise;
+
                     if (response.status <= 200) {
-                        console.log('showElection ', response);
+                        console.log('showElection ', response.text());
                         resolve(JSON.parse(response.text()).message);
+                        that.localStoragexx.store(that.key_localstorage_election, election);
                     } else {
                         reject(JSON.parse(response['_body']).message);
                     }
@@ -859,7 +866,7 @@ export class ApiExternalServer {
                 idCandidate: idCandidate         
             };
 
-            that.managerRequest.post(Config.serverLogin.url + '/vote/www2018/createVote', bodyRequest)
+            that.managerRequest.post(Config.vote.url + '/createVote', bodyRequest)
                 .then((response) => {
                     if (response.status <= 200) {
                         console.log('createVote ', response);

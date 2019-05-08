@@ -11,15 +11,22 @@
       </md-card>
     </div>
   </div> -->
-  <div class="search-form">
-    <form>
-      <md-input-container>
-        <input #id mdInput type="id" placeholder="id">
-      </md-input-container>
-
-      <div class="search-footer">
-        <button md-button (click)="showElectionById(id.value)">Show</button>
-      </div>
-    </form>
+  <div class="action-links list-items" *ngFor="let election of elections">
+    <div *ngIf="election.isFinish == false; else elseBlock">
+      <md-card >
+          <md-icon md-list-avatar>how_to_vote</md-icon>
+          <span style="color: red;padding-left: 3.5%"><h3> {{election.name}}  [Fermée] : </h3> </span>
+          <span style="padding-left: 3.5%;;margin-top:-1.2%">{{election.description}}</span>
+      </md-card>
+    </div>
+      <ng-template #elseBlock>
+          <md-card >
+              <md-icon md-list-avatar>how_to_vote</md-icon>
+              <span style="color: green; padding-left: 3.5%"><h3> {{election.name}}  [Ouverte] : </h3></span>
+              <span style="padding-left: 3.5%;;margin-top:-1.2%">{{election.description}}</span>
+          </md-card>
+      </ng-template>
+    
   </div>
+
 </div>
