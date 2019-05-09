@@ -41,7 +41,7 @@ export class RequestManager {
     getResponseText(url) {
         const prom = new Promise((resolve, reject) => {
             let resp = '';
-            this.http.get(url).subscribe((x) => resp += x, (err) => reject(err), () => resolve(resp));
+            this.http.get(url, {responseType: 'text'}).subscribe((x) => resp += x, (err) => reject(err), () => resolve(resp));
         });
         return prom;
     }
