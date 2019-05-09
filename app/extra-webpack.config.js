@@ -10,5 +10,13 @@ module.exports = {
     net: 'empty',
     tls: 'empty', 
     child_process: 'empty'
-  }
+  },
+  externals: {
+    '@trust/webcrypto': 'crypto',
+    'text-encoding': 'TextEncoder',
+  },
+  /*
+  plugins:[
+    new webpack.IgnorePlugin(/\/iconv-loader$/)
+  ]*/
 }

@@ -29,20 +29,20 @@ export class ChangePasswordComponent implements OnInit {
 
     ngOnInit() {
 		let user = this.localStoragexx.retrieve(this.key_localstorage_user);
-		
+
         //if(user !== null){
         //	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
         //    window.location.replace(urlHost+'#/home');
         //}
-	
+
     }
-    
+
     /**
 	 * @param currentPassword
 	 * @param newPassword
 	 */
 	changePassword(currentPassword, newPassword, confirmPassword){
-		
+
 		this.apiExternalServer.changePassword(currentPassword, newPassword, confirmPassword)
             .then(() => {
                 this.snackBar.open("You have successfully updated your password.", "", {
@@ -58,4 +58,3 @@ export class ChangePasswordComponent implements OnInit {
             });
     }
 }
-

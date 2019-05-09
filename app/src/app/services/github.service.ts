@@ -241,7 +241,7 @@ export class GithubService {
                     console.log(response.diff_url)
                     //On télécharge le fichier de diff
                     console.log(this.http)
-                    let headers = new Headers({ 'Access-Control-Allow-Origin': '*'});
+                    let headers = new HttpHeaders({ 'Access-Control-Allow-Origin': '*'});
                     //let options = new RequestOptions({ headers: headers });
                     this.http.get(response.diff_url)
                         .toPromise()

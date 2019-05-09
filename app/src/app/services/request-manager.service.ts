@@ -2,7 +2,7 @@
  * Created by pierremarsot on 23/01/2017.
  */
 
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 

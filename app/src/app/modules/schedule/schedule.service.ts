@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
 
 
 
@@ -8,10 +8,10 @@ import { Headers, Http } from '@angular/http';
 
 @Injectable()
 export class ScheduleService {
-  private headers = new Headers({'Content-Type': 'application/json'});
+  private headers = new HttpHeaders({'Content-Type': 'application/json'});
   private scheduleUrl = 'schedule';  // URL to web api
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
   /*constructEventHierarchy(eventArray: Event[]): Promise<Event[]> {
   	console.log("Oui mon array : " + eventArray);
@@ -26,7 +26,7 @@ export class ScheduleService {
         //retrieve current Start Slot
         if (!eventHierarchy[event.startsAt]) {
             eventHierarchy[event.startsAt] = {};
-        }	
+        }
         var currentStartSlot = eventHierarchy[event.startsAt];
 
         //retrieve current End Slot
@@ -53,7 +53,7 @@ export class ScheduleService {
   	return this.http.get_json(this.scheduleUrl)
                .toPromise()
                .then(response => eventHierarchy as Event[])
-               .catch(this.handleError); 
+               .catch(this.handleError);
     //return eventArray;
     return null;
   }*/
