@@ -40,32 +40,32 @@
         color: $font-color-dark;
         font-weight: normal;
 
-        md-icon {
+        mat-icon {
           margin-right: 20px;
           line-height: 0;
         }
       }
 
       &.twitter {
-        md-icon i {
+        mat-icon i {
           color: #1da1f2 !important;
         }
       }
 
       &.facebook {
-        md-icon i {
+        mat-icon i {
           color: #3b5998 !important;
         }
       }
 
       &.google-plus {
-        md-icon i {
+        mat-icon i {
           color: #d34836 !important;
         }
       }
 
       &.linkedin {
-        md-icon i {
+        mat-icon i {
           color: #0077B5 !important;
         }
       }

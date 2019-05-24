@@ -91,7 +91,7 @@ menu {
 }
 
 .action-links {
-  md-card {
+  mat-card {
     padding: 0;
     margin: 20px 0;
     position: relative;
@@ -123,7 +123,7 @@ menu {
       padding: 5px 0;
     }
 
-    md-icon {
+    mat-icon {
       position: absolute;
       right: 10px;
       top: 50%;
@@ -133,12 +133,12 @@ menu {
   }
 
   &.list-items {
-    md-card {
+    mat-card {
       a, p, .wrapper {
         padding-left: 40px;
       }
 
-      md-icon {
+      mat-icon {
         color: $font-color-dark;
         left: 10px;
       }
@@ -160,7 +160,7 @@ menu {
       }
     }
 
-    md-icon {
+    mat-icon {
       margin-right: 5px;
       margin-left: -20px;
       position: static;
@@ -179,13 +179,13 @@ menu {
   }
 
   &.search-wrapper {
-    md-card {
-      box-shadow: $md-search-whiteframe;
+    mat-card {
+      box-shadow: $mat-search-whiteframe;
       border-radius: 2px;
       margin-bottom: 0;
       z-index: 105;
 
-      md-icon {
+      mat-icon {
         opacity: 0.5;
         z-index: 3;
       }
@@ -450,7 +450,7 @@ html.dark {
     background: $dark-theme-bg-light;
   }
 
-  md-sidenav-container {
+  mat-sidenav-container {
     background: $dark-theme-bg !important;
   }
 

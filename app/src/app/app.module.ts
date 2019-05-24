@@ -40,6 +40,7 @@ import {EventsByDate} from './modules/events-by-date/events-by-date';
 import {ShareComponent} from './modules/share-button/share-button.component';
 import {LoginComponent} from './modules/login/login.component';
 import {ScrollLoaderDirective} from './modules/scroll-loader/scroll-loader.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import {KeywordsComponent} from './modules/keywords/keywords.component';
 import {KeysPipe} from './keys.pipe';
 import {DataLoaderService} from './data-loader.service';
@@ -163,6 +164,7 @@ const MATERIAL_MODULES = [
         NgxQRCodeModule,
         MatDialogModule,
         MatSnackBarModule,
+        ScrollingModule,
         MATERIAL_MODULES
     ],
     providers: [

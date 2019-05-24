@@ -15,7 +15,7 @@
         <mat-card class="info-text vote">
           <p>Caution! You can vote only once.</p>
           <div>
-            <button md-raised-button color="primary" (click)="vote()">Submit Vote</button>
+            <button mat-raised-button color="primary" (click)="vote()">Submit Vote</button>
           </div>
         </mat-card>
       </div>
@@ -24,7 +24,7 @@
   <div *ngIf="token == undefined && token == null">
     <mat-card class="info-text vote">
       <p>Please login to be able to vote.</p>
-      <button md-raised-button color="primary" [routerLink]="['/login']">Login</button>
+      <button mat-raised-button color="primary" [routerLink]="['/login']">Login</button>
     </mat-card>
   </div>
 </div>

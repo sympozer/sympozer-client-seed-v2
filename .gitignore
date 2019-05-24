@@ -14,3 +14,6 @@
 /app/src/app/**/*.js
 /app/**/*.map
 /app/package-lock.json
+
+#
+.DS_Store
