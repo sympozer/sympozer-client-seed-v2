@@ -86,7 +86,7 @@ export class ToolsComponent implements OnInit {
     /**
      * Reload the sessions dataset
      */
-        loadDataset() {
+    loadDataset() {
         this.loading = true;
 
         setTimeout(() => {

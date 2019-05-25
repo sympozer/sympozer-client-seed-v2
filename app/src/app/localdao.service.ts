@@ -110,7 +110,6 @@ export class LocalDAOService {
     public reloadDataset(uri: string) {
         const that = this;
         return new Promise((resolve, reject) => {
-
             this.requestManager.get(uri)
                 .then((response) => {
                     try {

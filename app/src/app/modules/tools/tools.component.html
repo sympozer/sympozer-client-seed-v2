@@ -9,11 +9,11 @@
 
   <h2>Font size</h2>
   <mat-card class="info-text">
-    <button mat-icon-button color="primary" (click)="decresaseFontSize()">
+    <button mat-icon-button class="zoom-icon" color="primary" (click)="decresaseFontSize()">
       <mat-icon>zoom_out</mat-icon>
     </button>
     <span>{{fontSize + "%"}}</span>
-    <button mat-icon-button color="primary" (click)="increaseFontSize()">
+    <button mat-icon-button class="zoom-icon" color="primary" (click)="increaseFontSize()">
       <mat-icon>zoom_in</mat-icon>
     </button>
   </mat-card>

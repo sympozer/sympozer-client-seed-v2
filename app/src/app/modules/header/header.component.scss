@@ -27,22 +27,46 @@ header {
 
   .menu-btn {
     float: right;
-    padding-right: 20px;
+    padding-right: 30px;
     display: flex;
     flex-direction: row;
   }
 
   .avatar-open {
-    position: relative;
-    z-index: 100;
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     top: calc(50% - 30px);
+    border-width: 0px;
+    z-index: 1;
+    border-radius: 50%;
+    padding: 0;
+    min-width: 0;
+    flex-shrink: 0;
+    line-height: 40px;
+    box-sizing: border-box;
+    position: relative;
+    user-select: none;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: baseline;
+    font-size: 14px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+    background: 0 0;
+    outline: 0!important;
+    text-align: bottom;
+    line-height: 50%;
+    vertical-align: middle;
+    
 
     .avatar-wrapper {
       display: flex;
       flex-direction: row;
-      justify-content: center;
       align-items: center;
 
       .avatar {
@@ -59,8 +83,31 @@ header {
 
   .menu-button-open {
     position: relative;
-    z-index: 100;
-    top: calc(50% - 20px);
+    z-index: 1;
+    border-width: 0px;
+    z-index: 1;
+    padding: 10px;
+    min-width: 0;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    position: relative;
+    user-select: none;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: baseline;
+    font-size: 14px;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+    background: 0 0;
+    outline: 0!important;
+    text-align: bottom;
+    vertical-align: middle;
+    
 
     .mat-button-focus-overlay {
       display: none !important;
