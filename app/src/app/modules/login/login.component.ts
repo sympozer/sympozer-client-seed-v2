@@ -102,7 +102,7 @@ export class LoginComponent implements OnInit {
             })
             .catch((resp) => {
                 console.log(resp);
-                this.snackBar.open(JSON.parse(resp._body)['message'], '', {
+                this.snackBar.open(resp, '', {
                     duration: 3000,
                 });
             });

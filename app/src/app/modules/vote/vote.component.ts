@@ -57,7 +57,8 @@ export class VoteComponent implements OnInit {
       });
       this.election = {
         name: undefined,
-        description: undefined
+        description: undefined,
+        candidates: []
     };
   }
 
@@ -71,30 +72,11 @@ export class VoteComponent implements OnInit {
       let name = params['name'];
       let query = {'id': this.encoder.decode(id)};
       this.electionId = query.id;
-      this.showElectionById(this.electionId);
+
+      this.voteService.showElectionByIdForElectionView(this.elec, this.election, this.electionId);
     });
 
-    this.http.get(Config.vote.urlVotes).subscribe((data) => {
-      this.datas = data;
-    });
-    //console.log(this.datas);
-    console.log(JSON.stringify(this.datas));
-    let elections = this.datas['elections'];
-    let results;
-
-    elections.forEach(function(element) {
-      results = this.showElectionById(element);
-      if(results){
-        const nodeName = results['name'];
-
-        const name = nodeName.value;
-
-        this.election.name = name;
-      }
-    });
-
-
-
+    this.voteService.getElectionsForElectionView(this.datas, this.election);
 
     this.route.params.forEach((params: Params) => {
       console.log(this.route); // snapshot -> _urlSegment -> segments (0, 1, etc.)
@@ -104,14 +86,14 @@ export class VoteComponent implements OnInit {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
       // let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
       // votedPublications = JSON.parse(votedPublications);
-      console.log('jsute on init' + this.idTrack)
+     /* console.log('jsute on init' + this.idTrack)
       this.voteService.votedPublications(this.idTrack)
           .then((votedPublications) => {
               console.log(votedPublications);
           })
           .catch((err) => {
               console.log(err);
-          })
+          })*/
     /*setTimeout(() => {
       this.votable = this.voteService.isTrackVotable(this.idTrack);
       this.hasVoted = this.voteService.isTrackVoted(this.idTrack);
@@ -168,28 +150,6 @@ export class VoteComponent implements OnInit {
           });
   }
 
-  showElectionById(Id) {
-    this.apiExternalServer.showElectionById(Id).then(() => {      
-      this.elec = this.localStoragexx.retrieve(this.key_localstorage_election);
-      console.log("aff elec: " + JSON.stringify(this.elec));
-      if (this.elec) {
-
-        let name = this.elec['name'];
-        let description = this.elec['description'];
-
-        if (!name || !description) {
-            return false;
-        }
-
-        this.election.name = name;
-        this.election.description = description;
-        if (document.getElementById("page-title-p"))
-            document.getElementById("page-title-p").innerHTML = name;     
-
-      }
-
-    });
-  }
 
 
 }
