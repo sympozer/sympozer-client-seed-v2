@@ -30,6 +30,7 @@ export class ApiExternalServer {
     private key_localstorage_avatar = 'avatar_external_ressource_sympozer';
     private key_localstorage_sessionState = 'sessionstate_external_ressource_sympozer';
     private key_localstorage_election = 'election_external_ressource_sympozer';
+    private key_localstorage_ballotsByElection = 'ballotsbyelection_external_ressource_sympozer';
 
 
     constructor(private http: HttpClient,
@@ -202,14 +203,18 @@ export class ApiExternalServer {
                 'username': email,
                 'password': password
             };
-            console.log('avant req');
 
             that.managerRequest.post(Config.serverLogin.url + '/login', bodyRequest)
                 .then((request) => {
+<<<<<<< HEAD
                     console.log('dans req');
                     const resultPromise = JSON.parse(request.toString());
+=======
+                    const resultPromise = JSON.parse(request.text());
+>>>>>>> 4d1bf28... vote quasi fini jute resultats
                     console.log('user:');
                     const user = resultPromise.user_id;
+                    const err = resultPromise.error;
                     console.log(resultPromise);
                     if (!resultPromise || !user) {
                         return reject('Error while retrieving your data. Please try again later.');
@@ -217,24 +222,29 @@ export class ApiExternalServer {
                     if (!user) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
-                    if (user.username && user.username.length > 0) {
-                        this.sendUsername(user.username);
-                        that.localStoragexx.store(that.key_localstorage_username, user.username);
-                    }
-                    if (user.linkedin && user.linkedin.length > 0) {
-                        this.sendLinkedin(user.linkedin);
-                    }
-                    if (user.twitter && user.twitter.length > 0) {
-                        this.sendTwitter(user.twitter);
-                    }
-                    if (user.facebook && user.facebook.length > 0) {
-                        this.sendFacebook(user.facebook);
-                    }
-                    if (user.google && user.google.length > 0) {
-                        this.sendGoogle(user.google);
-                    }
-                    if (user.lastname && user.lastname.length > 0) {
-                        this.sendLastname(user.lastname);
+                    if(!err) {
+                        if (user.username && user.username.length > 0) {
+                            this.sendUsername(user.username);
+                            that.localStoragexx.store(that.key_localstorage_username, user.username);
+                        }
+                        if (user.linkedin && user.linkedin.length > 0) {
+                            this.sendLinkedin(user.linkedin);
+                        }
+                        if (user.twitter && user.twitter.length > 0) {
+                            this.sendTwitter(user.twitter);
+                        }
+                        if (user.facebook && user.facebook.length > 0) {
+                            this.sendFacebook(user.facebook);
+                        }
+                        if (user.google && user.google.length > 0) {
+                            this.sendGoogle(user.google);
+                        }
+                        if (user.lastname && user.lastname.length > 0) {
+                            this.sendLastname(user.lastname);
+                        }
+                    } else {
+                        return reject('Password not valid.');
+
                     }
 
                     this.sendLoginStatus(true);
@@ -813,7 +823,6 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.vote.url + '/createElection', bodyRequest)
                 .then((response) => {
                     if (response.status <= 200) {
-                        console.log('a ', response);
                         resolve(JSON.parse(response.text()).message);
                     } else {
                         reject(JSON.parse(response['_body']).message);
@@ -837,11 +846,9 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.vote.url + '/showElectionById', bodyRequest)
                 .then((response) => {
                     const resultPromise = JSON.parse(response.text());
-                    console.log('showElection:' + resultPromise);
                     const election = resultPromise;
 
                     if (response.status <= 200) {
-                        console.log('showElection ', response.text());
                         resolve(JSON.parse(response.text()).message);
                         that.localStoragexx.store(that.key_localstorage_election, election);
                     } else {
@@ -872,6 +879,34 @@ export class ApiExternalServer {
                         console.log('createVote ', response);
                         resolve(JSON.parse(response.text()).message);
                     } else {
+                        reject(response);
+                    }
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });        
+    }
+
+    showBallotsByElection = (idElection, idUser,sessionState) => {
+        return new Promise((resolve, reject) => {
+            const that = this;
+
+            const bodyRequest = {
+                idElection: idElection,
+                idUser: idUser,
+                token: sessionState                
+            };
+
+            that.managerRequest.post(Config.vote.url + '/showBallotsByElection', bodyRequest)
+                .then((response) => {
+                    const resultPromise = JSON.parse(response.text());
+                    const ballots = resultPromise;
+
+                    if (response.status <= 200) {
+                        resolve(JSON.parse(response.text()).message);
+                        that.localStoragexx.store(that.key_localstorage_ballotsByElection, ballots);
+                    } else {
                         reject(JSON.parse(response['_body']).message);
                     }
                 })
@@ -879,6 +914,8 @@ export class ApiExternalServer {
                     return reject(request);
                 });
         });        
+
+
     }
 
     

@@ -11,6 +11,7 @@ import {Http, Response, Headers,RequestOptions} from '@angular/http';
 import { elementAt } from 'rxjs/operator/elementAt';
 import {Encoder} from '../../lib/encoder';
 
+
 @Component({
   selector: 'votes',
   templateUrl: './votes.component.html',
@@ -25,13 +26,9 @@ export class VotesComponent implements OnInit {
   testId: string;
   hasLogged: any;
   datas: Array<string>;
-  tabElec: Array<Object> = new Array();
   idElections: Array<string> = new Array();
-  elections;
-  elec;
-  electionsBuffer = [];
-  myDate = new Date();
-  isFinish = false;
+  elections : Array<any> = new Array();
+  elec;  
  
 
   /***
@@ -63,9 +60,7 @@ export class VotesComponent implements OnInit {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
           this.hasLogged = status;
       });
-      this.elections = [];
       
-      console.log("date getTime/1000 : " + this.myDate.getTime()/1000);
       
   }
 
@@ -77,28 +72,11 @@ export class VotesComponent implements OnInit {
 
    
   ngOnInit() {
-
     let headers = new Headers({ 'Access-Control-Allow-Origin': '*'});
-    let options = new RequestOptions({ headers: headers });
 
-
-    this.http.get(Config.vote.urlVotes).map(data => data.json() as Array<string>).subscribe((data) => {
-      console.log("data elections : " + JSON.stringify(data['elections']));
-      this.datas = data;
-      
-      data['elections'].forEach(elem => {
-        this.idElections.push(elem.id);
-      });
-      if (this.idElections.length != 0) {
-        this.idElections.forEach(element => {
-          console.log("element: " + element);
-          this.showElectionById(element);        
-
-        });
-      }
-      
-    });     
-
+    this.voteService.getElections(this.idElections, this.elec, this.elections); 
+    
+          
     this.route.params.forEach((params: Params) => {
       console.log(this.route); // snapshot -> _urlSegment -> segments (0, 1, etc.)
       let id = params['id'];
@@ -133,7 +111,7 @@ export class VotesComponent implements OnInit {
         })
         .catch((err) => {
           console.log(err);
-          if (err === 403) {
+          if (err === 40this3) {
             that.hasVoted = true;
             this.snackBar.open('You have already voted', '', {
               duration: 2000,
@@ -143,93 +121,10 @@ export class VotesComponent implements OnInit {
             this.snackBar.open('Vote has not began try again on Wednesday 25 April', '', {
                 duration: 2000,
             });
-          }
+          }this
 
         });*/
     }
 
-    createElection(name, description, idResource, dateBegin, dateEnd, listCandidates) {
-      let user = this.localStoragexx.retrieve(this.key_localstorage_user);
-      let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
-      this.apiExternalServer.createElection(user.id, token, name, description, idResource, dateBegin, dateEnd, ["1","5"])
-          .then((user) => {
-              this.snackBar.open('Election created', '', {
-                  duration: 2000,
-              });
-
-
-          })
-          .catch((resp) => {
-              console.log(resp);
-              this.snackBar.open(JSON.parse(resp._body)['message'], '', {
-                  duration: 3000,
-              });
-          });
-  }
-
-  showElectionById(Id) {
-    this.isFinish = false;
-    this.apiExternalServer.showElectionById(Id).then(() => {      
-      this.elec = this.localStoragexx.retrieve(this.key_localstorage_election);
-      console.log("aff elec: " + JSON.stringify(this.elec));
-      if (this.elec) {
-
-        let id = this.elec['_id'].$id;
-        console.log("id: " + id);
-
-        let name = this.elec['name'];
-
-        id = this.encoder.encode(id);
-        console.log("idencode: " + id);
-
-        let beginDate = this.elec['dateBegin'].sec;
-        console.log("begin date  : " + beginDate);
-        console.log("current date  value of: " + this.myDate.valueOf()/1000);
-
-        console.log("getDate: " + this.myDate.getDate()/1000);
-        console.log("getTimezoneOffset: " + this.myDate.getTimezoneOffset()*60);
-
-        let endDate = this.elec['dateEnd'].sec;
-        console.log("end date  : " + endDate);
-
-
-        beginDate = parseFloat(beginDate);
-        endDate = parseFloat(endDate);
-
-        
-        let newDate = (this.myDate.valueOf()/1000)-(this.myDate.getTimezoneOffset()*60);
-        console.log("newDate  : " + newDate);
-
-        console.log("beginDate <= newDate  : " + (beginDate <= newDate));
-        console.log("endDate >= newDate  : " + (endDate >= newDate));
-
-
-
-        if (beginDate <= newDate && endDate >= newDate) {
-          this.isFinish = true;
-        }
-
-        
-        console.log("isFinish : " + this.isFinish);
-
-        let description = this.elec['description'];        
-
-        this.electionsBuffer.push({
-          id: id,
-          name: name,
-          description: description,
-          isFinish: this.isFinish,
-        });
-      }
-
-      this.electionsBuffer.sort((a, b) => {
-        return a.label > b.label ? 1 : -1;
-      });
-
-      this.elections = this.electionsBuffer; // force GUI refresh
-
-    });
-  }
-
-
+   
 }

@@ -8,8 +8,31 @@
     </p>
   </md-card>
 
+  <h2>Candidates</h2>
+  <div class="action-links list-items" *ngFor="let candidate of election.candidates">    
+      <md-card class="info-text">
+          <p>
+            <a [routerLink]="['/publication/'+encoder.encode(candidate.label)+'/'+encoder.encode(candidate.id)]" >{{candidate.label}}</a>
+          </p>
+      </md-card>
 
-  <div *ngIf="votable">
+  </div>
+
+  <h2>Votes</h2>
+  <div class="action-links list-items" *ngFor="let candidate of election.candidates">  
+      <div *ngIf="candidate.isFinish == true; ">  
+        <md-card class="info-text">
+            <p>
+              Number of votes for {{candidate.label}} : {{candidate.nbVote}}
+            </p>
+        </md-card>
+      </div>
+
+  </div>
+
+
+
+  <!-- <div *ngIf="votable">
     <div *ngIf="token !== null && token !== undefined">
       <div *ngIf="!canVote">
         <p>Sorry, your account does not belong to the conference participants list. You must be registered with the same account as the one you used to register to the conference. If you believe this is an error, please send an email to sympozer-adm@sympozer.com</p>
@@ -38,51 +61,6 @@
         <button md-raised-button color="primary" [routerLink]="['/login']">Login</button>
       </md-card>
     </div>
-  </div>
-  <div *ngIf="token == undefined && token == null">
-    <mat-card class="info-text vote">
-      <p>Please login to be able to vote.</p>
-      <button mat-raised-button color="primary" [routerLink]="['/login']">Login</button>
-    </mat-card>
-  </div>
-</div>
+  </div> -->
 
-  <div *ngIf="testId == 'createElection'">
-    <div class="election-wrapper">
-      <md-card class="inscription-card">
-        <div class="header">
-          <h4>Create an election</h4>
-        </div>
-        <div class="inscription-form">
-          <br>
-          <form>
-            <md-input-container>
-              <input #name mdInput type="name" placeholder="Name">
-            </md-input-container>
-
-            <md-input-container>
-              <input #description mdInput type="description" placeholder="Description">
-            </md-input-container>
-
-            <md-input-container>
-              <input #idResource mdInput type="idResource" placeholder="Resource">
-            </md-input-container>
-            
-            <md-input-container>
-              <input #dateBegin mdInput type="dateBegin" placeholder="Begin date">
-            </md-input-container>
-
-            <md-input-container>
-              <input #dateEnd mdInput type="dateEnd" placeholder="End date">
-            </md-input-container>
-    
-            <div class="inscription-footer">
-              <button md-button (click)="createElection(name.value, description.value, idResource.value, dateBegin.value, dateEnd.value)">Create</button>
-            </div>
-          </form>
-        </div>
-      </md-card>
-    </div>
-    
-  </div>
 </div>

@@ -12,11 +12,15 @@ import {MatSnackBarModule} from '@angular/material';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {Config} from '../../app-config';
 import {VoteService} from '../../services/vote.service';
+<<<<<<< HEAD
 import {HttpClient, Response, Headers,RequestOptions} from '@angular/http';
 import {MatDialogModule, MatButtonModule, MatCardModule, MatDialog} from '@angular/material';
 import {ConfirmationDialogComponent} from './../confirmation-dialog/confirmation-dialog.component';
 
 
+=======
+import {Http, Response, Headers,RequestOptions} from '@angular/http';
+>>>>>>> 4d1bf28... vote quasi fini jute resultats
 
 import {Subscription} from 'rxjs/Subscription';
 import * as moment from 'moment';
@@ -42,8 +46,11 @@ export class PublicationComponent implements OnInit {
     private key_localstorage_user = 'user_external_ressource_sympozer';
     private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
     private key_localstorage_ballotsByElection = 'ballotsbyelection_external_ressource_sympozer';
+<<<<<<< HEAD
     private key_localstorage_vote = 'hasVoted';
 
+=======
+>>>>>>> 4d1bf28... vote quasi fini jute resultats
     datas: Array<string>;
     tabElec: Array<Object> = new Array();
     idElections: Array<string> = new Array();
@@ -59,8 +66,12 @@ export class PublicationComponent implements OnInit {
                 private snackBar: MdSnackBar,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
+<<<<<<< HEAD
                 private encoder: Encoder, private http: Http, private voteService: VoteService,
                 public dialog: MdDialog) {
+=======
+                private encoder: Encoder, private http: Http, private voteService: VoteService) {
+>>>>>>> 4d1bf28... vote quasi fini jute resultats
         this.authors = [];
         this.publication = {
             label: undefined,
@@ -259,6 +270,7 @@ export class PublicationComponent implements OnInit {
                 }
             });
 
+<<<<<<< HEAD
             let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
 
             if(token) {
@@ -280,6 +292,23 @@ export class PublicationComponent implements OnInit {
         
                 });  
             }   
+=======
+            this.voteService.getElections(this.idElections, this.elec, this.elections)
+
+            this.http.get("./assets/vote.json").map(data => data.json() as Array<string>).subscribe((data) => {
+            
+                this.datas = data;
+                               
+                if (this.idElections.length != 0) {
+                    this.idElections.forEach(element => {
+                        this.voteService.CompareIdShowBallotsByElection(element, this.ballots, this.publicationId, this.electionsForPublication);        
+
+                    });
+
+                }
+      
+            });     
+>>>>>>> 4d1bf28... vote quasi fini jute resultats
             
             /*for(let i in this.publication.authors){
              let query = { 'key' : this.publication.authors[i] };
@@ -419,6 +448,7 @@ export class PublicationComponent implements OnInit {
         let user = this.localStoragexx.retrieve(this.key_localstorage_user);
         let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
         this.apiExternalServer.createVote(idElection, user.id, token, this.publicationId)
+<<<<<<< HEAD
             .then((response) => {
                 this.snackBar.open('You have voted', '', {
                     duration: 2000,
@@ -433,6 +463,12 @@ export class PublicationComponent implements OnInit {
                         this.localStoragexx.store(this.key_localstorage_vote, []);
                     }
                 }
+=======
+            .then((user) => {
+                this.snackBar.open('You have voted', '', {
+                    duration: 2000,
+                });  
+>>>>>>> 4d1bf28... vote quasi fini jute resultats
   
             })
             .catch((resp) => {
@@ -443,6 +479,7 @@ export class PublicationComponent implements OnInit {
             });
     }
 
+<<<<<<< HEAD
     openConfirmationDialog(idElection) {
         let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
           width: '600px',
@@ -455,5 +492,7 @@ export class PublicationComponent implements OnInit {
         });
       }
 
+=======
+>>>>>>> 4d1bf28... vote quasi fini jute resultats
     
 }

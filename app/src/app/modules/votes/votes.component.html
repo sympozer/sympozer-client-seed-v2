@@ -1,32 +1,52 @@
 <div class="component-wrapper fixed-height">
   <h1 id="description-title">{{title}}</h1>
-<!-- 
-  <app-autocomplete name="search-bar" [seachFor]="'id'" ></app-autocomplete>
 
-  <div scrollLoader class="search-results">
-    <div class="action-links list-items">
-      <md-card>
-        <md-icon md-list-avatar>perm_identity</md-icon>
-        <a [routerLink]="['/vote/'+vote.id]">{{vote.id}}</a>
-      </md-card>
-    </div>
-  </div> -->
   <div class="action-links list-items" *ngFor="let election of elections">
-    <div *ngIf="election.isFinish == false; else elseBlock">
+    <div *ngIf="election.isFinish == true; else elseBlock">
       <md-card >
           <md-icon md-list-avatar>how_to_vote</md-icon>
-          <span style="color: red;padding-left: 3.5%"><h3> {{election.name}}  [Fermée] : </h3> </span>
+          <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
+            <span style="color: red;padding-left: 3.5%"><h3> {{election.name}}  [Closed] : </h3> </span>
+          </a>
           <span style="padding-left: 3.5%;;margin-top:-1.2%">{{election.description}}</span>
       </md-card>
     </div>
       <ng-template #elseBlock>
           <md-card >
               <md-icon md-list-avatar>how_to_vote</md-icon>
-              <span style="color: green; padding-left: 3.5%"><h3> {{election.name}}  [Ouverte] : </h3></span>
+              <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
+                <span style="color: green; padding-left: 3.5%"><h3> {{election.name}}  [Opened] : </h3></span>
+              </a>
               <span style="padding-left: 3.5%;;margin-top:-1.2%">{{election.description}}</span>
           </md-card>
       </ng-template>
     
   </div>
+
+  <h1 id="description-title">Results</h1>
+
+  <div class="action-links list-items" *ngFor="let election of elections">
+    <div *ngIf="election.isFinish == true;">
+        <div *ngIf="election.winner != null; else elseblock2">
+          <md-card >
+              <md-icon md-list-avatar>how_to_vote</md-icon>
+              <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
+                <span style="padding-left: 3.5%"><h3> The winner of the election "{{election.name}}" is {{election.winner}} </h3> </span>
+              </a>              
+          </md-card>
+        </div>
+        <ng-template #elseBlock2>
+            <md-card >
+                <md-icon md-list-avatar>how_to_vote</md-icon>
+                <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
+                  <span style="padding-left: 3.5%"><h3> There is no winner for the election "{{election.name}}" </h3></span>
+                </a>
+            </md-card>
+        </ng-template>
+    </div>
+    
+          
+  </div>
+
 
 </div>
