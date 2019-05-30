@@ -166,7 +166,6 @@ export class VoteService {
 
     this.http.get("./assets/vote.json").map(data => data.json() as Array<string>).subscribe((data) => {
 
-      //console.log("datas : " +JSON.stringify(datas));
       let results;
       let elec;
 
@@ -176,14 +175,18 @@ export class VoteService {
           const nodeName = results['name'];
           const nodeDescription = results['description'];
           const nodeCandidates = results['candidates'];
+          const nodeIsFinish = results['isFinish'];
 
           const name = nodeName.value;
           const description = nodeDescription.value;
           const candidates = nodeCandidates.value;
+          const isFinish = nodeIsFinish.value;
+
 
           election.name = name;
           election.description = description;
           election.candidates = candidates;
+          election.isFinish = isFinish;
 
         }
       });
@@ -264,7 +267,6 @@ export class VoteService {
                     candidates.push({ 
                       id : element.id,
                       label: element.label,
-                      isFinish: isFinish,
                       nbVote: elem.count
                     });
 
@@ -281,6 +283,7 @@ export class VoteService {
         election.name = name;
         election.description = description;
         election.candidates = candidates;
+        election.isFinish = isFinish;
 
         if (document.getElementById("page-title-p"))
             document.getElementById("page-title-p").innerHTML = name;     

@@ -12,8 +12,8 @@
   <md-card *ngIf="publication.homepage" class="info-text">
     <a [href]="publication.homepage" target="_blank">Open in ACM Proceedings</a>
   </md-card>
-<br>
-  <div class="action-links list-items" *ngFor="let election of electionsForPublication">
+ 
+  <div class="action-links list-items" *ngFor="let election of electionsForPublication" style="padding-top: 2%;">
     <a [routerLink]="['/vote/'+election.id]"><button id="vote" (click)="createVote(election.id)" md-raised-button color="primary" > Vote for this publication on the Election "{{election.name}}"
     </button></a> <br>
   </div>
@@ -92,4 +92,3 @@
   <!-- Voting -->
   <!--<vote *ngFor="let track of tracks" [typeEvent]="eventType" [idTrack]="track.id" [idPublication]="publicationId"></vote>-->
 </div>
-key_localstorage_election

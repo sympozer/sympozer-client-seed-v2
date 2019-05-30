@@ -58,6 +58,7 @@ export class VoteComponent implements OnInit {
       this.election = {
         name: undefined,
         description: undefined,
+        isFinish: undefined,
         candidates: []
     };
   }
