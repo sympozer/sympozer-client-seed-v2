@@ -27,20 +27,20 @@
 
   <div class="action-links list-items" *ngFor="let election of elections">
     <div *ngIf="election.isFinish == true;">
-        <div *ngIf="election.winner != null; else elseblock2">
+        <div *ngIf="election.winner == null; else elseblock">
           <md-card >
               <md-icon md-list-avatar>how_to_vote</md-icon>
               <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
-                <span style="padding-left: 3.5%"><h3> The winner of the election "{{election.name}}" is {{election.winner}} </h3> </span>
-              </a>              
+                <span style="padding-left: 3.5%"><h3> There is no winner for the election "{{election.name}}" </h3></span>
+              </a>    
           </md-card>
         </div>
-        <ng-template #elseBlock2>
-            <md-card >
+        <ng-template #elseBlock>
+            <md-card >                
                 <md-icon md-list-avatar>how_to_vote</md-icon>
                 <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
-                  <span style="padding-left: 3.5%"><h3> There is no winner for the election "{{election.name}}" </h3></span>
-                </a>
+                  <span style="padding-left: 3.5%"><h3> The winner of the election "{{election.name}}" is {{election.winner}} </h3> </span>
+                </a>    
             </md-card>
         </ng-template>
     </div>

@@ -18,16 +18,15 @@
 
   </div>
 
-  <h2>Votes</h2>
-  <div class="action-links list-items" *ngFor="let candidate of election.candidates">  
-      <div *ngIf="candidate.isFinish == true; ">  
-        <md-card class="info-text">
-            <p>
-              Number of votes for {{candidate.label}} : {{candidate.nbVote}}
-            </p>
-        </md-card>
-      </div>
-
+  <div *ngIf="election.isFinish == true; ">  
+    <h2>Votes</h2>
+    <div class="action-links list-items" *ngFor="let candidate of election.candidates">  
+          <md-card class="info-text">
+              <p>
+                Number of votes for {{candidate.label}} : {{candidate.nbVote}}
+              </p>
+          </md-card>     
+    </div>
   </div>
 
 
