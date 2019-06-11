@@ -82,6 +82,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { ConfirmationDialogComponent } from './modules/confirmation-dialog/confirmation-dialog.component';
+
 
 // the second parameter 'fr' is optional
 registerLocaleData(localeFr, 'fr');
@@ -149,6 +151,7 @@ const MATERIAL_MODULES = [
         ActivationMailComponent,
         ChangePasswordComponent,
         DialogShareQrComponent,
+        ConfirmationDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -185,7 +188,7 @@ const MATERIAL_MODULES = [
         TimeManager,
     ],
     bootstrap: [AppComponent],
-    entryComponents:[DialogShareQrComponent]
+    entryComponents:[DialogShareQrComponent, ConfirmationDialogComponent]
 })
 export class AppModule {
 }

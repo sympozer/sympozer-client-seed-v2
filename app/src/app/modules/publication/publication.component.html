@@ -14,8 +14,10 @@
   </mat-card>
  
   <div class="action-links list-items" *ngFor="let election of electionsForPublication" style="padding-top: 2%;">
-    <a [routerLink]="['/vote/'+election.id]"><button id="vote" (click)="createVote(election.id)" md-raised-button color="primary" > Vote for this publication on the Election "{{election.name}}"
-    </button></a> <br>
+    <!-- <a [routerLink]="['/vote/'+election.id]"><button id="vote" (click)="createVote(election.id)" md-raised-button color="primary" > Vote for this publication on the Election "{{election.name}}"
+    </button></a> <br> -->
+
+    <button id="vote" (click)="openConfirmationDialog(election.id)" md-raised-button color="primary" >Vote for this publication on the Election "{{election.name}}"</button>
   </div>
 
   <div *ngIf="keywords && keywords.length > 0">

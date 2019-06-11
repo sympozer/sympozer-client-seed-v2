@@ -850,6 +850,7 @@ export class ApiExternalServer {
 
                     if (response.status <= 200) {
                         resolve(JSON.parse(response.text()).message);
+                        console.log("elec api " +JSON.stringify(election));
                         that.localStoragexx.store(that.key_localstorage_election, election);
                     } else {
                         reject(JSON.parse(response['_body']).message);

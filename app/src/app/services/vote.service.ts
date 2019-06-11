@@ -62,6 +62,7 @@ export class VoteService {
 
     this.apiExternalServer.showElectionById(Id).then(() => {      
       elec = this.localStoragexx.retrieve(this.key_localstorage_election);
+      console.log("elec "+ JSON.stringify(elec));
       let user = this.localStoragexx.retrieve(this.key_localstorage_user);
       let token =  this.localStoragexx.retrieve(this.key_localstorage_sessionState);
       
@@ -126,24 +127,28 @@ export class VoteService {
         this.apiExternalServer.showBallotsByElection(Id, user.id, token)
         .then(() => {
             let ballots = this.localStoragexx.retrieve(this.key_localstorage_ballotsByElection);
-            publicationsBuffer.forEach(function(elem) {          
-            
-              ballots.forEach(function(element) {              
-                  
-                    if(element.count > max) {
-                      max = element.count;
-                      winner = element.idCandidate;                    
 
-                    }
-              });
+            if(isFinish) {
+              publicationsBuffer.forEach(function(elem) {          
               
-              if (elem.id == winner) {
-                winner = elem.label;
-                console.log("winner :" + winner)
-              }
-            });
+                ballots.forEach(function(element) {              
+                    
+                      if(element.count > max) {
+                        max = element.count;
+                        winner = element.idCandidate;                    
+
+                      }
+                });
+                
+                if (elem.id == winner) {
+                  winner = elem.label;
+                  console.log("winner :" + winner)
+                }
+              });
+          }
 
         });        
+        
         console.log("winner :" + winner)
 
         elections.push({
@@ -317,13 +322,10 @@ export class VoteService {
 
                    if (elec) {
                     elections.forEach(element => {
-                      console.log("element: "+ JSON.stringify(element));
-                      console.log("elec: "+ JSON.stringify(elec));
-
 
                               if(element.id == elec['_id'].$id && !element.isFinish) {
                                 console.log("dans if");
-
+                             
                                 let name = elec['name'];
                                 let id = elec['_id'].$id;
                                 ElectionsForPublication.push({
@@ -373,15 +375,34 @@ export class VoteService {
    * @param id_ressource
    * @returns {Promise<T>}
    */
-  vote = (id_track, id_publi) => {
-    id_track = this.encoder.decode(id_track)
-
+  vote = (idElection,publicationId) => {
+    
     let user = this.localStoragexx.retrieve(this.key_localstorage_user);
     let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
-    let election = this.localStoragexx.retrieve(this.key_localstorage_election);
 
+    this.apiExternalServer.createVote(idElection,user.id,token,publicationId)
+    .then((response) => {
+      this.snackBar.open('You have voted', '', {
+          duration: 2000,
+      });  
 
-    this.apiExternalServer.createVote(election.id,user.id,token,id_track);
+      /* if (response) {
+          console.log(response);
+            const votedTracks = [];
+          if (this.localStoragexx.retrieve(this.key_localstorage_vote) !== null ) {
+              votedTracks.push(this.localStoragexx.retrieve(this.key_localstorage_vote));
+          }else {
+              this.localStoragexx.store(this.key_localstorage_vote, []);
+          }
+      } */
+
+  })
+  .catch((resp) => {
+      console.log(resp);
+      this.snackBar.open(JSON.parse(resp._body)['message'], '', {
+          duration: 3000,
+      });
+  });
     /*return new Promise((resolve, reject) => {
       if (!id_publi || id_publi.length === 0) {
         return reject('Erreur lors de la récupération de l\'identifiant de la ressource');

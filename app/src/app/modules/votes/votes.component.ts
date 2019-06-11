@@ -101,7 +101,7 @@ export class VotesComponent implements OnInit {
    */
   vote = () => {
     const that = this;
-    this.voteService.vote(this.idTrack, this.idPublication);
+    //this.voteService.vote(this.idTrack, this.idPublication);
         /*.then(() => {
           this.snackBar.open('Vote successful', '', {
               duration: 2000,

@@ -3,6 +3,7 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {Subscription} from 'rxjs';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {LocalStorageService} from 'ngx-webstorage';
+import { Router, Routes } from '@angular/router';
 
 @Component({
     selector: 'header-app',
@@ -24,7 +25,7 @@ export class HeaderComponent {
 
     constructor(private apiExternalServer: ApiExternalServer,
                 private localStoragexx: LocalStorageService,
-                public snackBar: MatSnackBarModule) {
+                public snackBar: MatSnackBarModule, private router: Router) {
 
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
             this.hasLogged = status;
@@ -59,6 +60,8 @@ export class HeaderComponent {
         this.apiExternalServer.sendLoginStatus(false);
         this.apiExternalServer.sendUsername('User');
         this.apiExternalServer.sendAvatar(null);
+
+        this.router.navigate(['/home/']);
         this.snackBar.open('Logout successful', '', {
             duration: 5000,
         });
