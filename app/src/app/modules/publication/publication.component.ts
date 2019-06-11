@@ -13,6 +13,10 @@ import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {Config} from '../../app-config';
 import {VoteService} from '../../services/vote.service';
 import {Http, Response, Headers,RequestOptions} from '@angular/http';
+import {MdDialogModule, MdButtonModule, MdCardModule, MdDialog} from '@angular/material';
+import {ConfirmationDialogComponent} from './../confirmation-dialog/confirmation-dialog.component';
+
+
 
 import {Subscription} from 'rxjs/Subscription';
 import * as moment from 'moment';
@@ -38,6 +42,8 @@ export class PublicationComponent implements OnInit {
     private key_localstorage_user = 'user_external_ressource_sympozer';
     private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
     private key_localstorage_ballotsByElection = 'ballotsbyelection_external_ressource_sympozer';
+    private key_localstorage_vote = 'hasVoted';
+
     datas: Array<string>;
     tabElec: Array<Object> = new Array();
     idElections: Array<string> = new Array();
@@ -53,7 +59,8 @@ export class PublicationComponent implements OnInit {
                 private snackBar: MdSnackBar,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
-                private encoder: Encoder, private http: Http, private voteService: VoteService) {
+                private encoder: Encoder, private http: Http, private voteService: VoteService,
+                public dialog: MdDialog) {
         this.authors = [];
         this.publication = {
             label: undefined,
@@ -252,21 +259,27 @@ export class PublicationComponent implements OnInit {
                 }
             });
 
-            this.voteService.getElections(this.idElections, this.elec, this.elections)
+            let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
 
-            this.http.get("./assets/vote.json").map(data => data.json() as Array<string>).subscribe((data) => {
-            
-                this.datas = data;
-                               
-                if (this.idElections.length != 0) {
-                    this.idElections.forEach(element => {
-                        this.voteService.CompareIdShowBallotsByElection(element, this.ballots, this.publicationId, this.electionsForPublication);        
+            if(token) {
+                console.log("dans if publi");
+                
+                this.voteService.getElections(this.idElections, this.elec, this.elections)
 
-                    });
+                this.http.get("./assets/vote.json").map(data => data.json() as Array<string>).subscribe((data) => {
+                
+                    this.datas = data;
+                                
+                    if (this.idElections.length != 0) {
+                        this.idElections.forEach(element => {
+                            this.voteService.CompareIdShowBallotsByElection(element, this.ballots, this.publicationId, this.electionsForPublication);        
 
-                }
-      
-            });     
+                        });
+
+                    }
+        
+                });  
+            }   
             
             /*for(let i in this.publication.authors){
              let query = { 'key' : this.publication.authors[i] };
@@ -406,10 +419,20 @@ export class PublicationComponent implements OnInit {
         let user = this.localStoragexx.retrieve(this.key_localstorage_user);
         let token = this.localStoragexx.retrieve(this.key_localstorage_sessionState);
         this.apiExternalServer.createVote(idElection, user.id, token, this.publicationId)
-            .then((user) => {
+            .then((response) => {
                 this.snackBar.open('You have voted', '', {
                     duration: 2000,
                 });  
+
+                if (response) {
+                    console.log(response);
+                      const votedTracks = [];
+                    if (this.localStoragexx.retrieve(this.key_localstorage_vote) !== null ) {
+                        votedTracks.push(this.localStoragexx.retrieve(this.key_localstorage_vote));
+                    }else {
+                        this.localStoragexx.store(this.key_localstorage_vote, []);
+                    }
+                }
   
             })
             .catch((resp) => {
@@ -419,6 +442,18 @@ export class PublicationComponent implements OnInit {
                 });
             });
     }
+
+    openConfirmationDialog(idElection) {
+        let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+          width: '600px',
+          data: {id: idElection, publi: this.publicationId}
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(`Dialog closed: ${result}`);
+          
+        });
+      }
 
     
 }

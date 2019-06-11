@@ -71,6 +71,9 @@ import {ChangePasswordComponent} from './modules/changePassword/changePassword.c
 import {QrcodeComponent} from './modules/qrcode/qrcode.component';
 import {NgxQRCodeModule } from 'ngx-qrcode3';
 import { DialogShareQrComponent } from './modules/dialog-share-qr/dialog-share-qr.component';
+import { ConfirmationDialogComponent } from './modules/confirmation-dialog/confirmation-dialog.component';
+
+
 
 
 const routes: Routes = [];
@@ -125,6 +128,7 @@ const routes: Routes = [];
         ActivationMailComponent,
         ChangePasswordComponent,
         DialogShareQrComponent,
+        ConfirmationDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -160,7 +164,7 @@ const routes: Routes = [];
         TimeManager,
     ],
     bootstrap: [AppComponent],
-    entryComponents:[DialogShareQrComponent]
+    entryComponents:[DialogShareQrComponent, ConfirmationDialogComponent]
 })
 export class AppModule {
 }
