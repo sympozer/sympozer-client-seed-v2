@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalDAOService} from '../../localdao.service';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {Encoder} from '../../lib/encoder';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {routerTransition} from '../../app.router.animation';
 
@@ -28,7 +28,7 @@ export class PublicationsComponent implements OnInit {
               private localStoragexx: LocalStorageService,
               private DaoService: LocalDAOService,
               private apiExternalServer: ApiExternalServer,
-              private snackBar: MdSnackBar,
+              private snackBar: MatSnackBar,
               private encoder: Encoder) {
         this.publications = [];
     }

@@ -273,11 +273,13 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.serverLogin.url + '/api/v1/register', bodyRequest)
                 .then((response) => {
-                    if (response.status <= 299) {
-                        console.log('a ', response);
-                        resolve(JSON.parse(response.toString()).message);
-                    } else {
-                        reject(JSON.parse(response['_body']).message);
+                    (err : any)=>{
+                        if (err.status <= 299) {
+                            console.log('a ', response);
+                            resolve(JSON.parse(response.toString()).message);
+                        } else {
+                            reject(JSON.parse(response['_body']).message);
+                        }
                     }
                 })
                 .catch((request) => {
@@ -818,10 +820,12 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.vote.url + '/createElection', bodyRequest)
                 .then((response) => {
-                    if (response.status <= 200) {
-                        resolve(JSON.parse(response.toString()).message);
-                    } else {
-                        reject(JSON.parse(response['_body']).message);
+                    (err : any)=>{
+                        if (err.status <= 200) {
+                            resolve(JSON.parse(response.toString()).message);
+                        } else {
+                            reject(JSON.parse(response['_body']).message);
+                        }
                     }
                 })
                 .catch((request) => {
@@ -844,12 +848,14 @@ export class ApiExternalServer {
                     const resultPromise = JSON.parse(response.toString());
                     const election = resultPromise;
 
-                    if (response.status <= 200) {
-                        resolve(JSON.parse(response.toString()).message);
-                        console.log("elec api " +JSON.stringify(election));
-                        that.localStoragexx.store(that.key_localstorage_election, election);
-                    } else {
-                        reject(JSON.parse(response['_body']).message);
+                    (err : any)=>{
+                        if (err.status <= 200) {
+                            resolve(JSON.parse(response.toString()).message);
+                            console.log("elec api " +JSON.stringify(election));
+                            that.localStoragexx.store(that.key_localstorage_election, election);
+                        } else {
+                            reject(JSON.parse(response['_body']).message);
+                        }
                     }
                 })
                 .catch((request) => {
@@ -872,11 +878,13 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.vote.url + '/createVote', bodyRequest)
                 .then((response) => {
-                    if (response.status <= 200) {
-                        console.log('createVote ', response);
-                        resolve(JSON.parse(response.toString()).message);
-                    } else {
-                        reject(response);
+                    (err : any)=>{
+                        if (err.status <= 200) {
+                            console.log('createVote ', response);
+                            resolve(JSON.parse(response.toString()).message);
+                        } else {
+                            reject(response);
+                        }
                     }
                 })
                 .catch((request) => {
@@ -900,11 +908,13 @@ export class ApiExternalServer {
                     const resultPromise = JSON.parse(response.toString());
                     const ballots = resultPromise;
 
-                    if (response.status <= 200) {
-                        resolve(JSON.parse(response.toString()).message);
-                        that.localStoragexx.store(that.key_localstorage_ballotsByElection, ballots);
-                    } else {
-                        reject(JSON.parse(response['_body']).message);
+                    (err : any)=>{
+                        if (err.status <= 200) {
+                            resolve(JSON.parse(response.toString()).message);
+                            that.localStoragexx.store(that.key_localstorage_ballotsByElection, ballots);
+                        } else {
+                            reject(JSON.parse(response['_body']).message);
+                        }
                     }
                 })
                 .catch((request) => {

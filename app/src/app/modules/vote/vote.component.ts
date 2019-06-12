@@ -7,7 +7,7 @@ import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Location} from '@angular/common';
 import {Config} from '../../app-config';
-import {Http, Response, Headers} from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import {Encoder} from "../../lib/encoder";
 
 @Component({
@@ -46,7 +46,7 @@ export class VoteComponent implements OnInit {
               private localStoragexx: LocalStorageService,
               private snackBar: MatSnackBar,
               private apiExternalServer: ApiExternalServer, private location: Location,
-              private route: ActivatedRoute,private http: Http,private encoder: Encoder) {
+              private route: ActivatedRoute,private http: HttpClient,private encoder: Encoder) {
 
       this.subscription = this.apiExternalServer.getAuthorizationVoteStatus().subscribe(status => {
             console.log(status);

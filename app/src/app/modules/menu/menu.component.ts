@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import { Subscription } from 'rxjs/Subscription';
-import {LocalStorageService} from 'ng2-webstorage';
+import { Subscription } from 'rxjs';
+import {LocalStorageService} from 'ngx-webstorage';
 
 
 

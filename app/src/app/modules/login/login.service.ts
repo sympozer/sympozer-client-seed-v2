@@ -34,9 +34,9 @@ export class LoginService {
         const data = 'email=' + email + '&' + 'firstname=' + firstname + 'lastname=' + lastname + 'password=' + password;
 
         return this.http
-            .post( Config.serverLogin.url + '/api/v1/register', data, {headers: headers})
-            .map(res => res.json())
-            .catch(this.handleError);
+            .post( Config.serverLogin.url + '/api/v1/register', data, {headers: headers}).pipe(
+            //map(res => res.json()),
+            catchError(this.handleError),);
     }
 
     refresh(refresh_token: string): Observable<any>{
