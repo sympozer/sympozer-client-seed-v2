@@ -206,12 +206,8 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.serverLogin.url + '/login', bodyRequest)
                 .then((request) => {
-<<<<<<< HEAD
                     console.log('dans req');
                     const resultPromise = JSON.parse(request.toString());
-=======
-                    const resultPromise = JSON.parse(request.text());
->>>>>>> 4d1bf28... vote quasi fini jute resultats
                     console.log('user:');
                     const user = resultPromise.user_id;
                     const err = resultPromise.error;
@@ -823,7 +819,7 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.vote.url + '/createElection', bodyRequest)
                 .then((response) => {
                     if (response.status <= 200) {
-                        resolve(JSON.parse(response.text()).message);
+                        resolve(JSON.parse(response.toString()).message);
                     } else {
                         reject(JSON.parse(response['_body']).message);
                     }
@@ -845,11 +841,11 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.vote.url + '/showElectionById', bodyRequest)
                 .then((response) => {
-                    const resultPromise = JSON.parse(response.text());
+                    const resultPromise = JSON.parse(response.toString());
                     const election = resultPromise;
 
                     if (response.status <= 200) {
-                        resolve(JSON.parse(response.text()).message);
+                        resolve(JSON.parse(response.toString()).message);
                         console.log("elec api " +JSON.stringify(election));
                         that.localStoragexx.store(that.key_localstorage_election, election);
                     } else {
@@ -878,7 +874,7 @@ export class ApiExternalServer {
                 .then((response) => {
                     if (response.status <= 200) {
                         console.log('createVote ', response);
-                        resolve(JSON.parse(response.text()).message);
+                        resolve(JSON.parse(response.toString()).message);
                     } else {
                         reject(response);
                     }
@@ -901,11 +897,11 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.vote.url + '/showBallotsByElection', bodyRequest)
                 .then((response) => {
-                    const resultPromise = JSON.parse(response.text());
+                    const resultPromise = JSON.parse(response.toString());
                     const ballots = resultPromise;
 
                     if (response.status <= 200) {
-                        resolve(JSON.parse(response.text()).message);
+                        resolve(JSON.parse(response.toString()).message);
                         that.localStoragexx.store(that.key_localstorage_ballotsByElection, ballots);
                     } else {
                         reject(JSON.parse(response['_body']).message);

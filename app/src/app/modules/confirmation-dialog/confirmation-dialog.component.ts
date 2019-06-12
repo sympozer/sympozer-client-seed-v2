@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Inject } from '@angular/core';
-import {MD_DIALOG_DATA} from '@angular/material';
-import {MdDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialogRef} from '@angular/material';
 import {VoteService} from '../../services/vote.service';
 import { Router, Routes } from '@angular/router';
 
@@ -13,8 +13,8 @@ export class ConfirmationDialogComponent implements OnInit {
   title: string;
   message: string;
 
-  constructor(public thisDialogRef: MdDialogRef<ConfirmationDialogComponent>, 
-			  private voteService: VoteService, @Inject(MD_DIALOG_DATA) public data: any, private router: Router) { }
+  constructor(public thisDialogRef: MatDialogRef<ConfirmationDialogComponent>, 
+			  private voteService: VoteService, @Inject(MAT_DIALOG_DATA) public data: any, private router: Router) { }
 
   ngOnInit() {
     this.title = "Vote for this candidate";

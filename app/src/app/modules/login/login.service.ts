@@ -27,7 +27,7 @@ export class LoginService {
     } 
 
     signup(email: string, firstname: string, lastname: string , password: string): Observable<any> {
-        const headers = new Headers();
+        const headers = new HttpHeaders();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -41,7 +41,7 @@ export class LoginService {
 
     refresh(refresh_token: string): Observable<any>{
 
-        const headers = new Headers();
+        const headers = new HttpHeaders();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         const data = 'refresh_token=' + refresh_token;
@@ -54,7 +54,7 @@ export class LoginService {
 
     logout(access_token: string, refresh_token: string): Observable<any>{
 
-        const headers = new Headers();
+        const headers = new HttpHeaders();
         headers.set('Accept', 'application/json');
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
         const data = 'access_token=' + access_token + '&' + 'refresh_token=' + refresh_token;

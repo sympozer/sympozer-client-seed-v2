@@ -1,13 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {VoteService} from '../../services/vote.service';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {LocalStorageService} from 'ng2-webstorage';
-import { Subscription } from 'rxjs/Subscription';
-import {MdSnackBar} from '@angular/material';
+import {LocalStorageService} from 'ngx-webstorage';
+import { Subscription } from 'rxjs';
+import {MatSnackBar} from '@angular/material';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Location} from '@angular/common';
 import {Config} from '../../app-config';
-import {Http, Response, Headers,RequestOptions} from '@angular/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { elementAt } from 'rxjs/operator/elementAt';
 import {Encoder} from '../../lib/encoder';
 
@@ -48,10 +48,10 @@ export class VotesComponent implements OnInit {
   // private key_localstorage_begin_vote = 'beginVote';
   constructor(private voteService: VoteService,
               private localStoragexx: LocalStorageService,
-              private snackBar: MdSnackBar,
+              private snackBar: MatSnackBar,
               private apiExternalServer: ApiExternalServer, private location: Location,
               private route: ActivatedRoute, private encoder:Encoder,
-              private http: Http) {
+              private http: HttpClient) {
 
       this.subscription = this.apiExternalServer.getAuthorizationVoteStatus().subscribe(status => {
             console.log(status);

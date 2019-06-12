@@ -21,7 +21,7 @@ export class ActivationMailService {
         const data = 'email=' + email;
 
         return this.http
-            .post(Config.apiLogin.url + '/api/v1/resend', data, {headers: headers}).pipe(
+            .post(Config.serverLogin.url + '/api/v1/resend', data, {headers: headers}).pipe(
             //map(res => res.json()),
             catchError(this.handleError),);
     }

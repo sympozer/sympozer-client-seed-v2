@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {Subscription} from 'rxjs';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {LocalStorageService} from 'ngx-webstorage';
 import { Router, Routes } from '@angular/router';
 
@@ -25,7 +25,7 @@ export class HeaderComponent {
 
     constructor(private apiExternalServer: ApiExternalServer,
                 private localStoragexx: LocalStorageService,
-                public snackBar: MatSnackBarModule, private router: Router) {
+                public snackBar: MatSnackBar, private router: Router) {
 
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
             this.hasLogged = status;

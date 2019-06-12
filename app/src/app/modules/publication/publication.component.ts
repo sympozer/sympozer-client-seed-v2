@@ -8,7 +8,7 @@ import {LocalDAOService} from "../../localdao.service";
 import {Encoder} from "../../lib/encoder";
 import {routerTransition} from '../../app.router.animation';
 import {LocalStorageService} from 'ngx-webstorage';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {Config} from '../../app-config';
 import {VoteService} from '../../services/vote.service';
@@ -53,7 +53,7 @@ export class PublicationComponent implements OnInit {
     constructor(private router: Router,
                 private localStoragexx: LocalStorageService,    
                 private apiExternalServer: ApiExternalServer,
-                private snackBar: MatSnackBarModule,
+                private snackBar: MatSnackBar,
                 private route: ActivatedRoute,
                 private DaoService: LocalDAOService,
                 private encoder: Encoder, private http: HttpClient, private voteService: VoteService,

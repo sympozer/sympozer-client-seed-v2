@@ -6,7 +6,7 @@ import {RequestManager} from './request-manager.service';
 import {LocalStorageService} from 'ngx-webstorage';
 import {Encoder} from '../lib/encoder';
 import {ApiExternalServer} from './ApiExternalServer';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {LocalDAOService} from '../localdao.service';
 
 
@@ -22,14 +22,10 @@ export class VoteService {
 
   private key_localstorage_vote = 'hasVoted';
 
-<<<<<<< HEAD
-  constructor(private http: HttpClient,
-=======
-  constructor(private http: Http, private DaoService: LocalDAOService,
->>>>>>> 4d1bf28... vote quasi fini jute resultats
+  constructor(private http: HttpClient, private DaoService: LocalDAOService,
               private managerRequest: RequestManager,
               private localStoragexx: LocalStorageService,
-              private encoder: Encoder, private apiExternalServer: ApiExternalServer, private snackBar: MdSnackBar) {
+              private encoder: Encoder, private apiExternalServer: ApiExternalServer, private snackBar: MatSnackBar) {
 
   }
 
@@ -39,7 +35,7 @@ export class VoteService {
   getElections = (idElections, elec, elections) => {
     let headers = new Headers({ 'Access-Control-Allow-Origin': '*'});
 
-    this.http.get("./assets/vote.json").map(data => data.json() as Array<string>).subscribe((data) => {
+    this.http.get("./assets/vote.json").subscribe((data) => {
                 
       data['elections'].forEach(elem => {
         idElections.push(elem.id);
@@ -173,7 +169,7 @@ export class VoteService {
   getElectionsForElectionView = (datas, election) => {   
     let headers = new Headers({ 'Access-Control-Allow-Origin': '*'});   
 
-    this.http.get("./assets/vote.json").map(data => data.json() as Array<string>).subscribe((data) => {
+    this.http.get("./assets/vote.json").subscribe((data) => {
 
       let results;
       let elec;
