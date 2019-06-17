@@ -72,7 +72,7 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.externalServer.url + '/api/person', bodyRequest)
                 .then((request) => {
-                    const person = JSON.parse(request.toString());
+                    const person = JSON.parse(JSON.stringify(request));
                     /*if (request.status === 403) {
                         return reject('Couldn\'t update.');
                     }
@@ -207,7 +207,7 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.serverLogin.url + '/login', bodyRequest)
                 .then((request) => {
                     console.log('dans req');
-                    const resultPromise = JSON.parse(request.toString());
+                    const resultPromise = JSON.parse(JSON.stringify(request));
                     console.log('user:');
                     const user = resultPromise.user_id;
                     const err = resultPromise.error;
@@ -276,7 +276,7 @@ export class ApiExternalServer {
                     (err : any)=>{
                         if (err.status <= 299) {
                             console.log('a ', response);
-                            resolve(JSON.parse(response.toString()).message);
+                            resolve(JSON.parse(JSON.stringify(response)).message);
                         } else {
                             reject(JSON.parse(response['_body']).message);
                         }
@@ -304,7 +304,7 @@ export class ApiExternalServer {
                   (err : any)=>{
                     if (err.status <= 299){
                       console.log('a ', response);
-                      resolve(JSON.parse(response.toString()).message);
+                      resolve(JSON.parse(JSON.stringify(response)).message);
                     }else{
                         reject(JSON.parse(response['_body']).message);
                     }
@@ -333,7 +333,7 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.serverLogin.url + '/api/v1/registerFromBadge', bodyRequest)
                 .then((request) => {
-                    const resultPromise = JSON.parse(request.toString());
+                    const resultPromise = JSON.parse(JSON.stringify(request));
                     (err : any)=>{
                       if (err.status == 400){
                         return reject(resultPromise.message);
@@ -360,7 +360,7 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.serverLogin.url + '/api/v1/forgotpassword', bodyRequest)
                 .then((request) => {
-                    const resultPromise = JSON.parse(request.toString());
+                    const resultPromise = JSON.parse(JSON.stringify(request));
                     (err : any)=>{
                       if (err.status === 400) {
                           return reject(resultPromise.message);
@@ -402,7 +402,7 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.serverLogin.url + '/api/v1/user/updatePassword/', bodyRequest)
                 .then((request) => {
-                    const resultPromise = JSON.parse(request.toString());
+                    const resultPromise = JSON.parse(JSON.stringify(request));
                     (err : any)=>{
                       if (err.status === 400) {
                           return reject(resultPromise.message);
@@ -464,7 +464,7 @@ export class ApiExternalServer {
                     that.managerRequest.post(Config.serverLogin.url + '/refresh', bodyRequest)
                         .then((request) => {
                             console.log('dans req');
-                            const resultPromise = JSON.parse(request.toString());
+                            const resultPromise = JSON.parse(JSON.stringify(request));
                             console.log(resultPromise);
                             that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.refresh_token);
                             that.localStoragexx.store(that.key_localstorage_token, resultPromise.access_token);
@@ -822,7 +822,7 @@ export class ApiExternalServer {
                 .then((response) => {
                     (err : any)=>{
                         if (err.status <= 200) {
-                            resolve(JSON.parse(response.toString()).message);
+                            resolve(JSON.parse(JSON.stringify(response)).message);
                         } else {
                             reject(JSON.parse(response['_body']).message);
                         }
@@ -845,12 +845,16 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.vote.url + '/showElectionById', bodyRequest)
                 .then((response) => {
-                    const resultPromise = JSON.parse(response.toString());
+                    const resultPromise = JSON.parse(JSON.stringify(response));
                     const election = resultPromise;
+                    console.log("avant err ");
+
 
                     (err : any)=>{
+                        console.log("err ");
+
                         if (err.status <= 200) {
-                            resolve(JSON.parse(response.toString()).message);
+                            resolve(JSON.parse(JSON.stringify(response)).message);
                             console.log("elec api " +JSON.stringify(election));
                             that.localStoragexx.store(that.key_localstorage_election, election);
                         } else {
@@ -881,7 +885,7 @@ export class ApiExternalServer {
                     (err : any)=>{
                         if (err.status <= 200) {
                             console.log('createVote ', response);
-                            resolve(JSON.parse(response.toString()).message);
+                            resolve(JSON.parse(JSON.stringify(response)).message);
                         } else {
                             reject(response);
                         }
@@ -905,12 +909,12 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.vote.url + '/showBallotsByElection', bodyRequest)
                 .then((response) => {
-                    const resultPromise = JSON.parse(response.toString());
+                    const resultPromise = JSON.parse(JSON.stringify(response));
                     const ballots = resultPromise;
 
                     (err : any)=>{
                         if (err.status <= 200) {
-                            resolve(JSON.parse(response.toString()).message);
+                            resolve(JSON.parse(JSON.stringify(response)).message);
                             that.localStoragexx.store(that.key_localstorage_ballotsByElection, ballots);
                         } else {
                             reject(JSON.parse(response['_body']).message);

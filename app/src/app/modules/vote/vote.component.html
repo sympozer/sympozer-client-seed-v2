@@ -2,30 +2,30 @@
   <h1 id="description-title">{{election.name}}</h1>
 
   <h2>Description</h2>
-  <md-card class="info-text">
+  <mat-card class="info-text">
     <p>
       {{election.description}}
     </p>
-  </md-card>
+  </mat-card>
 
   <h2>Candidates</h2>
   <div class="action-links list-items" *ngFor="let candidate of election.candidates">    
-      <md-card class="info-text">
+      <mat-card class="info-text">
           <p>
             <a [routerLink]="['/publication/'+encoder.encode(candidate.label)+'/'+encoder.encode(candidate.id)]" >{{candidate.label}}</a>
           </p>
-      </md-card>
+      </mat-card>
 
   </div>
 
   <div *ngIf="election.isFinish == true; ">  
     <h2>Votes</h2>
     <div class="action-links list-items" *ngFor="let candidate of election.candidates">  
-          <md-card class="info-text">
+          <mat-card class="info-text">
               <p>
                 Number of votes for {{candidate.label}} : {{candidate.nbVote}}
               </p>
-          </md-card>     
+          </mat-card>     
     </div>
   </div>
 
@@ -55,10 +55,10 @@
       </div>
     </div>
     <div *ngIf="token == undefined && token == null">
-      <md-card class="info-text vote">
+      <mat-card class="info-text vote">
         <p>Please login to be able to vote.</p>
         <button md-raised-button color="primary" [routerLink]="['/login']">Login</button>
-      </md-card>
+      </mat-card>
     </div>
   </div> -->
 

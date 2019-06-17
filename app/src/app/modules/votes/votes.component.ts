@@ -85,14 +85,14 @@ export class VotesComponent implements OnInit {
     this.token = this.localStoragexx.retrieve(this.key_localstorage_token);
       // let votedPublications = this.localStoragexx.retrieve(this.key_localstorage_vote);
       // votedPublications = JSON.parse(votedPublications);
-      console.log('jsute on init' + this.idTrack)
+      /* console.log('jsute on init' + this.idTrack)
       this.voteService.votedPublications(this.idTrack)
           .then((votedPublications) => {
               console.log(votedPublications);
           })
           .catch((err) => {
               console.log(err);
-          })
+          }) */
     this.canVote = true;
   }
 
