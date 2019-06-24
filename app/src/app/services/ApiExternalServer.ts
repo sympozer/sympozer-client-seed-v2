@@ -3,10 +3,11 @@
  */
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpErrorResponse} from '@angular/common/http';
 import {RequestManager} from './request-manager.service';
 import {Config} from '../app-config';
 import {LocalStorageService} from 'ngx-webstorage';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 
 @Injectable()
@@ -305,8 +306,6 @@ export class ApiExternalServer {
                     if (err.status <= 299){
                       console.log('a ', response);
                       resolve(JSON.parse(JSON.stringify(response)).message);
-                    }else{
-                        reject(JSON.parse(response['_body']).message);
                     }
                   }
 
@@ -362,9 +361,10 @@ export class ApiExternalServer {
                 .then((request) => {
                     const resultPromise = JSON.parse(JSON.stringify(request));
                     (err : any)=>{
-                      if (err.status === 400) {
-                          return reject(resultPromise.message);
-                      }
+                        console.log("dans err");
+                        if (err.status === 400) {
+                            return reject(resultPromise.message);
+                        }
                     }
                     return resolve(true);
                 })
@@ -848,23 +848,21 @@ export class ApiExternalServer {
                     const resultPromise = JSON.parse(JSON.stringify(response));
                     const election = resultPromise;
                     console.log("avant err ");
-
-
-                    (err : any)=>{
-                        console.log("err ");
-
-                        if (err.status <= 200) {
-                            resolve(JSON.parse(JSON.stringify(response)).message);
-                            console.log("elec api " +JSON.stringify(election));
-                            that.localStoragexx.store(that.key_localstorage_election, election);
-                        } else {
-                            reject(JSON.parse(response['_body']).message);
-                        }
+                    
+                (err : HttpErrorResponse)=>{
+                    console.log("err ");
+                    if (err.status <= 200) {
+                        resolve(JSON.parse(JSON.stringify(response)).message);
+                        console.log("elec api " +JSON.stringify(election));
+                        that.localStoragexx.store(that.key_localstorage_election, election);
+                    } else {
+                        reject(JSON.parse(response['_body']).message);
                     }
-                })
-                .catch((request) => {
-                    return reject(request);
-                });
+                }
+            })
+            .catch((request) => {
+                return reject(request);
+            });
         });        
     }
 
