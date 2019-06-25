@@ -110,7 +110,7 @@ export class LocalDAOService {
     public reloadDataset(uri: string) {
         const that = this;
         return new Promise((resolve, reject) => {
-            this.requestManager.get(uri)
+            this.requestManager.get(uri, {responseType: 'text'})
                 .then((response) => {
                     try {
                         if (response) {
@@ -129,7 +129,7 @@ export class LocalDAOService {
                 .catch(reject);
         });
     }
-
+    
     public registerShortLivedCache(cache: Array<Object>) {
         this.shortLivedCaches.push(cache);
     }

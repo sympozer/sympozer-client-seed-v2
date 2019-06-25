@@ -3,10 +3,11 @@
  */
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpErrorResponse} from '@angular/common/http';
 import {RequestManager} from './request-manager.service';
 import {Config} from '../app-config';
 import {LocalStorageService} from 'ngx-webstorage';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 
 @Injectable()
