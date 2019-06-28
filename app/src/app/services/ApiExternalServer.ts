@@ -274,14 +274,10 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.serverLogin.url + '/api/v1/register', bodyRequest)
                 .then((response) => {
-                    (err : any)=>{
-                        if (err.status <= 299) {
-                            console.log('a ', response);
-                            resolve(JSON.parse(JSON.stringify(response)).message);
-                        } else {
-                            reject(JSON.parse(response['_body']).message);
-                        }
-                    }
+                    
+                    console.log('a ', response);
+                    resolve(JSON.parse(JSON.stringify(response)).message);
+                
                 })
                 .catch((request) => {
                     return reject(request);
@@ -302,12 +298,9 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.serverLogin.url + '/createPassword', bodyRequest)
                 .then((response) => {
-                  (err : any)=>{
-                    if (err.status <= 299){
-                      console.log('a ', response);
-                      resolve(JSON.parse(JSON.stringify(response)).message);
-                    }
-                  }
+                  
+                    console.log('a ', response);
+                    resolve(JSON.parse(JSON.stringify(response)).message);                
 
                 })
                 .catch((request) => {
@@ -333,11 +326,11 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.serverLogin.url + '/api/v1/registerFromBadge', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(JSON.stringify(request));
-                    (err : any)=>{
-                      if (err.status == 400){
+                    
+                      if (!resultPromise){
                         return reject(resultPromise.message);
                       }
-                    }
+                    
                     return resolve(true);
                 })
                 .catch((request) => {
@@ -360,12 +353,11 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.serverLogin.url + '/api/v1/forgotpassword', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(JSON.stringify(request));
-                    (err : any)=>{
-                        console.log("dans err");
-                        if (err.status === 400) {
-                            return reject(resultPromise.message);
-                        }
-                    }
+                    
+                      if (!resultPromise) {
+                          return reject(resultPromise.message);
+                      }
+                    
                     return resolve(true);
                 })
                 .catch((request) => {
@@ -403,11 +395,11 @@ export class ApiExternalServer {
             that.managerRequest.post(Config.serverLogin.url + '/api/v1/user/updatePassword/', bodyRequest)
                 .then((request) => {
                     const resultPromise = JSON.parse(JSON.stringify(request));
-                    (err : any)=>{
-                      if (err.status === 400) {
+                    
+                      if (!resultPromise) {
                           return reject(resultPromise.message);
                       }
-                    }
+                    
                     return resolve(true);
                 })
                 .catch((request) => {
@@ -820,13 +812,9 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.vote.url + '/createElection', bodyRequest)
                 .then((response) => {
-                    (err : any)=>{
-                        if (err.status <= 200) {
-                            resolve(JSON.parse(JSON.stringify(response)).message);
-                        } else {
-                            reject(JSON.parse(response['_body']).message);
-                        }
-                    }
+                   
+                    resolve(JSON.parse(JSON.stringify(response)).message);
+                       
                 })
                 .catch((request) => {
                     return reject(request);
@@ -848,21 +836,19 @@ export class ApiExternalServer {
                     const resultPromise = JSON.parse(JSON.stringify(response));
                     const election = resultPromise;
                     console.log("avant err ");
+                     
+                        if (election) {
+                            resolve(JSON.parse(JSON.stringify(response)).message);
+                            console.log("elec api " +JSON.stringify(election));
+                            that.localStoragexx.store(that.key_localstorage_election, election);
+                        } else {
+                            reject(JSON.parse(response['_body']).message);
+                        }
                     
-                (err : HttpErrorResponse)=>{
-                    console.log("err ");
-                    if (err.status <= 200) {
-                        resolve(JSON.parse(JSON.stringify(response)).message);
-                        console.log("elec api " +JSON.stringify(election));
-                        that.localStoragexx.store(that.key_localstorage_election, election);
-                    } else {
-                        reject(JSON.parse(response['_body']).message);
-                    }
-                }
-            })
-            .catch((request) => {
-                return reject(request);
-            });
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
         });        
     }
 
@@ -880,14 +866,11 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.vote.url + '/createVote', bodyRequest)
                 .then((response) => {
-                    (err : any)=>{
-                        if (err.status <= 200) {
-                            console.log('createVote ', response);
-                            resolve(JSON.parse(JSON.stringify(response)).message);
-                        } else {
-                            reject(response);
-                        }
-                    }
+                    
+                    console.log('createVote ', response);
+                    resolve(JSON.parse(JSON.stringify(response)).message);
+                     
+                    
                 })
                 .catch((request) => {
                     return reject(request);
@@ -910,14 +893,14 @@ export class ApiExternalServer {
                     const resultPromise = JSON.parse(JSON.stringify(response));
                     const ballots = resultPromise;
 
-                    (err : any)=>{
-                        if (err.status <= 200) {
+                   
+                        if (ballots) {
                             resolve(JSON.parse(JSON.stringify(response)).message);
                             that.localStoragexx.store(that.key_localstorage_ballotsByElection, ballots);
                         } else {
                             reject(JSON.parse(response['_body']).message);
                         }
-                    }
+                    
                 })
                 .catch((request) => {
                     return reject(request);
