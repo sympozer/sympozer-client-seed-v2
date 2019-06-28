@@ -2,7 +2,7 @@
  * Created by pierremarsot on 23/01/2017.
  */
 
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 
 
@@ -10,6 +10,7 @@ import {Injectable} from '@angular/core';
 export class RequestManager {
     constructor(private http: HttpClient) { }
 
+    //Deprecated because there's no need to map to JSON in Angular 7 or later
     get_json(url, params?) {
         let req: any;
         if (params) {
@@ -36,25 +37,7 @@ export class RequestManager {
                 throw error;
             });
     }
-    /*
-    getRx(url): Promise<any> {
-        return this.http.get(url, {observe: 'response', responseType: 'text'})
-            .toPromise()
-            .then(this.extractData)
-            .catch(err => {
-                return Promise.reject(err.error || 'Server error');
-            });
-    }
-
-    extractData(res: HttpResponse<Object>) {
-        var array = new Array();
-        var key, count = 0;
-        for(key in res.body) {
-            array.push(res.body[count++]);
-        }
-        return array;
-      }
-      */
+    
     // What's inside .Promise() ?...
     getResponseText(url) {
         const prom = new Promise((resolve, reject) => {
