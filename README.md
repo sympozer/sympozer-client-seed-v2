@@ -10,11 +10,11 @@ In 2017, the app architecture has been completely refactored:
   * Users can create their account, enrich their personal information and participate in the votes
 <!--  * Admins can get usage stats through the Piwik system -->
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.6.6.
+This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 7.3.6.
 
 ## Getting started
 
-Install Git & Npm
+Install Git, npm and make sure you are using [Node 8 or later](https://www.hostingadvice.com/how-to/update-node-js-latest-version/)
 
 then run :
 
@@ -26,19 +26,7 @@ then run :
 
 4. `npm install`
 
-5. **Do the [Hack broken dependency](#hack-broken-dependency) stuff described below**
-
-6. `ng serve --aot`
-
-### Hack broken dependency
-
-There is a missing dependency in the XMLHttpRequest module, which is itself a dependency of other modules. To solve that, browse to `node_modules/xmlhttprequest/lib/XMLHttpRequest.js` and comment the following lines:
-
-`Line 15- var spawn = require("child_process").spawn; `
-
-`Line 503- var syncProc = spawn(process.argv[0], ["-e", execString]);`
-
-`Line 509- syncProc.stdin.end();`
+5. `ng serve --aot`
 
 ## Development server
 
@@ -48,7 +36,7 @@ Run `ng serve --aot` for a dev server. Navigate to `http://localhost:4200/`. The
 
 Run `ng build` to build the project and deploy on a static server. The build artifacts will be stored in the `app/dist/` directory.
 
-Use the `-prod` option for a production build and `-bh` to set up the base hash that will be included in the index.html file (see examples in `app/package.json` file).
+Use the `-prod` option for a production build and `--base-href` to set up the base hash that will be included in the index.html file (see examples in `app/package.json` file).
 
 In case you define commands in `app/package.json`, run them using `npm run <commandName>`.
 
