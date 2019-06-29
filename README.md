@@ -2,15 +2,20 @@
 
 Sympozer is a full client side mashup Web application that allows browsing and enriching conference data. Learn more about Sympozer at http://sympozer.liris.cnrs.fr/ .
 
-Since 2017, the app architecture has been completely refactored:
+Refactoring 2017 :
 
   * The conference dataset now follows the <a href="http://www.scholarlydata.org/">ScholarlyData</a> ontology and has been issued using <a href="https://github.com/anuzzolese/cLODg2">cLODg</a> (conference Linked Open Data generator) V2.
   * Its core engine is based on RDF data (instead of JSON), internally served using the <a href="https://github.com/linkeddata/rdflib.js/">rdflib.js</a> library and queried in SPARQL.
-  * It fully runs on the client side, and relies on the <a href="https://v7.angular.io/">Angular **v. 7**</a> JavaScript framework, using Web components and other advances. The design layer uses <a href="https://material.angular.io/">Angular Material</a>.
-  * Users can create their account, enrich their personal information and participate in the votes
+  * It fully runs on the client side, and relies on the <a href="https://v4.angular.io/">Angular **v. 4**</a> JavaScript framework, using Web components and other advances. The design layer uses <a href="https://material.angular.io/">Angular Material</a>.
+  * Users can create their account, enrich their personal information.
+ 
+Refactoring 2019 :
+
+ * Migration to <a href="https://v7.angular.io/">Angular **v. 7**</a>.
+ * Users can log in and participate in the votes.
 <!--  * Admins can get usage stats through the Piwik system -->
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 7.3.6.
+This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.6.6 (currently using vesion 7.3.6).
 
 ## Getting started
 
