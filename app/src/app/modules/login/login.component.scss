@@ -52,7 +52,7 @@
       font-weight: normal;
     }
 
-    md-input-container {
+    mat-input-container {
       width: 100%;
     }
 
@@ -64,6 +64,9 @@
         background: linear-gradient(#e58307, #F36B12);
         font-size: 20px;
         color: white;
+        line-height: 36px;
+        padding: 0 16px;
+        border-radius: 2px;
       }
 
       .sign-up {
@@ -273,4 +276,8 @@ a.social-button:hover, a.social-button:focus {
   -ms-transition: all .3s ease;
   -o-transition: all .3s ease;
   transition: all .3s ease;
+}
+
+.mat-form-field{
+  display: block;
 }

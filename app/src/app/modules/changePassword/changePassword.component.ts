@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {Router}            from '@angular/router';
 import {routerTransition} from '../../app.router.animation';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {MdSnackBar} from "@angular/material";
+import {MatSnackBar} from "@angular/material";
 import {VoteService} from '../../services/vote.service'
 import {LocalDAOService} from "../../localdao.service";
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'changePassword',
@@ -21,7 +21,7 @@ export class ChangePasswordComponent implements OnInit {
 
     constructor(private router: Router,
         private apiExternalServer: ApiExternalServer,
-        public snackBar: MdSnackBar,
+        public snackBar: MatSnackBar,
         private DaoService: LocalDAOService,
         private localStoragexx: LocalStorageService) {
 
@@ -29,20 +29,20 @@ export class ChangePasswordComponent implements OnInit {
 
     ngOnInit() {
 		let user = this.localStoragexx.retrieve(this.key_localstorage_user);
-		
+
         //if(user !== null){
         //	let urlHost = window.location.protocol+'//'+window.location.host + window.location.pathname
         //    window.location.replace(urlHost+'#/home');
         //}
-	
+
     }
-    
+
     /**
 	 * @param currentPassword
 	 * @param newPassword
 	 */
 	changePassword(currentPassword, newPassword, confirmPassword){
-		
+
 		this.apiExternalServer.changePassword(currentPassword, newPassword, confirmPassword)
             .then(() => {
                 this.snackBar.open("You have successfully updated your password.", "", {
@@ -58,4 +58,3 @@ export class ChangePasswordComponent implements OnInit {
             });
     }
 }
-

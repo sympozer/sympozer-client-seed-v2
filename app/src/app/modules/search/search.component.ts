@@ -2,6 +2,8 @@ import {Component, OnInit}      from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Location}              from '@angular/common';
 import {routerTransition} from '../../app.router.animation';
+import { Subscription } from 'rxjs/Subscription';
+import {ApiExternalServer} from '../../services/ApiExternalServer';
 
 
 @Component({
@@ -14,9 +16,14 @@ import {routerTransition} from '../../app.router.animation';
 export class SearchComponent implements OnInit {
     testId: String;
     title: string = "";
+    logSubscription: Subscription;
+    hasLogged: any;
 
     constructor(private location: Location,
-                private route: ActivatedRoute) {
+                private route: ActivatedRoute, private apiExternalServer: ApiExternalServer) {
+                    this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
+                        this.hasLogged = status;
+                    });
     }
 
     ngOnInit(): void {
@@ -26,6 +33,8 @@ export class SearchComponent implements OnInit {
             this.testId = id;
             if (this.testId == 'event')
                 this.title = "Find an " + this.testId;
+            else if (this.testId == 'vote')
+                this.title = "Find an Election";
             else
                 this.title = "Find a " + this.testId;
             if (document.getElementById("page-title-p"))

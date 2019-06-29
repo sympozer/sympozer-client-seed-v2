@@ -5,10 +5,10 @@
 
   <div scrollLoader class="search-results" [listItems]="organizations" (updatePartialTable)="tabOrgas = $event">
     <div class="action-links list-items" *ngFor="let organization of tabOrgas">
-      <md-card>
-        <md-icon md-list-avatar>account_balance</md-icon>
+      <mat-card>
+        <mat-icon mat-list-avatar>account_balance</mat-icon>
         <a [routerLink]="['/organization/'+organization.labelEncoded+'/'+organization.id]">{{organization.label}}</a>
-      </md-card>
+      </mat-card>
     </div>
   </div>
 </div>

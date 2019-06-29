@@ -5,86 +5,86 @@
 
     <div *ngIf="event.description !== null">
         <h2>Description</h2>
-        <md-card class="info-text">
+        <mat-card class="info-text">
             <p>{{event.description}}</p>
-        </md-card>
+        </mat-card>
     </div>
 
     <div *ngIf="event.homepage !== null">
         <h2>Website</h2>
-        <md-card class="info-text">
+        <mat-card class="info-text">
             <p>
                 <a href="{{event.homepage}}">{{event.homepage}}</a>
             </p>
-        </md-card>
+        </mat-card>
     </div>
 
     <h2>Schedule</h2>
     <div class="action-links list-items multiple-lines">
-        <md-card class="info-text">
+        <mat-card class="info-text">
             <div class="wrapper">
                 <div class="other-links">
-                    <span class="event-info"><md-icon>schedule</md-icon> {{event.dateVal}} </span>
-                    <span class="event-info"><md-icon>hourglass_empty</md-icon> {{event.duration}} </span>
+                    <span class="event-info"><mat-icon>schedule</mat-icon> {{event.dateVal}} </span>
+                    <span class="event-info"><mat-icon>hourglass_empty</mat-icon> {{event.duration}} </span>
                 </div>
             </div>
-        </md-card>
+        </mat-card>
     </div>
 
-    <button md-raised-button color="primary" (click)="createICS()">Add to calendar</button>
+    <button mat-raised-button color="primary" (click)="createICS()">Add to calendar</button>
 
     <div *ngIf="event.location && event.location.length > 0">
         <h2>Location</h2>
         <div class="action-links list-items">
-            <md-card>
-                <md-icon md-list-avatar>place</md-icon>
+            <mat-card>
+                <mat-icon mat-list-avatar>place</mat-icon>
                 <a [routerLink]="['/events-by-location/'+event.location]">{{event.location}}</a>
                 <!-- in future versions, should be we use locationId as well?
                 <a [routerLink]="['/location/'+event.location+'/'+event.locationId]">{{event.location}}</a>
                 -->
-            </md-card>
+            </mat-card>
         </div>
     </div>
 
     <div *ngIf="event && event.publications && event.publications.length > 0">
         <h2>Publications</h2>
         <div class="action-links list-items" *ngFor="let publication of event.publications">
-            <md-card>
-                <md-icon md-list-avatar>place</md-icon>
+            <mat-card>
+                <mat-icon mat-list-avatar>place</mat-icon>
                 <a [routerLink]="['/publication/'+encoder.encode(publication.label)+'/'+publication.id]">{{publication.label}}</a>
-            </md-card>
+            </mat-card>
         </div>
     </div>
 
     <div *ngIf="event && event.tracks && event.tracks.length > 0">
         <h2>Tracks</h2>
         <div class="action-links list-items" *ngFor="let track of event.tracks">
-            <md-card>
-                <md-icon md-list-avatar>info</md-icon>
+            <mat-card>
+                <mat-icon mat-list-avatar>info</mat-icon>
                 <a [routerLink]="['/event-by-category/'+track.label+'/'+track.id]">{{track.label}}</a>
-            </md-card>
+            </mat-card>
         </div>
     </div>
 
     <div *ngIf="hasSubEvent && hasSubEvent.length > 0">
         <h2>Program</h2>
         <div class="action-links list-items" *ngFor="let subEv of hasSubEvent">
-            <md-card>
-                <md-icon md-list-avatar>event</md-icon>
+            <mat-card>
+                <mat-icon mat-list-avatar>event</mat-icon>
                 <a *ngIf="subEv.hasPaper" [routerLink]="['/publication/'+subEv.label+'/'+subEv.id]">{{subEv.label}}</a>
                 <a *ngIf="!subEv.hasPaper" [routerLink]="['/event/'+subEv.label+'/'+subEv.id]">{{subEv.label}}</a>
-            </md-card>
+            </mat-card>
         </div>
     </div>
 
     <div *ngIf="subEventOf && subEventOf.length > 0">
         <h2>During</h2>
         <div class="action-links list-items" *ngFor="let superEv of subEventOf">
-            <md-card>
-                <md-icon md-list-avatar>event</md-icon>
+            <mat-card>
+                <mat-icon mat-list-avatar>event</mat-icon>
                 <a *ngIf="!superEv.isConference" [routerLink]="['/event/'+superEv.label+'/'+superEv.id]">{{superEv.label}}</a>
                 <a *ngIf="superEv.isConference" [routerLink]="['/conference/'+superEv.id]">{{superEv.label}}</a>
-            </md-card>
+            </mat-card>
         </div>
     </div>
 

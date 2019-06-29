@@ -1,21 +1,21 @@
 <div class="login-wrapper">
-  <md-card class="inscription-card">
+  <mat-card class="inscription-card">
     <div class="header">
       <h4>Sign In</h4>
     </div>
     <div class="inscription-form">
       <br>
       <form>
-        <md-input-container>
-          <input #email mdInput type="email" placeholder="Email">
-        </md-input-container>
+        <mat-form-field>
+          <input #email matInput type="email" placeholder="Email">
+        </mat-form-field>
 
-        <md-input-container>
-          <input #password mdInput type="password" placeholder="Password">
-        </md-input-container>
+        <mat-form-field>
+          <input #password matInput type="password" placeholder="Password">
+        </mat-form-field>
 
         <div class="inscription-footer">
-          <button md-button (click)="login(email.value, password.value)">Login</button>
+          <button mat-button (click)="login(email.value, password.value)">Login</button>
           <div class="sign-up">
             <br>
             <p>Don’t have an account yet ?
@@ -36,5 +36,5 @@
         -->
       </form>
     </div>
-  </md-card>
+  </mat-card>
 </div>

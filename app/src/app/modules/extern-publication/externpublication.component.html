@@ -2,54 +2,54 @@
 
   <h2>Title</h2>
   <div class="action-links list-items">
-    <md-card class="info-text">
-      <md-icon md-list-avatar>title</md-icon>
+    <mat-card class="info-text">
+      <mat-icon mat-list-avatar>title</mat-icon>
       <p>{{publication.informations[0].publiTitle.value}}</p>
-    </md-card>
+    </mat-card>
   </div>
 
   <h2>Reference</h2>
   <div class="action-links list-items">
-    <md-card class="info-text">
-      <md-icon md-list-avatar>book</md-icon>
+    <mat-card class="info-text">
+      <mat-icon mat-list-avatar>book</mat-icon>
       <p>{{publication.informations[0].publiResume.value}}</p>
-    </md-card>
+    </mat-card>
   </div>
 
   <h2>Link</h2>
 
   <div class="action-links list-items">
-    <md-card>
-      <md-icon md-list-avatar>link</md-icon>
+    <mat-card>
+      <mat-icon mat-list-avatar>link</mat-icon>
       <a href="{{publication.informations[0].publiLink.value}}" target="_blank">{{publication.informations[0].publiLink.value}}</a>
-    </md-card>
+    </mat-card>
   </div>
 
   <h2>Year</h2>
   <div class="action-links list-items">
-    <md-card class="info-text">
-      <md-icon md-list-avatar>date_range</md-icon>
+    <mat-card class="info-text">
+      <mat-icon mat-list-avatar>date_range</mat-icon>
       <p>{{publication.informations[0].publiDate.value}}</p>
-    </md-card>
+    </mat-card>
   </div>
 
 
   <h2>Publisher</h2>
   <div class="action-links list-items">
-    <md-card class="info-text">
-      <md-icon md-list-avatar>book</md-icon>
+    <mat-card class="info-text">
+      <mat-icon mat-list-avatar>book</mat-icon>
       <p>{{publication.informations[0].publiJournal.value}}</p>
-    </md-card>
+    </mat-card>
   </div>
 
 
   <div *ngIf="(publication.authors ) != null">
     <h2>Authors</h2>
     <div class="action-links list-items" *ngFor="let author of publication.authors">
-      <md-card>
-        <md-icon md-list-avatar>perm_identity</md-icon>
+      <mat-card>
+        <mat-icon mat-list-avatar>perm_identity</mat-icon>
         <a [routerLink]="['/person/'+encoder.encode(author.authorName.value)+'/'+author.authorUri.value]">{{author.authorName.value}}</a>
-      </md-card>
+      </mat-card>
     </div>
   </div>
 </div>

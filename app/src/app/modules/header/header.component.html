@@ -9,7 +9,7 @@
     </div>
     <div class="menu-btn">
 
-        <button md-icon-button [mdMenuTriggerFor]="menu" class="avatar-open">
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="avatar-open">
             <div class="avatar-wrapper">
                 <div *ngIf="!hasLogged || (hasLogged && avatar == null)">
                     <img class="avatar" src="./img/placeholder.jpg"/>
@@ -17,39 +17,39 @@
                 <div *ngIf="hasLogged && avatar != null">
                     <img class="avatar" src={{avatar}}/>
                 </div>
-                <md-icon>arrow_drop_down</md-icon>
+                <mat-icon>arrow_drop_down</mat-icon>
             </div>
         </button>
 
-        <md-menu [overlapTrigger]="false" xPosition="before" yPosition="below" #menu="mdMenu" class="account-menu">
+        <mat-menu [overlapTrigger]="false" xPosition="before" yPosition="below" #menu="matMenu" class="account-menu">
             <div *ngIf="!hasLogged">
-                <button md-menu-item disabled>
-                    <md-icon>account_circle</md-icon>
+                <button mat-menu-item disabled>
+                    <mat-icon>account_circle</mat-icon>
                     <span>Guest</span>
                 </button>
-                <button [routerLink]="['/login/']" md-menu-item>
-                    <md-icon class="fa-icon"><i class="fa fa-sign-in" aria-hidden="true"></i></md-icon>
+                <button [routerLink]="['/login/']" mat-menu-item>
+                    <mat-icon class="fa-icon"><i class="fa fa-sign-in" aria-hidden="true"></i></mat-icon>
                     <span>Login</span>
                 </button>
-                <button [routerLink]="['/signup/']" md-menu-item>
-                    <md-icon class="fa-icon"><i class="fa fa-sign-in" aria-hidden="true"></i></md-icon>
+                <button [routerLink]="['/signup/']" mat-menu-item>
+                    <mat-icon class="fa-icon"><i class="fa fa-sign-in" aria-hidden="true"></i></mat-icon>
                     <span>Sign up</span>
                 </button>
             </div>
             <div *ngIf="hasLogged">
-                <button [routerLink]="['/profile/']" md-menu-item>
-                    <md-icon>account_circle</md-icon>
+                <button [routerLink]="['/profile/']" mat-menu-item>
+                    <mat-icon>account_circle</mat-icon>
                     <span>{{username}}</span>
                 </button>
-                <button (click)="logout()" md-menu-item>
-                    <md-icon class="fa-icon"><i class="fa fa-sign-out" aria-hidden="true"></i></md-icon>
+                <button (click)="logout()" mat-menu-item>
+                    <mat-icon class="fa-icon"><i class="fa fa-sign-out" aria-hidden="true"></i></mat-icon>
                     <span>Logout</span>
                 </button>
             </div>
-        </md-menu>
+        </mat-menu>
 
-        <button md-icon-button class="menu-button-open" (click)="sidenav.open()">
-            <md-icon>menu</md-icon>
+        <button mat-icon-button class="menu-button-open" (click)="sidenav.open()">
+            <mat-icon>menu</mat-icon>
         </button>
     </div>
 </header>

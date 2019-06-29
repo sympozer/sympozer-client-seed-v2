@@ -104,7 +104,7 @@ export class PersonComponent implements OnInit {
                                     that.managerRequest.get(Config.externalServer.url + '/api/person?mbox_sha1sum=' + boxs)
                                         .then((response) => {
                                             if (response && response) {
-                                                const user = JSON.parse(response);
+                                                const user = JSON.parse(response.toString());
                                                 console.log(user);
                                                 if (user && user.photoUrl) {
                                                     that.photoUrl = user.photoUrl;

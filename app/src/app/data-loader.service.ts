@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, URLSearchParams} from '@angular/http';
-import 'rxjs/add/operator/toPromise';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Conference} from './model/conference';
 
 @Injectable()
 export class DataLoaderService {
+
 
     private static extractData(res: Response) {
         // Server should wrap the data inside `data` property !!!!!!
@@ -20,7 +20,7 @@ export class DataLoaderService {
         return Promise.reject(error.message || error);
     }
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
     }
 
     getData(url: string): Promise<Conference> {
@@ -32,9 +32,9 @@ export class DataLoaderService {
     };
 
     getDataUrl(url: string): Promise<Conference> {
-        const params: URLSearchParams = new URLSearchParams();
-        params.set('format', 'json');
-        return this.http.get(url, {search: params})
+        let params = new HttpParams();
+        params = params.append('format', 'json');
+        return this.http.get(url, {params})
             .toPromise()
             .then(DataLoaderService.extractData)
             .catch(DataLoaderService.handleError);

@@ -1,6 +1,7 @@
 @import "globals";
 
-md-sidenav-container {
+mat-sidenav-container {
+  position: relative;
   width: 100vw;
   height: 100vh;
   padding: 0;
@@ -22,9 +23,16 @@ menu {
   padding: 0;
 }
 
-md-sidenav {
+mat-sidenav {
   width: 200px;
   text-align: center;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  min-width: 5vw;
+  
   background-color: $header-background;
   padding: 0;
 

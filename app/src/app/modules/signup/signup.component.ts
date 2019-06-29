@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {VoteService} from '../../services/vote.service';
 import {LocalDAOService} from '../../localdao.service';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'signup',
@@ -18,7 +18,7 @@ export class SignupComponent implements OnInit {
 
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
-                public snackBar: MdSnackBar,
+                public snackBar: MatSnackBar,
                 private voteService: VoteService,
                 private DaoService: LocalDAOService,
                 private localStoragexx: LocalStorageService) {

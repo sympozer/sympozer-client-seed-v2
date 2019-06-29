@@ -1,43 +1,52 @@
 <h1 id="description-title"> {{title}} </h1>
 <div *ngIf="testId == 'person'">
   <div class="action-links">
-    <md-card><a [routerLink]="['/persons']">by name </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
-    <md-card><a [routerLink]="['/roles']">by role </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
-    <md-card><a [routerLink]="['/organizations']">by organization </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
+    <mat-card><a [routerLink]="['/persons']">by name </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
+    <mat-card><a [routerLink]="['/roles']">by role </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
+    <mat-card><a [routerLink]="['/organizations']">by organization </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
   </div>
 </div>
 <div *ngIf="testId == 'publication'">
   <div class="action-links">
-    <md-card><a [routerLink]="['/publications']">by title </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
-    <md-card><a [routerLink]="['/authors']">by author </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
-    <md-card><a [routerLink]="['/categories-for-publications']">by track </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
-    <md-card><a [routerLink]="['/keywords']">by keywords </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
+    <mat-card><a [routerLink]="['/publications']">by title </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
+    <mat-card><a [routerLink]="['/authors']">by author </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
+    <mat-card><a [routerLink]="['/categories-for-publications']">by track </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
+    <mat-card><a [routerLink]="['/keywords']">by keywords </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
   </div>
 </div>
+
+  <div *ngIf="testId == 'vote'">
+    <div class="action-links">
+      <mat-card><a [routerLink]="['/votes']">by name </a>
+        <mat-icon>trending_flat</mat-icon>
+      </mat-card>
+    </div>
+  </div>
+
 <div *ngIf="testId == 'event'">
   <div class="action-links">
-    <md-card><a [routerLink]="['/events']">by name </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
-    <md-card><a [routerLink]="['/categories']">by track </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
-    <md-card><a [routerLink]="['/locations']">by location </a>
-      <md-icon>trending_flat</md-icon>
-    </md-card>
+    <mat-card><a [routerLink]="['/events']">by name </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
+    <mat-card><a [routerLink]="['/categories']">by track </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
+    <mat-card><a [routerLink]="['/locations']">by location </a>
+      <mat-icon>trending_flat</mat-icon>
+    </mat-card>
   </div>
 </div>

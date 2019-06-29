@@ -2,14 +2,15 @@
  * Created by pierremarsot on 23/01/2017.
  */
 
-import {Http, Response} from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import 'rxjs/operator/toPromise';
+
 
 @Injectable()
 export class RequestManager {
-    constructor(private http: Http) { }
+    constructor(private http: HttpClient) { }
 
+    //Deprecated because there's no need to map to JSON in Angular 7 or later
     get_json(url, params?) {
         let req: any;
         if (params) {
@@ -18,9 +19,9 @@ export class RequestManager {
             req = this.http.get(url);
         }
         return req.toPromise()
-            .then((response) => response.json())
-            .then((json) => {
-                return json;
+            .then((response) => /*response.json())
+            .then((json) => */{
+                return response;
             })
             .catch(() => {
                 return null;
@@ -29,19 +30,19 @@ export class RequestManager {
     get(url,options?) {
         return this.http.get(url,options)
             .toPromise()
-            .then((response: Response) => {
-                return response.text();
+            .then((response) => {
+                return response;
             })
             .catch((error) => {
                 throw error;
             });
     }
-
+    
     // What's inside .Promise() ?...
     getResponseText(url) {
         const prom = new Promise((resolve, reject) => {
             let resp = '';
-            this.http.get(url).subscribe((x: Response) => resp += x.text(), (err: any) => reject(err), () => resolve(resp));
+            this.http.get(url, {responseType: 'text'}).subscribe((x) => resp += x, (err) => reject(err), () => resolve(resp));
         });
         return prom;
     }
@@ -63,3 +64,4 @@ export class RequestManager {
         return await this.getResponseText(uri);
     }
 }
+

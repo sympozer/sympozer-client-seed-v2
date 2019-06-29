@@ -4,9 +4,9 @@ import {PersonComponent} from './modules/person/person.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
+import {HttpClientModule} from '@angular/common/http';
 import {routing} from './app.routing';
-import {MaterialModule, MdGridListModule, MdDialogModule} from '@angular/material';
+import {MatGridListModule, MatDialogModule, MatSnackBarModule} from '@angular/material';
 import 'hammerjs';
 import {NgModule} from '@angular/core';
 import {HomeComponent} from './modules/home/home.component';
@@ -40,6 +40,7 @@ import {EventsByDate} from './modules/events-by-date/events-by-date';
 import {ShareComponent} from './modules/share-button/share-button.component';
 import {LoginComponent} from './modules/login/login.component';
 import {ScrollLoaderDirective} from './modules/scroll-loader/scroll-loader.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import {KeywordsComponent} from './modules/keywords/keywords.component';
 import {KeysPipe} from './keys.pipe';
 import {DataLoaderService} from './data-loader.service';
@@ -47,15 +48,16 @@ import {DBLPDataLoaderService} from './dblpdata-loader.service';
 import {LocalDAOService} from './localdao.service';
 import {eventHelper} from './eventHelper';
 import {Encoder} from './lib/encoder';
-import {Ng2Webstorage} from 'ng2-webstorage';
+import {NgxWebstorageModule} from 'ngx-webstorage';
 import {GithubService} from './services/github.service';
 import {RequestManager} from './services/request-manager.service';
 import {ApiExternalServer} from './services/ApiExternalServer';
 import {RessourceDataset} from './services/RessourceDataset';
 import {PersonService} from './modules/person/person.service';
 import {TimeManager} from './services/timeManager.service';
-import {ShareButtonsModule} from 'ng2-sharebuttons';
+import {ShareButtonsModule} from 'ngx-sharebuttons';
 import {VoteComponent} from './modules/vote/vote.component';
+import {VotesComponent} from './modules/votes/votes.component';
 import {ConferenceComponent} from './modules/conference/conference.component';
 import {VoteService} from './services/vote.service';
 import {Angulartics2Module, Angulartics2Piwik} from 'angulartics2';
@@ -70,9 +72,28 @@ import {ChangePasswordComponent} from './modules/changePassword/changePassword.c
 import {QrcodeComponent} from './modules/qrcode/qrcode.component';
 import {NgxQRCodeModule } from 'ngx-qrcode3';
 import { DialogShareQrComponent } from './modules/dialog-share-qr/dialog-share-qr.component';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ConfirmationDialogComponent } from './modules/confirmation-dialog/confirmation-dialog.component';
 
 const routes: Routes = [];
+
+const MATERIAL_MODULES = [
+	MatSidenavModule,
+	MatIconModule,
+	MatCardModule,
+	MatChipsModule,
+	MatMenuModule,
+	MatInputModule,
+	MatSlideToggleModule,
+	MatFormFieldModule
+];
 
 @NgModule({
     declarations: [
@@ -112,6 +133,7 @@ const routes: Routes = [];
         ShareComponent,
         ScrollLoaderDirective,
         VoteComponent,
+        VotesComponent,
         KeywordsComponent,
         ConferenceComponent,
         PublicationsByKeywordComponent,
@@ -123,24 +145,26 @@ const routes: Routes = [];
         ActivationMailComponent,
         ChangePasswordComponent,
         DialogShareQrComponent,
+        ConfirmationDialogComponent
     ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpModule,
         routing,
         RouterModule.forRoot(routes, {useHash: true}),
-        MaterialModule,
-        MdGridListModule,
+        MatGridListModule,
         ShareButtonsModule.forRoot(),
-        Ng2Webstorage,
+        NgxWebstorageModule.forRoot(),
         Angulartics2Module.forRoot([Angulartics2Piwik]),
         BrowserModule,
+        HttpClientModule,
         NgxQRCodeModule,
-        MdDialogModule
-
+        MatDialogModule,
+        MatSnackBarModule,
+        ScrollingModule,
+        MATERIAL_MODULES
     ],
     providers: [
         DataLoaderService,
@@ -158,7 +182,7 @@ const routes: Routes = [];
         TimeManager,
     ],
     bootstrap: [AppComponent],
-    entryComponents:[DialogShareQrComponent]
+    entryComponents:[DialogShareQrComponent, ConfirmationDialogComponent]
 })
 export class AppModule {
 }

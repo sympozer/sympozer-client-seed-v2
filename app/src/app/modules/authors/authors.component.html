@@ -5,19 +5,19 @@
 
   <div scrollLoader class="search-results" [listItems]="authors" (updatePartialTable)="tabAuthors = $event">
     <div class="action-links list-items multiple-lines multiple-links" *ngFor="let author of tabAuthors">
-      <md-card>
+      <mat-card>
         <div class="wrapper">
           <a class="event-info" [routerLink]="['/person/'+encoder.encode(author.name)+'/'+author.id]">
-            <md-icon>perm_identity</md-icon>
+            <mat-icon>perm_identity</mat-icon>
             {{author.name}}</a>
           <div class="other-links" *ngFor="let publication of author.publications">
             <a [routerLink]="['/publication/'+encoder.encode(publication.label)+'/'+publication.id]" class="event-info">
-              <md-icon>description</md-icon>
+              <mat-icon>description</mat-icon>
               {{publication.label}}
             </a>
           </div>
         </div>
-      </md-card>
+      </mat-card>
     </div>
   </div>
 </div>

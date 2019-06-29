@@ -1,20 +1,20 @@
 <div class="resend-wrapper">
-  <md-card class="inscription-card">
+  <mat-card class="inscription-card">
     <div class="header">
       <h4>Resend an activation email</h4>
     </div>
     <div class="resend-form">
       
       <form>
-        <md-input-container>
-          <input #email mdInput type="email" placeholder="Email">
-        </md-input-container>
+        <mat-form-field>
+          <input #email matInput type="email" placeholder="Email">
+        </mat-form-field>
 
         <div class="resend-footer">
-          <button md-button (click)="resend(email.value)">Submit</button>
+          <button mat-button (click)="resend(email.value)">Submit</button>
         </div>
 
         </form>
     </div>
-  </md-card>
+  </mat-card>
 </div>

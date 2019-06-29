@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiExternalServer } from '../../services/ApiExternalServer';
-import { MdSnackBar } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
-import { LocalStorageService } from 'ng2-webstorage';
+import { MatSnackBar } from '@angular/material';
+import { Subscription } from 'rxjs';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'app-user-profile',
@@ -26,7 +26,7 @@ export class UserProfileComponent implements OnInit {
     private key_localstorage_userName = 'username_external_ressource_sympozer';
 
     constructor(private apiExternalServer: ApiExternalServer,
-                private snackBar: MdSnackBar,
+                private snackBar: MatSnackBar,
                 private localStoragexx: LocalStorageService) {
         this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
             // console.log(status);

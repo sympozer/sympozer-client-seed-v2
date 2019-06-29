@@ -6,21 +6,21 @@
   {{address}}
 </p>
 
-<md-card *ngIf="geo !== null" class="info-text">
-    <md-icon>place</md-icon>
+<mat-card *ngIf="geo !== null" class="info-text">
+    <mat-icon>place</mat-icon>
     <a [href]="geo">Open in map</a>
-</md-card>
+</mat-card>
 
 <h2>Schedule</h2>
 
 <div class="action-links list-items multiple-lines" *ngFor="let event of eventsLocation">
-  <md-card>
+  <mat-card>
     <a class="wrapper" [routerLink]="['/event/'+encoder.encode(event.label)+'/'+event.id]">
-      <md-icon md-list-avatar>event</md-icon>
+      <mat-icon mat-list-avatar>event</mat-icon>
       <span class="event">{{event.label}}</span>
       <div class="other-links">
-        <span class="event-info"><md-icon>schedule</md-icon> {{event.dateVal}} </span>
+        <span class="event-info"><mat-icon>schedule</mat-icon> {{event.dateVal}} </span>
       </div>
     </a>
-  </md-card>
+  </mat-card>
 </div>

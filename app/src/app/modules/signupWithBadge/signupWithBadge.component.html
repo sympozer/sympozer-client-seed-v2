@@ -1,39 +1,39 @@
 <div class="login-wrapper">
-  <md-card class="inscription-card">
+  <mat-card class="inscription-card">
   	<div class="header">
       <h4>Alternate sign in form</h4>
     </div>
     <div class="inscription-form">
         <h5>Use this form if you have not registered to the conference yourself or used another email address than the one you will log in with.</h5>
         <form>
-          <md-input-container>
-            <input #firstname mdInput type="firstname" placeholder="First Name">
-          </md-input-container>
+          <mat-form-field>
+            <input #firstname matInput type="firstname" placeholder="First Name">
+          </mat-form-field>
 
-          <md-input-container>
-            <input #lastname mdInput type="lastname" placeholder="Last Name">
-          </md-input-container>
+          <mat-form-field>
+            <input #lastname matInput type="lastname" placeholder="Last Name">
+          </mat-form-field>
 
-          <md-input-container>
-            <input #email mdInput type="email" placeholder="Your email address (we will send you a link at that address)">
-          </md-input-container>
+          <mat-form-field>
+            <input #email matInput type="email" placeholder="Your email address (we will send you a link at that address)">
+          </mat-form-field>
 
-          <md-input-container>
-            <input #emailUsed mdInput type="email" placeholder="The email address used (by you or someone else) for your registration">
-          </md-input-container>
+          <mat-form-field>
+            <input #emailUsed matInput type="email" placeholder="The email address used (by you or someone else) for your registration">
+          </mat-form-field>
 
-          <md-input-container>
-            <input #password mdInput type="password" placeholder="Password">
-          </md-input-container>
+          <mat-form-field>
+            <input #password matInput type="password" placeholder="Password">
+          </mat-form-field>
 
           <small>The password must have at least 8 characters.</small>
 
-          <md-input-container>
-            <input #confirmPassword mdInput type="password" placeholder="Confirm password">
-          </md-input-container>
+          <mat-form-field>
+            <input #confirmPassword matInput type="password" placeholder="Confirm password">
+          </mat-form-field>
 
           <div class="inscription-footer">
-            <button md-button color="primary" (click)="signupWithBadge(email.value, emailUsed.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Sign up</button>
+            <button mat-button color="primary" (click)="signupWithBadge(email.value, emailUsed.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Sign up</button>
             <div class="sign-up">
               <br>
               <p>Already have an account ?
@@ -43,5 +43,5 @@
           </div>
         </form>
     </div>
-  </md-card>
+  </mat-card>
 </div>

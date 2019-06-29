@@ -2,12 +2,12 @@
  * Created by pierremarsot on 27/02/2017.
  */
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {Subject} from 'rxjs/Subject';
-import {Http, Headers, RequestOptions} from '@angular/http';
+import {Observable, Subject} from 'rxjs';
+import {HttpClient, HttpParams, HttpErrorResponse} from '@angular/common/http';
 import {RequestManager} from './request-manager.service';
 import {Config} from '../app-config';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 
 @Injectable()
@@ -24,12 +24,17 @@ export class ApiExternalServer {
     private subjectFacebook = new Subject<any>();
 
     private key_localstorage_token = 'token_external_ressource_sympozer';
+    private key_localstorage_refreshToken = 'refreshtoken_external_ressource_sympozer';
     private key_localstorage_user = 'user_external_ressource_sympozer';
     private key_localstorage_id = 'id_external_ressource_sympozer';
     private key_localstorage_username = 'username_external_ressource_sympozer';
     private key_localstorage_avatar = 'avatar_external_ressource_sympozer';
+    private key_localstorage_sessionState = 'sessionstate_external_ressource_sympozer';
+    private key_localstorage_election = 'election_external_ressource_sympozer';
+    private key_localstorage_ballotsByElection = 'ballotsbyelection_external_ressource_sympozer';
 
-    constructor(private http: Http,
+
+    constructor(private http: HttpClient,
                 private managerRequest: RequestManager,
                 private localStoragexx: LocalStorageService) {
 
@@ -42,6 +47,8 @@ export class ApiExternalServer {
         }
         return false;
     }
+
+
 
     update(token, firstname, lastname, homepage, twitterpage, facebookpage, googlepage, linkedinaccount, photoUrl) {
         return new Promise((resolve, reject) => {
@@ -66,14 +73,14 @@ export class ApiExternalServer {
 
             that.managerRequest.post(Config.externalServer.url + '/api/person', bodyRequest)
                 .then((request) => {
-                    const person = JSON.parse(request.text());
-                    if (request.status === 403) {
+                    const person = JSON.parse(JSON.stringify(request));
+                    /*if (request.status === 403) {
                         return reject('Couldn\'t update.');
                     }
                     if (request.status === 404) {
                         return reject('A network error has occurred. Please try again later.');
                     }
-
+                    */
                     if (person.error) {
                         return reject(person.error);
                     }
@@ -85,11 +92,19 @@ export class ApiExternalServer {
                         this.sendAvatar(person.photoUrl);
                         that.localStoragexx.store(that.key_localstorage_avatar, person.photoUrl);
                     }
-                    that.localStoragexx.store(that.key_localstorage_user, request.text());
+                    that.localStoragexx.store(that.key_localstorage_user, request);
                     return resolve(person);
                 })
                 .catch((request) => {
-                    console.log('catch');
+                    //console.log('catch');
+                    (err : any)=>{
+                      if (err.status == 403){
+                        return reject('Couldn\'t update.');
+                      }
+                      if (err.status == 404){
+                        return reject('A network error has occurred. Please try again later.');
+                      }
+                    }
                     return reject(request);
                 });
         });
@@ -139,19 +154,13 @@ export class ApiExternalServer {
                 lastname: lastname,
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/user/updateProfile/', bodyRequest)
                 .then((request) => {
-                    const person = JSON.parse(request.text());
-                    if (request.status === 403) {
-                        return reject('Couldn\'t update.');
-                    }
-                    if (request.status === 404) {
-                        return reject('A network error has occurred. Please try again later.');
-                    }
+                    //const person = JSON.parse(request);
 
-                    if (person.error) {
-                        return reject(person.error);
-                    }
+                    //if (person.error) {
+                    //    return reject(person.error);
+                    //}
 
                     if (bodyRequest.firstname && bodyRequest.firstname.length > 0) {
                         this.sendUsername(bodyRequest.firstname);
@@ -166,6 +175,14 @@ export class ApiExternalServer {
                     return resolve(request);
                 })
                 .catch((request) => {
+                  (err : any)=>{
+                    if (err.status == 403){
+                      return reject('Couldn\'t update.');
+                    }
+                    if (err.status == 404){
+                      return reject('A network error has occurred. Please try again later.');
+                    }
+                  }
                     return reject(request);
                 });
         });
@@ -184,49 +201,59 @@ export class ApiExternalServer {
             const that = this;
 
             const bodyRequest = {
-                'email': email,
+                'username': email,
                 'password': password
             };
-            console.log('ici');
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/auth', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/login', bodyRequest)
                 .then((request) => {
-                    console.log('la');
-                    const resultPromise = JSON.parse(request.text());
-                    const user = resultPromise.user;
+                    console.log('dans req');
+                    const resultPromise = JSON.parse(JSON.stringify(request));
+                    console.log('user:');
+                    const user = resultPromise.user_id;
+                    const err = resultPromise.error;
+                    console.log(resultPromise);
                     if (!resultPromise || !user) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
                     if (!user) {
                         return reject('Error while retrieving your data. Please try again later.');
                     }
-                    if (user.firstname && user.firstname.length > 0) {
-                        this.sendUsername(user.firstname);
-                        that.localStoragexx.store(that.key_localstorage_username, user.firstname);
-                    }
-                    if (user.linkedin && user.linkedin.length > 0) {
-                        this.sendLinkedin(user.linkedin);
-                    }
-                    if (user.twitter && user.twitter.length > 0) {
-                        this.sendTwitter(user.twitter);
-                    }
-                    if (user.facebook && user.facebook.length > 0) {
-                        this.sendFacebook(user.facebook);
-                    }
-                    if (user.google && user.google.length > 0) {
-                        this.sendGoogle(user.google);
-                    }
-                    if (user.lastname && user.lastname.length > 0) {
-                        this.sendLastname(user.lastname);
+                    if(!err) {
+                        if (user.username && user.username.length > 0) {
+                            this.sendUsername(user.username);
+                            that.localStoragexx.store(that.key_localstorage_username, user.username);
+                        }
+                        if (user.linkedin && user.linkedin.length > 0) {
+                            this.sendLinkedin(user.linkedin);
+                        }
+                        if (user.twitter && user.twitter.length > 0) {
+                            this.sendTwitter(user.twitter);
+                        }
+                        if (user.facebook && user.facebook.length > 0) {
+                            this.sendFacebook(user.facebook);
+                        }
+                        if (user.google && user.google.length > 0) {
+                            this.sendGoogle(user.google);
+                        }
+                        if (user.lastname && user.lastname.length > 0) {
+                            this.sendLastname(user.lastname);
+                        }
+                    } else {
+                        return reject('Password not valid.');
+
                     }
 
                     this.sendLoginStatus(true);
-                    that.localStoragexx.store(that.key_localstorage_token, resultPromise.token);
+                    that.localStoragexx.store(that.key_localstorage_token, resultPromise.access_token);
+                    that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.refresh_token);
                     that.localStoragexx.store(that.key_localstorage_user, user);
+                    that.localStoragexx.store(that.key_localstorage_sessionState, resultPromise.session_state);
+                    
                     resolve(user);
                 })
                 .catch((request) => {
-                    console.log('ailleurs');
+                    console.log('exception');
                     reject(request);
                 });
         });
@@ -245,14 +272,36 @@ export class ApiExternalServer {
                 confirmPassword: password
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/register', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/register', bodyRequest)
                 .then((response) => {
-                    if (response.status <= 299) {
-                        console.log('a ', response);
-                        resolve(JSON.parse(response.text()).message);
-                    } else {
-                        reject(JSON.parse(response['_body']).message);
-                    }
+                    
+                    console.log('a ', response);
+                    resolve(JSON.parse(JSON.stringify(response)).message);
+                
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    createPassword = (email, unique_token, password) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                'email': email,
+                'unique_token': unique_token,
+                'password': password
+            };
+
+            that.managerRequest.post(Config.serverLogin.url + '/createPassword', bodyRequest)
+                .then((response) => {
+                  
+                    console.log('a ', response);
+                    resolve(JSON.parse(JSON.stringify(response)).message);                
+
                 })
                 .catch((request) => {
                     return reject(request);
@@ -274,12 +323,14 @@ export class ApiExternalServer {
                 confirmPassword: password
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/registerFromBadge', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/registerFromBadge', bodyRequest)
                 .then((request) => {
-                    const resultPromise = JSON.parse(request.text());
-                    if (request.status === 400) {
+                    const resultPromise = JSON.parse(JSON.stringify(request));
+                    
+                      if (!resultPromise){
                         return reject(resultPromise.message);
-                    }
+                      }
+                    
                     return resolve(true);
                 })
                 .catch((request) => {
@@ -299,12 +350,14 @@ export class ApiExternalServer {
                 email: email,
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/forgotpassword', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/forgotpassword', bodyRequest)
                 .then((request) => {
-                    const resultPromise = JSON.parse(request.text());
-                    if (request.status === 400) {
-                        return reject(resultPromise.message);
-                    }
+                    const resultPromise = JSON.parse(JSON.stringify(request));
+                    
+                      if (!resultPromise) {
+                          return reject(resultPromise.message);
+                      }
+                    
                     return resolve(true);
                 })
                 .catch((request) => {
@@ -339,12 +392,14 @@ export class ApiExternalServer {
                 newPassword: newPassword
             };
 
-            that.managerRequest.post(Config.apiLogin.url + '/api/v1/user/updatePassword/', bodyRequest)
+            that.managerRequest.post(Config.serverLogin.url + '/api/v1/user/updatePassword/', bodyRequest)
                 .then((request) => {
-                    const resultPromise = JSON.parse(request.text());
-                    if (request.status === 400) {
-                        return reject(resultPromise.message);
-                    }
+                    const resultPromise = JSON.parse(JSON.stringify(request));
+                    
+                      if (!resultPromise) {
+                          return reject(resultPromise.message);
+                      }
+                    
                     return resolve(true);
                 })
                 .catch((request) => {
@@ -353,16 +408,81 @@ export class ApiExternalServer {
         });
     }
 
-    logoutUser() {
-        this.localStoragexx.clear(this.key_localstorage_token);
-        this.localStoragexx.clear(this.key_localstorage_username);
-        this.localStoragexx.clear(this.key_localstorage_user);
-        this.localStoragexx.clear(this.key_localstorage_id);
+    logout = (access_token, refresh_token) => {        
+        
         // this.localStoragexx.clear(this.key_localstorage_avatar);
+
+        return new Promise((resolve, reject) => { 
+          
+            const that = this;
+            const bodyRequest = {
+                'access_token': access_token,
+                'refresh_token': refresh_token
+            };
+           
+            console.log('avant req');
+
+            that.managerRequest.post(Config.serverLogin.url + '/logout', bodyRequest)
+                .then((request) => {
+                    console.log('dans req logout');
+                    this.localStoragexx.clear(this.key_localstorage_token);
+                    //this.localStoragexx.clear(this.key_localstorage_refreshToken);
+                    this.localStoragexx.clear(this.key_localstorage_username);
+                    this.localStoragexx.clear(this.key_localstorage_user);
+                    this.localStoragexx.clear(this.key_localstorage_id);
+                    resolve(request);
+                })
+                .catch((request) => {
+                    console.log('exception:' + request);
+                    reject(request);
+                });
+        });
     }
+
+    refresh = (refresh_token) => {        
+        
+            return new Promise((resolve, reject) => {
+                const token = this.localStoragexx.retrieve(this.key_localstorage_token);
+                console.log("token = " + token);
+                if (!token || token.length === 0 || token == "null") {
+                    return reject('You are not logged in.');
+                } else {
+                    const that = this;
+                    const bodyRequest = {
+                        'refresh_token': refresh_token
+                    };
+                    console.log('avant req refresh');
+
+                    that.managerRequest.post(Config.serverLogin.url + '/refresh', bodyRequest)
+                        .then((request) => {
+                            console.log('dans req');
+                            const resultPromise = JSON.parse(JSON.stringify(request));
+                            console.log(resultPromise);
+                            that.localStoragexx.store(that.key_localstorage_refreshToken, resultPromise.refresh_token);
+                            that.localStoragexx.store(that.key_localstorage_token, resultPromise.access_token);
+                            
+                            setTimeout(() => {
+                                this.refresh(this.getRefreshToken());
+                                console.log('timeout success in refresh!!');
+                            }, 1800000);
+                        
+                        })
+                        .catch((request) => {
+                            console.log('exception');
+                            reject(request);
+                        });
+                }
+            });
+       
+    }
+
 
     getToken() {
         return this.localStoragexx.retrieve(this.key_localstorage_token);
+    }
+
+    getRefreshToken() {
+        return this.localStoragexx.retrieve(this.key_localstorage_refreshToken);
     }
 
 
@@ -371,7 +491,7 @@ export class ApiExternalServer {
 
             const that = this;
 
-            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/google')
+            that.managerRequest.get(Config.serverLogin.url + '/api/v1/auth/google')
                 .then((request) => {
                     console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
@@ -388,7 +508,7 @@ export class ApiExternalServer {
 
             const that = this;
 
-            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/linkedin')
+            that.managerRequest.get(Config.serverLogin.url + '/api/v1/auth/linkedin')
                 .then((request) => {
                     console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
@@ -405,7 +525,7 @@ export class ApiExternalServer {
 
             const that = this;
 
-            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/twitter')
+            that.managerRequest.get(Config.serverLogin.url + '/api/v1/auth/twitter')
                 .then((request) => {
                     console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
@@ -422,7 +542,7 @@ export class ApiExternalServer {
 
             const that = this;
 
-            that.managerRequest.get(Config.apiLogin.url + '/api/v1/auth/facebook')
+            that.managerRequest.get(Config.serverLogin.url + '/api/v1/auth/facebook')
                 .then((request) => {
                     console.log('REQUEST!!!!!!!!!!!');
                     console.log(request);
@@ -673,4 +793,122 @@ export class ApiExternalServer {
     getFacebook(): Observable<any> {
         return this.subjectFacebook.asObservable();
     }
+
+    createElection = (idUser, sessionState, name, description, idResource, dateBegin, dateEnd, listCandidates) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                idUser: idUser,
+                token: sessionState,
+                name: name,
+                description: description,
+                idResource: idResource,
+                dateBegin: dateBegin,
+                dateEnd: dateEnd,
+                listCandidates: listCandidates
+            };
+
+            that.managerRequest.post(Config.vote.url + '/createElection', bodyRequest)
+                .then((response) => {
+                   
+                    resolve(JSON.parse(JSON.stringify(response)).message);
+                       
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });
+    }
+
+    showElectionById = (idElection) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                id: idElection                
+            };
+
+            that.managerRequest.post(Config.vote.url + '/showElectionById', bodyRequest)
+                .then((response) => {
+                    const resultPromise = JSON.parse(JSON.stringify(response));
+                    const election = resultPromise;
+                    console.log("avant err ");
+                     
+                        if (election) {
+                            resolve(JSON.parse(JSON.stringify(response)).message);
+                            console.log("elec api " +JSON.stringify(election));
+                            that.localStoragexx.store(that.key_localstorage_election, election);
+                        } else {
+                            reject(JSON.parse(response['_body']).message);
+                        }
+                    
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });        
+    }
+
+    createVote = (idElection, idVoter, sessionState, idCandidate) => {
+        return new Promise((resolve, reject) => {
+
+            const that = this;
+
+            const bodyRequest = {
+                idElection: idElection,
+                idVoter: idVoter,
+                token: sessionState,
+                idCandidate: idCandidate         
+            };
+
+            that.managerRequest.post(Config.vote.url + '/createVote', bodyRequest)
+                .then((response) => {
+                    
+                    console.log('createVote ', response);
+                    resolve(JSON.parse(JSON.stringify(response)).message);
+                     
+                    
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });        
+    }
+
+    showBallotsByElection = (idElection, idUser,sessionState) => {
+        return new Promise((resolve, reject) => {
+            const that = this;
+
+            const bodyRequest = {
+                idElection: idElection,
+                idUser: idUser,
+                token: sessionState                
+            };
+
+            that.managerRequest.post(Config.vote.url + '/showBallotsByElection', bodyRequest)
+                .then((response) => {
+                    const resultPromise = JSON.parse(JSON.stringify(response));
+                    const ballots = resultPromise;
+
+                   
+                        if (ballots) {
+                            resolve(JSON.parse(JSON.stringify(response)).message);
+                            that.localStoragexx.store(that.key_localstorage_ballotsByElection, ballots);
+                        } else {
+                            reject(JSON.parse(response['_body']).message);
+                        }
+                    
+                })
+                .catch((request) => {
+                    return reject(request);
+                });
+        });        
+
+
+    }
+
+    
 }

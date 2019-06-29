@@ -1,5 +1,5 @@
 import { Injectable }     from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Config } from  './app-config';
 import { labels } from  './lib/labels';
 import { Encoder } from  './lib/encoder';
@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class eventHelper {
 
-  constructor(private http: Http,  private encoder: Encoder) {}
+  constructor(private http: HttpClient,  private encoder: Encoder) {}
 
     sortByDateAsc(lhs, rhs) {
     return lhs > rhs ? 1 : lhs < rhs ? -1 : 0;

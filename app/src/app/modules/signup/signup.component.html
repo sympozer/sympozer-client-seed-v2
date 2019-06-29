@@ -1,35 +1,35 @@
 <div class="login-wrapper">
-  <md-card class="inscription-card">
+  <mat-card class="inscription-card">
   	<div class="header">
       <h4>Sign Up</h4>
     </div>
     <div class="inscription-form">
         <h5>Please sign up using the email address used for registering to the conference</h5>
         <form>
-          <md-input-container>
-            <input #email mdInput type="email" placeholder="Email">
-          </md-input-container>
+          <mat-form-field>
+            <input #email matInput type="email" placeholder="Email">
+          </mat-form-field>
 
-          <md-input-container>
-            <input #firstname mdInput type="firstname" placeholder="First Name">
-          </md-input-container>
+          <mat-form-field>
+            <input #firstname matInput type="firstname" placeholder="First Name">
+          </mat-form-field>
 
-          <md-input-container>
-            <input #lastname mdInput type="lastname" placeholder="Last Name">
-          </md-input-container>
+          <mat-form-field>
+            <input #lastname matInput type="lastname" placeholder="Last Name">
+          </mat-form-field>
 
-          <md-input-container>
-            <input #password mdInput type="password" placeholder="Password">
-          </md-input-container>
+          <mat-form-field>
+            <input #password matInput type="password" placeholder="Password">
+          </mat-form-field>
 
           <small>The password must have at least 8 characters.</small>
 
-          <md-input-container>
-            <input #confirmPassword mdInput type="password" placeholder="Confirm password">
-          </md-input-container>
+          <mat-form-field>
+            <input #confirmPassword matInput type="password" placeholder="Confirm password">
+          </mat-form-field>
 
           <div class="inscription-footer">
-            <button md-button color="primary" (click)="signup(email.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Sign up</button>
+            <button mat-button color="primary" (click)="signup(email.value, firstname.value, lastname.value, password.value, confirmPassword.value)">Sign up</button>
             <div class="sign-up">
               <br>
               <p>Can't sign up with this form?
@@ -41,5 +41,5 @@
           </div>
         </form>
     </div>
-  </md-card>
+  </mat-card>
 </div>

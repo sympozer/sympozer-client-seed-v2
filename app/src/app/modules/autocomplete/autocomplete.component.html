@@ -1,9 +1,9 @@
 <div *ngIf="isBigItems">
   <div class="action-links list-items search-wrapper">
-    <md-card style="margin-top: 0">
-      <md-icon>search</md-icon>
+    <mat-card style="margin-top: 0">
+      <mat-icon>search</mat-icon>
       <input placeholder="Search" #searchBox id="search-box" (keyup)="search(searchBox.value)" spellcheck="false">
-    </md-card>
+    </mat-card>
   </div>
 
   <div class="search-result-wrapper" *ngIf="hasItem == true && hasSearchValue == true">

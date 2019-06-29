@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ApiExternalServer} from '../../services/ApiExternalServer';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {VoteService} from '../../services/vote.service';
 import {LocalDAOService} from '../../localdao.service';
 import {Encoder} from '../../lib/encoder';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 
 const sha1 = require('sha-1');
 
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
     constructor(private router: Router,
                 private apiExternalServer: ApiExternalServer,
-                public snackBar: MdSnackBar,
+                public snackBar: MatSnackBar,
                 private voteService: VoteService,
                 private DaoService: LocalDAOService,
                 private encoder: Encoder,
@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit {
         if (user !== null) {
             const urlHost = window.location.protocol + '//' + window.location.host + window.location.pathname;
             window.location.replace(urlHost + '#/home');
-
         }
+        
     }
 
     login(email, password) {
@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit {
                 this.snackBar.open('Login successful.', '', {
                     duration: 2000,
                 });
+                
                 // window.location.href = 'http://www.google.com';
                 /*
                 this.voteService.votedPublications()
@@ -96,14 +97,18 @@ export class LoginComponent implements OnInit {
                 });
 
                 window.history.back();
+                
 
             })
             .catch((resp) => {
                 console.log(resp);
-                this.snackBar.open(JSON.parse(resp._body)['message'], '', {
+                this.snackBar.open(resp, '', {
                     duration: 3000,
                 });
             });
+            setTimeout(() => {
+                this.apiExternalServer.refresh(this.apiExternalServer.getRefreshToken());
+            }, 1800000);
     }
 
 

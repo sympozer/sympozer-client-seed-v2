@@ -1,7 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {LocalDAOService} from '../../localdao.service';
+import {MatSnackBar} from '@angular/material';
 import {Encoder} from '../../lib/encoder';
+import {LocalStorageService} from 'ngx-webstorage';
+import {ApiExternalServer} from '../../services/ApiExternalServer';
 import {routerTransition} from '../../app.router.animation';
 
 let cache: Array<Object> = null;
@@ -18,9 +21,15 @@ export class PublicationsComponent implements OnInit {
     publications;
     tabPubli: Array<Object> = new Array();
 
+    private key_localstorage_user = 'user_external_ressource_sympozer';
+    private key_localstorage_sessionState= 'sessionstate_external_ressource_sympozer';
+
     constructor(private router: Router,
-                private DaoService: LocalDAOService,
-                private encoder: Encoder) {
+              private localStoragexx: LocalStorageService,
+              private DaoService: LocalDAOService,
+              private apiExternalServer: ApiExternalServer,
+              private snackBar: MatSnackBar,
+              private encoder: Encoder) {
         this.publications = [];
     }
 
@@ -75,4 +84,5 @@ export class PublicationsComponent implements OnInit {
             });
         }
     }
+
 }

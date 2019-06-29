@@ -3,8 +3,8 @@
 </h1>
 
 <div class="action-links list-items" *ngFor="let location of locations">
-  <md-card>
-    <md-icon md-list-avatar>place</md-icon>
+  <mat-card>
+    <mat-icon mat-list-avatar>place</mat-icon>
     <a [routerLink]="['/events-by-location/'+location.location]">{{location.location}}</a>
-  </md-card>
+  </mat-card>
 </div>

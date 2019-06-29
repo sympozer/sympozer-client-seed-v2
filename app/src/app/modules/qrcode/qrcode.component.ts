@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 import {LocalDAOService} from "../../localdao.service";
 import {DataLoaderService} from '../../data-loader.service';
 import {Encoder} from "../../lib/encoder";

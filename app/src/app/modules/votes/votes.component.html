@@ -1,0 +1,52 @@
+<div class="component-wrapper fixed-height">
+  <h1 id="description-title">{{title}}</h1>
+
+  <div class="action-links list-items" *ngFor="let election of elections">
+    <div *ngIf="election.isFinish == true; else elseBlock">
+      <mat-card >
+          <mat-icon mat-list-avatar>how_to_vote</mat-icon>
+          <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
+            <span style="color: red;padding-left: 3.5%"><h3> {{election.name}}  [Closed] : </h3> </span>
+          </a>
+          <span style="padding-left: 3.5%;;margin-top:-1.2%">{{election.description}}</span>
+      </mat-card>
+    </div>
+      <ng-template #elseBlock>
+          <mat-card >
+              <mat-icon mat-list-avatar>how_to_vote</mat-icon>
+              <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
+                <span style="color: green; padding-left: 3.5%"><h3> {{election.name}}  [Opened] : </h3></span>
+              </a>
+              <span style="padding-left: 3.5%;;margin-top:-1.2%">{{election.description}}</span>
+          </mat-card>
+      </ng-template>
+    
+  </div>
+
+  <h1 id="description-title">Results</h1>
+
+  <div class="action-links list-items" *ngFor="let election of elections">
+    <div *ngIf="election.isFinish == true;">
+        <div *ngIf="election.winner == null; else elseblock">
+          <mat-card >
+              <mat-icon mat-list-avatar>how_to_vote</mat-icon>
+              <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
+                <span style="padding-left: 3.5%"><h3> There is no winner for the election "{{election.name}}" </h3></span>
+              </a>    
+          </mat-card>
+        </div>
+        <ng-template #elseBlock>
+            <mat-card >                
+                <mat-icon mat-list-avatar>how_to_vote</mat-icon>
+                <a [routerLink]="['/vote/'+encoder.encode(election.id)]" >
+                  <span style="padding-left: 3.5%"><h3> The winner of the election "{{election.name}}" is {{election.winner}} </h3> </span>
+                </a>    
+            </mat-card>
+        </ng-template>
+    </div>
+    
+          
+  </div>
+
+
+</div>

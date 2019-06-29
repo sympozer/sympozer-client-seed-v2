@@ -1,10 +1,10 @@
 import {Component, OnInit, NgZone, HostListener} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {Location} from '@angular/common';
 import {routerTransition} from '../../app.router.animation';
 import {LocalDAOService} from '../../localdao.service';
-import {LocalStorageService} from 'ng2-webstorage';
+import {LocalStorageService} from 'ngx-webstorage';
 import {ToolsService} from '../../services/tools.service';
 import {Config} from '../../app-config';
 
@@ -30,7 +30,7 @@ export class ToolsComponent implements OnInit {
                 private location: Location,
                 private route: ActivatedRoute,
                 private localdao: LocalDAOService,
-                public snackBar: MdSnackBar,
+                public snackBar: MatSnackBar,
                 private localStoragexx: LocalStorageService,
                 private toolService: ToolsService) {
     }
@@ -86,7 +86,7 @@ export class ToolsComponent implements OnInit {
     /**
      * Reload the sessions dataset
      */
-        loadDataset() {
+    loadDataset() {
         this.loading = true;
 
         setTimeout(() => {

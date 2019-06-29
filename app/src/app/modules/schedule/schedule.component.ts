@@ -1,4 +1,5 @@
-import {Component, OnInit, trigger, transition, style, animate, state} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {trigger, transition, style, animate, state} from '@angular/animations';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Location} from '@angular/common';
 import {LocalDAOService} from '../../localdao.service';

@@ -1,4 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {ApiExternalServer} from '../../services/ApiExternalServer';
+import { Subscription } from 'rxjs';
+import {LocalStorageService} from 'ngx-webstorage';
+
 
 
 @Component({
@@ -7,8 +11,18 @@ import {Component, OnInit} from '@angular/core';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
+    logSubscription: Subscription;
+    hasLogged: any;
+    private key_localstorage_user = 'user_external_ressource_sympozer';
 	
-    constructor() {
+    constructor(private apiExternalServer: ApiExternalServer, private localStoragexx: LocalStorageService) {
+        this.logSubscription = this.apiExternalServer.getLoginStatus().subscribe(status => {
+            this.hasLogged = status;
+        });
+        const user = this.localStoragexx.retrieve(this.key_localstorage_user);
+        if (user !== null) {
+            this.hasLogged = true;
+        }
     	
     }
 
