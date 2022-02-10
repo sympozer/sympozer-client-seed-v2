@@ -52,7 +52,7 @@
     "ngx-qrcode3": "^0.3.0",
     "ngx-sharebuttons": "^4.1.4",
     "ngx-webstorage": "^3.0.2",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "octonode": "^0.9.5",
     "rdflib": "^0.14.1",
     "rxjs": "^6.4.0",
