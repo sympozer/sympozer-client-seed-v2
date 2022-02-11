@@ -33,7 +33,7 @@
     "@angular/platform-browser-dynamic": "7.2.10",
     "@angular/platform-server": "7.2.10",
     "@angular/router": "7.2.10",
-    "ajv": "^5.0.4-beta.3",
+    "ajv": "^6.12.3",
     "angulartics2": "^2.0.0",
     "async-mutex": "^0.1.1",
     "awesome-typescript-loader": "^3.0.0-beta.10",
