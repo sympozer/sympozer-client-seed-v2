@@ -46,7 +46,7 @@
     "ics": "^1.5.0",
     "jsonwebtoken": "^8.1.0",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "ngtweet": "^1.0.0",
     "ngx-qrcode2": "^0.1.0",
     "ngx-qrcode3": "^0.3.0",
