@@ -54,7 +54,7 @@
     "ngx-webstorage": "^3.0.2",
     "node-sass": "^4.12.0",
     "octonode": "^0.9.5",
-    "rdflib": "^0.14.1",
+    "rdflib": "^2.2.20",
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.5.1",
     "screenfull": "^3.2.0",
