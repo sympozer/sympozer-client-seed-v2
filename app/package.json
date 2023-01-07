@@ -75,7 +75,7 @@
     "@types/node": "^6.0.96",
     "angular2-uuid": "1.1.1",
     "codelyzer": "2.0.1",
-    "extract-text-webpack-plugin": "2.0.0-beta.5",
+    "extract-text-webpack-plugin": "2.1.2",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.7.0",
     "karma": "^4.0.1",
